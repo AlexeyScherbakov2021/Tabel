@@ -37,9 +37,17 @@ namespace Tabel.Repository
 
         }
 
-
+        public int AddOtdel(Otdel newOtdel, Otdel parent = null)
+        {
+            throw new NotImplementedException();
+        }
 
         public int AddUser(User newUser)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int DeleteOtdel(int idOtdel)
         {
             throw new NotImplementedException();
         }
@@ -49,10 +57,20 @@ namespace Tabel.Repository
             throw new NotImplementedException();
         }
 
+        public IEnumerable<Otdel> GetOtdels()
+        {
+            return ctx.otdels.ToArray();
+        }
+
         public IEnumerable<User> GetUsers()
         {
             return ctx.users.ToArray();
             
+        }
+
+        public int UpdateOtdel(Otdel editOtdel)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -38,10 +38,20 @@ namespace Tabel.ViewModels
                     return;
 
                 App.CurrentUser = SelectUser;
-                MainWindow win = new MainWindow();
-                //(win.DataContext as MainWindowViewModel).CurrentUser = SelectUser;
-                win.Show();
-                App.Current.MainWindow = win;
+                if(App.CurrentUser.u_role == 100)
+                {
+                    EditTablesWindow win = new EditTablesWindow();
+                    win.Show();
+                    App.Current.MainWindow = win;
+                }
+                else
+                {
+                    MainWindow win = new MainWindow();
+                    win.Show();
+                    App.Current.MainWindow = win;
+                }
+
+
             }
 
             winLogin.Close();
