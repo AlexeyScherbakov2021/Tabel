@@ -5,6 +5,8 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using Tabel.Models;
+using Tabel.Views;
 
 namespace Tabel
 {
@@ -13,5 +15,7 @@ namespace Tabel
     /// </summary>
     public partial class App : Application
     {
+        public static User CurrentUser;
+
     }
 }
