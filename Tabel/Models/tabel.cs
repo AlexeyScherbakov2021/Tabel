@@ -7,7 +7,7 @@ namespace Tabel.Models
     using System.Data.Entity.Spatial;
 
     [Table("tabel")]
-    public partial class Tabel
+    public partial class Tabel : IEntity
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Tabel()
@@ -16,8 +16,9 @@ namespace Tabel.Models
         }
 
         [Key]
+        [Column ("idTabel")]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int idTabel { get; set; }
+        public int id { get; set; }
 
         [StringLength(30)]
         public string t_number { get; set; }

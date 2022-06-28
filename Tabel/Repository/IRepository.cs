@@ -7,19 +7,12 @@ using Tabel.Models;
 
 namespace Tabel.Repository
 {
-    interface IRepository
+    interface IRepository<T> where T : class, IEntity, new()
     {
-
-        // Пользователи
-        IEnumerable<User> GetUsers();
-        int AddUser(User newUser);
-        int DeleteUser(int idUser);
-
-
-        // отделы
-        IEnumerable<Otdel> GetOtdels();
-        int AddOtdel(Otdel newOtdel, Otdel parent = null);
-        int DeleteOtdel(int idOtdel);
-        int UpdateOtdel(Otdel editOtdel);
+        IQueryable<T> Items { get; }
+        T Get(int id);
+        T Add(T item);
+        void Delete(int id);
+        void Update(T item);
     }
 }

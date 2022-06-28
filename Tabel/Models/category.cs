@@ -7,7 +7,7 @@ namespace Tabel.Models
     using System.Data.Entity.Spatial;
 
     [Table("category")]
-    public partial class Category
+    public partial class Category : IEntity
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Category()
@@ -16,8 +16,9 @@ namespace Tabel.Models
         }
 
         [Key]
+        [Column ("idCategory")]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int idCategory { get; set; }
+        public int id { get; set; }
 
         public decimal? cat_tarif { get; set; }
 

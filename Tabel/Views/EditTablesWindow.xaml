@@ -4,6 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:Tabel.ViewModels"
+        xmlns:inf="clr-namespace:Tabel.Infrastructure"
+        xmlns:model="clr-namespace:Tabel.Models"
         xmlns:local="clr-namespace:Tabel.Views"
         mc:Ignorable="d"
         Title="Редактирование" Height="450" Width="800" WindowStartupLocation="CenterScreen">
@@ -21,18 +23,19 @@
                             <Button Content="Добавить" Margin="2" Command="{Binding AddCommand}"/>
                             <Button Content="Удалить" Margin="2" Command="{Binding DeleteCommand}"/>
                         </UniformGrid>
-                        <TreeView ItemsSource="{Binding ListOtdel}">
+                        <inf:TreeViewSelect ItemsSource="{Binding ListOtdel}" 
+                                SelectedItemTV="{Binding SelectedItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                            <TreeView.Resources>
+                                <Style TargetType="{x:Type TreeViewItem}">
+                                    <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}"/>
+                                </Style>
+                            </TreeView.Resources>
                             <TreeView.ItemTemplate>
-                                <HierarchicalDataTemplate ItemsSource="{Binding otdels1}">
+                                <HierarchicalDataTemplate ItemsSource="{Binding subOtdels}">
                                     <TextBlock Text="{Binding ot_name}"/>
-                                    <HierarchicalDataTemplate.ItemTemplate >
-                                        <DataTemplate>
-                                            <TextBlock Text="{Binding ot_name}"></TextBlock>
-                                        </DataTemplate>
-                                    </HierarchicalDataTemplate.ItemTemplate>
                                 </HierarchicalDataTemplate>
                             </TreeView.ItemTemplate>
-                        </TreeView>
+                        </inf:TreeViewSelect>
 
                     </DockPanel>
 

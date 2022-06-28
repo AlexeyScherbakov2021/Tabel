@@ -15,7 +15,7 @@ namespace Tabel.ViewModels
 {
     internal class LoginWindowViewModel : ViewModel
     {
-        private readonly IRepository repo;
+        private readonly IRepository<User> repo;
         private readonly LoginWindow winLogin;
 
 
@@ -65,8 +65,8 @@ namespace Tabel.ViewModels
             winLogin = App.Current.Windows.OfType<LoginWindow>().First();
             //winLogin.Closing += Win_Closing;
 
-            repo = new RepositoryMSSQL();
-            ListUser = repo.GetUsers();
+            repo = new RepositoryMSSQL<User>();
+            ListUser = repo.Items.ToArray();
         }
     }
 }

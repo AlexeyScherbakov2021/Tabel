@@ -6,10 +6,11 @@ namespace Tabel.Models
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    public partial class User
+    public partial class User : IEntity
     {
         [Key]
-        public int idUser { get; set; }
+        [Column ("idUser")]
+        public int id { get; set; }
 
         [StringLength(30)]
         public string u_login { get; set; }

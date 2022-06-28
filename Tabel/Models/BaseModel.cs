@@ -10,6 +10,7 @@ namespace Tabel.Models
         public BaseModel()
             : base("name=BaseModel")
         {
+            
         }
 
         public virtual DbSet<Category> categories { get; set; }
@@ -36,8 +37,8 @@ namespace Tabel.Models
                 .IsFixedLength();
 
             modelBuilder.Entity<Otdel>()
-                .HasMany(e => e.otdels1)
-                .WithOptional(e => e.otdel1)
+                .HasMany(e => e.subOtdels)
+                .WithOptional(e => e.parent)
                 .HasForeignKey(e => e.ot_parent);
 
             modelBuilder.Entity<Otdel>()

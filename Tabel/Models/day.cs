@@ -6,11 +6,12 @@ namespace Tabel.Models
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    public partial class Day
+    public partial class Day : IEntity
     {
         [Key]
+        [Column ("idDay")]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int idDays { get; set; }
+        public int id { get; set; }
 
         public int? d_hours { get; set; }
 

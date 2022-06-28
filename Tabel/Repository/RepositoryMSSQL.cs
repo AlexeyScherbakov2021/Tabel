@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data.Entity;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Net;
@@ -11,14 +12,18 @@ using Tabel.Models;
 
 namespace Tabel.Repository
 {
-    internal class RepositoryMSSQL : IRepository
+    internal class RepositoryMSSQL<T> : IRepository<T> where T : class, IEntity, new()
     {
         //SqlConnection conn;
-        private readonly BaseModel ctx;
+        protected readonly BaseModel db;
+        private readonly DbSet<T> _Set;
+        public virtual IQueryable<T> Items => _Set;
+
 
         public RepositoryMSSQL()
         {
-            ctx = new BaseModel();
+            db = new BaseModel();
+            _Set = db.Set<T>();
 
 //            ConnectionStringSettings settings;
 
@@ -37,40 +42,32 @@ namespace Tabel.Repository
 
         }
 
-        public int AddOtdel(Otdel newOtdel, Otdel parent = null)
+        public T Add(T item)
         {
-            throw new NotImplementedException();
+            if (item is null) throw new ArgumentNullException(nameof(item));
+            db.Entry(item).State = EntityState.Added;
+            db.SaveChanges();
+            return item;
         }
 
-        public int AddUser(User newUser)
+        public void Delete(int id)
         {
-            throw new NotImplementedException();
+            db.Entry(new T { id = id }).State = EntityState.Deleted;
+            db.SaveChanges();
         }
 
-        public int DeleteOtdel(int idOtdel)
+        public T Get(int id)
         {
-            throw new NotImplementedException();
+            return Items.SingleOrDefault(it => it.id == id);
         }
 
-        public int DeleteUser(int idUser)
-        {
-            throw new NotImplementedException();
-        }
 
-        public IEnumerable<Otdel> GetOtdels()
+        public void Update(T item)
         {
-            return ctx.otdels.ToArray();
-        }
+            if (item is null) throw new ArgumentNullException(nameof(item));
+            db.Entry(item).State = EntityState.Modified;
+            db.SaveChanges();
 
-        public IEnumerable<User> GetUsers()
-        {
-            return ctx.users.ToArray();
-            
-        }
-
-        public int UpdateOtdel(Otdel editOtdel)
-        {
-            throw new NotImplementedException();
         }
     }
 }

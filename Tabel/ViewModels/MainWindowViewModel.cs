@@ -12,14 +12,14 @@ namespace Tabel.ViewModels
 {
     internal class MainWindowViewModel : ViewModel
     {
-        private readonly IRepository repo;
+        private readonly IRepository<User> repo;
         public User CurrentUser;
 
         public MainWindowViewModel()
         {
             CurrentUser = App.CurrentUser;
 
-            repo = new RepositoryMSSQL();
+            repo = new RepositoryMSSQL<User>();
 
         }
     }
