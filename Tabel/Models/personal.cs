@@ -16,7 +16,7 @@ namespace Tabel.Models
         }
 
         [Key]
-        [Column ("idPersonal")]
+        [Column ("idPerson")]
         public int id { get; set; }
 
         [StringLength(20)]

@@ -32,9 +32,9 @@ namespace Tabel.Models
                 .WithOptional(e => e.category)
                 .HasForeignKey(e => e.p_cat_id);
 
-            modelBuilder.Entity<Otdel>()
-                .Property(e => e.ot_name)
-                .IsFixedLength();
+            //modelBuilder.Entity<Otdel>()
+            //    .Property(e => e.ot_name)
+            //    .IsFixedLength();
 
             modelBuilder.Entity<Otdel>()
                 .HasMany(e => e.subOtdels)
@@ -47,25 +47,25 @@ namespace Tabel.Models
                 .HasForeignKey(e => e.p_otdel_id)
                 .WillCascadeOnDelete();
 
-            modelBuilder.Entity<Personal>()
-                .Property(e => e.p_tab_number)
-                .IsFixedLength();
+            //modelBuilder.Entity<Personal>()
+            //    .Property(e => e.p_tab_number)
+            //    .IsFixedLength();
 
-            modelBuilder.Entity<Personal>()
-                .Property(e => e.p_lastname)
-                .IsFixedLength();
+            //modelBuilder.Entity<Personal>()
+            //    .Property(e => e.p_lastname)
+            //    .IsFixedLength();
 
-            modelBuilder.Entity<Personal>()
-                .Property(e => e.p_name)
-                .IsFixedLength();
+            //modelBuilder.Entity<Personal>()
+            //    .Property(e => e.p_name)
+            //    .IsFixedLength();
 
-            modelBuilder.Entity<Personal>()
-                .Property(e => e.p_midname)
-                .IsFixedLength();
+            //modelBuilder.Entity<Personal>()
+            //    .Property(e => e.p_midname)
+            //    .IsFixedLength();
 
-            modelBuilder.Entity<Personal>()
-                .Property(e => e.p_profeesion)
-                .IsFixedLength();
+            //modelBuilder.Entity<Personal>()
+            //    .Property(e => e.p_profeesion)
+            //    .IsFixedLength();
 
             modelBuilder.Entity<Personal>()
                 .HasMany(e => e.tabels)
@@ -73,13 +73,13 @@ namespace Tabel.Models
                 .HasForeignKey(e => e.t_person_id)
                 .WillCascadeOnDelete();
 
-            modelBuilder.Entity<Tabel>()
-                .Property(e => e.t_number)
-                .IsFixedLength();
+            //modelBuilder.Entity<Tabel>()
+            //    .Property(e => e.t_number)
+            //    .IsFixedLength();
 
-            modelBuilder.Entity<Tabel>()
-                .Property(e => e.t_author)
-                .IsFixedLength();
+            //modelBuilder.Entity<Tabel>()
+            //    .Property(e => e.t_author)
+            //    .IsFixedLength();
 
             modelBuilder.Entity<Tabel>()
                 .HasMany(e => e.days)
@@ -87,17 +87,17 @@ namespace Tabel.Models
                 .HasForeignKey(e => e.d_tabel_id)
                 .WillCascadeOnDelete();
 
-            modelBuilder.Entity<User>()
-                .Property(e => e.u_login)
-                .IsFixedLength();
+            //modelBuilder.Entity<User>()
+            //    .Property(e => e.u_login)
+            //    .IsFixedLength();
 
-            modelBuilder.Entity<User>()
-                .Property(e => e.u_pass)
-                .IsFixedLength();
+            //modelBuilder.Entity<User>()
+            //    .Property(e => e.u_pass)
+            //    .IsFixedLength();
 
-            modelBuilder.Entity<User>()
-                .Property(e => e.u_fio)
-                .IsFixedLength();
+            //modelBuilder.Entity<User>()
+            //    .Property(e => e.u_fio)
+            //    .IsFixedLength();
         }
     }
 }

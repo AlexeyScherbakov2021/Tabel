@@ -4,6 +4,10 @@
              xmlns:local="clr-namespace:Tabel"
              StartupUri="Views/EditTablesWindow.xaml" ShutdownMode="OnMainWindowClose">
     <Application.Resources>
-         
-    </Application.Resources>
-</Application>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Styles/Button.xaml"/>
+                <ResourceDictionary Source="/Styles/DataGrid.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources></Application>

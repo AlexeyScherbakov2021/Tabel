@@ -52,7 +52,9 @@ namespace Tabel.Repository
 
         public void Delete(int id)
         {
-            db.Entry(new T { id = id }).State = EntityState.Deleted;
+            var item = _Set.Local.FirstOrDefault(i => i.id == id) ?? new T { id = id };
+
+            db.Entry(item).State = EntityState.Deleted;
             db.SaveChanges();
         }
 
