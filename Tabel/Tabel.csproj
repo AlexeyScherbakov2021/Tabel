@@ -66,6 +66,10 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="ViewModels\SelectOtdelWindowViewModel.cs" />
+    <Compile Include="ViewModels\UserWindowViewModel.cs" />
+    <Compile Include="Views\Admins\UsersWindow.xaml.cs">
+      <DependentUpon>UsersWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\SelectOtdelWindow.xaml.cs">
       <DependentUpon>SelectOtdelWindow.xaml</DependentUpon>
     </Compile>
@@ -78,6 +82,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\AddFormStringWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Admins\UsersWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
