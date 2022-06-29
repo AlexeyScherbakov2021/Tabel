@@ -65,6 +65,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ViewModels\SelectOtdelWindowViewModel.cs" />
+    <Compile Include="Views\SelectOtdelWindow.xaml.cs">
+      <DependentUpon>SelectOtdelWindow.xaml</DependentUpon>
+    </Compile>
     <Page Include="Styles\Button.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -97,7 +101,6 @@
     <Compile Include="Commands\Command.cs" />
     <Compile Include="Commands\LambdaCommand.cs" />
     <Compile Include="Infrastructure\Observable.cs" />
-    <Compile Include="Infrastructure\TreeViewSelect.cs" />
     <Compile Include="Models\calendar.cs" />
     <Compile Include="Models\category.cs" />
     <Compile Include="Models\day.cs" />
@@ -127,6 +130,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\SelectOtdelWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

@@ -11,8 +11,10 @@ namespace Tabel.Repository
     {
         IQueryable<T> Items { get; }
         T Get(int id);
-        T Add(T item);
-        void Delete(int id);
-        void Update(T item);
+        T Add(T item, bool Autosave = false);
+        void Delete(int id, bool Autosave = false);
+        void Update(T item, bool Autosave = false);
+
+        void Save();
     }
 }

@@ -11,16 +11,15 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using Tabel.ViewModels;
 
 namespace Tabel.Views
 {
     /// <summary>
-    /// Логика взаимодействия для EditTables.xaml
+    /// Логика взаимодействия для SelectOtdelWindow.xaml
     /// </summary>
-    public partial class EditTablesWindow : Window
+    public partial class SelectOtdelWindow : Window
     {
-        public EditTablesWindow()
+        public SelectOtdelWindow()
         {
             InitializeComponent();
         }

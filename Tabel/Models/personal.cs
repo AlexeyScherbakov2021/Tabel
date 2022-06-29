@@ -1,5 +1,6 @@
 namespace Tabel.Models
 {
+    using global::Tabel.Infrastructure;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
@@ -7,7 +8,7 @@ namespace Tabel.Models
     using System.Data.Entity.Spatial;
 
     [Table("personal")]
-    public partial class Personal : IEntity
+    public partial class Personal : IEntity 
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Personal()
@@ -32,7 +33,7 @@ namespace Tabel.Models
         public string p_midname { get; set; }
 
         [StringLength(150)]
-        public string p_profeesion { get; set; }
+        public string p_profession { get; set; }
 
         public int? p_otdel_id { get; set; }
 

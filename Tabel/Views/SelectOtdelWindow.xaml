@@ -1,0 +1,32 @@
+﻿<Window x:Class="Tabel.Views.SelectOtdelWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:Tabel.ViewModels"
+        xmlns:local="clr-namespace:Tabel.Views"
+        mc:Ignorable="d"
+        Title="Выбор отдела" Height="309" Width="405" WindowStartupLocation="CenterOwner">
+    <Window.DataContext>
+        <vm:SelectOtdelWindowViewModel/>
+    </Window.DataContext>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="112"/>
+        </Grid.ColumnDefinitions>
+        <TreeView x:Name="tree" ItemsSource="{Binding ListOtdel}" Background="{x:Null}">
+            <TreeView.ItemTemplate>
+                <HierarchicalDataTemplate ItemsSource="{Binding subOtdels}" >
+                    <TextBlock Text="{Binding ot_name}"/>
+                </HierarchicalDataTemplate>
+            </TreeView.ItemTemplate>
+        </TreeView>
+        <StackPanel Grid.Column="1"  Orientation="Vertical" Margin="10">
+            <Button Content="Выбрать" Command="{Binding SelectOtdelCommand}" CommandParameter="{Binding SelectedItem, ElementName=tree, Mode=OneWay}" Height="30" Margin="0,10" Style="{StaticResource ButtonStyleShadow}" IsDefault="True" />
+            <Button Content="Отменить" Height="30" Margin="0,10" Style="{StaticResource ButtonStyleShadow}" IsCancel="True" />
+
+        </StackPanel>
+
+    </Grid>
+</Window>

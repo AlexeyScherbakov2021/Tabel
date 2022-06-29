@@ -42,20 +42,25 @@ namespace Tabel.Repository
 
         }
 
-        public T Add(T item)
+        public T Add(T item, bool Autosave = false)
         {
             if (item is null) throw new ArgumentNullException(nameof(item));
             db.Entry(item).State = EntityState.Added;
-            db.SaveChanges();
+            if(Autosave)
+                db.SaveChanges();
             return item;
         }
 
-        public void Delete(int id)
+        public void Delete(int id, bool Autosave = false)
         {
+            if (id < 1)
+                return;
+
             var item = _Set.Local.FirstOrDefault(i => i.id == id) ?? new T { id = id };
 
             db.Entry(item).State = EntityState.Deleted;
-            db.SaveChanges();
+            if (Autosave)
+                db.SaveChanges();
         }
 
         public T Get(int id)
@@ -64,12 +69,19 @@ namespace Tabel.Repository
         }
 
 
-        public void Update(T item)
+        public void Update(T item, bool Autosave = false)
         {
             if (item is null) throw new ArgumentNullException(nameof(item));
             db.Entry(item).State = EntityState.Modified;
-            db.SaveChanges();
+            if (Autosave)
+                db.SaveChanges();
 
         }
+
+        public void Save()
+        {
+            db.SaveChanges();
+        }
+
     }
 }
