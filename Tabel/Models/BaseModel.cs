@@ -19,7 +19,7 @@ namespace Tabel.Models
         public virtual DbSet<Personal> personals { get; set; }
         public virtual DbSet<Tabel> tabels { get; set; }
         public virtual DbSet<User> users { get; set; }
-        public virtual DbSet<Calendar> calendars { get; set; }
+        public virtual DbSet<WorkCalendar> calendars { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

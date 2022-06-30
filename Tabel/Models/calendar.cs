@@ -7,10 +7,13 @@ namespace Tabel.Models
     using System.Data.Entity.Spatial;
 
     [Table("calendar")]
-    public partial class Calendar
+    public partial class WorkCalendar : IEntity
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        //[DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [Column("idCal")]
+        public int id { get; set; }
+
         public int cal_year { get; set; }
 
         [Column(TypeName = "date")]
