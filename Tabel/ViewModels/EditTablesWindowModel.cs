@@ -208,6 +208,7 @@ namespace Tabel.ViewModels
                 SelectedPerson.p_otdel_id = (dlg.DataContext as SelectOtdelWindowViewModel).SelectOtdel.id;
                 SelectedPerson.otdel = null;
                 repoPerson.Update(SelectedPerson);
+                ListPersonalView.Refresh();
                 //OnPropertyChanged(nameof(SelectedPerson));
                 //SelectedPerson.OnPropertyChanged(nameof(SelectedPerson.otdel));
             }

@@ -24,5 +24,8 @@ namespace Tabel.Models
 
         [StringLength(150)]
         public string u_fio { get; set; }
+
+        public virtual Otdel otdel { get; set; }
+
     }
 }

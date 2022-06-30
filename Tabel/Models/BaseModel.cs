@@ -47,6 +47,11 @@ namespace Tabel.Models
                 .HasForeignKey(e => e.p_otdel_id)
                 .WillCascadeOnDelete();
 
+            modelBuilder.Entity<Otdel>()
+                .HasMany(e => e.users)
+                .WithOptional(e => e.otdel)
+                .HasForeignKey(e => e.u_otdel_id);
+
             //modelBuilder.Entity<Personal>()
             //    .Property(e => e.p_tab_number)
             //    .IsFixedLength();

@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:local="clr-namespace:Tabel.Views.Admins"
              xmlns:vm="clr-namespace:Tabel.ViewModels"
              mc:Ignorable="d" 
@@ -10,51 +11,87 @@
     <UserControl.DataContext>
         <vm:UserWindowViewModel/>
     </UserControl.DataContext>
+    <!--<UserControl.InputBindings>
+        <KeyBinding Key="Esc" Command="{Binding EndEditCommand}"/>
+    </UserControl.InputBindings>-->
+
     <Grid>
-        <DataGrid x:Name="dataGrid" ItemsSource="{Binding ListUserView}" AutoGenerateColumns="False" SelectedItem="{Binding SelectedUser}"
-                            Style="{StaticResource DataGridStyle}" Margin="10" >
-            <DataGrid.ContextMenu>
-                <ContextMenu>
-                    <MenuItem Header="Добавить запись"  Command="{Binding AddCommand}"/>
-                    <MenuItem Header="Удалить запись" Command="{Binding DeleteCommand}"/>
-                </ContextMenu>
-            </DataGrid.ContextMenu>
-            <!--<DataGrid.Resources>
+        <DockPanel Margin="10,10,10,10">
+            <StackPanel DockPanel.Dock="Right" Width="50">
+                <Button Content="+" Height="40" Margin="3" Command="{Binding AddCommand}" Style="{DynamicResource ButtonStyleShadow}"/>
+                <Button Content="-" Height="40" Margin="3" Command="{Binding DeleteCommand}" Style="{DynamicResource ButtonStyleShadow}"/>
+            </StackPanel>
+            <Grid >
+                <DataGrid x:Name="dataGrid" ItemsSource="{Binding ListUserView}" AutoGenerateColumns="False" SelectedItem="{Binding SelectedUser}"
+                    Style="{StaticResource DataGridStyle}" Margin="0,0,0,0" >
+                    <!--<i:Interaction.Triggers>
+                        <i:EventTrigger EventName="CellEditEnding">
+                            <i:InvokeCommandAction Command="{Binding EndEditCommand}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>-->
+                    
+                    <DataGrid.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Добавить запись" Command="{Binding AddCommand}"/>
+                            <MenuItem Header="Удалить запись" Command="{Binding DeleteCommand}"/>
+                        </ContextMenu>
+                    </DataGrid.ContextMenu>
+                    <!--<DataGrid.Resources>
                 <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="LightBlue"/>
             </DataGrid.Resources>-->
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Пользователь" Binding="{Binding u_login}" Width="80"/>
-                <DataGridTextColumn Header="Пароль" Binding="{Binding u_pass}" Width="130"/>
-                <DataGridTextColumn Header="Админ" Binding="{Binding u_role}" Width="130"/>
-                <DataGridTemplateColumn Header="Рабочий отдел" Width="130">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition />
-                                    <ColumnDefinition Width="28"/>
-                                </Grid.ColumnDefinitions>
-                                <TextBlock Text="Test Text"/>
-                            </Grid>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                    <DataGridTemplateColumn.CellEditingTemplate>
-                        <DataTemplate>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition />
-                                    <ColumnDefinition Width="28"/>
-                                </Grid.ColumnDefinitions>
-                                <TextBlock Text="Test Text"/>
-                                <Button Content="..." Grid.Column="1" CommandParameter="{Binding SelectedItem, ElementName=dataGrid}"
-                                        Command="{Binding DataContext.OtdelCommand, ElementName=userControl}"/>
-                            </Grid>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellEditingTemplate>
-                </DataGridTemplateColumn>
-                <DataGridTextColumn Header="ФИО" Binding="{Binding u_fio}" Width="150"/>
-            </DataGrid.Columns>
-        </DataGrid>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Пользователь" Binding="{Binding u_login}" Width="80"/>
+                        <DataGridTextColumn Header="Пароль" Binding="{Binding u_pass}" Width="130"/>
+                        <DataGridTextColumn Header="Админ" Binding="{Binding u_role}" Width="130"/>
+                        <DataGridTemplateColumn Header="Рабочий отдел" Width="190">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition />
+                                            <ColumnDefinition Width="28"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Text="{Binding otdel.ot_name}"/>
+                                        <Button Content="..." Margin="1" Grid.Column="1" CommandParameter="{Binding SelectedItem, ElementName=dataGrid}"
+                                            Command="{Binding DataContext.OtdelCommand, ElementName=userControl}"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                            <DataGridTemplateColumn.CellEditingTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition />
+                                            <ColumnDefinition Width="28"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Text="{Binding otdel.ot_name}"/>
+                                        <Button Content="..." Margin="1" Grid.Column="1" CommandParameter="{Binding SelectedItem, ElementName=dataGrid}"
+                                            Command="{Binding DataContext.OtdelCommand, ElementName=userControl}"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellEditingTemplate>
+                        </DataGridTemplateColumn>
+                       
+                        <DataGridTextColumn Header="ФИО" Binding="{Binding u_fio}" Width="150"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+                <Popup IsOpen="{Binding IsOpenPopup}" Placement="MousePoint" Width="240" Height="200" UseLayoutRounding="True" ScrollViewer.CanContentScroll="True" VerticalOffset="8" HorizontalOffset="-200">
+                    <TreeView x:Name="tree" ItemsSource="{Binding ListOtdel}">
+                        <TreeView.ItemTemplate>
+                            <HierarchicalDataTemplate ItemsSource="{Binding subOtdels}" >
+                                <TextBlock Text="{Binding ot_name}">
+                                    <TextBlock.InputBindings>
+                                        <MouseBinding Gesture="LeftDoubleClick" Command="{Binding DataContext.SelectOtdelCommand, ElementName=userControl}" 
+                                                      CommandParameter="{Binding SelectedItem, ElementName=tree}"/>
+                                    </TextBlock.InputBindings>
+                                </TextBlock>
+                            </HierarchicalDataTemplate>
+                        </TreeView.ItemTemplate>
+                    </TreeView>
+                </Popup>
+            </Grid>
+
+        </DockPanel>
 
     </Grid>
 </UserControl>

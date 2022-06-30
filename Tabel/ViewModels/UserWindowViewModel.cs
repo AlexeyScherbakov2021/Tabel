@@ -18,6 +18,10 @@ namespace Tabel.ViewModels
     internal class UserWindowViewModel : ViewModel
     {
         IRepository<User> repoUser;
+        private readonly RepositoryOtdel repoOtdel;
+
+        public ObservableCollection<Otdel> ListOtdel { get; set; }
+
 
         private ObservableCollection<User> _ListUser;
         public ObservableCollection<User> ListUser {
@@ -29,21 +33,25 @@ namespace Tabel.ViewModels
                     _listUserViewSource = new CollectionViewSource();
                     _listUserViewSource.Source = value;
                     _listUserViewSource.View.Refresh();
+                    ListUserView.CurrentChanged += ListUserView_CurrentChanged;
                 }
             }
         }
+
+        private void ListUserView_CurrentChanged(object sender, EventArgs e)
+        {
+            IsOpenPopup = false;
+            repoUser.Save();
+        }
+
         CollectionViewSource _listUserViewSource;
         public ICollectionView ListUserView => _listUserViewSource?.View;
 
-
-
         public User SelectedUser { get; set; }
 
-        public UserWindowViewModel()
-        {
-            repoUser = new RepositoryMSSQL<User>();
-            ListUser = new ObservableCollection<User>(repoUser.Items);
-        }
+        private bool _IsOpenPopup = false;
+        public bool IsOpenPopup { get => _IsOpenPopup; set { Set(ref _IsOpenPopup, value); } }
+
 
 
         #region Команды
@@ -80,9 +88,38 @@ namespace Tabel.ViewModels
         private bool CanOtdelCommand(object p) => true;
         private void OnOtdelCommandExecuted(object p)
         {
+            IsOpenPopup = !IsOpenPopup;
+        }
+
+        //--------------------------------------------------------------------------------
+        // Событие окончания редактирования ячейки
+        //-------------------------------------------------------------------------------
+        public ICommand SelectOtdelCommand => new LambdaCommand(OnSelectOtdelCommandExecuted, CanSelectOtdelCommand);
+        private bool CanSelectOtdelCommand(object p) => true;
+        private void OnSelectOtdelCommandExecuted(object p)
+        {
+            if(p is Otdel otdel)
+            {
+                SelectedUser.u_otdel_id = otdel.id;
+                SelectedUser.otdel = null;
+                repoUser.Update(SelectedUser);
+                IsOpenPopup = false;
+                ListUserView.Refresh();
+            }
         }
 
         #endregion
+
+        //--------------------------------------------------------------------------------
+        // Конструктор 
+        //--------------------------------------------------------------------------------
+        public UserWindowViewModel()
+        {
+            repoUser = new RepositoryMSSQL<User>();
+            repoOtdel = new RepositoryOtdel();
+            ListUser = new ObservableCollection<User>(repoUser.Items);
+            ListOtdel = new ObservableCollection<Otdel>(repoOtdel.Items);
+        }
 
     }
 }
