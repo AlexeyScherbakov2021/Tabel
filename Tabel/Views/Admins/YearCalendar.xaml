@@ -3,10 +3,27 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:vm="clr-namespace:Tabel.ViewModels"
              xmlns:local="clr-namespace:Tabel.Views.Admins"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="600">
+    <UserControl.DataContext>
+        <vm:YearCalendarViewModel/>
+    </UserControl.DataContext>
     <Grid>
-            
+        <UniformGrid x:Name="uniGrig" HorizontalAlignment="Center" VerticalAlignment="Center"  Columns="4" Rows="3">
+            <local:MonthControl Month="1"/>
+            <local:MonthControl Month="2" ExDays="{Binding exDays}"/>
+            <local:MonthControl Month="3"/>
+            <local:MonthControl Month="4"/>
+            <local:MonthControl Month="5"/>
+            <local:MonthControl Month="6"/>
+            <local:MonthControl Month="7"/>
+            <local:MonthControl Month="8"/>
+            <local:MonthControl Month="9"/>
+            <local:MonthControl Month="10"/>
+            <local:MonthControl Month="11"/>
+            <local:MonthControl Month="12"/>
+        </UniformGrid>
     </Grid>
 </UserControl>
