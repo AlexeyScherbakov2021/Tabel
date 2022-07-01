@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -19,8 +20,18 @@ namespace Tabel.ViewModels
 
         List<WorkCalendar> WorkCalendars;
 
-        public int CurrentYear { get; set; }
-        public List<int> ListYears { get; set; }
+        private int _CurrentYear;
+        public int CurrentYear 
+        { 
+            get => _CurrentYear; 
+            set 
+            {
+                if (Set(ref _CurrentYear, value))
+                    LoadExDays(_CurrentYear);
+            } 
+        }
+
+        public ObservableCollection<int> ListYears { get; set ; }
 
 
         // выбранные дни в каждом месяце
@@ -59,6 +70,7 @@ namespace Tabel.ViewModels
 
         private int _SelectDay12;
         public int SelectDay12 { get => _SelectDay12;  set { Set(ref _SelectDay12, value); }}
+
 
 
         // январь
@@ -111,7 +123,7 @@ namespace Tabel.ViewModels
 
 
         // список ссылок на месяцы
-        List<Dictionary<int, MonthControl.TypeDays>> ListMonthDays;
+        ObservableCollection<Dictionary<int, MonthControl.TypeDays>> ListMonthDays;
 
 
         #region Команды
@@ -137,7 +149,7 @@ namespace Tabel.ViewModels
         }
 
         //--------------------------------------------------------------------------------
-        // Команда Выходной 
+        // Команда сменить тип дня 
         //--------------------------------------------------------------------------------
         public ICommand SetExDayCommand => new LambdaCommand(OnSetExDayCommandExecuted, CanSetExDayCommand);
         private bool CanSetExDayCommand(object p) => true;
@@ -152,6 +164,7 @@ namespace Tabel.ViewModels
             {
                 ListMonthDays[curDate.Month - 1].Remove(curDate.Day);
                 RepoCal.Delete(wc.id, true);
+                WorkCalendars.Remove(wc);
             }
 
             else if (ListMonthDays[curDate.Month - 1].ContainsKey(curDate.Day))
@@ -165,9 +178,19 @@ namespace Tabel.ViewModels
                 ListMonthDays[curDate.Month - 1].Add(curDate.Day, type);
                 wc = new WorkCalendar { cal_date = curDate, cal_year = CurrentYear, cal_type = (int)type };
                 RepoCal.Add(wc, true);
+                WorkCalendars.Add(wc);
             }
+        }
 
-
+        //--------------------------------------------------------------------------------
+        // Команда Добавить год 
+        //--------------------------------------------------------------------------------
+        public ICommand NewYearCommand => new LambdaCommand(OnNewYearCommandExecuted, CanNewYearCommand);
+        private bool CanNewYearCommand(object p) => true;
+        private void OnNewYearCommandExecuted(object p)
+        {
+            ListYears.Add(ListYears.Last() + 1);
+            CurrentYear = ListYears.Last();
         }
 
         #endregion
@@ -178,19 +201,20 @@ namespace Tabel.ViewModels
         public YearCalendarViewModel()
         {
             RepoCal = new RepositoryMSSQL<WorkCalendar>();
-            ListMonthDays = new List<Dictionary<int, MonthControl.TypeDays>>
+            ListMonthDays = new ObservableCollection<Dictionary<int, MonthControl.TypeDays>>
             {
                 exDays1, exDays2, exDays3, exDays4, exDays5, exDays6, 
                 exDays7, exDays8, exDays9, exDays10, exDays11, exDays12
             };
 
-
-            ListYears = RepoCal.Items.Select(it => it.cal_year).Distinct().OrderBy(it => it).ToList();
+            List<int> list = RepoCal.Items.Select(it => it.cal_year).Distinct().OrderBy(it => it).ToList();
 
             IRepository<WorkTabel> tabel = new RepositoryMSSQL<WorkTabel>();
-            List<int> list = tabel.Items.Select(it => it.t_year).Distinct().OrderBy(it => it).ToList();
-            ListYears.AddRange(list);
-            ListYears.Sort();
+            List<int> list1 = tabel.Items.Select(it => it.t_year).Distinct().OrderBy(it => it).ToList();
+            list.AddRange(list1);
+            list.Sort();
+
+            ListYears = new ObservableCollection<int>(list);
 
             if(ListYears.Count == 0)
             {
@@ -200,7 +224,7 @@ namespace Tabel.ViewModels
             else
                 CurrentYear = ListYears.Last();
 
-            LoadExDays(CurrentYear);
+            //LoadExDays(CurrentYear);
 
         }
 
@@ -220,10 +244,16 @@ namespace Tabel.ViewModels
         //--------------------------------------------------------------------------------------------------
         private void SetDaysForMonth(IEnumerable<WorkCalendar> ListDays)
         {
-            foreach(var item in ListDays)
+            // очищаем списки с измененными днями
+            foreach(var it in ListMonthDays)
+                it.Clear();
+
+            // добавляем измененные дни заново
+            foreach (var item in ListDays)
             {
-                ListMonthDays[item.cal_date.Value.Month-1].Add(item.cal_date.Value.Day, (MonthControl.TypeDays)item.cal_type);
+                ListMonthDays[item.cal_date.Value.Month - 1].Add(item.cal_date.Value.Day, (MonthControl.TypeDays)item.cal_type);
             }
+
 
         }
 
@@ -247,10 +277,17 @@ namespace Tabel.ViewModels
                     break;
                 }
             }
-
-
             return dt;
         }
+
+        //--------------------------------------------------------------------------------------------------
+        // Загрузка выбранного года
+        //--------------------------------------------------------------------------------------------------
+        //private void LoadAnotherYear(int year)
+        //{
+        //    LoadExDays(year);
+        //}
+
 
     }
 }
