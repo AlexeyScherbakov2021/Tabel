@@ -21,7 +21,10 @@ namespace Tabel.Views.Admins
     /// </summary>
     public partial class MonthControl : UserControl
     {
-        public enum TypeDays { Work, Short, Holyday };
+        public enum TypeDays { Work, Short, Holyday, Default };
+
+        private Dictionary<int, TypeDays> _exDays = new Dictionary<int, TypeDays>();
+
 
         // месяц
         public static DependencyProperty MonthProperty = DependencyProperty.Register(
@@ -131,8 +134,6 @@ namespace Tabel.Views.Admins
 
         }
 
-        private Dictionary<int, TypeDays> _exDays = new Dictionary<int, TypeDays>();
-
 
         //----------------------------------------------------------------------------------------------------
         // конструктор
@@ -173,9 +174,9 @@ namespace Tabel.Views.Admins
 
             return bg;
         }
-            //----------------------------------------------------------------------------------------------------
-            // выделение текущего дня
-            //----------------------------------------------------------------------------------------------------
+        //----------------------------------------------------------------------------------------------------
+        // выделение текущего дня
+        //----------------------------------------------------------------------------------------------------
         private static void OnSelectChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
             MonthControl mc = (MonthControl)sender;
@@ -194,14 +195,6 @@ namespace Tabel.Views.Admins
                 (mc.DayGrid.Children[mc.SelectedDay - 1] as TextBlock).Background = Brushes.Blue;
                 (mc.DayGrid.Children[mc.SelectedDay - 1] as TextBlock).Foreground = Brushes.White;
             }
-
-            //if (mc.OldSelectedDay != mc.SelectedDay)
-            //{
-            //    RoutedEventArgs args;
-            //    args = new RoutedEventArgs(SelectedDayChangedEvent);
-            //    args.Source = mc;
-            //    mc.RaiseEvent(args);
-            //}
 
             mc.OldSelectedDay = mc.SelectedDay;
 
@@ -255,14 +248,14 @@ namespace Tabel.Views.Admins
         //----------------------------------------------------------------------------------------------------
         private void Tb_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            int month = DayGrid.Children.IndexOf((UIElement)sender) + 1;
+            int day = DayGrid.Children.IndexOf((UIElement)sender) + 1;
 
             RoutedEventArgs args;
             args = new RoutedEventArgs(SelectedDayChangedEvent);
             args.Source = this;
             RaiseEvent(args);
 
-            SelectedDay = month;
+            SelectedDay = day;
         }
 
 

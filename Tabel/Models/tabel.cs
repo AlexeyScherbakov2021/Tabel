@@ -7,10 +7,10 @@ namespace Tabel.Models
     using System.Data.Entity.Spatial;
 
     [Table("tabel")]
-    public partial class Tabel : IEntity
+    public partial class WorkTabel : IEntity
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Tabel()
+        public WorkTabel()
         {
             days = new HashSet<Day>();
         }
@@ -25,9 +25,9 @@ namespace Tabel.Models
 
         public DateTime? t_date_create { get; set; }
 
-        public int? t_year { get; set; }
+        public int t_year { get; set; }
 
-        public int? t_month { get; set; }
+        public int t_month { get; set; }
 
         public int? t_person_id { get; set; }
 

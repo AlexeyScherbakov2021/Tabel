@@ -101,7 +101,7 @@
                 <Grid Background="#FFE5E5E5"/>
             </TabItem>
             <TabItem Header="Производственный календарь">
-                <view:YearCalendar Margin="19,23,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="600"/>
+                <view:YearCalendar Margin="0,23,0,0" VerticalAlignment="Top" HorizontalAlignment="Stretch"/>
             </TabItem>
             <TabItem Header="Пользователи">
                 <view:UsersWindow/>

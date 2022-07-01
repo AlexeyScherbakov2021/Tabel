@@ -13,7 +13,7 @@ namespace Tabel.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Personal()
         {
-            tabels = new HashSet<Tabel>();
+            tabels = new HashSet<WorkTabel>();
         }
 
         [Key]
@@ -44,6 +44,6 @@ namespace Tabel.Models
         public virtual Otdel otdel { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Tabel> tabels { get; set; }
+        public virtual ICollection<WorkTabel> tabels { get; set; }
     }
 }

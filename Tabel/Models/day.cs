@@ -19,6 +19,6 @@ namespace Tabel.Models
 
         public int? d_tabel_id { get; set; }
 
-        public virtual Tabel tabel { get; set; }
+        public virtual WorkTabel tabel { get; set; }
     }
 }

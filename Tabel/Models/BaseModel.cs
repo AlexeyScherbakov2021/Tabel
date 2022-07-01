@@ -17,7 +17,7 @@ namespace Tabel.Models
         public virtual DbSet<Day> days { get; set; }
         public virtual DbSet<Otdel> otdels { get; set; }
         public virtual DbSet<Personal> personals { get; set; }
-        public virtual DbSet<Tabel> tabels { get; set; }
+        public virtual DbSet<WorkTabel> tabels { get; set; }
         public virtual DbSet<User> users { get; set; }
         public virtual DbSet<WorkCalendar> calendars { get; set; }
 
@@ -86,7 +86,7 @@ namespace Tabel.Models
             //    .Property(e => e.t_author)
             //    .IsFixedLength();
 
-            modelBuilder.Entity<Tabel>()
+            modelBuilder.Entity<WorkTabel>()
                 .HasMany(e => e.days)
                 .WithOptional(e => e.tabel)
                 .HasForeignKey(e => e.d_tabel_id)

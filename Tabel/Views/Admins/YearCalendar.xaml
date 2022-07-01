@@ -7,18 +7,22 @@
              xmlns:vm="clr-namespace:Tabel.ViewModels"
              xmlns:local="clr-namespace:Tabel.Views.Admins"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="600">
+             d:DesignHeight="500" d:DesignWidth="800">
     <UserControl.DataContext>
         <vm:YearCalendarViewModel/>
     </UserControl.DataContext>
     <Grid>
-        <UniformGrid x:Name="uniGrig" HorizontalAlignment="Center" VerticalAlignment="Center"  Columns="4" Rows="3">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="195"/>
+        </Grid.ColumnDefinitions>
+        <UniformGrid x:Name="uniGrig" HorizontalAlignment="Left" VerticalAlignment="Center"  Columns="4" Rows="3" Height="450" Width="600">
             <local:MonthControl Month="1" ExDays="{Binding exDays1}" SelectedDay="{Binding SelectDay1,Mode=TwoWay}">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="SelectedDayChanged">
                         <i:InvokeCommandAction Command="{Binding SelectCommand}" CommandParameter="1"/>
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
             </local:MonthControl>
             <local:MonthControl Month="2" ExDays="{Binding exDays2}" SelectedDay="{Binding SelectDay2, Mode=TwoWay}">
                 <i:Interaction.Triggers>
@@ -99,5 +103,13 @@
                 </i:Interaction.Triggers>
             </local:MonthControl>
         </UniformGrid>
+        <StackPanel Grid.Column="1" Margin="20" HorizontalAlignment="Stretch" Orientation="Vertical" VerticalAlignment="Top">
+            <TextBlock Text="Текущий год"/>
+            <ComboBox Margin="0,2,0,11" ItemsSource="{Binding ListYears}" SelectedItem="{Binding CurrentYear}"/>
+            <Button Content="По календарю" Margin="0,5" Command="{Binding SetExDayCommand}" CommandParameter="{x:Static local:MonthControl+TypeDays.Default}" Style="{StaticResource ButtonStyleShadow}"/>
+            <Button Content="Выходной" Margin="0,5" Command="{Binding SetExDayCommand}" CommandParameter="{x:Static local:MonthControl+TypeDays.Holyday}" Style="{StaticResource ButtonStyleShadow}"/>
+            <Button Content="Короткий" Margin="0,5" Command="{Binding SetExDayCommand}" CommandParameter="{x:Static local:MonthControl+TypeDays.Short}" Style="{StaticResource ButtonStyleShadow}"/>
+            <Button Content="Рабочий" Margin="0,5" Command="{Binding SetExDayCommand}" CommandParameter="{x:Static local:MonthControl+TypeDays.Work}" Style="{StaticResource ButtonStyleShadow}"/>
+        </StackPanel>
     </Grid>
 </UserControl>
