@@ -74,7 +74,7 @@ namespace Tabel.ViewModels
         private bool CanDeleteCommand(object p) => SelectedUser != null;
         private void OnDeleteCommandExecuted(object p)
         {
-            if (MessageBox.Show(  $"Удалить {SelectedUser.u_login}","Прудепреждение", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            if (MessageBox.Show( $"Удалить {SelectedUser.u_login}","Предупреждение", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
             {
                 repoUser.Delete(SelectedUser.id, true);
                 ListUser.Remove(SelectedUser);

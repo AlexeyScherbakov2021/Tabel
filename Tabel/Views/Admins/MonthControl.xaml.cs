@@ -23,12 +23,12 @@ namespace Tabel.Views.Admins
     {
         public enum TypeDays { Work, Short, Holyday };
 
-
+        // месяц
         public static DependencyProperty MonthProperty = DependencyProperty.Register(
             "Month",
             typeof(int),
             typeof(MonthControl),
-            new FrameworkPropertyMetadata(defaultValue: 1, propertyChangedCallback: OnDateChanged)
+            new FrameworkPropertyMetadata(defaultValue: 0, propertyChangedCallback: OnDateChanged)
             );
 
         [Category("Общие")]
@@ -39,7 +39,7 @@ namespace Tabel.Views.Admins
             set { SetValue(MonthProperty, value); }
         }
 
-
+        // год
         public static DependencyProperty YearProperty = DependencyProperty.Register(
             "Year",
             typeof(int),
@@ -57,6 +57,7 @@ namespace Tabel.Views.Admins
         }
 
 
+        // измененные дни
         public static DependencyProperty ExDaysProperty = DependencyProperty.Register(
             "ExDays",
             typeof(Dictionary<int, MonthControl.TypeDays>),
@@ -73,142 +74,203 @@ namespace Tabel.Views.Admins
         }
 
 
-        static void OnDaysChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+        // выбранный день
+        public static DependencyProperty SelectedDayProperty = DependencyProperty.Register(
+            "SelectedDay",
+            typeof(int),
+            typeof(MonthControl),
+            new FrameworkPropertyMetadata(defaultValue: 0, propertyChangedCallback: OnSelectChanged, 
+                coerceValueCallback: OnCoerceValue)
+            );
+
+        [Category("Общие")]
+        [Description("Выбранный день")]
+        public int SelectedDay
+        {
+            get { return (int)GetValue(SelectedDayProperty); }
+            set { SetValue(SelectedDayProperty, value); }
+        }
+        private int OldSelectedDay = 0;
+
+
+        public static readonly RoutedEvent SelectedDayChangedEvent =
+       EventManager.RegisterRoutedEvent("SelectedDayChanged", RoutingStrategy.Bubble,
+           typeof(RoutedEventHandler), typeof(MonthControl));
+
+        public event RoutedEventHandler SelectedDayChanged
+        {
+            add { AddHandler(SelectedDayChangedEvent, value); }
+            remove { RemoveHandler(SelectedDayChangedEvent, value); }
+        }
+
+
+
+        private static object OnCoerceValue(DependencyObject sender, object baseValue)
+        {
+            MonthControl mc = (MonthControl)sender;
+
+            if ((int)baseValue > mc.DayGrid.Children.Count)
+                return 0;
+
+            return baseValue;
+        }
+
+
+        //----------------------------------------------------------------------------------------------------
+        // Событие изменения типа даты
+        //----------------------------------------------------------------------------------------------------
+        private static void OnDaysChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
             MonthControl mc = (MonthControl)sender;
 
             foreach (var item in mc.ExDays)
             {
-                switch (item.Value)
-                {
-                    case TypeDays.Holyday:
-                        //(DayGrid.Children[day] as TextBlock).Foreground = Brushes.Red;
-                        (mc.DayGrid.Children[item.Key] as TextBlock).Background = Brushes.Red;
-                        break;
-                    case TypeDays.Short:
-                        //(DayGrid.Children[day] as TextBlock).Foreground = Brushes.Green;
-                        (mc.DayGrid.Children[item.Key] as TextBlock).Background = Brushes.LightGreen;
-                        break;
-                    case TypeDays.Work:
-                        (mc.DayGrid.Children[item.Key] as TextBlock).Foreground = Brushes.Black;
-                        (mc.DayGrid.Children[item.Key] as TextBlock).Background = Brushes.LightGray;
-                        break;
-                }
+                Brush bg = mc.GetBackgroundDay(item.Key);
+                (mc.DayGrid.Children[item.Key - 1] as TextBlock).Background = bg;
             }
 
         }
 
-        //private Dictionary<int, MonthControl.TypeDays> _ExDays;
-        //public Dictionary<int, MonthControl.TypeDays> ExDays
-        //{
-        //    get => _ExDays;
-        //    set
-        //    {
-        //        _ExDays = value;
-        //        foreach (var item in _ExDays)
-        //        {
-        //            switch (item.Value)
-        //            {
-        //                case TypeDays.Holyday:
-        //                    //(DayGrid.Children[day] as TextBlock).Foreground = Brushes.Red;
-        //                    (DayGrid.Children[item.Key - 1] as TextBlock).Background = Brushes.Red;
-        //                    break;
-        //                case TypeDays.Short:
-        //                    //(DayGrid.Children[day] as TextBlock).Foreground = Brushes.Green;
-        //                    (DayGrid.Children[item.Key - 1] as TextBlock).Background = Brushes.LightGreen;
-        //                    break;
-        //                case TypeDays.Work:
-        //                    (DayGrid.Children[item.Key - 1] as TextBlock).Foreground = Brushes.Black;
-        //                    (DayGrid.Children[item.Key - 1] as TextBlock).Background = Brushes.LightGray;
-        //                    break;
-        //            }
-        //        }
-        //    }
-        //}
-
-
-
         private Dictionary<int, TypeDays> _exDays = new Dictionary<int, TypeDays>();
-        private DateTime StartDate;
-        private int _startDay;
-        //public string NameMonth { get; set; }
 
 
+        //----------------------------------------------------------------------------------------------------
+        // конструктор
+        //----------------------------------------------------------------------------------------------------
         public MonthControl()
         {
             InitializeComponent();
-            PaintCalendar();
         }
 
 
-        //public void AddExDay(int day, TypeDays type)
-        //{
-        //    _exDays.Add(day, type);
-        //    day += _startDay - 1;
-        //    switch (type)
-        //    {
-        //        case TypeDays.Holyday:
-        //            //(DayGrid.Children[day] as TextBlock).Foreground = Brushes.Red;
-        //            (DayGrid.Children[day] as TextBlock).Background = Brushes.Red;
-        //            break;
-        //        case TypeDays.Short:
-        //            //(DayGrid.Children[day] as TextBlock).Foreground = Brushes.Green;
-        //            (DayGrid.Children[day] as TextBlock).Background = Brushes.LightGreen;
-        //            break;
-        //        case TypeDays.Work:
-        //            (DayGrid.Children[day] as TextBlock).Foreground = Brushes.Black;
-        //            (DayGrid.Children[day] as TextBlock).Background = Brushes.LightGray;
-        //            break;
-        //    }
-
-        //}
-
-
-        void PaintCalendar()
+        //----------------------------------------------------------------------------------------------------
+        // Получение цвета измененного дня
+        //----------------------------------------------------------------------------------------------------
+        private Brush GetBackgroundDay(int day)
         {
-            StartDate = new DateTime(Year, Month, 1);
-            monthName.Text = StartDate.ToString("MMMM");
+            Brush bg = null;
 
-            foreach (var item in DayGrid.Children)
+            if (day > 0)
             {
-                (item as TextBlock).Text = "";
-                (item as TextBlock).Foreground = Brushes.Black;
+                if (ExDays.ContainsKey(day))
+                {
+                    switch (ExDays[day])
+                    {
+                        case TypeDays.Holyday:
+                            bg = Brushes.Red;
+                            break;
+                        case TypeDays.Short:
+                            bg = Brushes.LightGreen;
+                            break;
+                        case TypeDays.Work:
+                            bg = Brushes.LightGray;
+                            break;
+                    }
+
+                }
+
             }
 
-            _startDay = (int)StartDate.DayOfWeek - 1;
+            return bg;
+        }
+            //----------------------------------------------------------------------------------------------------
+            // выделение текущего дня
+            //----------------------------------------------------------------------------------------------------
+        private static void OnSelectChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+        {
+            MonthControl mc = (MonthControl)sender;
+            Brush bg = null;
+
+            if (mc.OldSelectedDay > 0)
+            {
+                bg = mc.GetBackgroundDay(mc.OldSelectedDay);
+
+                (mc.DayGrid.Children[mc.OldSelectedDay - 1] as TextBlock).Background = bg;
+                (mc.DayGrid.Children[mc.OldSelectedDay - 1] as TextBlock).Foreground = Brushes.Black;
+            }
+
+            if (mc.SelectedDay <= mc.DayGrid.Children.Count && mc.SelectedDay > 0)
+            {
+                (mc.DayGrid.Children[mc.SelectedDay - 1] as TextBlock).Background = Brushes.Blue;
+                (mc.DayGrid.Children[mc.SelectedDay - 1] as TextBlock).Foreground = Brushes.White;
+            }
+
+            //if (mc.OldSelectedDay != mc.SelectedDay)
+            //{
+            //    RoutedEventArgs args;
+            //    args = new RoutedEventArgs(SelectedDayChangedEvent);
+            //    args.Source = mc;
+            //    mc.RaiseEvent(args);
+            //}
+
+            mc.OldSelectedDay = mc.SelectedDay;
+
+        }
+
+
+        //----------------------------------------------------------------------------------------------------
+        // Отрисовка месяца
+        //----------------------------------------------------------------------------------------------------
+        void PaintCalendar()
+        {
+            DateTime StartDate = new DateTime(Year, Month, 1);
+            monthName.Text = StartDate.ToString("MMMM");
+
+            DayGrid.Children.Clear();
+            int _startDay = (int)StartDate.DayOfWeek - 1;
             if (_startDay < 0)
                 _startDay = 6;
 
-            for (int i = _startDay, n = 1; i < 42 && StartDate.Month == Month; i++, n++)
-            {
-                (DayGrid.Children[i] as TextBlock).Text = n.ToString();
-                if(i % 7 > 4)
-                    (DayGrid.Children[i] as TextBlock).Foreground= Brushes.Red;
+            int col = 0;
+            int row = _startDay;
 
-                //if (_exDays.ContainsKey(n))
-                //{
-                //    switch (_exDays[n])
-                //    {
-                //        case TypeDays.Holyday:
-                //            (DayGrid.Children[i] as TextBlock).Foreground = Brushes.Red;
-                //            break;
-                //        case TypeDays.Short:
-                //            (DayGrid.Children[i] as TextBlock).Foreground = Brushes.Orange;
-                //            break;
-                //        case TypeDays.Work:
-                //            (DayGrid.Children[i] as TextBlock).Foreground = Brushes.Black;
-                //            break;
-                //    }
-                //}
+            while(StartDate.Month == Month)
+            {
+                TextBlock tb = new TextBlock();
+                tb.Text = StartDate.Day.ToString();
+                tb.HorizontalAlignment = HorizontalAlignment.Stretch;
+                tb.VerticalAlignment = VerticalAlignment.Center;
+                tb.TextAlignment = TextAlignment.Center;
+                tb.MouseLeftButtonDown += Tb_MouseLeftButtonDown;
+                if (row % 7 > 4)
+                    tb.Foreground = Brushes.Red;
+
+                Grid.SetColumn(tb, col);
+                Grid.SetRow(tb, row);
+                DayGrid.Children.Add(tb);
+
+                if(++row > 6)
+                {
+                    col++;
+                    row = 0;
+                }
 
                 StartDate = StartDate.AddDays(1);
             }
 
         }
 
+        //----------------------------------------------------------------------------------------------------
+        // Событие клика левой кнопкой мыши
+        //----------------------------------------------------------------------------------------------------
+        private void Tb_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            int month = DayGrid.Children.IndexOf((UIElement)sender) + 1;
+
+            RoutedEventArgs args;
+            args = new RoutedEventArgs(SelectedDayChangedEvent);
+            args.Source = this;
+            RaiseEvent(args);
+
+            SelectedDay = month;
+        }
 
 
-        static void OnDateChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+
+        //----------------------------------------------------------------------------------------------------
+        // Событие изменения года или месяца
+        //----------------------------------------------------------------------------------------------------
+        private static void OnDateChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
             MonthControl mc = (MonthControl)sender;
             mc.PaintCalendar();

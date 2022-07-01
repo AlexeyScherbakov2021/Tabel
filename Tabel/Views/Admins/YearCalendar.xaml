@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:vm="clr-namespace:Tabel.ViewModels"
              xmlns:local="clr-namespace:Tabel.Views.Admins"
              mc:Ignorable="d" 
@@ -12,18 +13,91 @@
     </UserControl.DataContext>
     <Grid>
         <UniformGrid x:Name="uniGrig" HorizontalAlignment="Center" VerticalAlignment="Center"  Columns="4" Rows="3">
-            <local:MonthControl Month="1"/>
-            <local:MonthControl Month="2" ExDays="{Binding exDays}"/>
-            <local:MonthControl Month="3"/>
-            <local:MonthControl Month="4"/>
-            <local:MonthControl Month="5"/>
-            <local:MonthControl Month="6"/>
-            <local:MonthControl Month="7"/>
-            <local:MonthControl Month="8"/>
-            <local:MonthControl Month="9"/>
-            <local:MonthControl Month="10"/>
-            <local:MonthControl Month="11"/>
-            <local:MonthControl Month="12"/>
+            <local:MonthControl Month="1" ExDays="{Binding exDays1}" SelectedDay="{Binding SelectDay1,Mode=TwoWay}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="SelectedDayChanged">
+                        <i:InvokeCommandAction Command="{Binding SelectCommand}" CommandParameter="1"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+            </local:MonthControl>
+            <local:MonthControl Month="2" ExDays="{Binding exDays2}" SelectedDay="{Binding SelectDay2, Mode=TwoWay}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="SelectedDayChanged">
+                        <i:InvokeCommandAction Command="{Binding SelectCommand}" CommandParameter="2"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </local:MonthControl>
+            <local:MonthControl Month="3" ExDays="{Binding exDays3}" SelectedDay="{Binding SelectDay3,Mode=TwoWay}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="SelectedDayChanged">
+                        <i:InvokeCommandAction Command="{Binding SelectCommand}" CommandParameter="2"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </local:MonthControl>
+            <local:MonthControl Month="4" ExDays="{Binding exDays4}" SelectedDay="{Binding SelectDay4,Mode=TwoWay}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="SelectedDayChanged">
+                        <i:InvokeCommandAction Command="{Binding SelectCommand}" CommandParameter="2"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+
+            </local:MonthControl>
+            <local:MonthControl Month="5" ExDays="{Binding exDays5}" SelectedDay="{Binding SelectDay5,Mode=TwoWay}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="SelectedDayChanged">
+                        <i:InvokeCommandAction Command="{Binding SelectCommand}" CommandParameter="2"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </local:MonthControl>
+            <local:MonthControl Month="6" ExDays="{Binding exDays6}" SelectedDay="{Binding SelectDay6,Mode=TwoWay}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="SelectedDayChanged">
+                        <i:InvokeCommandAction Command="{Binding SelectCommand}" CommandParameter="2"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </local:MonthControl>
+            <local:MonthControl Month="7" ExDays="{Binding exDays7}" SelectedDay="{Binding SelectDay7,Mode=TwoWay}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="SelectedDayChanged">
+                        <i:InvokeCommandAction Command="{Binding SelectCommand}" CommandParameter="2"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </local:MonthControl>
+            <local:MonthControl Month="8" ExDays="{Binding exDays8}" SelectedDay="{Binding SelectDay8,Mode=TwoWay}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="SelectedDayChanged">
+                        <i:InvokeCommandAction Command="{Binding SelectCommand}" CommandParameter="2"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </local:MonthControl>
+            <local:MonthControl Month="9" ExDays="{Binding exDays9}" SelectedDay="{Binding SelectDay9,Mode=TwoWay}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="SelectedDayChanged">
+                        <i:InvokeCommandAction Command="{Binding SelectCommand}" CommandParameter="2"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </local:MonthControl>
+            <local:MonthControl Month="10" ExDays="{Binding exDays10}" SelectedDay="{Binding SelectDay10,Mode=TwoWay}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="SelectedDayChanged">
+                        <i:InvokeCommandAction Command="{Binding SelectCommand}" CommandParameter="2"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </local:MonthControl>
+            <local:MonthControl Month="11" ExDays="{Binding exDays11}" SelectedDay="{Binding SelectDay11,Mode=TwoWay}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="SelectedDayChanged">
+                        <i:InvokeCommandAction Command="{Binding SelectCommand}" CommandParameter="2"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </local:MonthControl>
+            <local:MonthControl Month="12" ExDays="{Binding exDays12}" SelectedDay="{Binding SelectDay12,Mode=TwoWay}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="SelectedDayChanged">
+                        <i:InvokeCommandAction Command="{Binding SelectCommand}" CommandParameter="2"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </local:MonthControl>
         </UniformGrid>
     </Grid>
 </UserControl>
