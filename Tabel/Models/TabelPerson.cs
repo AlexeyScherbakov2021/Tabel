@@ -5,9 +5,11 @@ namespace Tabel.Models
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
-
+    
+    [Table("TabelPerson")]
     public partial class TabelPerson : IEntity
     {
+
         [Key]
         [Column ("idTabelPerson")]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
@@ -26,5 +28,9 @@ namespace Tabel.Models
         public virtual Personal person { get; set; }
 
         public virtual WorkTabel tabel { get; set; }
+
+        public virtual typeDay type_day { get; set; }
+
+
     }
 }

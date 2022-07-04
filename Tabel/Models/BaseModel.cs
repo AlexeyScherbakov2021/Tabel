@@ -82,6 +82,12 @@ namespace Tabel.Models
                 .WithRequired(e => e.person)
                 .HasForeignKey(e => e.d_person_id);
 
+            modelBuilder.Entity<typeDay>()
+                .HasMany(e => e.TabelPersons)
+                .WithRequired(e => e.type_day)
+                .HasForeignKey(e => e.d_type);
+
+
             modelBuilder.Entity<WorkTabel>()
                 .Property(e => e.t_number)
                 .IsUnicode(false);

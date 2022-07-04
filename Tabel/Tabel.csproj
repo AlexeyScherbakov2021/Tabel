@@ -69,6 +69,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Infrastructure\MonthStart1.cs" />
+    <Compile Include="Models\typeDay.cs" />
     <Compile Include="ViewModels\SelectOtdelWindowViewModel.cs" />
     <Compile Include="ViewModels\UserWindowViewModel.cs" />
     <Compile Include="ViewModels\YearCalendarViewModel.cs" />
