@@ -6,11 +6,37 @@
         xmlns:vm="clr-namespace:Tabel.ViewModels"
         xmlns:local="clr-namespace:Tabel"
         mc:Ignorable="d"
-        Title="MainWindow" Height="700" Width="1000" WindowStartupLocation="CenterScreen">
+        Title="Табель учета рабочего времени" Height="700" Width="1200" WindowStartupLocation="CenterScreen">
     <Window.DataContext>
         <vm:MainWindowViewModel/>
     </Window.DataContext>
-    <Grid>
-        
-    </Grid>
+    <DockPanel>
+        <StatusBar DockPanel.Dock="Bottom" Height="28">
+            <StatusBarItem Content="Пользователь: " />
+            <StatusBarItem Content="{Binding CurrentUser.u_fio}"/>
+        </StatusBar>
+        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Background="#FFE2E6F5" Height="36">
+            <TextBlock Text="Месяц " VerticalAlignment="Center" Margin="20,0,0,0"/>
+            <ComboBox Width="124" VerticalAlignment="Center" SelectedValue="{Binding CurrentTabel.t_month}"
+                      ItemsSource="{Binding ListMonth}" SelectedValuePath="Number">
+            </ComboBox>
+            <TextBlock Text="Номер " VerticalAlignment="Center" Margin="21,0,0,0"/>
+            <TextBox Text="{Binding CurrentTabel.t_number}" Width="98" VerticalAlignment="Center"/>
+            <TextBlock Text="Дата составления " VerticalAlignment="Center" Margin="26,0,0,0"/>
+            <DatePicker VerticalAlignment="Center" FirstDayOfWeek="Monday" Width="136" SelectedDate="{Binding CurrentTabel.t_date_create}"/>
+        </StackPanel>
+        <DataGrid DockPanel.Dock="Left" ItemsSource="{Binding PersonalList}" Style="{DynamicResource DataGridStyle}"
+                  SelectedItem="{Binding SelectedPerson}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Таб.№" Binding="{Binding p_tab_number}" Width="60"/>
+                <DataGridTextColumn Header="Фамилия" Binding="{Binding p_lastname}" Width="90"/>
+                <DataGridTextColumn Header="Имя" Binding="{Binding p_name}" Width="80"/>
+                <DataGridTextColumn Header="Отчество" Binding="{Binding p_midname}" Width="90"/>
+                <DataGridTextColumn Header="Должность" Binding="{Binding p_profession}" Width="120"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <Grid >
+            
+         </Grid>
+    </DockPanel>
 </Window>

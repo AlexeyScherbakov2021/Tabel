@@ -68,6 +68,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Infrastructure\MonthStart1.cs" />
     <Compile Include="ViewModels\SelectOtdelWindowViewModel.cs" />
     <Compile Include="ViewModels\UserWindowViewModel.cs" />
     <Compile Include="ViewModels\YearCalendarViewModel.cs" />
@@ -129,7 +130,7 @@
     <Compile Include="Infrastructure\Observable.cs" />
     <Compile Include="Models\calendar.cs" />
     <Compile Include="Models\category.cs" />
-    <Compile Include="Models\day.cs" />
+    <Compile Include="Models\TabelPerson.cs" />
     <Compile Include="Models\BaseModel.cs" />
     <Compile Include="Models\IEntity.cs" />
     <Compile Include="Models\otdel.cs" />
@@ -188,6 +189,8 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="ModelTest\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

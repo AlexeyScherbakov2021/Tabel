@@ -14,7 +14,9 @@ namespace Tabel.Models
         {
             //subOtdels = new HashSet<Otdel>();
             personals = new HashSet<Personal>();
+            tabels = new HashSet<WorkTabel>();
             users = new HashSet<User>();
+
         }
 
         [Key]
@@ -34,5 +36,8 @@ namespace Tabel.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Personal> personals { get; set; }
         public virtual ICollection<User> users { get; set; }
+
+        public virtual ICollection<WorkTabel> tabels { get; set; }
+
     }
 }
