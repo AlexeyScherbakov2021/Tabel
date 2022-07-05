@@ -24,73 +24,62 @@
             <TextBox Text="{Binding CurrentTabel.t_number}" Width="98" VerticalAlignment="Center"/>
             <TextBlock Text="Дата составления " VerticalAlignment="Center" Margin="26,0,0,0"/>
             <DatePicker VerticalAlignment="Center" FirstDayOfWeek="Monday" Width="136" SelectedDate="{Binding CurrentTabel.t_date_create}"/>
+            <Button Content="Сохранить" Command="{Binding SaveCommand}" Style="{DynamicResource ButtonStyleShadow}" Padding="5,0" Margin="3,0,0,0"/>
+            <Button Content="Загрузить из произв. календаря" Command="{Binding LoadDefCommand}" Style="{DynamicResource ButtonStyleShadow}" Padding="5, 0" Margin="3,0,0,0"/>
         </StackPanel>
-        <DataGrid DockPanel.Dock="Left" ItemsSource="{Binding PersonalList}" Style="{DynamicResource DataGridStyle}"
+        <DataGrid DockPanel.Dock="Top" ItemsSource="{Binding PersonalList}" Style="{DynamicResource DataGridStyle}"
                   SelectedItem="{Binding SelectedPerson}">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Таб.№" Binding="{Binding p_tab_number}" Width="60"/>
-                <DataGridTextColumn Header="Фамилия" Binding="{Binding p_lastname}" Width="90"/>
-                <DataGridTextColumn Header="Имя" Binding="{Binding p_name}" Width="80"/>
-                <DataGridTextColumn Header="Отчество" Binding="{Binding p_midname}" Width="90"/>
-                <DataGridTextColumn Header="Должность" Binding="{Binding p_profession}" Width="120"/>
+                <DataGridTextColumn Header="Таб.№" Binding="{Binding p_tab_number}" Width="70"/>
+                <DataGridTextColumn Header="Фамилия" Binding="{Binding p_lastname}" Width="160"/>
+                <DataGridTextColumn Header="Имя" Binding="{Binding p_name}" Width="150"/>
+                <DataGridTextColumn Header="Отчество" Binding="{Binding p_midname}" Width="160"/>
+                <DataGridTextColumn Header="Должность" Binding="{Binding p_profession}" Width="180"/>
             </DataGrid.Columns>
         </DataGrid>
-        <Grid >
-            <ItemsControl x:Name="icDays" ItemsSource="{Binding ListTabelPerson}" HorizontalAlignment="Stretch" Margin="16,16,16,0" VerticalAlignment="Top">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <UniformGrid Columns="11"/>
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-            <Border BorderBrush="Black" BorderThickness="1,1,1,1" Width="50" CornerRadius="3" Margin="0,0,0,8">
-                <Border.Effect>
-                    <DropShadowEffect BlurRadius="15" ShadowDepth="1" Color="#FFD0D0D0"/>
-                </Border.Effect>
-                <StackPanel Orientation="Vertical" ClipToBounds="True">
-                    <TextBlock Text="{Binding d_day}" VerticalAlignment="Center" TextAlignment="Center" 
-                               Background="#FF0800FF" Foreground="White" ClipToBounds="True" FontSize="14" Height="28"/>
-                                <ComboBox ItemsSource="{Binding DataContext.ListTypeDay, ElementName=icDays}"
-                                          DisplayMemberPath="t_name"/>
-                                <!--<Button Content="{Binding d_type}" Height="24" FontWeight="Bold" FontSize="14" Focusable="False"
+        <!--<ListBox ItemsSource="{Binding ListTypeDay}" DockPanel.Dock="Bottom" Height="100">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="40"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="{Binding t_name}" FontWeight="Bold"/>
+                        <TextBlock Text="{Binding t_desc}" Grid.Column="1"/>
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>-->
+        <ItemsControl x:Name="icDays" ItemsSource="{Binding ListTabelPerson}" Margin="10,30" MinHeight="300">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Border BorderBrush="Black" BorderThickness="0.5" Width="50" CornerRadius="3" Margin="0,0,0,8">
+                        <Border.Effect>
+                            <DropShadowEffect BlurRadius="15" ShadowDepth="1" Color="#FFD0D0D0"/>
+                        </Border.Effect>
+                        <StackPanel Orientation="Vertical" ClipToBounds="True">
+                            <TextBlock Text="{Binding d_day}" VerticalAlignment="Center" TextAlignment="Center" 
+                                    Background="#FF0800FF" Foreground="White" ClipToBounds="True" FontSize="16" Height="28"/>
+                            <ComboBox ItemsSource="{Binding DataContext.ListTypeDay, ElementName=icDays}" 
+                                      SelectedIndex="{Binding d_type, Mode=TwoWay}"
+                                    DisplayMemberPath="t_name" IsTabStop="False" Focusable="False"/>
+                            <!--<Button Content="{Binding d_type}" Height="24" FontWeight="Bold" FontSize="14" Focusable="False"
                                         CommandParameter="{Binding d_day}"
                                         Command="{Binding DataContext.SelectTypeCommand, ElementName=icDays}" IsTabStop="False"/>-->
-                                <!--<TextBlock Text="{Binding d_type}" FontWeight="Bold"
+                            <!--<TextBlock Text="{Binding d_type}" FontWeight="Bold"
                                VerticalAlignment="Center" TextAlignment="Center" FontSize="14" Background="White"/>-->
-                    <TextBox Text="{Binding d_hours}" HorizontalContentAlignment="Center" FontSize="14"/>
-                </StackPanel>
-            </Border>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-            <!--<Border BorderBrush="Black" BorderThickness="1,1,1,1" Width="34" Height="60" CornerRadius="3">
-                <Border.Effect>
-                    <DropShadowEffect BlurRadius="15" ShadowDepth="1" Color="#FFD0D0D0"/>
-                </Border.Effect>
-                <StackPanel Orientation="Vertical" Margin="0" ClipToBounds="True">
-                    <TextBlock Text="5" VerticalAlignment="Center" TextAlignment="Center" Background="#FF0800FF" Foreground="White" ClipToBounds="True" FontSize="14"/>
-                    <TextBlock Text="Я" FontWeight="Bold" VerticalAlignment="Center" TextAlignment="Center" FontSize="14" Background="White"/>
-                    <TextBox Text="11" HorizontalContentAlignment="Center" FontSize="14"/>
-                </StackPanel>
-            </Border>-->
-            <Popup IsOpen="{Binding IsOpenPopup}" Placement="MousePoint" Width="240" Height="200" UseLayoutRounding="True" ScrollViewer.CanContentScroll="True" VerticalOffset="8" HorizontalOffset="-200">
-            </Popup>
-            <ListBox VerticalAlignment="Bottom" ItemsSource="{Binding ListTypeDay}">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="40"/>
-                                <ColumnDefinition/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Text="{Binding t_name}" FontWeight="Bold"/>
-                            <TextBlock Text="{Binding t_desc}" Grid.Column="1"/>
-                        </Grid>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-        </Grid>
+                            <TextBox Text="{Binding d_hours, Mode=TwoWay}" HorizontalContentAlignment="Center" FontSize="14"/>
+                        </StackPanel>
+                    </Border>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
     </DockPanel>
-    
+
 </Window>

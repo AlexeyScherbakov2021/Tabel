@@ -16,7 +16,7 @@ namespace Tabel.Repository
     {
         //SqlConnection conn;
         protected readonly BaseModel db;
-        private readonly DbSet<T> _Set;
+        protected readonly DbSet<T> _Set;
         public virtual IQueryable<T> Items => _Set;
 
 

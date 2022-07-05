@@ -17,7 +17,7 @@ namespace Tabel.Models
 
         [Key]
         [Column("idTabel")]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        //[DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int id { get; set; }
 
         [StringLength(30)]

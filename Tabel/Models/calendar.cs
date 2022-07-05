@@ -19,6 +19,6 @@ namespace Tabel.Models
         [Column(TypeName = "date")]
         public DateTime? cal_date { get; set; }
 
-        public int? cal_type { get; set; }
+        public int cal_type { get; set; }
     }
 }
