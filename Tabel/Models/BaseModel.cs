@@ -67,7 +67,7 @@ namespace Tabel.Models
 
             modelBuilder.Entity<Personal>()
                 .Property(e => e.p_name)
-                .IsFixedLength();
+                .IsUnicode(false);
 
             modelBuilder.Entity<Personal>()
                 .Property(e => e.p_midname)

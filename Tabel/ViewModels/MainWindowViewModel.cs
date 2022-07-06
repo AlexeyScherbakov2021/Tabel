@@ -22,6 +22,15 @@ namespace Tabel.ViewModels
 
         private readonly IRepository<WorkCalendar> repoCalendar;
 
+        //private string _FIO;
+        public string FIO { get; set; }
+        //{
+        //    get => _FIO;
+        //    set { Set(ref _FIO, SelectedPerson?.p_lastname);   }
+            //get => SelectedPerson?.p_lastname + " " + SelectedPerson?.p_name + " " + SelectedPerson?.p_midname;
+            //set {   OnPropertyChanged(nameof(FIO)); }
+        //}
+
 
         private readonly IRepository<Personal> repoPerson;
 
@@ -33,8 +42,12 @@ namespace Tabel.ViewModels
             get => _SelectedPerson; 
             set
             {
-                _SelectedPerson = value;
-                LoadTabelPerson();
+                if (Set(ref _SelectedPerson, value))
+                {
+                    FIO = SelectedPerson?.p_lastname + " " + SelectedPerson?.p_name + " " + SelectedPerson?.p_midname;
+                    OnPropertyChanged(nameof(FIO));
+                    LoadTabelPerson();
+                }
             }
         }
 
@@ -45,8 +58,11 @@ namespace Tabel.ViewModels
         private readonly IRepository<WorkTabel> repoTabel;
         public WorkTabel CurrentTabel { get; set; }
 
-        private readonly RepositoryTabelPerson repoTabelPerson;
-        public ObservableCollection<TabelPerson> ListTabelPerson { get; set; } = new ObservableCollection<TabelPerson>();
+        private readonly IRepository<TabelPerson> repoTabelPerson;
+
+
+        private ObservableCollection<TabelPerson> _ListTabelPerson; 
+        public ObservableCollection<TabelPerson> ListTabelPerson { get => _ListTabelPerson; set { Set(ref _ListTabelPerson, value); } } 
 
         public List<MonthStart1> ListMonth { get; set; }
 
@@ -99,7 +115,6 @@ namespace Tabel.ViewModels
                 item.OnPropertyChanged(nameof(item.d_type));
                 item.OnPropertyChanged(nameof(item.d_hours));
 
-
             }
 
         }
@@ -113,14 +128,45 @@ namespace Tabel.ViewModels
         {
 
 
-            repoTabelPerson.ReamoveForPersonMonth(CurrentTabel.id, SelectedPerson.id, true);
+
+
+            // получаем список измененных дней календаря
+            List<WorkCalendar> listCal = repoCalendar.Items.Where(it => it.cal_year == CurrentTabel.t_year
+                        && it.cal_date.Value.Month == CurrentTabel.t_month).ToList();
+
+            // удаление всех предыдущих записей из базы
+            foreach (var item in ListTabelPerson)
+                repoTabelPerson.Delete(item, true);
+
+            //repoTabelPerson.Save();
+            //repoTabelPerson.ReamoveForPersonMonth(CurrentTabel.id, SelectedPerson.id, true);
 
             //repoTabel.Add(CurrentTabel, true);
 
-            foreach(var item in ListTabelPerson)
+            foreach (var item in ListTabelPerson)
             {
-                repoTabelPerson.Add(item, true);
+                int type;
+                var wc = listCal.FirstOrDefault(it => it.cal_date.Value.Day == item.d_day);
+                if (wc is null)
+                {
+                    // в измененных датах нет
+                    // получаем номер дня недели
+                    type = (int)new DateTime(CurrentTabel.t_year, CurrentTabel.t_month, item.d_day).DayOfWeek;
+                    if (type == 0 || type == 6)
+                        // это выходной
+                        type = 2;
+                    else
+                        // рабочий день
+                        type = 1;
+                }
+                else
+                    type = wc.cal_type;
+
+                if (item.d_type != null && type != item.d_type)
+                    repoTabelPerson.Add(item, true);
             }
+    
+            //repoTabelPerson.Save();
         }
 
 
@@ -149,7 +195,7 @@ namespace Tabel.ViewModels
             CurrentUser = App.CurrentUser;
             repoPerson = new RepositoryMSSQL<Personal>();
             repoTabel = new RepositoryMSSQL<WorkTabel>();
-            repoTabelPerson = new RepositoryTabelPerson();
+            repoTabelPerson = new RepositoryMSSQL<TabelPerson>();
             repoTypeDay = new RepositoryMSSQL<typeDay>();
             repoCalendar = new RepositoryMSSQL<WorkCalendar>();
 
@@ -194,34 +240,49 @@ namespace Tabel.ViewModels
         //----------------------------------------------------------------------------------------------------------
         private void LoadTabelPerson()
         {
-            List<TabelPerson> listFromBase = repoTabelPerson.Items
-                .Where(it => it.person.id == SelectedPerson.id && it.tabel.id == CurrentTabel.id)
-                .ToList();
+            //ListTabelPerson.Clear();
+            ListTabelPerson = new ObservableCollection<TabelPerson>( repoTabelPerson.Items
+                .Where(it => it.person.id == SelectedPerson.id && it.tabel.id == CurrentTabel.id));
+
+            //List<TabelPerson> listFromBase = repoTabelPerson.Items
+            //    .Where(it => it.person.id == SelectedPerson.id && it.tabel.id == CurrentTabel.id)
+            //    .ToList();
 
             //ListTabelPerson = new ObservableCollection<TabelPerson>();
-            ListTabelPerson.Clear();
-            DateTime date = new DateTime(CurrentTabel.t_year, CurrentTabel.t_month, 1);
-            int maxDay =  date.AddMonths(1).AddDays(-1).Day;
+            //ListTabelPerson.Clear();
+            //DateTime date = new DateTime(CurrentTabel.t_year, CurrentTabel.t_month, 1);
+            //int maxDay =  date.AddMonths(1).AddDays(-1).Day;
 
-            for (int i = 1; i <= maxDay; i++)
-            {
-                ListTabelPerson.Add(new TabelPerson
-                {
-                    d_day = i,
-                    d_tabel_id = CurrentTabel.id,
-                    d_person_id = SelectedPerson.id,
-                });
+            //for (int i = 1; i <= maxDay; i++)
+            //{
+            //    var tp = new TabelPerson
+            //    {
+            //        d_day = i,
+            //        d_tabel_id = CurrentTabel.id,
+            //        d_person_id = SelectedPerson.id,
+            //        d_type = 1,
+            //        d_hours = 8
+            //    };
 
-            }
-            // заменяем установленные дни
-            foreach (var item in listFromBase)
-            {
-                TabelPerson tp = ListTabelPerson.FirstOrDefault(it => it.d_day == item.d_day);
-                tp.d_hours = item.d_hours;
-                tp.d_type = item.d_type;
-                tp.id = item.id;
+            //    int dw = (int)new DateTime(CurrentTabel.t_year, CurrentTabel.t_month, i).DayOfWeek;
+            //    if (dw == 0 || dw == 6)
+            //    {
+            //        tp.d_type = 2;
+            //        tp.d_hours = null;
+            //    }
 
-            }
+            //    ListTabelPerson.Add(tp);
+            //}
+
+            //// заменяем установленные дни
+            //foreach (var item in listFromBase)
+            //{
+            //    TabelPerson tp = ListTabelPerson.FirstOrDefault(it => it.d_day == item.d_day);
+            //    tp.d_hours = item.d_hours;
+            //    tp.d_type = item.d_type;
+            //    tp.id = item.id;
+
+            //}
 
 
         }

@@ -57,11 +57,23 @@ namespace Tabel.Repository
                 return;
 
             var item = _Set.Local.FirstOrDefault(i => i.id == id) ?? new T { id = id };
+            Delete(item, Autosave);
+
+            //db.Entry(item).State = EntityState.Deleted;
+            //if (Autosave)
+            //    db.SaveChanges();
+        }
+
+        public void Delete(T item, bool Autosave = false)
+        {
+            if (item is null || item.id <= 0)
+                return;
 
             db.Entry(item).State = EntityState.Deleted;
             if (Autosave)
                 db.SaveChanges();
         }
+
 
         public T Get(int id)
         {

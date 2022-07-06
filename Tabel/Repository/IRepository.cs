@@ -13,6 +13,7 @@ namespace Tabel.Repository
         T Get(int id);
         T Add(T item, bool Autosave = false);
         void Delete(int id, bool Autosave = false);
+        void Delete(T item, bool Autosave = false);
         void Update(T item, bool Autosave = false);
 
         void Save();

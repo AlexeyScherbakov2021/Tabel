@@ -32,5 +32,6 @@ namespace Tabel.Models
 
         public virtual ICollection<TabelPerson> TabelPersons { get; set; }
 
+
     }
 }
