@@ -69,15 +69,18 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Component\MonthPanel\Enums.cs" />
+    <Compile Include="Component\MonthPanel\MonthControl.xaml.cs">
+      <DependentUpon>MonthControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Component\MonthPanel\MonthDays.cs" />
+    <Compile Include="Component\MonthPanel\MonthPanel.cs" />
     <Compile Include="Infrastructure\MonthStart1.cs" />
     <Compile Include="Models\typeDay.cs" />
     <Compile Include="Repository\RepositoryTabelPerson.cs" />
     <Compile Include="ViewModels\SelectOtdelWindowViewModel.cs" />
     <Compile Include="ViewModels\UserWindowViewModel.cs" />
     <Compile Include="ViewModels\YearCalendarViewModel.cs" />
-    <Compile Include="Views\Admins\MonthControl.xaml.cs">
-      <DependentUpon>MonthControl.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\Admins\UsersWindow.xaml.cs">
       <DependentUpon>UsersWindow.xaml</DependentUpon>
     </Compile>
@@ -87,6 +90,10 @@
     <Compile Include="Views\SelectOtdelWindow.xaml.cs">
       <DependentUpon>SelectOtdelWindow.xaml</DependentUpon>
     </Compile>
+    <Page Include="Component\MonthPanel\MonthControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Styles\Button.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -96,10 +103,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\AddFormStringWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Admins\MonthControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -192,8 +195,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ModelTest\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -6,111 +6,91 @@
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:vm="clr-namespace:Tabel.ViewModels"
              xmlns:local="clr-namespace:Tabel.Views.Admins"
-             mc:Ignorable="d" 
-             d:DesignHeight="500" d:DesignWidth="800">
+             xmlns:mcal="clr-namespace:Tabel.Component.MonthPanel"
+             mc:Ignorable="d" Height="570" Width="960">
     <UserControl.DataContext>
         <vm:YearCalendarViewModel/>
     </UserControl.DataContext>
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition Width="195"/>
-        </Grid.ColumnDefinitions>
-        <UniformGrid x:Name="uniGrig" HorizontalAlignment="Left" VerticalAlignment="Center"  Columns="4" Rows="3" Height="450" Width="600">
-            <local:MonthControl Month="1" ExDays="{Binding exDays1, Mode=TwoWay}" SelectedDay="{Binding SelectDay1,Mode=TwoWay}" Year="{Binding CurrentYear}">
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="SelectedDayChanged">
-                        <i:InvokeCommandAction Command="{Binding SelectCommand}" CommandParameter="1"/>
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
-            </local:MonthControl>
-            <local:MonthControl Month="2" ExDays="{Binding exDays2,Mode=TwoWay}" SelectedDay="{Binding SelectDay2, Mode=TwoWay}" Year="{Binding CurrentYear}">
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="SelectedDayChanged">
-                        <i:InvokeCommandAction Command="{Binding SelectCommand}" CommandParameter="2"/>
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
-            </local:MonthControl>
-            <local:MonthControl Month="3" ExDays="{Binding exDays3,Mode=TwoWay}" SelectedDay="{Binding SelectDay3,Mode=TwoWay}" Year="{Binding CurrentYear}">
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="SelectedDayChanged">
-                        <i:InvokeCommandAction Command="{Binding SelectCommand}" CommandParameter="2"/>
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
-            </local:MonthControl>
-            <local:MonthControl Month="4" ExDays="{Binding exDays4}" SelectedDay="{Binding SelectDay4,Mode=TwoWay}" Year="{Binding CurrentYear}">
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="SelectedDayChanged">
-                        <i:InvokeCommandAction Command="{Binding SelectCommand}" CommandParameter="2"/>
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
+    <DockPanel >
+        <!--<Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="170"/>
+        </Grid.ColumnDefinitions>-->
+        <UniformGrid x:Name="uniGrig"  Columns="4" Rows="3" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="7,0,0,0" Height="546" Width="800">
+            <UniformGrid.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="CornerRadius" Value="5"/>
+                    <Setter Property="Background" Value="White"/>
+                    <Setter Property="BorderThickness" Value="0.5"/>
+                    <Setter Property="BorderBrush" Value="Black"/>
+                    <Setter Property="Margin" Value="2"/>
+                    <Setter Property="Effect">
+                        <Setter.Value>
+                            <DropShadowEffect BlurRadius="10" Opacity="0.5" ShadowDepth="0"/>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </UniformGrid.Resources>
 
-            </local:MonthControl>
-            <local:MonthControl Month="5" ExDays="{Binding exDays5}" SelectedDay="{Binding SelectDay5,Mode=TwoWay}" Year="{Binding CurrentYear}">
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="SelectedDayChanged">
-                        <i:InvokeCommandAction Command="{Binding SelectCommand}" CommandParameter="2"/>
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
-            </local:MonthControl>
-            <local:MonthControl Month="6" ExDays="{Binding exDays6}" SelectedDay="{Binding SelectDay6,Mode=TwoWay}" Year="{Binding CurrentYear}">
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="SelectedDayChanged">
-                        <i:InvokeCommandAction Command="{Binding SelectCommand}" CommandParameter="2"/>
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
-            </local:MonthControl>
-            <local:MonthControl Month="7" ExDays="{Binding exDays7}" SelectedDay="{Binding SelectDay7,Mode=TwoWay}" Year="{Binding CurrentYear}">
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="SelectedDayChanged">
-                        <i:InvokeCommandAction Command="{Binding SelectCommand}" CommandParameter="2"/>
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
-            </local:MonthControl>
-            <local:MonthControl Month="8" ExDays="{Binding exDays8}" SelectedDay="{Binding SelectDay8,Mode=TwoWay}" Year="{Binding CurrentYear}">
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="SelectedDayChanged">
-                        <i:InvokeCommandAction Command="{Binding SelectCommand}" CommandParameter="2"/>
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
-            </local:MonthControl>
-            <local:MonthControl Month="9" ExDays="{Binding exDays9}" SelectedDay="{Binding SelectDay9,Mode=TwoWay}" Year="{Binding CurrentYear}">
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="SelectedDayChanged">
-                        <i:InvokeCommandAction Command="{Binding SelectCommand}" CommandParameter="2"/>
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
-            </local:MonthControl>
-            <local:MonthControl Month="10" ExDays="{Binding exDays10}" SelectedDay="{Binding SelectDay10,Mode=TwoWay}" Year="{Binding CurrentYear}">
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="SelectedDayChanged">
-                        <i:InvokeCommandAction Command="{Binding SelectCommand}" CommandParameter="2"/>
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
-            </local:MonthControl>
-            <local:MonthControl Month="11" ExDays="{Binding exDays11}" SelectedDay="{Binding SelectDay11,Mode=TwoWay}" Year="{Binding CurrentYear}">
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="SelectedDayChanged">
-                        <i:InvokeCommandAction Command="{Binding SelectCommand}" CommandParameter="2"/>
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
-            </local:MonthControl>
-            <local:MonthControl Month="12" ExDays="{Binding exDays12}" SelectedDay="{Binding SelectDay12,Mode=TwoWay}" Year="{Binding CurrentYear}">
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="SelectedDayChanged">
-                        <i:InvokeCommandAction Command="{Binding SelectCommand}" CommandParameter="2"/>
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
-            </local:MonthControl>
+            <Border >
+                <mcal:MonthControl ChangedDays="{Binding list12Month[0]}" NumberMonth="1"  Margin="2"/>
+            </Border>
+
+            <Border >
+                <mcal:MonthControl ChangedDays="{Binding list12Month[1]}" NumberMonth="2"  Margin="2"/>
+            </Border>
+
+            <Border >
+                <mcal:MonthControl ChangedDays="{Binding list12Month[2]}" NumberMonth="3"  Margin="2"/>
+            </Border>
+
+            <Border >
+                <mcal:MonthControl ChangedDays="{Binding list12Month[3]}" NumberMonth="4"  Margin="2"/>
+            </Border>
+
+            <Border >
+                <mcal:MonthControl ChangedDays="{Binding list12Month[4]}" NumberMonth="5"  Margin="2"/>
+            </Border>
+
+            <Border >
+                <mcal:MonthControl ChangedDays="{Binding list12Month[5]}" NumberMonth="6"  Margin="2"/>
+            </Border>
+
+            <Border >
+                <mcal:MonthControl ChangedDays="{Binding list12Month[6]}" NumberMonth="7"  Margin="2"/>
+            </Border>
+
+            <Border >
+                <mcal:MonthControl ChangedDays="{Binding list12Month[7]}" NumberMonth="8"  Margin="2"/>
+            </Border>
+
+            <Border >
+                <mcal:MonthControl ChangedDays="{Binding list12Month[8]}" NumberMonth="9"  Margin="2"/>
+            </Border>
+
+            <Border >
+                <mcal:MonthControl ChangedDays="{Binding list12Month[9]}" NumberMonth="10"  Margin="2"/>
+            </Border>
+
+            <Border >
+                <mcal:MonthControl ChangedDays="{Binding list12Month[10]}" NumberMonth="11"  Margin="2"/>
+            </Border>
+
+            <Border >
+                <mcal:MonthControl ChangedDays="{Binding list12Month[11]}" NumberMonth="12"  Margin="2"/>
+            </Border>
+
         </UniformGrid>
-        <StackPanel Grid.Column="1" Margin="20" HorizontalAlignment="Stretch" Orientation="Vertical" VerticalAlignment="Top">
+        <StackPanel DockPanel.Dock="Right" Margin="10" Orientation="Vertical" VerticalAlignment="Top" >
             <TextBlock Text="Текущий год"/>
             <ComboBox Margin="0,2,0,11" ItemsSource="{Binding ListYears}" SelectedItem="{Binding CurrentYear}"/>
-            <Button Content="По календарю" Margin="0,5" Command="{Binding SetExDayCommand}" CommandParameter="{x:Static local:MonthControl+TypeDays.Default}" Style="{StaticResource ButtonStyleShadow}"/>
-            <Button Content="Выходной" Margin="0,5" Command="{Binding SetExDayCommand}" CommandParameter="{x:Static local:MonthControl+TypeDays.Holyday}" Style="{StaticResource ButtonStyleShadow}"/>
+            <Button Content="По календарю" Margin="0,5" Height="30" Command="{Binding SetExDayCommand}" Style="{StaticResource ButtonStyleShadow}"/>
+            <Button Content="Сохранить" Margin="0,5" Height="30" Command="{Binding SetExDayCommand}" Style="{StaticResource ButtonStyleShadow}"/>
+            <Button Content="Закрыть" Margin="0,5" Height="30" Command="{Binding SetExDayCommand}" Style="{StaticResource ButtonStyleShadow}"/>
+            <!--<Button Content="Выходной" Margin="0,5" Command="{Binding SetExDayCommand}" CommandParameter="{x:Static local:MonthControl+TypeDays.Holyday}" Style="{StaticResource ButtonStyleShadow}"/>
             <Button Content="Короткий" Margin="0,5" Command="{Binding SetExDayCommand}" CommandParameter="{x:Static local:MonthControl+TypeDays.Short}" Style="{StaticResource ButtonStyleShadow}"/>
             <Button Content="Рабочий" Margin="0,5" Command="{Binding SetExDayCommand}" CommandParameter="{x:Static local:MonthControl+TypeDays.Work}" Style="{StaticResource ButtonStyleShadow}"/>
-            <Button Content="Добавить год" Margin="0,5" Command="{Binding NewYearCommand}" Style="{StaticResource ButtonStyleShadow}"/>
+            <Button Content="Добавить год" Margin="0,5" Command="{Binding NewYearCommand}" Style="{StaticResource ButtonStyleShadow}"/>-->
         </StackPanel>
-    </Grid>
+    </DockPanel>
 </UserControl>

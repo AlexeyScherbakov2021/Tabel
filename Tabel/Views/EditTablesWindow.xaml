@@ -10,7 +10,7 @@
         xmlns:local="clr-namespace:Tabel.Views"
         xmlns:System="clr-namespace:System;assembly=mscorlib" x:Class="Tabel.Views.EditTablesWindow"
         mc:Ignorable="d"
-        Title="Редактирование" Height="800" Width="1000" WindowStartupLocation="CenterScreen">
+        Title="Редактирование" Height="800" WindowStartupLocation="CenterScreen">
     <Window.DataContext>
         <vm:EditTablesWindowModel/>
     </Window.DataContext>
