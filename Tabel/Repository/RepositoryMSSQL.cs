@@ -37,7 +37,6 @@ namespace Tabel.Repository
 //                theSecureString.MakeReadOnly();
 //                SqlCredential credential = new SqlCredential("fpLoginName", theSecureString);
 //                conn = new SqlConnection(settings.ConnectionString, credential);
-
 //#endif
 
         }

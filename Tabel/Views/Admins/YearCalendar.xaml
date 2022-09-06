@@ -19,7 +19,7 @@
         <UniformGrid x:Name="uniGrig"  Columns="4" Rows="3" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="7,0,0,0" Height="546" Width="800">
             <UniformGrid.Resources>
                 <Style TargetType="Border">
-                    <Setter Property="CornerRadius" Value="5"/>
+                    <Setter Property="CornerRadius" Value="3"/>
                     <Setter Property="Background" Value="White"/>
                     <Setter Property="BorderThickness" Value="0.5"/>
                     <Setter Property="BorderBrush" Value="Black"/>

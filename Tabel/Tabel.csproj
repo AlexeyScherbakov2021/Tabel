@@ -78,9 +78,14 @@
     <Compile Include="Infrastructure\MonthStart1.cs" />
     <Compile Include="Models\typeDay.cs" />
     <Compile Include="Repository\RepositoryTabelPerson.cs" />
+    <Compile Include="Styles\ExtendedTreeView.cs" />
+    <Compile Include="ViewModels\Admins\OtdelsWindowViewModel.cs" />
     <Compile Include="ViewModels\SelectOtdelWindowViewModel.cs" />
-    <Compile Include="ViewModels\UserWindowViewModel.cs" />
-    <Compile Include="ViewModels\YearCalendarViewModel.cs" />
+    <Compile Include="ViewModels\Admins\UserWindowViewModel.cs" />
+    <Compile Include="ViewModels\Admins\YearCalendarViewModel.cs" />
+    <Compile Include="Views\Admins\OtdelsWindow.xaml.cs">
+      <DependentUpon>OtdelsWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Admins\UsersWindow.xaml.cs">
       <DependentUpon>UsersWindow.xaml</DependentUpon>
     </Compile>
@@ -102,7 +107,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Styles\TreeView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\AddFormStringWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Admins\OtdelsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
