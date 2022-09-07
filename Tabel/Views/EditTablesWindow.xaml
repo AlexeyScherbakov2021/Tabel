@@ -42,7 +42,7 @@
 
                 </UniformGrid>-->
             </TabItem>
-            <TabItem Header="Сотрудники">
+            <!--<TabItem Header="Сотрудники">
                 <Grid Background="#FFE5E5E5">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="3*"/>
@@ -72,9 +72,9 @@
                             <Button Content="Удалить" Margin="3"  Command="{Binding DeletePersonCommand}" Style="{DynamicResource ButtonStyleShadow}"/>
                         </UniformGrid>
                         <StackPanel Margin="15,10" IsEnabled="{Binding EnabledDetailPerson}">
-                            <!--<StackPanel.DataContext>
+                            --><!--<StackPanel.DataContext>
                                 <model:Personal/>
-                            </StackPanel.DataContext>-->
+                            </StackPanel.DataContext>--><!--
                             <TextBlock Text="Табельный номер" />
                             <TextBox Text="{Binding SelectedPerson.p_tab_number}" Margin="0,0,0,4"/>
                             <TextBlock Text="Фамилия" />
@@ -100,7 +100,7 @@
                         </StackPanel>
                     </DockPanel>
                 </Grid>
-            </TabItem>
+            </TabItem>-->
             <TabItem Header="Разряды" d:IsHidden="True" >
                 <Grid Background="#FFE5E5E5"/>
             </TabItem>

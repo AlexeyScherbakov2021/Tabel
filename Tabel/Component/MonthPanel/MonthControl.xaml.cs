@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -26,18 +27,17 @@ namespace Tabel.Component.MonthPanel
 
         public int StartIndex { get; set; }
 
-
         public List<MonthDays> Days { get; set; }
 
-
+        // список измененных дней (короткий или пустой)
         public static readonly DependencyProperty ChangedDaysProperty =
-            DependencyProperty.Register("ChangedDays", typeof(List<MonthDays>), typeof(MonthControl));
-        public List<MonthDays> ChangedDays
+            DependencyProperty.Register("ChangedDays", typeof(ObservableCollection<MonthDays>), typeof(MonthControl),
+        new FrameworkPropertyMetadata(null, new PropertyChangedCallback(OnDaysTypeChanged)));
+        public ObservableCollection<MonthDays> ChangedDays
         {
-            get { return (List<MonthDays>)GetValue(ChangedDaysProperty); }
+            get { return (ObservableCollection<MonthDays>)GetValue(ChangedDaysProperty); }
             set { SetValue(ChangedDaysProperty, value); }
         }
-
 
 
         public static readonly DependencyProperty NumberMonthProperty =
@@ -59,15 +59,35 @@ namespace Tabel.Component.MonthPanel
         }
 
 
-        //public static readonly DependencyProperty SelectedIndexProperty =
-        //    DependencyProperty.Register("SelectedIndex", typeof(int), typeof(MonthControl),
-        //new FrameworkPropertyMetadata(-1));
+        private static void OnDaysTypeChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (sender is MonthControl mc)
+            {
+                //IEnumerable<MonthDays> coll = e.NewValue as IEnumerable<MonthDays>;
 
-        //public int SelectedIndex
-        //{
-        //    get { return (int)GetValue(SelectedIndexProperty); }
-        //    set { SetValue(SelectedIndexProperty, value); }
-        //}
+                if (e.OldValue != null)
+                    (e.OldValue as ObservableCollection<MonthDays>).CollectionChanged -= mc.OnCollectionChanged;
+
+                if (e.NewValue != null)
+                    (e.NewValue as ObservableCollection<MonthDays>).CollectionChanged += mc.OnCollectionChanged;
+
+                //foreach (var item in coll)
+                //    mc.SetTypeDay(item.Day, item.Type);
+
+            }
+        }
+
+        private void OnCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
+            {
+                MonthDays md = e.NewItems[0] as MonthDays;
+                Days[md.Day - 1].Type = md.Type;
+                Days[md.Day - 1].OnPropertyChanged("Type");
+
+                //SetTypeDay(md.Day, md.Type);
+            }
+        }
 
         private static void OnMonthChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
@@ -112,13 +132,18 @@ namespace Tabel.Component.MonthPanel
             OnPropertyChanged(nameof(Days));
             StartIndex = dt.DayOfWeek == DayOfWeek.Sunday ? 6 : (int)dt.DayOfWeek - 1;
             OnPropertyChanged(nameof(StartIndex));
+
+            this.PropertyChanged += MonthControl_PropertyChanged;
         }
 
+        private void MonthControl_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+        }
 
         public MonthControl()
         {
             InitializeComponent();
-            ChangedDays = new List<MonthDays>();
+            ChangedDays = new ObservableCollection<MonthDays>();
             ICweek.ItemsSource = WeekDay;
             SetMonthContent(new DateTime(Year, NumberMonth, 1));
         }
@@ -134,7 +159,9 @@ namespace Tabel.Component.MonthPanel
             if (ChangedDays != null)
             {
                 ChangedDays.Clear();
-                ChangedDays.AddRange(GetListDays());
+                var d = GetListDays();
+                foreach(var item in d)
+                    ChangedDays.Add(item);
             }
         }
 
