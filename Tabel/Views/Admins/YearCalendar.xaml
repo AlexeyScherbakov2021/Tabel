@@ -33,19 +33,19 @@
             </UniformGrid.Resources>
 
             <Border >
-                <mcal:MonthControl ChangedDays="{Binding listMonth01, Mode=TwoWay}" NumberMonth="1" Year="{Binding CurrentYear}" Margin="2"/>
+                <mcal:MonthControl ChangedDays="{Binding list12Month[0], Mode=TwoWay}" NumberMonth="1" Year="{Binding CurrentYear}" Margin="2"/>
             </Border>
 
             <Border >
-                <mcal:MonthControl ChangedDays="{Binding listMonth02}" NumberMonth="2" Year="{Binding CurrentYear}" Margin="2"/>
+                <mcal:MonthControl ChangedDays="{Binding list12Month[1], Mode=TwoWay}" NumberMonth="2" Year="{Binding CurrentYear}" Margin="2"/>
             </Border>
 
             <Border >
-                <mcal:MonthControl ChangedDays="{Binding listMonth03}" NumberMonth="3" Year="{Binding CurrentYear}" Margin="2"/>
+                <mcal:MonthControl ChangedDays="{Binding list12Month[2], Mode=TwoWay}" NumberMonth="3" Year="{Binding CurrentYear}" Margin="2"/>
             </Border>
 
             <Border >
-                <mcal:MonthControl ChangedDays="{Binding listMonth04}" NumberMonth="4" Year="{Binding CurrentYear}" Margin="2"/>
+                <mcal:MonthControl ChangedDays="{Binding list12Month[3], Mode=TwoWay}" NumberMonth="4" Year="{Binding CurrentYear}" Margin="2"/>
             </Border>
 
             <Border >

@@ -133,12 +133,12 @@ namespace Tabel.Component.MonthPanel
             StartIndex = dt.DayOfWeek == DayOfWeek.Sunday ? 6 : (int)dt.DayOfWeek - 1;
             OnPropertyChanged(nameof(StartIndex));
 
-            this.PropertyChanged += MonthControl_PropertyChanged;
+            //this.PropertyChanged += MonthControl_PropertyChanged;
         }
 
-        private void MonthControl_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-        }
+        //private void MonthControl_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        //{
+        //}
 
         public MonthControl()
         {

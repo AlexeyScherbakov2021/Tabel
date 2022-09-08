@@ -20,21 +20,18 @@ namespace Tabel.ViewModels
         private readonly RepositoryCalendar RepoCal = new RepositoryCalendar();
 
         public ObservableCollection<MonthDays>[] list12Month { get; set; }
-
-        private ObservableCollection<MonthDays> _listMonth01;
-        public ObservableCollection<MonthDays> listMonth01 { get => _listMonth01; set { Set( ref _listMonth01, value); }  }
-        
-        public ObservableCollection<MonthDays> listMonth02 { get; set; }
-        public ObservableCollection<MonthDays> listMonth03 { get; set; }
-        public ObservableCollection<MonthDays> listMonth04 { get; set; }
-        public ObservableCollection<MonthDays> listMonth05 { get; set; }
-        public ObservableCollection<MonthDays> listMonth06 { get; set; }
-        public ObservableCollection<MonthDays> listMonth07 { get; set; }
-        public ObservableCollection<MonthDays> listMonth08 { get; set; }
-        public ObservableCollection<MonthDays> listMonth09 { get; set; }
-        public ObservableCollection<MonthDays> listMonth10 { get; set; }
-        public ObservableCollection<MonthDays> listMonth11 { get; set; }
-        public ObservableCollection<MonthDays> listMonth12 { get; set; }
+        //public ObservableCollection<MonthDays> listMonth01 { get; set; }
+        //public ObservableCollection<MonthDays> listMonth02 { get; set; }
+        //public ObservableCollection<MonthDays> listMonth03 { get; set; }
+        //public ObservableCollection<MonthDays> listMonth04 { get; set; }
+        //public ObservableCollection<MonthDays> listMonth05 { get; set; }
+        //public ObservableCollection<MonthDays> listMonth06 { get; set; }
+        //public ObservableCollection<MonthDays> listMonth07 { get; set; }
+        //public ObservableCollection<MonthDays> listMonth08 { get; set; }
+        //public ObservableCollection<MonthDays> listMonth09 { get; set; }
+        //public ObservableCollection<MonthDays> listMonth10 { get; set; }
+        //public ObservableCollection<MonthDays> listMonth11 { get; set; }
+        //public ObservableCollection<MonthDays> listMonth12 { get; set; }
 
 
         private int _CurrentYear;
@@ -57,31 +54,33 @@ namespace Tabel.ViewModels
         public YearCalendarViewModel()
         {
             list12Month = new ObservableCollection<MonthDays>[12];
-            listMonth01 = new ObservableCollection<MonthDays>();
-            listMonth02 = new ObservableCollection<MonthDays>();
-            listMonth03 = new ObservableCollection<MonthDays>();
-            listMonth04 = new ObservableCollection<MonthDays>();
-            listMonth05 = new ObservableCollection<MonthDays>();
-            listMonth06 = new ObservableCollection<MonthDays>();
-            listMonth07 = new ObservableCollection<MonthDays>();
-            listMonth08 = new ObservableCollection<MonthDays>();
-            listMonth09 = new ObservableCollection<MonthDays>();
-            listMonth10 = new ObservableCollection<MonthDays>();
-            listMonth11 = new ObservableCollection<MonthDays>();
-            listMonth12 = new ObservableCollection<MonthDays>();
+            
+            
+            //listMonth01 = new ObservableCollection<MonthDays>();
+            //listMonth02 = new ObservableCollection<MonthDays>();
+            //listMonth03 = new ObservableCollection<MonthDays>();
+            //listMonth04 = new ObservableCollection<MonthDays>();
+            //listMonth05 = new ObservableCollection<MonthDays>();
+            //listMonth06 = new ObservableCollection<MonthDays>();
+            //listMonth07 = new ObservableCollection<MonthDays>();
+            //listMonth08 = new ObservableCollection<MonthDays>();
+            //listMonth09 = new ObservableCollection<MonthDays>();
+            //listMonth10 = new ObservableCollection<MonthDays>();
+            //listMonth11 = new ObservableCollection<MonthDays>();
+            //listMonth12 = new ObservableCollection<MonthDays>();
 
-            list12Month[0] = listMonth01;
-            list12Month[1] = listMonth02;
-            list12Month[2] = listMonth03;
-            list12Month[3] = listMonth04;
-            list12Month[4] = listMonth05;
-            list12Month[5] = listMonth06;
-            list12Month[6] = listMonth07;
-            list12Month[7] = listMonth08;
-            list12Month[8] = listMonth09;
-            list12Month[9] = listMonth10;
-            list12Month[10] = listMonth11;
-            list12Month[11] = listMonth12;
+            //list12Month[0] = listMonth01;
+            //list12Month[1] = listMonth02;
+            //list12Month[2] = listMonth03;
+            //list12Month[3] = listMonth04;
+            //list12Month[4] = listMonth05;
+            //list12Month[5] = listMonth06;
+            //list12Month[6] = listMonth07;
+            //list12Month[7] = listMonth08;
+            //list12Month[8] = listMonth09;
+            //list12Month[9] = listMonth10;
+            //list12Month[10] = listMonth11;
+            //list12Month[11] = listMonth12;
 
             //list12Month.Add(listMonth01);
             //list12Month.Add(listMonth02);
@@ -97,8 +96,8 @@ namespace Tabel.ViewModels
             //list12Month.Add(listMonth12);
 
             //list12Month = new ObservableCollection<MonthDays>[12];
-            //for (int i = 0; i < 12; i++)
-            //    list12Month[i] = new ObservableCollection<MonthDays>();
+            for (int i = 0; i < 12; i++)
+                list12Month[i] = new ObservableCollection<MonthDays>();
 
             ListYears = new ObservableCollection<int>( RepoCal.GetYears());
             CurrentYear = ListYears.Last();
@@ -153,15 +152,47 @@ namespace Tabel.ViewModels
             foreach(var item in days)
             {
                 MonthDays md = new MonthDays(item.cal_date.Value.Day, (TypeDays)item.cal_type);
+                list12Month[item.cal_date.Value.Month-1].Add(md);
 
-                switch (item.cal_date.Value.Month)
-                {
-                    case 1:
-                        listMonth01.Add(md);
-                        break;
-                }
-
-
+                //switch (item.cal_date.Value.Month)
+                //{
+                //    case 1:
+                //        listMonth01.Add(md);
+                //        break;
+                //    case 2:
+                //        listMonth02.Add(md);
+                //        break;
+                //    case 3:
+                //        listMonth03.Add(md);
+                //        break;
+                //    case 4:
+                //        listMonth04.Add(md);
+                //        break;
+                //    case 5:
+                //        listMonth05.Add(md);
+                //        break;
+                //    case 6:
+                //        listMonth06.Add(md);
+                //        break;
+                //    case 7:
+                //        listMonth07.Add(md);
+                //        break;
+                //    case 8:
+                //        listMonth08.Add(md);
+                //        break;
+                //    case 9:
+                //        listMonth09.Add(md);
+                //        break;
+                //    case 10:
+                //        listMonth10.Add(md);
+                //        break;
+                //    case 11:
+                //        listMonth11.Add(md);
+                //        break;
+                //    case 12:
+                //        listMonth12.Add(md);
+                //        break;
+                //}
 
                 //list12Month[item.cal_date.Value.Month - 1].Add(md);
             }
