@@ -20,9 +20,28 @@ namespace Tabel.Models
         public virtual DbSet<WorkTabel> tabels { get; set; }
         public virtual DbSet<User> users { get; set; }
         public virtual DbSet<WorkCalendar> calendars { get; set; }
+        public virtual DbSet<Smena> Smena { get; set; }
+        public virtual DbSet<SmenaPersonal> SmenaPersonals { get; set; }
+        public virtual DbSet<SmenaDay> SmenaDays { get; set; }  
+
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+
+            modelBuilder.Entity<Smena>()
+                .HasMany(e => e.ListSmenaPerson)
+                .WithOptional(e => e.Smena)
+                .HasForeignKey(e => e.SmenaId)
+                .WillCascadeOnDelete();
+
+            modelBuilder.Entity<SmenaPersonal>()
+                .HasMany(e => e.ListSmenaDays)
+                .WithOptional(e => e.SmenaPerson)
+                .HasForeignKey(e => e.SmenaPersonId)
+                .WillCascadeOnDelete();
+
+
+
             modelBuilder.Entity<Category>()
                 .Property(e => e.cat_tarif)
                 .HasPrecision(18, 4);

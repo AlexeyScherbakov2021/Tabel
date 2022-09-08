@@ -75,7 +75,11 @@
     </Compile>
     <Compile Include="Component\MonthPanel\MonthDays.cs" />
     <Compile Include="Component\MonthPanel\MonthPanel.cs" />
+    <Compile Include="Infrastructure\Enums.cs" />
     <Compile Include="Infrastructure\MonthStart1.cs" />
+    <Compile Include="Models\Smena.cs" />
+    <Compile Include="Models\SmenaDay.cs" />
+    <Compile Include="Models\SmenaPersonal.cs" />
     <Compile Include="Models\typeDay.cs" />
     <Compile Include="Repository\RepositoryCalendar.cs" />
     <Compile Include="Repository\RepositoryTabelPerson.cs" />
@@ -84,6 +88,7 @@
     <Compile Include="ViewModels\SelectOtdelWindowViewModel.cs" />
     <Compile Include="ViewModels\Admins\UserWindowViewModel.cs" />
     <Compile Include="ViewModels\Admins\YearCalendarViewModel.cs" />
+    <Compile Include="ViewModels\SmenaWindowViewModel.cs" />
     <Compile Include="Views\Admins\OtdelsWindow.xaml.cs">
       <DependentUpon>OtdelsWindow.xaml</DependentUpon>
     </Compile>
@@ -95,6 +100,9 @@
     </Compile>
     <Compile Include="Views\SelectOtdelWindow.xaml.cs">
       <DependentUpon>SelectOtdelWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SmenaWindow.xaml.cs">
+      <DependentUpon>SmenaWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="Component\MonthPanel\MonthControl.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -178,6 +186,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Views\SelectOtdelWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SmenaWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
