@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -63,30 +65,46 @@ namespace Tabel.Component.MonthPanel
         {
             if (sender is MonthControl mc)
             {
-                //IEnumerable<MonthDays> coll = e.NewValue as IEnumerable<MonthDays>;
 
                 if (e.OldValue != null)
                     (e.OldValue as ObservableCollection<MonthDays>).CollectionChanged -= mc.OnCollectionChanged;
 
                 if (e.NewValue != null)
-                    (e.NewValue as ObservableCollection<MonthDays>).CollectionChanged += mc.OnCollectionChanged;
+                {
+                    ObservableCollection<MonthDays> NewList = e.NewValue as ObservableCollection<MonthDays>;
+                    NewList.CollectionChanged += mc.OnCollectionChanged;
 
-                //foreach (var item in coll)
-                //    mc.SetTypeDay(item.Day, item.Type);
+                    foreach (var item in NewList)
+                        mc.SetTypeDays(item);
+
+                }
 
             }
         }
 
+        private void SetTypeDays(MonthDays md)
+        {
+            Days[md.Day - 1].Type = md.Type;
+            //Days[md.Day - 1].OnPropertyChanged("Type");
+        }
+
+
+
         private void OnCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
+            if (e.Action == NotifyCollectionChangedAction.Add)
             {
-                MonthDays md = e.NewItems[0] as MonthDays;
-                Days[md.Day - 1].Type = md.Type;
-                Days[md.Day - 1].OnPropertyChanged("Type");
-
-                //SetTypeDay(md.Day, md.Type);
+                SetTypeDays(e.NewItems[0] as MonthDays);
             }
+            else if (e.Action == NotifyCollectionChangedAction.Reset)
+            {
+                foreach(var item in Days)
+                {
+                    item.Type = item.OrigType;
+                    item.OnPropertyChanged("Type");
+                }
+            }
+
         }
 
         private static void OnMonthChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
@@ -123,7 +141,7 @@ namespace Tabel.Component.MonthPanel
                     typeDay = TypeDays.Holyday;
                 else
                     typeDay = TypeDays.Work;
-                MonthDays day = new MonthDays(dt2.Day, typeDay);
+                MonthDays day = new MonthDays(dt2.Day, dt.Month, typeDay);
                 dt2 = dt2.AddDays(1);
                 Days.Add(day);
             }
@@ -143,7 +161,7 @@ namespace Tabel.Component.MonthPanel
         public MonthControl()
         {
             InitializeComponent();
-            ChangedDays = new ObservableCollection<MonthDays>();
+            //ChangedDays = new ObservableCollection<MonthDays>();
             ICweek.ItemsSource = WeekDay;
             SetMonthContent(new DateTime(Year, NumberMonth, 1));
         }
@@ -158,10 +176,17 @@ namespace Tabel.Component.MonthPanel
             Days[day - 1].OnPropertyChanged("Type");
             if (ChangedDays != null)
             {
-                ChangedDays.Clear();
                 var d = GetListDays();
-                foreach(var item in d)
+                //ChangedDays.Clear();
+
+                List<MonthDays> removeList = ChangedDays.ToList();
+                foreach (var item in removeList)
+                    ChangedDays.Remove(item);
+
+                foreach (var item in d)
+                {
                     ChangedDays.Add(item);
+                }
             }
         }
 
