@@ -19,9 +19,9 @@ namespace Tabel.Models
         [Key]
         [Column("sp_Id")]
         public int id { get; set; }
-        public int PersonId { get; set; }
-        public int? SmenaId { get; set; }
-        public int Group { get; set; }
+        public int sp_PersonId { get; set; }
+        public int? sp_SmenaId { get; set; }
+        public int sp_Group { get; set; }
         public virtual Smena Smena { get; set; }
         public virtual Personal Person { get; set; }
         public virtual ICollection< SmenaDay> ListSmenaDays { get; set; }

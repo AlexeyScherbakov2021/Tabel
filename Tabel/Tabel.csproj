@@ -75,6 +75,7 @@
     </Compile>
     <Compile Include="Component\MonthPanel\MonthDays.cs" />
     <Compile Include="Component\MonthPanel\MonthPanel.cs" />
+    <Compile Include="Infrastructure\Converters\KindSmenaConverter.cs" />
     <Compile Include="Infrastructure\Enums.cs" />
     <Compile Include="Infrastructure\MonthStart1.cs" />
     <Compile Include="Models\Smena.cs" />

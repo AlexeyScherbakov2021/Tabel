@@ -31,13 +31,13 @@ namespace Tabel.Models
             modelBuilder.Entity<Smena>()
                 .HasMany(e => e.ListSmenaPerson)
                 .WithOptional(e => e.Smena)
-                .HasForeignKey(e => e.SmenaId)
+                .HasForeignKey(e => e.sp_SmenaId)
                 .WillCascadeOnDelete();
 
             modelBuilder.Entity<SmenaPersonal>()
                 .HasMany(e => e.ListSmenaDays)
                 .WithOptional(e => e.SmenaPerson)
-                .HasForeignKey(e => e.SmenaPersonId)
+                .HasForeignKey(e => e.sd_SmenaPersonId)
                 .WillCascadeOnDelete();
 
 
@@ -50,6 +50,7 @@ namespace Tabel.Models
                 .HasMany(e => e.personals)
                 .WithOptional(e => e.category)
                 .HasForeignKey(e => e.p_cat_id);
+
 
             modelBuilder.Entity<Otdel>()
                 .Property(e => e.ot_name)

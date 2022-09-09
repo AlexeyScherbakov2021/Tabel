@@ -15,9 +15,9 @@ namespace Tabel.Models
         [Key]
         [Column("sd_id")]
         public int id { get; set; }
-        public int? SmenaPersonId { get; set; }
-        public int Day { get; set; }
-        public SmenaKind Kind { get; set; }
+        public int? sd_SmenaPersonId { get; set; }
+        public int sd_Day { get; set; }
+        public SmenaKind sd_Kind { get; set; }
 
         public virtual SmenaPersonal SmenaPerson { get; set; }
     }
