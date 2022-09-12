@@ -25,6 +25,7 @@ namespace Tabel.Models
         public int sm_Month { get; set; }
         public int sm_Year { get; set; }
         public int sm_UserId { get; set; }
+        public int sm_OtdelId { get; set; }
         //public int sm_OtdelId { get; set; }
         [NotMapped]
         public virtual User UserCreater { get; set; }

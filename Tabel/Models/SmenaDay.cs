@@ -18,6 +18,8 @@ namespace Tabel.Models
         public int? sd_SmenaPersonId { get; set; }
         public int sd_Day { get; set; }
         public SmenaKind sd_Kind { get; set; }
+        //[NotMapped]
+        //public int Test { get; set; }
 
         public virtual SmenaPersonal SmenaPerson { get; set; }
     }

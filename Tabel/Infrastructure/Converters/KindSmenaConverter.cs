@@ -43,9 +43,28 @@ namespace Tabel.Infrastructure.Converters
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if(value is string s)
+            SmenaKind kind = SmenaKind.None;
+
+            if (value is string s)
             {
-                return SmenaKind.DayOff;
+                switch(s)
+                {
+                    case "1см":
+                        kind = SmenaKind.First;
+                        break;
+                    case "2см":
+                        kind = SmenaKind.Second;
+                        break;
+                    case "О":
+                        kind = SmenaKind.Otpusk;
+                        break;
+                    case "В":
+                        kind = SmenaKind.DayOff;
+                        break;
+                }
+
+
+                return kind;
 
             }
 

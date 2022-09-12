@@ -12,7 +12,7 @@ using System.Windows.Data;
 using System.Windows.Input;
 using Tabel.Commands;
 using Tabel.Infrastructure;
-using Tabel.Models;
+using Tabel.Models2;
 using Tabel.Repository;
 using Tabel.ViewModels.Base;
 

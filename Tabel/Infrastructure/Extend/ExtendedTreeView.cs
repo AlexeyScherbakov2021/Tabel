@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows;
 
-namespace Tabel.Styles
+namespace Tabel.Infrastructure.Extend
 {
     public class ExtendedTreeView : TreeView
     {
@@ -29,6 +29,8 @@ namespace Tabel.Styles
             get { return (object)GetValue(SelectedItem_Property); }
             set { SetValue(SelectedItem_Property, value); }
         }
-        public static readonly DependencyProperty SelectedItem_Property = DependencyProperty.Register("SelectedItem_", typeof(object), typeof(ExtendedTreeView), new UIPropertyMetadata(null));
+
+        public static readonly DependencyProperty SelectedItem_Property = 
+            DependencyProperty.Register("SelectedItem_", typeof(object), typeof(ExtendedTreeView), new UIPropertyMetadata(null));
     }
 }

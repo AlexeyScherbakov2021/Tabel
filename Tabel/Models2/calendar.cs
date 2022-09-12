@@ -1,10 +1,11 @@
-namespace Tabel.Models
+namespace Tabel.Models2
 {
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
+    using global::Tabel.Models;
 
     [Table("calendar")]
     public partial class WorkCalendar : IEntity
@@ -18,6 +19,6 @@ namespace Tabel.Models
         [Column(TypeName = "date")]
         public DateTime? cal_date { get; set; }
 
-        public int cal_type { get; set; }
+        public int? cal_type { get; set; }
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Tabel.Models;
+using Tabel.Models2;
 
 namespace Tabel.Repository
 {

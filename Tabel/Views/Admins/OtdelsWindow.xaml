@@ -4,8 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Tabel.Views.Admins"
+             xmlns:ext="clr-namespace:Tabel.Infrastructure.Extend"
              xmlns:m="clr-namespace:Tabel.Models"
-             xmlns:style="clr-namespace:Tabel.Styles"
              xmlns:vm="clr-namespace:Tabel.ViewModels.Admins"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="434">
     <UserControl.DataContext>
@@ -32,14 +32,14 @@
                     <Button Content="-" Command="{Binding DeleteOtdelCommand}" Margin="2"/>
                 </UniformGrid>
                 <TextBlock Text="Отделы и группы" DockPanel.Dock="Top" FontSize="14"/>
-                <style:ExtendedTreeView ItemsSource="{Binding ListOtdel}" Margin="3" SelectedItem_="{Binding SelectedOtdel, Mode=TwoWay}">
-                    <style:ExtendedTreeView.Resources>
+                <ext:ExtendedTreeView ItemsSource="{Binding ListOtdel}" Margin="3" SelectedItem_="{Binding SelectedOtdel, Mode=TwoWay}">
+                    <ext:ExtendedTreeView.Resources>
                         <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="Transparent" />
                         <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="LightBlue" />
                         <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="Black" />
                         <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="LightGray" />
-                    </style:ExtendedTreeView.Resources>
-                </style:ExtendedTreeView>
+                    </ext:ExtendedTreeView.Resources>
+                </ext:ExtendedTreeView>
             </DockPanel>
         </Border>
         <Border Grid.Column="1" Padding="3" Margin="10" CornerRadius="4" Background="LightGray" BorderThickness="1" BorderBrush="Gray" >

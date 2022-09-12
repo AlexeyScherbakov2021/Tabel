@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,6 +12,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Tabel.Infrastructure.Extend;
+using Tabel.Models;
 
 namespace Tabel.Views
 {
@@ -23,5 +26,6 @@ namespace Tabel.Views
         {
             InitializeComponent();
         }
+
     }
 }

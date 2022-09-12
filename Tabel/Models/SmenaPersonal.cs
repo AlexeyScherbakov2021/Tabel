@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -25,5 +26,9 @@ namespace Tabel.Models
         public virtual Smena Smena { get; set; }
         public virtual Personal Person { get; set; }
         public virtual ICollection< SmenaDay> ListSmenaDays { get; set; }
+
+        [NotMapped]
+        public IList SelectedDays { get; set; }
+
     }
 }

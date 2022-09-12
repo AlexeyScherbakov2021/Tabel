@@ -6,7 +6,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 using System.Threading.Tasks;
 using Tabel.Component.MonthPanel;
-using Tabel.Models;
+using Tabel.Models2;
 
 namespace Tabel.Repository
 {

@@ -4,13 +4,14 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:Tabel.ViewModels"
-        xmlns:style="clr-namespace:Tabel.Styles"
         xmlns:m="clr-namespace:Tabel.Models"
+        xmlns:ext="clr-namespace:Tabel.Infrastructure.Extend"
         xmlns:conv="clr-namespace:Tabel.Infrastructure.Converters"
+        xmlns:theme="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:local="clr-namespace:Tabel.Views"
         mc:Ignorable="d"
-        Title="График смен" Height="700" Width="1000" WindowStartupLocation="CenterScreen"
-    xmlns:theme="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2">
+        Title="График смен" Height="700" Width="1000" WindowStartupLocation="CenterScreen" >
     <Window.DataContext>
         <vm:SmenaWindowViewModel/>
     </Window.DataContext>
@@ -304,18 +305,22 @@
 
     </Window.Resources>
     <DockPanel>
+        <ToolBarPanel DockPanel.Dock="Top" Orientation="Horizontal">
+            <Button Content="Кнопка" Command="{Binding SelectCommand}"/>
+        </ToolBarPanel>
+        
         <StatusBar DockPanel.Dock="Bottom">
             <StatusBarItem Content="Пользователь: Petrov"/>
         </StatusBar>
         <Expander ExpandDirection="Right" DockPanel.Dock="Left">
-            <style:ExtendedTreeView ItemsSource="{Binding ListOtdel}" Margin="3" SelectedItem_="{Binding SelectedOtdel, Mode=TwoWay}">
-                <style:ExtendedTreeView.Resources>
+            <ext:ExtendedTreeView ItemsSource="{Binding ListOtdel}" Margin="3" SelectedItem_="{Binding SelectedOtdel, Mode=TwoWay}">
+                <TreeView.Resources>
                     <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="Transparent" />
                     <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="LightBlue" />
                     <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="Black" />
                     <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="LightGray" />
-                </style:ExtendedTreeView.Resources>
-            </style:ExtendedTreeView>
+                </TreeView.Resources>
+            </ext:ExtendedTreeView>
         </Expander>
         <Grid DockPanel.Dock="Top">
             <Grid.RowDefinitions>
@@ -330,7 +335,9 @@
                 <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <TextBlock Text="Номер документа"/>
+            
+            
+            <TextBlock Text="Номер документа" Grid.Row="0"/>
             <TextBlock Text="Месяц" Grid.Row="1" />
             <TextBlock Text="Год" Grid.Row="2" />
             <Border Grid.Row="3" Grid.ColumnSpan="4" Background="AntiqueWhite" CornerRadius="3">
@@ -350,10 +357,13 @@
                 <DataGridTemplateColumn Header="Дни">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <ListBox ItemsSource="{Binding ListSmenaDays}" SelectionMode="Extended">
+                            <ext:ListBoxExt ItemsSource="{Binding ListSmenaDays}" SelectionMode="Extended" 
+                                SelectedItems2="{Binding SelectedDays, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                
+                                     <!--SelectedItems2="{Binding SelectedDays, Mode=TwoWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}">-->
                                 <ListBox.ItemsPanel>
                                     <ItemsPanelTemplate>
-                                        <StackPanel Orientation="Horizontal" >
+                                        <StackPanel Orientation="Horizontal">
                                         </StackPanel>
                                     </ItemsPanelTemplate>
                                 </ListBox.ItemsPanel>
@@ -362,18 +372,29 @@
                                         <UniformGrid Rows="2" Margin="-2,0" >
                                             <TextBlock Text="{Binding sd_Day}" HorizontalAlignment="Center"/>
                                             <Border Background="LightSeaGreen" CornerRadius="2" ClipToBounds="True">
-                                                <ComboBox Width="28" ItemsSource="{Binding DataContext.ListKind, ElementName=dg}">
-                                                    <ComboBox.ItemTemplate>
+                                                <ComboBox Width="28" HorizontalContentAlignment="Center" Padding="2,0"
+                                                          FontWeight="Bold"
+                                                          SelectedItem="{Binding sd_Kind, Converter={StaticResource KindSmenaConverter}}"
+                                                          ItemsSource="{Binding DataContext.ListKind, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:SmenaWindow}}}">
+                                                    <!--<ComboBox.ItemTemplate>
                                                         <DataTemplate>
-                                                            <TextBlock Text="{Binding ListSmenaDays.sd_Kind, Converter={StaticResource KindSmenaConverter}}"/>
+                                                            <TextBlock Text="00000"/>
+                                                            --><!--<TextBlock Text="{Binding ListSmenaDays.sd_Kind, Converter={StaticResource KindSmenaConverter}}"/>--><!--
                                                         </DataTemplate>
-                                                    </ComboBox.ItemTemplate>
+                                                    </ComboBox.ItemTemplate>-->
+                                                    <i:Interaction.Triggers>
+                                                        <i:EventTrigger EventName="SelectionChanged">
+                                                            <i:InvokeCommandAction Command="{Binding DataContext.SelectKindCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:SmenaWindow}}}"
+                                                                CommandParameter="{Binding DataContext, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBox}}}"
+                                                                />
+                                                        </i:EventTrigger>
+                                                    </i:Interaction.Triggers>
                                                 </ComboBox>
                                             </Border>
                                         </UniformGrid>
                                     </DataTemplate>
                                 </ListBox.ItemTemplate>
-                            </ListBox>
+                            </ext:ListBoxExt>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
