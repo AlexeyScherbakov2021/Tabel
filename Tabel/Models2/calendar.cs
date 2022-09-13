@@ -5,7 +5,6 @@ namespace Tabel.Models2
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
-    using global::Tabel.Models;
 
     [Table("calendar")]
     public partial class WorkCalendar : IEntity

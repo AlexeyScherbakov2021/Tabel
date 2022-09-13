@@ -5,10 +5,11 @@ namespace Tabel.Models2
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
-    using Tabel.Models;
+    using Tabel.Infrastructure;
+    using Tabel.Models2;
 
     [Table("tabelPerson")]
-    public partial class TabelPerson : IEntity
+    public partial class TabelPerson : Observable, IEntity
     {
         [Key]
         [Column("idTabelPerson")]
@@ -24,7 +25,7 @@ namespace Tabel.Models2
 
         public int d_tabel_id { get; set; }
 
-        public virtual Personal personal { get; set; }
+        public virtual Personal person { get; set; }
 
         public virtual WorkTabel tabel { get; set; }
 

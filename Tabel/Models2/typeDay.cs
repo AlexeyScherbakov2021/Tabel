@@ -5,7 +5,6 @@ namespace Tabel.Models2
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
-    using Tabel.Models;
 
     [Table("typeDay")]
     public partial class typeDay : IEntity

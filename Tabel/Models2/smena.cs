@@ -5,7 +5,6 @@ namespace Tabel.Models2
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
-    using global::Tabel.Models;
 
     [Table("smena")]
     public partial class Smena : IEntity
@@ -13,7 +12,7 @@ namespace Tabel.Models2
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Smena()
         {
-            SmenaPersons = new HashSet<SmenaPerson>();
+            //SmenaPerson = new HashSet<SmenaPerson>();
         }
 
         [Key]
@@ -29,15 +28,15 @@ namespace Tabel.Models2
 
         public int sm_Year { get; set; }
 
-        public int sm_UserId { get; set; }
+        public int? sm_UserId { get; set; }
 
-        public int sm_OtdelId { get; set; }
+        public int? sm_OtdelId { get; set; }
 
         public virtual Otdel otdel { get; set; }
 
         public virtual User user { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<SmenaPerson> SmenaPersons { get; set; }
+        public virtual ICollection<SmenaPerson> SmenaPerson { get; set; }
     }
 }

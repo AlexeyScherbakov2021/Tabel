@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,19 +11,17 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using Tabel.Infrastructure.Extend;
 
 namespace Tabel.Views
 {
     /// <summary>
-    /// Логика взаимодействия для SmenaWindow.xaml
+    /// Логика взаимодействия для TabelWindow.xaml
     /// </summary>
-    public partial class SmenaWindow : Window
+    public partial class TabelWindow : Window
     {
-        public SmenaWindow()
+        public TabelWindow()
         {
             InitializeComponent();
         }
-
     }
 }

@@ -91,10 +91,6 @@
     <Compile Include="Models2\tabelPerson.cs" />
     <Compile Include="Models2\typeDay.cs" />
     <Compile Include="Models2\user.cs" />
-    <Compile Include="Models\Smena.cs" />
-    <Compile Include="Models\SmenaDay.cs" />
-    <Compile Include="Models\SmenaPersonal.cs" />
-    <Compile Include="Models\typeDay.cs" />
     <Compile Include="Repository\RepositoryCalendar.cs" />
     <Compile Include="Repository\RepositoryTabelPerson.cs" />
     <Compile Include="Infrastructure\Extend\ExtendedTreeView.cs" />
@@ -104,6 +100,7 @@
     <Compile Include="ViewModels\Admins\UserWindowViewModel.cs" />
     <Compile Include="ViewModels\Admins\YearCalendarViewModel.cs" />
     <Compile Include="ViewModels\SmenaWindowViewModel.cs" />
+    <Compile Include="ViewModels\TabelWindowViewModel.cs" />
     <Compile Include="Views\Admins\OtdelsWindow.xaml.cs">
       <DependentUpon>OtdelsWindow.xaml</DependentUpon>
     </Compile>
@@ -118,6 +115,9 @@
     </Compile>
     <Compile Include="Views\SmenaWindow.xaml.cs">
       <DependentUpon>SmenaWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TabelWindow.xaml.cs">
+      <DependentUpon>TabelWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="Component\MonthPanel\MonthControl.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -171,15 +171,6 @@
     <Compile Include="Commands\Command.cs" />
     <Compile Include="Commands\LambdaCommand.cs" />
     <Compile Include="Infrastructure\Observable.cs" />
-    <Compile Include="Models\calendar.cs" />
-    <Compile Include="Models\category.cs" />
-    <Compile Include="Models\TabelPerson.cs" />
-    <Compile Include="Models\BaseModel.cs" />
-    <Compile Include="Models\IEntity.cs" />
-    <Compile Include="Models\otdel.cs" />
-    <Compile Include="Models\personal.cs" />
-    <Compile Include="Models\tabel.cs" />
-    <Compile Include="Models\user.cs" />
     <Compile Include="Repository\IRepository.cs" />
     <Compile Include="Repository\RepositoryMSSQL.cs" />
     <Compile Include="Repository\RepositoryOtdel.cs" />
@@ -205,6 +196,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\SmenaWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\TabelWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

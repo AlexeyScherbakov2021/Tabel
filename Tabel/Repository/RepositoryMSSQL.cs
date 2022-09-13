@@ -25,6 +25,8 @@ namespace Tabel.Repository
             db = new BaseModel();
             _Set = db.Set<T>();
 
+            db.Configuration.LazyLoadingEnabled = true;
+            db.Configuration.ProxyCreationEnabled = true;
 //            ConnectionStringSettings settings;
 
 //#if !DEBUG
@@ -91,6 +93,12 @@ namespace Tabel.Repository
 
         public void Save()
         {
+            db.SaveChanges();
+        }
+
+        public void Remove(T item)
+        {
+            db.Set<T>().Remove(item);
             db.SaveChanges();
         }
 

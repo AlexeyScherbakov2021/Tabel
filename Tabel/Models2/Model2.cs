@@ -40,8 +40,8 @@ namespace Tabel.Models2
                 .IsUnicode(false);
 
             modelBuilder.Entity<Otdel>()
-                .HasMany(e => e.otdels1)
-                .WithOptional(e => e.otdel1)
+                .HasMany(e => e.subOtdels)
+                .WithOptional(e => e.parent)
                 .HasForeignKey(e => e.ot_parent);
 
             modelBuilder.Entity<Otdel>()
@@ -89,7 +89,7 @@ namespace Tabel.Models2
 
             modelBuilder.Entity<Personal>()
                 .HasMany(e => e.tabelPersons)
-                .WithRequired(e => e.personal)
+                .WithRequired(e => e.person)
                 .HasForeignKey(e => e.d_person_id);
 
             modelBuilder.Entity<Personal>()
@@ -103,7 +103,7 @@ namespace Tabel.Models2
                 .IsUnicode(false);
 
             modelBuilder.Entity<Smena>()
-                .HasMany(e => e.SmenaPersons)
+                .HasMany(e => e.SmenaPerson)
                 .WithRequired(e => e.smena)
                 .HasForeignKey(e => e.sp_SmenaId);
 

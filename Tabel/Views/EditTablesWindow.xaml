@@ -6,7 +6,7 @@
         xmlns:vm="clr-namespace:Tabel.ViewModels"
         xmlns:view="clr-namespace:Tabel.Views.Admins"
         xmlns:inf="clr-namespace:Tabel.Infrastructure"
-        xmlns:model="clr-namespace:Tabel.Models"
+        xmlns:model="clr-namespace:Tabel.Models2"
         xmlns:local="clr-namespace:Tabel.Views"
         xmlns:System="clr-namespace:System;assembly=mscorlib" x:Class="Tabel.Views.EditTablesWindow"
         mc:Ignorable="d"

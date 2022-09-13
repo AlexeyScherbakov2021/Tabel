@@ -1,11 +1,11 @@
 namespace Tabel.Models2
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
-    using global::Tabel.Models;
 
     [Table("SmenaPerson")]
     public partial class SmenaPerson : IEntity
@@ -32,5 +32,10 @@ namespace Tabel.Models2
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SmenaDay> SmenaDays { get; set; }
+
+        [NotMapped]
+        public IList SelectedDays { get; set; }
+        [NotMapped]
+        public int SelectIndex { get; set; }
     }
 }

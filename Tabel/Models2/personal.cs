@@ -5,7 +5,6 @@ namespace Tabel.Models2
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
-    using global::Tabel.Models;
 
     [Table("personal")]
     public partial class Personal : IEntity
@@ -49,5 +48,8 @@ namespace Tabel.Models2
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SmenaPerson> SmenaPersons { get; set; }
+
+        [NotMapped]
+        public string FIO => p_lastname + " " + p_name + " " + p_midname;
     }
 }

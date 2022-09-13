@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Tabel.Views.Admins"
              xmlns:ext="clr-namespace:Tabel.Infrastructure.Extend"
-             xmlns:m="clr-namespace:Tabel.Models"
+             xmlns:m="clr-namespace:Tabel.Models2"
              xmlns:vm="clr-namespace:Tabel.ViewModels.Admins"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="434">
     <UserControl.DataContext>

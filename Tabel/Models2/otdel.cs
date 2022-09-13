@@ -5,14 +5,13 @@ namespace Tabel.Models2
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
-    using global::Tabel.Models;
 
     public partial class Otdel : IEntity
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Otdel()
         {
-            otdels1 = new HashSet<Otdel>();
+            subOtdels = new HashSet<Otdel>();
             personals = new HashSet<Personal>();
             smenas = new HashSet<Smena>();
             tabels = new HashSet<WorkTabel>();
@@ -29,9 +28,9 @@ namespace Tabel.Models2
         public int? ot_parent { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Otdel> otdels1 { get; set; }
+        public virtual ICollection<Otdel> subOtdels { get; set; }
 
-        public virtual Otdel otdel1 { get; set; }
+        public virtual Otdel parent { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Personal> personals { get; set; }

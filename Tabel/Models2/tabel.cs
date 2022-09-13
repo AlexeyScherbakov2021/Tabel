@@ -4,7 +4,6 @@ namespace Tabel.Models2
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
-    using Tabel.Models;
 
     [Table("tabel")]
     public partial class WorkTabel : IEntity
