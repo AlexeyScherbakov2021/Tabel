@@ -45,6 +45,9 @@ namespace Tabel.Repository
 
         public T Add(T item, bool Autosave = false)
         {
+            //return db.Set<T>().Add(item);
+
+
             if (item is null) throw new ArgumentNullException(nameof(item));
             db.Entry(item).State = EntityState.Added;
             if(Autosave)

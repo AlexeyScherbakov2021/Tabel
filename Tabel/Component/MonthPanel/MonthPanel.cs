@@ -49,13 +49,11 @@ namespace Tabel.Component.MonthPanel
 
         protected override Size MeasureOverride(Size availableSize)
         {
-            foreach(UIElement child in Children)
+            Size size = new Size(double.PositiveInfinity, double.PositiveInfinity);
+            foreach (UIElement child in Children)
             {
                 if(child != null)
-                {
-                    child.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
-
-                }
+                    child.Measure(size);
             }
 
             return new Size(HorizontalSpace * 6, VerticalSpace * 7);

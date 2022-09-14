@@ -12,7 +12,7 @@ namespace Tabel.Models2
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Personal()
         {
-            tabelPersons = new HashSet<TabelPerson>();
+            TabelPersons = new HashSet<TabelPerson>();
             SmenaPersons = new HashSet<SmenaPerson>();
         }
 
@@ -44,7 +44,7 @@ namespace Tabel.Models2
         public virtual Otdel otdel { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<TabelPerson> tabelPersons { get; set; }
+        public virtual ICollection<TabelPerson> TabelPersons { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SmenaPerson> SmenaPersons { get; set; }

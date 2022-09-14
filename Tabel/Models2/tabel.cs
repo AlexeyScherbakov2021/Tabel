@@ -31,8 +31,12 @@ namespace Tabel.Models2
 
         public int? t_status { get; set; }
 
-        [StringLength(180)]
-        public string t_author { get; set; }
+        //[StringLength(180)]
+        //public string t_author { get; set; }
+
+        public int t_author_id { get; set; }
+
+        public virtual User Author { get; set; }
 
         public virtual Otdel otdel { get; set; }
 

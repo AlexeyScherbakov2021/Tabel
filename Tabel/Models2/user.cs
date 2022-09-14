@@ -12,6 +12,7 @@ namespace Tabel.Models2
         public User()
         {
             smenas = new HashSet<Smena>();
+            tabels = new HashSet<WorkTabel>();
         }
 
         [Key]
@@ -35,5 +36,8 @@ namespace Tabel.Models2
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Smena> smenas { get; set; }
+        
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<WorkTabel> tabels { get; set; }
     }
 }

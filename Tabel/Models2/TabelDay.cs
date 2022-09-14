@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace Tabel.Models2
 {
@@ -23,8 +24,14 @@ namespace Tabel.Models2
 
         public virtual typeDay Kind { get; set; }
 
-        public virtual Personal person { get; set; }
+        //public virtual Personal person { get; set; }
 
         public virtual TabelPerson TabelPerson { get; set; }
+
+        [NotMapped]
+        public int td_Hours2 { get; set; }
+        [NotMapped]
+        public Visibility VisibilityHours { get; set; } = Visibility.Collapsed;
+
     }
 }

@@ -88,9 +88,9 @@ namespace Tabel.Models2
                 .IsUnicode(false);
 
             modelBuilder.Entity<Personal>()
-                .HasMany(e => e.tabelPersons)
+                .HasMany(e => e.TabelPersons)
                 .WithRequired(e => e.person)
-                .HasForeignKey(e => e.d_person_id);
+                .HasForeignKey(e => e.tp_person_id);
 
             modelBuilder.Entity<Personal>()
                 .HasMany(e => e.SmenaPersons)
@@ -124,14 +124,14 @@ namespace Tabel.Models2
                 .Property(e => e.t_number)
                 .IsUnicode(false);
 
-            modelBuilder.Entity<WorkTabel>()
-                .Property(e => e.t_author)
-                .IsUnicode(false);
+            //modelBuilder.Entity<WorkTabel>()
+            //    .Property(e => e.t_author)
+            //    .IsUnicode(false);
 
             modelBuilder.Entity<WorkTabel>()
                 .HasMany(e => e.tabelPersons)
                 .WithRequired(e => e.tabel)
-                .HasForeignKey(e => e.d_tabel_id);
+                .HasForeignKey(e => e.tp_tabel_id);
 
             modelBuilder.Entity<typeDay>()
                 .Property(e => e.t_name)
@@ -163,6 +163,13 @@ namespace Tabel.Models2
                 .WithRequired(e => e.user)
                 .HasForeignKey(e => e.sm_UserId)
                 .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<User>()
+                .HasMany(e => e.tabels)
+                .WithRequired(e => e.Author)
+                .HasForeignKey(e => e.t_author_id)
+                .WillCascadeOnDelete(false);
+
         }
     }
 }

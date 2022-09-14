@@ -8,8 +8,9 @@
         xmlns:m="clr-namespace:Tabel.Models2"
         xmlns:theme="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2"
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:comp="clr-namespace:Tabel.Component.TabelPanel"
         xmlns:ext="clr-namespace:Tabel.Infrastructure.Extend"
-        xmlns:local="clr-namespace:Tabel.Views"
+        xmlns:local="clr-namespace:Tabel.Views" xmlns:tabelpanel="clr-namespace:Tabel.Component.TabelPanel"
         mc:Ignorable="d"
         Title="Табель учета рабочего времени" Height="700" Width="1320" WindowStartupLocation="CenterScreen">
     <Window.DataContext>
@@ -329,7 +330,7 @@
                 <RowDefinition/>
                 <RowDefinition/>
                 <RowDefinition/>
-                <RowDefinition/>
+                <RowDefinition Height="50"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="2"/>
@@ -337,81 +338,46 @@
                 <ColumnDefinition Width="160"/>
                 <ColumnDefinition Width="130"/>
                 <ColumnDefinition Width="160"/>
-                <ColumnDefinition />
+                <ColumnDefinition Width="208*" />
+                <ColumnDefinition Width="509*"/>
             </Grid.ColumnDefinitions>
 
-            <TextBlock Text="Номер документа" Grid.Row="0" Margin="13,0,15,22" Grid.Column="1" Grid.RowSpan="2"/>
+            <TextBlock Text="Номер документа" Grid.Row="0" Margin="13,0,15,2" Grid.Column="1"/>
             <TextBlock Text="Месяц" Grid.Row="1" Margin="13,0,15,18" Grid.Column="1" Grid.RowSpan="2" />
             <TextBlock Text="Год" Grid.Row="2"  Margin="13,0,15,24" Grid.Column="1" Grid.RowSpan="2"/>
-            <TextBox Text="{Binding SmenaShedule.sm_Year}" Grid.Row="2" Grid.Column="2" Margin="15,0,15,24" Grid.RowSpan="2"/>
+            <TextBox Text="{Binding Tabel.t_year}" Grid.Row="2" Grid.Column="2" Margin="15,0,15,24" Grid.RowSpan="2"/>
 
-            <Border Grid.Row="3" Grid.ColumnSpan="6" Background="AntiqueWhite" CornerRadius="3">
+            <Border Grid.Row="3" Grid.ColumnSpan="7" Background="AntiqueWhite" CornerRadius="3">
                 <TextBlock Text="{Binding SelectedOtdel.ot_name}" HorizontalAlignment="Center" FontSize="18" FontWeight="Bold"/>
             </Border>
 
-            <TextBox Text="{Binding SmenaShedule.sm_Number}" Grid.Column="2" Margin="15,0,15,22" Grid.RowSpan="2"/>
+            <TextBox Text="{Binding Tabel.t_number}" Grid.Column="2" Margin="15,0,15,2"/>
             <ComboBox Text="Апрель" Grid.Column="2" Grid.Row="1" Margin="15,0,15,18" Grid.RowSpan="2"/>
-            <TextBlock Text="Дата создания" Grid.Column="3" Margin="15,0,15,22" Grid.RowSpan="2" />
-            <TextBox Text="{Binding SmenaShedule.sm_DateCreate, StringFormat=dd.MM.yyyy HH:mm:ss}" Grid.Row="0" 
-                     Grid.Column="4" Margin="15,0,15,22" Grid.RowSpan="2"/>
+            <TextBlock Text="Дата создания" Grid.Column="3" Margin="15,0,15,2" />
+            <TextBox Text="{Binding Tabel.t_date_create, StringFormat=dd.MM.yyyy HH:mm:ss}" Grid.Row="0" 
+                     Grid.Column="4" Margin="15,0,15,2"/>
 
-            <!--<ListBox ItemsSource="{Binding SmenaShedule.SmenaPerson}" Grid.Column="5" Grid.Row="2"/>-->
+            <tabelpanel:TabelControl SourceCollection="{Binding TestTabelDays}" Grid.Column="5" Grid.Row="0" Grid.RowSpan="6" Grid.ColumnSpan="2" 
+                                     ItemsKind="{Binding ListTypeDays}"
+                                     Margin="0,0,0,0"/>
+
         </Grid>
-        <DataGrid x:Name="dg" ItemsSource="{Binding SmenaShedule.SmenaPerson}" Style="{DynamicResource DataGridStyle}" 
-                  FrozenColumnCount="1">
+        <DataGrid x:Name="dg" ItemsSource="{Binding Tabel.tabelPersons}" AutoGenerateColumns="False" IsReadOnly="False" 
+                  FrozenColumnCount="1" VirtualizingPanel.ScrollUnit="Pixel">
             <DataGrid.Columns>
                 <DataGridTemplateColumn Header="Сотрудник" IsReadOnly="True" Width="120">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding personal.FIO}" TextWrapping="Wrap" />
+                            <TextBlock Text="{Binding person.FIO}" TextWrapping="Wrap" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
                 <!--<DataGridTextColumn Header="Сотрудник" Binding="{Binding personal.FIO}" IsReadOnly="True"/>-->
-                <DataGridTemplateColumn Header="Дни">
+                <DataGridTemplateColumn Header="Дни" IsReadOnly="True">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <ext:ListBoxExt ItemsSource="{Binding SmenaDays}" SelectionMode="Extended" 
-                                    SelectedIndex="{Binding SelectIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                    SelectedItems2="{Binding SelectedDays, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-
-                                <!--SelectedItems2="{Binding SelectedDays, Mode=TwoWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}">-->
-                                <ListBox.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <StackPanel Orientation="Horizontal">
-                                        </StackPanel>
-                                    </ItemsPanelTemplate>
-                                </ListBox.ItemsPanel>
-                                <ListBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <UniformGrid Rows="2" Margin="-2,0" >
-                                            <TextBlock Text="{Binding sd_Day}" HorizontalAlignment="Center"/>
-                                            <Border Background="LightSeaGreen" CornerRadius="2" ClipToBounds="True">
-                                                <ComboBox Width="28" HorizontalContentAlignment="Center" Padding="2,0"
-                                                          FontWeight="Bold"
-                                                          SelectedItem="{Binding sd_Kind, Converter={StaticResource KindSmenaConverter}}"
-                                                          ItemsSource="{Binding DataContext.ListKind, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:SmenaWindow}}}">
-                                                    <!--<ComboBox.ItemTemplate>
-                                                        <DataTemplate>
-                                                            <TextBlock Text="00000"/>
-                                                            -->
-                                                    <!--<TextBlock Text="{Binding ListSmenaDays.sd_Kind, Converter={StaticResource KindSmenaConverter}}"/>-->
-                                                    <!--
-                                                        </DataTemplate>
-                                                    </ComboBox.ItemTemplate>-->
-                                                    <i:Interaction.Triggers>
-                                                        <i:EventTrigger EventName="SelectionChanged">
-                                                            <i:InvokeCommandAction Command="{Binding DataContext.SelectKindCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:SmenaWindow}}}"
-                                                                CommandParameter="{Binding DataContext, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBox}}}"
-                                                                />
-                                                        </i:EventTrigger>
-                                                    </i:Interaction.Triggers>
-                                                </ComboBox>
-                                            </Border>
-                                        </UniformGrid>
-                                    </DataTemplate>
-                                </ListBox.ItemTemplate>
-                            </ext:ListBoxExt>
+                            <comp:TabelControl SourceCollection="{Binding TabelDays, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                               ItemsKind="{Binding DataContext.ListTypeDays, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

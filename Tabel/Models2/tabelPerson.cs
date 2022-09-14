@@ -20,9 +20,9 @@ namespace Tabel.Models2
         [Column("tp_Id")]
         public int id { get; set; }
 
-        public int? d_person_id { get; set; }
+        public int? tp_person_id { get; set; }
 
-        public int d_tabel_id { get; set; }
+        public int tp_tabel_id { get; set; }
 
         public virtual Personal person { get; set; }
 
@@ -30,6 +30,9 @@ namespace Tabel.Models2
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TabelDay> TabelDays { get; set; }
+
+        [NotMapped]
+        public int DaysWeek1 { get; set; }
 
     }
 }
