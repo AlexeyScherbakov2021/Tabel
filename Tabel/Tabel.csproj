@@ -89,6 +89,7 @@
     <Compile Include="Models2\SmenaPerson.cs" />
     <Compile Include="Models2\tabel.cs" />
     <Compile Include="Models2\tabelPerson.cs" />
+    <Compile Include="Models2\TabelDay.cs" />
     <Compile Include="Models2\typeDay.cs" />
     <Compile Include="Models2\user.cs" />
     <Compile Include="Repository\RepositoryCalendar.cs" />

@@ -9,19 +9,18 @@ namespace Tabel.Models2
     using Tabel.Models2;
 
     [Table("tabelPerson")]
-    public partial class TabelPerson : Observable, IEntity
+    public partial class TabelPerson : IEntity
     {
+        public TabelPerson()
+        {
+            TabelDays = new HashSet<TabelDay>();
+        }
+
         [Key]
-        [Column("idTabelPerson")]
+        [Column("tp_Id")]
         public int id { get; set; }
 
-        public int d_person_id { get; set; }
-
-        public int d_day { get; set; }
-
-        public int? d_hours { get; set; }
-
-        public int? d_type { get; set; }
+        public int? d_person_id { get; set; }
 
         public int d_tabel_id { get; set; }
 
@@ -29,6 +28,8 @@ namespace Tabel.Models2
 
         public virtual WorkTabel tabel { get; set; }
 
-        public virtual typeDay typeDay { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<TabelDay> TabelDays { get; set; }
+
     }
 }

@@ -2,9 +2,11 @@ namespace Tabel.Models2
 {
     using System;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
+    using Tabel.Infrastructure;
 
     [Table("smena")]
     public partial class Smena : IEntity
@@ -12,7 +14,7 @@ namespace Tabel.Models2
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Smena()
         {
-            //SmenaPerson = new HashSet<SmenaPerson>();
+            SmenaPerson = new HashSet<SmenaPerson>();
         }
 
         [Key]

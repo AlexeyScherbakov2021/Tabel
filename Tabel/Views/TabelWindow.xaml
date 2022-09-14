@@ -4,7 +4,11 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:Tabel.ViewModels"
+        xmlns:conv="clr-namespace:Tabel.Infrastructure.Converters"
+        xmlns:m="clr-namespace:Tabel.Models2"
         xmlns:theme="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:ext="clr-namespace:Tabel.Infrastructure.Extend"
         xmlns:local="clr-namespace:Tabel.Views"
         mc:Ignorable="d"
         Title="Табель учета рабочего времени" Height="700" Width="1320" WindowStartupLocation="CenterScreen">
@@ -12,6 +16,11 @@
         <vm:TabelWindowViewModel/>
     </Window.DataContext>
     <Window.Resources>
+        <conv:KindSmenaConverter x:Key="KindSmenaConverter"/>
+
+        <HierarchicalDataTemplate DataType="{x:Type m:Otdel}" ItemsSource="{Binding subOtdels}">
+            <TextBlock Text="{Binding ot_name}"/>
+        </HierarchicalDataTemplate>
         <Style x:Key="FocusVisual">
             <Setter Property="Control.Template">
                 <Setter.Value>
@@ -89,10 +98,10 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type ToggleButton}">
-                        <Border x:Name="templateRoot" Background="{Binding Background, RelativeSource={RelativeSource TemplatedParent}}" BorderBrush="{StaticResource ComboBox.Static.Border}" BorderThickness="{TemplateBinding BorderThickness}" SnapsToDevicePixels="true">
-                            <!--<Border x:Name="splitBorder" BorderBrush="Transparent" BorderThickness="1" HorizontalAlignment="Right" Margin="0" SnapsToDevicePixels="true" Width="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}">
-                                <Path x:Name="arrow" Data="F1 M 0,0 L 2.667,2.66665 L 5.3334,0 L 5.3334,-1.78168 L 2.6667,0.88501 L0,-1.78168 L0,0 Z" Fill="{StaticResource ComboBox.Static.Glyph}" HorizontalAlignment="Center" Margin="0" VerticalAlignment="Center"/>
-                            </Border>-->
+                        <Border x:Name="templateRoot" Background="{StaticResource ComboBox.Static.Background}" BorderBrush="{StaticResource ComboBox.Static.Border}" BorderThickness="{TemplateBinding BorderThickness}" SnapsToDevicePixels="true">
+                            <Border x:Name="splitBorder" BorderBrush="Transparent" BorderThickness="1" HorizontalAlignment="Right" Margin="0" SnapsToDevicePixels="true" Width="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}">
+                                <!--<Path x:Name="arrow" Data="F1 M 0,0 L 2.667,2.66665 L 5.3334,0 L 5.3334,-1.78168 L 2.6667,0.88501 L0,-1.78168 L0,0 Z" Fill="{StaticResource ComboBox.Static.Glyph}" HorizontalAlignment="Center" Margin="0" VerticalAlignment="Center"/>-->
+                            </Border>
                         </Border>
                         <ControlTemplate.Triggers>
                             <MultiDataTrigger>
@@ -104,8 +113,8 @@
                                 </MultiDataTrigger.Conditions>
                                 <Setter Property="Background" TargetName="templateRoot" Value="{StaticResource ComboBox.Static.Editable.Background}"/>
                                 <Setter Property="BorderBrush" TargetName="templateRoot" Value="{StaticResource ComboBox.Static.Editable.Border}"/>
-                                <!--<Setter Property="Background" TargetName="splitBorder" Value="{StaticResource ComboBox.Static.Editable.Button.Background}"/>
-                                <Setter Property="BorderBrush" TargetName="splitBorder" Value="{StaticResource ComboBox.Static.Editable.Button.Border}"/>-->
+                                <Setter Property="Background" TargetName="splitBorder" Value="{StaticResource ComboBox.Static.Editable.Button.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="splitBorder" Value="{StaticResource ComboBox.Static.Editable.Button.Border}"/>
                             </MultiDataTrigger>
                             <!--<Trigger Property="IsMouseOver" Value="true">
                                 <Setter Property="Fill" TargetName="arrow" Value="{StaticResource ComboBox.MouseOver.Glyph}"/>
@@ -125,8 +134,8 @@
                                 </MultiDataTrigger.Conditions>
                                 <Setter Property="Background" TargetName="templateRoot" Value="{StaticResource ComboBox.MouseOver.Editable.Background}"/>
                                 <Setter Property="BorderBrush" TargetName="templateRoot" Value="{StaticResource ComboBox.MouseOver.Editable.Border}"/>
-                                <!--<Setter Property="Background" TargetName="splitBorder" Value="{StaticResource ComboBox.MouseOver.Editable.Button.Background}"/>
-                                <Setter Property="BorderBrush" TargetName="splitBorder" Value="{StaticResource ComboBox.MouseOver.Editable.Button.Border}"/>-->
+                                <Setter Property="Background" TargetName="splitBorder" Value="{StaticResource ComboBox.MouseOver.Editable.Button.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="splitBorder" Value="{StaticResource ComboBox.MouseOver.Editable.Button.Border}"/>
                             </MultiDataTrigger>
                             <!--<Trigger Property="IsPressed" Value="true">
                                 <Setter Property="Fill" TargetName="arrow" Value="{StaticResource ComboBox.Pressed.Glyph}"/>
@@ -146,8 +155,8 @@
                                 </MultiDataTrigger.Conditions>
                                 <Setter Property="Background" TargetName="templateRoot" Value="{StaticResource ComboBox.Pressed.Editable.Background}"/>
                                 <Setter Property="BorderBrush" TargetName="templateRoot" Value="{StaticResource ComboBox.Pressed.Editable.Border}"/>
-                                <!--<Setter Property="Background" TargetName="splitBorder" Value="{StaticResource ComboBox.Pressed.Editable.Button.Background}"/>
-                                <Setter Property="BorderBrush" TargetName="splitBorder" Value="{StaticResource ComboBox.Pressed.Editable.Button.Border}"/>-->
+                                <Setter Property="Background" TargetName="splitBorder" Value="{StaticResource ComboBox.Pressed.Editable.Button.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="splitBorder" Value="{StaticResource ComboBox.Pressed.Editable.Button.Border}"/>
                             </MultiDataTrigger>
                             <!--<Trigger Property="IsEnabled" Value="false">
                                 <Setter Property="Fill" TargetName="arrow" Value="{StaticResource ComboBox.Disabled.Glyph}"/>
@@ -167,8 +176,8 @@
                                 </MultiDataTrigger.Conditions>
                                 <Setter Property="Background" TargetName="templateRoot" Value="{StaticResource ComboBox.Disabled.Editable.Background}"/>
                                 <Setter Property="BorderBrush" TargetName="templateRoot" Value="{StaticResource ComboBox.Disabled.Editable.Border}"/>
-                                <!--<Setter Property="Background" TargetName="splitBorder" Value="{StaticResource ComboBox.Disabled.Editable.Button.Background}"/>
-                                <Setter Property="BorderBrush" TargetName="splitBorder" Value="{StaticResource ComboBox.Disabled.Editable.Button.Border}"/>-->
+                                <Setter Property="Background" TargetName="splitBorder" Value="{StaticResource ComboBox.Disabled.Editable.Button.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="splitBorder" Value="{StaticResource ComboBox.Disabled.Editable.Button.Border}"/>
                             </MultiDataTrigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -177,6 +186,10 @@
         </Style>
         <ControlTemplate x:Key="ComboBoxEditableTemplate" TargetType="{x:Type ComboBox}">
             <Grid x:Name="templateRoot" SnapsToDevicePixels="true">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition MinWidth="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}" Width="0"/>
+                </Grid.ColumnDefinitions>
                 <Popup x:Name="PART_Popup" AllowsTransparency="true" Grid.ColumnSpan="2" IsOpen="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}" Placement="Bottom" PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}">
                     <theme:SystemDropShadowChrome x:Name="shadow" Color="Transparent" MinWidth="{Binding ActualWidth, ElementName=templateRoot}" MaxHeight="{TemplateBinding MaxDropDownHeight}">
                         <Border x:Name="dropDownBorder" Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}" BorderBrush="{DynamicResource {x:Static SystemColors.WindowFrameBrushKey}}" BorderThickness="1">
@@ -191,7 +204,7 @@
                         </Border>
                     </theme:SystemDropShadowChrome>
                 </Popup>
-                <ToggleButton x:Name="toggleButton" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Grid.ColumnSpan="2" IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" Style="{StaticResource ComboBoxToggleButton}"/>
+                <!--<ToggleButton x:Name="toggleButton" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Grid.ColumnSpan="2" IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" Style="{StaticResource ComboBoxToggleButton}"/>-->
                 <Border x:Name="border" Background="{StaticResource TextBox.Static.Background}" Margin="{TemplateBinding BorderThickness}">
                     <TextBox x:Name="PART_EditableTextBox" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" IsReadOnly="{Binding IsReadOnly, RelativeSource={RelativeSource TemplatedParent}}" Margin="{TemplateBinding Padding}" Style="{StaticResource ComboBoxEditableTextBox}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
                 </Border>
@@ -225,6 +238,10 @@
         </ControlTemplate>
         <ControlTemplate x:Key="ComboBoxTemplate" TargetType="{x:Type ComboBox}">
             <Grid x:Name="templateRoot" SnapsToDevicePixels="true">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <!--<ColumnDefinition MinWidth="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}" Width="0"/>-->
+                </Grid.ColumnDefinitions>
                 <Popup x:Name="PART_Popup" AllowsTransparency="true" Grid.ColumnSpan="2" IsOpen="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" Margin="1" Placement="Bottom" PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}">
                     <theme:SystemDropShadowChrome x:Name="shadow" Color="Transparent" MinWidth="{Binding ActualWidth, ElementName=templateRoot}" MaxHeight="{TemplateBinding MaxDropDownHeight}">
                         <Border x:Name="dropDownBorder" Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}" BorderBrush="{DynamicResource {x:Static SystemColors.WindowFrameBrushKey}}" BorderThickness="1">
@@ -240,7 +257,7 @@
                     </theme:SystemDropShadowChrome>
                 </Popup>
                 <ToggleButton x:Name="toggleButton" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Grid.ColumnSpan="2" IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" Style="{StaticResource ComboBoxToggleButton}"/>
-                <ContentPresenter x:Name="contentPresenter" ContentStringFormat="{TemplateBinding SelectionBoxItemStringFormat}" ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}" Content="{TemplateBinding SelectionBoxItem}" ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}" HorizontalAlignment="Center" IsHitTestVisible="false" Margin="{TemplateBinding Padding}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                <ContentPresenter x:Name="contentPresenter" ContentStringFormat="{TemplateBinding SelectionBoxItemStringFormat}" ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}" Content="{TemplateBinding SelectionBoxItem}" ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" IsHitTestVisible="false" Margin="{TemplateBinding Padding}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
             </Grid>
             <ControlTemplate.Triggers>
                 <Trigger Property="HasDropShadow" SourceName="PART_Popup" Value="true">
@@ -263,7 +280,7 @@
                 </Trigger>
             </ControlTemplate.Triggers>
         </ControlTemplate>
-        <Style x:Key="ComboBoxStyleTab" TargetType="{x:Type ComboBox}">
+        <Style  TargetType="{x:Type ComboBox}">
             <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
             <Setter Property="Background" Value="{StaticResource ComboBox.Static.Background}"/>
             <Setter Property="BorderBrush" Value="{StaticResource ComboBox.Static.Border}"/>
@@ -286,105 +303,121 @@
         </Style>
     </Window.Resources>
 
+
     <DockPanel>
-        <StatusBar DockPanel.Dock="Bottom" Height="28">
-            <StatusBarItem Content="Пользователь: " />
-            <StatusBarItem Content="{Binding CurrentUser.u_fio}"/>
+        <ToolBarPanel DockPanel.Dock="Top" Orientation="Horizontal" Height="30" Margin="0,0,0,8">
+            <Button Content="Создать график" Command="{Binding CreateCommand}" Margin="3" Style="{DynamicResource ButtonStyleShadow}"/>
+            <Button Content="Сохранить" Command="{Binding SaveCommand}" Margin="3" Style="{DynamicResource ButtonStyleShadow}"/>
+        </ToolBarPanel>
+
+        <StatusBar DockPanel.Dock="Bottom">
+            <StatusBarItem Content="Пользователь:"/>
+            <StatusBarItem Content="{Binding User.u_fio}"/>
         </StatusBar>
-        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Background="#FFE2E6F5" Height="46">
-            <TextBlock Text="Месяц " VerticalAlignment="Center" Margin="20,0,0,0"/>
-            <ComboBox Width="124" VerticalAlignment="Center" SelectedValue="{Binding CurrentTabel.t_month}"
-                      ItemsSource="{Binding ListMonth}" SelectedValuePath="Number">
-            </ComboBox>
-            <TextBlock Text="Номер " VerticalAlignment="Center" Margin="21,0,0,0"/>
-            <TextBox Text="{Binding CurrentTabel.t_number}" Width="98" VerticalAlignment="Center"/>
-            <TextBlock Text="Дата составления " VerticalAlignment="Center" Margin="26,0,0,0"/>
-            <DatePicker VerticalAlignment="Center" FirstDayOfWeek="Monday" Width="136" SelectedDate="{Binding CurrentTabel.t_date_create}"/>
-            <Button Content="Сохранить" Command="{Binding SaveCommand}" Style="{DynamicResource ButtonStyleShadow}" Padding="5,0" Margin="3,4,0,4"/>
-            <Button Content="Загрузить из произв. календаря" Command="{Binding LoadDefCommand}" Style="{DynamicResource ButtonStyleShadow}" Padding="5, 0" Margin="3,2,0,4"/>
-        </StackPanel>
-        <DataGrid IsReadOnly="True" DockPanel.Dock="Left" ItemsSource="{Binding PersonalList}" Style="{DynamicResource DataGridStyle}"
-                  SelectedItem="{Binding SelectedPerson}" Width="372" SelectionMode="Single">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Таб.№" Binding="{Binding p_tab_number}" Width="70"/>
-                <DataGridTextColumn Header="Фамилия" Binding="{Binding p_lastname}" Width="140"/>
-                <!--<DataGridTextColumn Header="Имя" Binding="{Binding p_name}" Width="150"/>
-                <DataGridTextColumn Header="Отчество" Binding="{Binding p_midname}" Width="160"/>-->
-                <DataGridTextColumn Header="Должность" Binding="{Binding p_profession}" Width="160"/>
-            </DataGrid.Columns>
-        </DataGrid>
-        <!--<ListBox ItemsSource="{Binding ListTypeDay}" DockPanel.Dock="Bottom" Height="100">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="40"/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Text="{Binding t_name}" FontWeight="Bold"/>
-                        <TextBlock Text="{Binding t_desc}" Grid.Column="1"/>
-                    </Grid>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>-->
+        <Expander ExpandDirection="Right" DockPanel.Dock="Left">
+            <ext:ExtendedTreeView ItemsSource="{Binding ListOtdel}" Margin="3" SelectedItem_="{Binding SelectedOtdel, Mode=TwoWay}">
+                <TreeView.Resources>
+                    <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="Transparent" />
+                    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="LightBlue" />
+                    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="Black" />
+                    <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="LightGray" />
+                </TreeView.Resources>
+            </ext:ExtendedTreeView>
+        </Expander>
         <Grid DockPanel.Dock="Top">
             <Grid.RowDefinitions>
-                <RowDefinition Height="28"/>
-                <RowDefinition Height="28"/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="50"/>
-                <ColumnDefinition Width="50"/>
-                <ColumnDefinition Width="300"/>
-                <ColumnDefinition Width="80"/>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="2"/>
+                <ColumnDefinition Width="128"/>
+                <ColumnDefinition Width="160"/>
+                <ColumnDefinition Width="130"/>
+                <ColumnDefinition Width="160"/>
+                <ColumnDefinition />
             </Grid.ColumnDefinitions>
-            <TextBlock Grid.Row="0" Grid.Column="1" Text="Отдел:" VerticalAlignment="Center" HorizontalAlignment="Right" FontSize="16" Margin="0,0,4,0"/>
-            <TextBlock Grid.Row="1" Grid.Column="1" Text="Таб №:" VerticalAlignment="Center" HorizontalAlignment="Right" FontSize="16" Margin="0,0,4,0"/>
-            <TextBlock Grid.Row="1" Grid.Column="3" Text="ФИО:" VerticalAlignment="Center" HorizontalAlignment="Right" FontSize="16" Margin="0,0,4,0"/>
-            <TextBlock Grid.Row="0" Grid.Column="3" Text="Должность:" VerticalAlignment="Center" HorizontalAlignment="Right" FontSize="16" Margin="0,0,4,0"/>
 
-            <TextBlock Grid.Row="0" Grid.Column="2" Text="{Binding SelectedPerson.otdel.ot_name}" VerticalAlignment="Center" FontWeight="Bold" FontSize="16"/>
-            <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding SelectedPerson.p_tab_number}" VerticalAlignment="Center" FontWeight="Bold" FontSize="16"/>
-            <TextBlock Grid.Row="1" Grid.Column="4" Text="{Binding FIO}" VerticalAlignment="Center" FontWeight="Bold" FontSize="16"/>
-            <TextBlock Grid.Row="0" Grid.Column="4" Text="{Binding SelectedPerson.p_profession}" VerticalAlignment="Center" FontWeight="Bold" FontSize="16"/>
+            <TextBlock Text="Номер документа" Grid.Row="0" Margin="13,0,15,22" Grid.Column="1" Grid.RowSpan="2"/>
+            <TextBlock Text="Месяц" Grid.Row="1" Margin="13,0,15,18" Grid.Column="1" Grid.RowSpan="2" />
+            <TextBlock Text="Год" Grid.Row="2"  Margin="13,0,15,24" Grid.Column="1" Grid.RowSpan="2"/>
+            <TextBox Text="{Binding SmenaShedule.sm_Year}" Grid.Row="2" Grid.Column="2" Margin="15,0,15,24" Grid.RowSpan="2"/>
+
+            <Border Grid.Row="3" Grid.ColumnSpan="6" Background="AntiqueWhite" CornerRadius="3">
+                <TextBlock Text="{Binding SelectedOtdel.ot_name}" HorizontalAlignment="Center" FontSize="18" FontWeight="Bold"/>
+            </Border>
+
+            <TextBox Text="{Binding SmenaShedule.sm_Number}" Grid.Column="2" Margin="15,0,15,22" Grid.RowSpan="2"/>
+            <ComboBox Text="Апрель" Grid.Column="2" Grid.Row="1" Margin="15,0,15,18" Grid.RowSpan="2"/>
+            <TextBlock Text="Дата создания" Grid.Column="3" Margin="15,0,15,22" Grid.RowSpan="2" />
+            <TextBox Text="{Binding SmenaShedule.sm_DateCreate, StringFormat=dd.MM.yyyy HH:mm:ss}" Grid.Row="0" 
+                     Grid.Column="4" Margin="15,0,15,22" Grid.RowSpan="2"/>
+
+            <!--<ListBox ItemsSource="{Binding SmenaShedule.SmenaPerson}" Grid.Column="5" Grid.Row="2"/>-->
         </Grid>
+        <DataGrid x:Name="dg" ItemsSource="{Binding SmenaShedule.SmenaPerson}" Style="{DynamicResource DataGridStyle}" 
+                  FrozenColumnCount="1">
+            <DataGrid.Columns>
+                <DataGridTemplateColumn Header="Сотрудник" IsReadOnly="True" Width="120">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding personal.FIO}" TextWrapping="Wrap" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <!--<DataGridTextColumn Header="Сотрудник" Binding="{Binding personal.FIO}" IsReadOnly="True"/>-->
+                <DataGridTemplateColumn Header="Дни">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <ext:ListBoxExt ItemsSource="{Binding SmenaDays}" SelectionMode="Extended" 
+                                    SelectedIndex="{Binding SelectIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    SelectedItems2="{Binding SelectedDays, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
 
-
-
-        <ListBox x:Name="icDays" ItemsSource="{Binding ListTabelPerson}" Margin="18,20,17,0" SelectionMode="Extended" MinHeight="300" ScrollViewer.VerticalScrollBarVisibility="Hidden" Padding="0,0,-4,-4">
-            <ListBox.Effect>
-                <DropShadowEffect ShadowDepth="0" BlurRadius="14" Color="#FFC3C3C3"/>
-            </ListBox.Effect>
-            <ListBox.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <WrapPanel Width="{Binding ElementName=icDays, Path=ActualWidth}">
-                    </WrapPanel>
-                </ItemsPanelTemplate>
-            </ListBox.ItemsPanel>
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <Border BorderBrush="Black" BorderThickness="0.5" Width="50" CornerRadius="3" Margin="0,0,0,8">
-                        <Border.Effect>
-                            <DropShadowEffect BlurRadius="15" ShadowDepth="1" Color="#FFD0D0D0"/>
-                        </Border.Effect>
-                        <StackPanel Orientation="Vertical" ClipToBounds="True">
-                            <TextBlock Text="{Binding d_day}" VerticalAlignment="Center" TextAlignment="Center" 
-                                    Background="#FF0800FF" Foreground="White" ClipToBounds="True" FontSize="16" Height="24"/>
-                            <ComboBox Style="{StaticResource ComboBoxStyleTab}" ItemsSource="{Binding DataContext.ListTypeDay, ElementName=icDays}" 
-                                      SelectedIndex="{Binding d_type, Mode=TwoWay}" HorizontalContentAlignment="Left" VerticalContentAlignment="Center"
-                                    IsTabStop="False" Focusable="False" FontSize="14" DisplayMemberPath="t_name" />
-                            <!--<Button Content="{Binding d_type}" Height="24" FontWeight="Bold" FontSize="14" Focusable="False"
-                                        CommandParameter="{Binding d_day}"
-                                        Command="{Binding DataContext.SelectTypeCommand, ElementName=icDays}" IsTabStop="False"/>-->
-                            <!--<TextBlock Text="{Binding d_type}" FontWeight="Bold"
-                               VerticalAlignment="Center" TextAlignment="Center" FontSize="14" Background="White"/>-->
-                            <TextBox Text="{Binding d_hours, Mode=TwoWay}" HorizontalContentAlignment="Center" FontSize="14"/>
-                        </StackPanel>
-                    </Border>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
+                                <!--SelectedItems2="{Binding SelectedDays, Mode=TwoWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}">-->
+                                <ListBox.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                        </StackPanel>
+                                    </ItemsPanelTemplate>
+                                </ListBox.ItemsPanel>
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <UniformGrid Rows="2" Margin="-2,0" >
+                                            <TextBlock Text="{Binding sd_Day}" HorizontalAlignment="Center"/>
+                                            <Border Background="LightSeaGreen" CornerRadius="2" ClipToBounds="True">
+                                                <ComboBox Width="28" HorizontalContentAlignment="Center" Padding="2,0"
+                                                          FontWeight="Bold"
+                                                          SelectedItem="{Binding sd_Kind, Converter={StaticResource KindSmenaConverter}}"
+                                                          ItemsSource="{Binding DataContext.ListKind, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:SmenaWindow}}}">
+                                                    <!--<ComboBox.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <TextBlock Text="00000"/>
+                                                            -->
+                                                    <!--<TextBlock Text="{Binding ListSmenaDays.sd_Kind, Converter={StaticResource KindSmenaConverter}}"/>-->
+                                                    <!--
+                                                        </DataTemplate>
+                                                    </ComboBox.ItemTemplate>-->
+                                                    <i:Interaction.Triggers>
+                                                        <i:EventTrigger EventName="SelectionChanged">
+                                                            <i:InvokeCommandAction Command="{Binding DataContext.SelectKindCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:SmenaWindow}}}"
+                                                                CommandParameter="{Binding DataContext, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBox}}}"
+                                                                />
+                                                        </i:EventTrigger>
+                                                    </i:Interaction.Triggers>
+                                                </ComboBox>
+                                            </Border>
+                                        </UniformGrid>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ext:ListBoxExt>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
     </DockPanel>
+
 
 </Window>

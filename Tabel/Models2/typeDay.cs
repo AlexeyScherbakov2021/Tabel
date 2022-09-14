@@ -13,7 +13,7 @@ namespace Tabel.Models2
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public typeDay()
         {
-            tabelPersons = new HashSet<TabelPerson>();
+            tabelDays = new HashSet<TabelDay>();
         }
 
         [Key]
@@ -28,6 +28,6 @@ namespace Tabel.Models2
         public string t_desc { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<TabelPerson> tabelPersons { get; set; }
+        public virtual ICollection<TabelDay> tabelDays { get; set; }
     }
 }

@@ -113,6 +113,13 @@ namespace Tabel.Models2
                 .HasForeignKey(e => e.sd_SmenaPersonId)
                 .WillCascadeOnDelete();
 
+            modelBuilder.Entity<TabelPerson>()
+                .HasMany(e => e.TabelDays)
+                .WithOptional(e => e.TabelPerson)
+                .HasForeignKey(e => e.td_TabelPersonId)
+                .WillCascadeOnDelete();
+
+
             modelBuilder.Entity<WorkTabel>()
                 .Property(e => e.t_number)
                 .IsUnicode(false);
@@ -135,9 +142,9 @@ namespace Tabel.Models2
                 .IsUnicode(false);
 
             modelBuilder.Entity<typeDay>()
-                .HasMany(e => e.tabelPersons)
-                .WithOptional(e => e.typeDay)
-                .HasForeignKey(e => e.d_type);
+                .HasMany(e => e.tabelDays)
+                .WithOptional(e => e.Kind)
+                .HasForeignKey(e => e.td_Kind);
 
             modelBuilder.Entity<User>()
                 .Property(e => e.u_login)

@@ -15,48 +15,30 @@ namespace Tabel.ViewModels
 {
     internal class TabelWindowViewModel : ViewModel
     {
-        private readonly IRepository<typeDay> repoTypeDay;
-        public List<typeDay> ListTypeDay { get; set; }
+        private readonly RepositoryMSSQL<Personal> repoPersonal = new RepositoryMSSQL<Personal>();
+        private readonly RepositoryMSSQL<Otdel> repoOtdel = new RepositoryMSSQL<Otdel>();
+        private readonly RepositoryMSSQL<WorkTabel> repoTabel = new RepositoryMSSQL<WorkTabel>();
 
-        private readonly IRepository<WorkCalendar> repoCalendar;
+        public string[] ListKind { get; set; } = { "1см", "2см", "В", "О" };
+        public User User { get; set; }
+        public int CurrentMonth { get; set; }
+        public int CurrentYear { get; set; }
+        private DateTime _CurrentDate;
 
-        //private string _FIO;
-        public string FIO { get; set; }
+        public List<Otdel> ListOtdel { get; set; }
 
-
-        private readonly IRepository<Personal> repoPerson;
-
-        public User CurrentUser { get; set; }
-        public List<Personal> PersonalList { get; set; }
-        private Personal _SelectedPerson;
-        public Personal SelectedPerson
+        private Otdel _SelectedOtdel;
+        public Otdel SelectedOtdel
         {
-            get => _SelectedPerson;
+            get => _SelectedOtdel;
             set
             {
-                if (Set(ref _SelectedPerson, value))
+                if (Set(ref _SelectedOtdel, value))
                 {
-                    FIO = SelectedPerson?.p_lastname + " " + SelectedPerson?.p_name + " " + SelectedPerson?.p_midname;
-                    OnPropertyChanged(nameof(FIO));
-                    LoadTabelPerson();
+                    LoadPersonForOtdel(_SelectedOtdel);
                 }
             }
         }
-
-        //private bool _IsOpenPopup = false;
-        //public bool IsOpenPopup { get => _IsOpenPopup; set { Set(ref _IsOpenPopup , value); } }
-
-
-        private readonly IRepository<WorkTabel> repoTabel;
-        public WorkTabel CurrentTabel { get; set; }
-
-        private readonly IRepository<TabelPerson> repoTabelPerson;
-
-
-        private ObservableCollection<TabelPerson> _ListTabelPerson;
-        public ObservableCollection<TabelPerson> ListTabelPerson { get => _ListTabelPerson; set { Set(ref _ListTabelPerson, value); } }
-
-        public List<MonthStart1> ListMonth { get; set; }
 
 
 
@@ -77,37 +59,6 @@ namespace Tabel.ViewModels
         private bool CanLoadDefCommand(object p) => true;
         private void OnLoadDefCommandExecuted(object p)
         {
-            List<WorkCalendar> listCal = repoCalendar.Items.Where(it => it.cal_year == CurrentTabel.t_year
-                        && it.cal_date.Value.Month == CurrentTabel.t_month).ToList();
-
-
-            foreach (var item in ListTabelPerson)
-            {
-                var cal = listCal.FirstOrDefault(it => it.cal_date.Value.Day == item.d_day);
-                if (cal is null)
-                {
-                    int WeekDay = (int)new DateTime(CurrentTabel.t_year, CurrentTabel.t_month, item.d_day).DayOfWeek;
-                    if (WeekDay == 0 || WeekDay == 6)
-                    {
-                        item.d_type = 2;
-                        item.d_hours = null;
-                    }
-                    else
-                    {
-                        item.d_type = 1;
-                        item.d_hours = 8;
-                    }
-                }
-                else
-                {
-                    item.d_type = cal.cal_type;
-                    item.d_hours = 8;
-                }
-
-                item.OnPropertyChanged(nameof(item.d_type));
-                item.OnPropertyChanged(nameof(item.d_hours));
-
-            }
 
         }
 
@@ -118,111 +69,21 @@ namespace Tabel.ViewModels
         private bool CanSaveCommand(object p) => true;
         private void OnSaveCommandExecuted(object p)
         {
-
-
-
-
-            // получаем список измененных дней календаря
-            List<WorkCalendar> listCal = repoCalendar.Items.Where(it => it.cal_year == CurrentTabel.t_year
-                        && it.cal_date.Value.Month == CurrentTabel.t_month).ToList();
-
-            // удаление всех предыдущих записей из базы
-            foreach (var item in ListTabelPerson)
-                repoTabelPerson.Delete(item, true);
-
-            //repoTabelPerson.Save();
-            //repoTabelPerson.ReamoveForPersonMonth(CurrentTabel.id, SelectedPerson.id, true);
-
-            //repoTabel.Add(CurrentTabel, true);
-
-            foreach (var item in ListTabelPerson)
-            {
-                int type;
-                var wc = listCal.FirstOrDefault(it => it.cal_date.Value.Day == item.d_day);
-                if (wc is null)
-                {
-                    // в измененных датах нет
-                    // получаем номер дня недели
-                    type = (int)new DateTime(CurrentTabel.t_year, CurrentTabel.t_month, item.d_day).DayOfWeek;
-                    if (type == 0 || type == 6)
-                        // это выходной
-                        type = 2;
-                    else
-                        // рабочий день
-                        type = 1;
-                }
-                else
-                    type = wc.cal_type.Value;
-
-                if (item.d_type != null && type != item.d_type)
-                    repoTabelPerson.Add(item, true);
-            }
-
-            //repoTabelPerson.Save();
+            repoTabel.Save();
         }
 
 
         #endregion
 
 
-
         public TabelWindowViewModel()
         {
-            ListMonth = new List<MonthStart1> {
-                new MonthStart1 { Name = "Январь", Number = 1 },
-                new MonthStart1 { Name = "Февраль", Number = 2 },
-                new MonthStart1 { Name = "Март", Number = 3 },
-                new MonthStart1 { Name = "Апрель", Number = 4 },
-                new MonthStart1 { Name = "Май", Number = 5 },
-                new MonthStart1 { Name = "Июнь", Number = 6 },
-                new MonthStart1 { Name = "Июль", Number = 7 },
-                new MonthStart1 { Name = "Август", Number = 8 },
-                new MonthStart1 { Name = "Сентябрь", Number = 9 },
-                new MonthStart1 { Name = "Октябрь", Number = 10 },
-                new MonthStart1 { Name = "Ноябрь", Number = 11 },
-                new MonthStart1 { Name = "Декабрь", Number = 12 },
-            };
-
-
-            CurrentUser = App.CurrentUser;
-            repoPerson = new RepositoryMSSQL<Personal>();
-            repoTabel = new RepositoryMSSQL<WorkTabel>();
-            repoTabelPerson = new RepositoryMSSQL<TabelPerson>();
-            repoTypeDay = new RepositoryMSSQL<typeDay>();
-            repoCalendar = new RepositoryMSSQL<WorkCalendar>();
-
-            ListTypeDay = repoTypeDay.Items.ToList();
-
-            PersonalList = repoPerson.Items
-                .Where(it => it.p_otdel_id == CurrentUser.u_otdel_id)
-                .OrderBy(it => it.p_lastname)
-                .ToList();
-
-            // получение текущего табеля
-            CurrentTabel = repoTabel.Items
-                .Where(it => it.t_otdel_id == CurrentUser.u_otdel_id)
-                .OrderByDescending(it => it.t_year)
-                .ThenByDescending(it => it.t_month)
-                .FirstOrDefault();
-
-            if (CurrentTabel is null)
-            {
-                // табеля для отдела еще нет, создаем
-                CurrentTabel = new WorkTabel
-                {
-                    t_otdel_id = CurrentUser.u_otdel_id.Value,
-                    t_date_create = DateTime.Now,
-                    t_month = DateTime.Now.Month,
-                    t_year = DateTime.Now.Year,
-                    t_author = CurrentUser.u_login,
-                    t_status = 0
-                };
-                repoTabel.Add(CurrentTabel, true);
-
-                // добавить табеля для каждого сотрудника
-
-            }
-
+            _CurrentDate = DateTime.Now;
+            CurrentMonth = _CurrentDate.Month;
+            CurrentYear = _CurrentDate.Year;
+            User = App.CurrentUser;
+            User = new User() { u_otdel_id = 44, u_login = "Petrov", id = 10, u_fio = "Петров" };
+            ListOtdel = repoOtdel.Items.Where(it => it.id == User.u_otdel_id).ToList();
 
         }
 
@@ -230,52 +91,34 @@ namespace Tabel.ViewModels
         //----------------------------------------------------------------------------------------------------------
         // загрузка дней для сотрудника
         //----------------------------------------------------------------------------------------------------------
-        private void LoadTabelPerson()
+
+
+        //--------------------------------------------------------------------------------------------------
+        // получение списка персонала из отдела
+        //--------------------------------------------------------------------------------------------------
+        private void LoadPersonForOtdel(Otdel otdel)
         {
-            //ListTabelPerson.Clear();
-            ListTabelPerson = new ObservableCollection<TabelPerson>(repoTabelPerson.Items
-                .Where(it => it.person.id == SelectedPerson.id && it.tabel.id == CurrentTabel.id));
+            //SmenaShedule = repoSmena.Items.FirstOrDefault(it => it.sm_Year == CurrentYear
+            //        && it.sm_Month == CurrentMonth
+            //        && it.sm_OtdelId == otdel.id);
+            //List<Personal> PersonsFromOtdel = repoPersonal.Items.Where(it => it.p_otdel_id == SelectedOtdel.id).ToList();
 
-            //List<TabelPerson> listFromBase = repoTabelPerson.Items
-            //    .Where(it => it.person.id == SelectedPerson.id && it.tabel.id == CurrentTabel.id)
-            //    .ToList();
-
-            //ListTabelPerson = new ObservableCollection<TabelPerson>();
-            //ListTabelPerson.Clear();
-            //DateTime date = new DateTime(CurrentTabel.t_year, CurrentTabel.t_month, 1);
-            //int maxDay =  date.AddMonths(1).AddDays(-1).Day;
-
-            //for (int i = 1; i <= maxDay; i++)
+            //if (SmenaShedule != null)
             //{
-            //    var tp = new TabelPerson
+            //    // если график присутствует
+            //    foreach (var item in PersonsFromOtdel)
             //    {
-            //        d_day = i,
-            //        d_tabel_id = CurrentTabel.id,
-            //        d_person_id = SelectedPerson.id,
-            //        d_type = 1,
-            //        d_hours = 8
-            //    };
+            //        SmenaPerson pers = repoSmenaPersonal.Items.FirstOrDefault(it => it.sp_SmenaId == SmenaShedule.id && it.sp_PersonId == item.id);
+            //        if (pers is null)
+            //        {
+            //            // формируем новый график на месяц для сотрудника, который отсутствовал
+            //        }
 
-            //    int dw = (int)new DateTime(CurrentTabel.t_year, CurrentTabel.t_month, i).DayOfWeek;
-            //    if (dw == 0 || dw == 6)
-            //    {
-            //        tp.d_type = 2;
-            //        tp.d_hours = null;
             //    }
 
-            //    ListTabelPerson.Add(tp);
             //}
 
-            //// заменяем установленные дни
-            //foreach (var item in listFromBase)
-            //{
-            //    TabelPerson tp = ListTabelPerson.FirstOrDefault(it => it.d_day == item.d_day);
-            //    tp.d_hours = item.d_hours;
-            //    tp.d_type = item.d_type;
-            //    tp.id = item.id;
-
-            //}
-
+            //OnPropertyChanged(nameof(SmenaShedule));
 
         }
 

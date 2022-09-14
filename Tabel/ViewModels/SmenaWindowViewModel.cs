@@ -33,7 +33,7 @@ namespace Tabel.ViewModels
 
         public User User { get; set; }
 
-        public ObservableCollection<SmenaPerson> ListPersonal { get; set; }
+        //public ObservableCollection<SmenaPerson> ListPersonal { get; set; }
         public int CurrentMonth { get; set; }
         public int CurrentYear { get; set; }
         private DateTime _CurrentDate;
@@ -76,7 +76,7 @@ namespace Tabel.ViewModels
             SmenaShedule.sm_Month = CurrentMonth;
             SmenaShedule.sm_Year = CurrentYear;
             SmenaShedule.sm_DateCreate = DateTime.Now;
-            SmenaShedule.SmenaPerson = new List<SmenaPerson>();
+            SmenaShedule.SmenaPerson = new ObservableCollection<SmenaPerson>();
 
             // количество дней в месяце
             //int DaysInMonth = new DateTime(CurrentYear, CurrentMonth, 1).AddMonths(1).AddDays(-1).Day;
@@ -107,9 +107,11 @@ namespace Tabel.ViewModels
             if (SmenaShedule.SmenaPerson.Count > 0)
                 repoSmena.Add(SmenaShedule, true);
 
+            OnPropertyChanged(nameof(SmenaShedule));
+
             //SmenaShedule.SmenaPerson = repoSmenaPersonal.Items.Where(it => it.sp_SmenaId == SmenaShedule.id).ToList();
-            ListPersonal = new ObservableCollection<SmenaPerson>(SmenaShedule.SmenaPerson);
-            OnPropertyChanged(nameof(ListPersonal));
+            //ListPersonal = new ObservableCollection<SmenaPerson>(SmenaShedule.SmenaPerson);
+            //OnPropertyChanged(nameof(ListPersonal));
 
             //repoSmena.Delete(SmenaShedule, true);
 
@@ -156,10 +158,12 @@ namespace Tabel.ViewModels
         //--------------------------------------------------------------------------------------------------
         private void LoadPersonForOtdel(Otdel otdel)
         {
-            SmenaShedule = repoSmena.Items.FirstOrDefault(it => it.sm_Year == CurrentYear && it.sm_Month == CurrentMonth && it.sm_OtdelId == otdel.id);
+            SmenaShedule = repoSmena.Items.FirstOrDefault(it => it.sm_Year == CurrentYear 
+                    && it.sm_Month == CurrentMonth 
+                    && it.sm_OtdelId == otdel.id);
             //SmenaShedule = repoSmena.Items.FirstOrDefault(it => it.sm_Year == CurrentYear && it.sm_Month == CurrentMonth && it.sm_OtdelId == otdel.id);
             List<Personal> PersonsFromOtdel = repoPersonal.Items.Where(it => it.p_otdel_id == SelectedOtdel.id).ToList();
-            ListPersonal = null;
+            //ListPersonal = null;
 
             if (SmenaShedule != null)
             {
@@ -174,12 +178,14 @@ namespace Tabel.ViewModels
 
                 }
 
-                ListPersonal = new ObservableCollection<SmenaPerson>(SmenaShedule.SmenaPerson);
+                //ListPersonal = new ObservableCollection<SmenaPerson>(SmenaShedule.SmenaPerson);
                 //ListPersonal = new ObservableCollection<SmenaPerson>(repoSmenaPersonal.Items.Where(it => it.sp_SmenaId == SmenaShedule.id));
 
             }
 
-            OnPropertyChanged(nameof(ListPersonal));
+            OnPropertyChanged(nameof(SmenaShedule));
+            //SmenaShedule?.OnPropertyChanged("SmenaPerson");
+           //OnPropertyChanged(nameof(ListPersonal));
 
             //else
             //{
