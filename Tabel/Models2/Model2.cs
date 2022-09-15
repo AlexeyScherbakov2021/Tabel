@@ -144,7 +144,7 @@ namespace Tabel.Models2
             modelBuilder.Entity<typeDay>()
                 .HasMany(e => e.tabelDays)
                 .WithOptional(e => e.Kind)
-                .HasForeignKey(e => e.td_Kind);
+                .HasForeignKey(e => e.td_KindId);
 
             modelBuilder.Entity<User>()
                 .Property(e => e.u_login)

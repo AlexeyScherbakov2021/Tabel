@@ -69,6 +69,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Component\Models\TabelDays2.cs" />
+    <Compile Include="Component\Models\TabelPerson2.cs" />
     <Compile Include="Component\MonthPanel\Enums.cs" />
     <Compile Include="Component\MonthPanel\MonthControl.xaml.cs">
       <DependentUpon>MonthControl.xaml</DependentUpon>
@@ -79,6 +81,7 @@
       <DependentUpon>TabelControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Component\TabelPanel\TabelPanel.cs" />
+    <Compile Include="Component\TabelPanel\TestConvert.cs" />
     <Compile Include="Infrastructure\Converters\KindSmenaConverter.cs" />
     <Compile Include="Infrastructure\Enums.cs" />
     <Compile Include="Infrastructure\MonthStart1.cs" />
@@ -135,6 +138,10 @@
     <Page Include="Styles\Button.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\ComboBoxNotArrow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Styles\DataGrid.xaml">
       <Generator>MSBuild:Compile</Generator>

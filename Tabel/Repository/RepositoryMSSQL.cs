@@ -15,18 +15,18 @@ namespace Tabel.Repository
     internal class RepositoryMSSQL<T> : IRepository<T> where T : class, IEntity, new()
     {
         //SqlConnection conn;
-        protected readonly BaseModel db;
+        protected static readonly BaseModel db = new BaseModel();
         protected readonly DbSet<T> _Set;
         public virtual IQueryable<T> Items => _Set;
 
 
         public RepositoryMSSQL()
         {
-            db = new BaseModel();
+            //db = new BaseModel();
             _Set = db.Set<T>();
 
-            db.Configuration.LazyLoadingEnabled = true;
-            db.Configuration.ProxyCreationEnabled = true;
+            //db.Configuration.LazyLoadingEnabled = true;
+            //db.Configuration.ProxyCreationEnabled = true;
 //            ConnectionStringSettings settings;
 
 //#if !DEBUG

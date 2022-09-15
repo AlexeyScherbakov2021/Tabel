@@ -6,11 +6,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using Tabel.Infrastructure;
 
 namespace Tabel.Models2
 {
     [Table("TabelDay")]
-    public partial class TabelDay : IEntity
+    public partial class TabelDay : Observable, IEntity
     {
         [Key]
         [Column("td_Id")]
@@ -19,9 +20,32 @@ namespace Tabel.Models2
         public int? td_TabelPersonId { get; set; }
 
         public int td_Day { get; set; }
-        public int? td_Kind { get; set; }
-        public int td_Hours { get; set; }
 
+
+        private int? _td_KindId;
+        public int? td_KindId 
+        { 
+            get => _td_KindId;
+            set
+            {
+                if (Set(ref _td_KindId, value))
+                    TabelPerson?.UpdateUI();
+            }
+        }
+
+
+        private int _td_Hours;
+        public int td_Hours 
+        { 
+            get => _td_Hours; 
+            set
+            {
+                if (Set(ref _td_Hours, value))
+                    TabelPerson?.UpdateUI();
+            }
+        }
+
+        //private typeDay _Kind;
         public virtual typeDay Kind { get; set; }
 
         //public virtual Personal person { get; set; }
@@ -30,8 +54,5 @@ namespace Tabel.Models2
 
         [NotMapped]
         public int td_Hours2 { get; set; }
-        [NotMapped]
-        public Visibility VisibilityHours { get; set; } = Visibility.Collapsed;
-
     }
 }

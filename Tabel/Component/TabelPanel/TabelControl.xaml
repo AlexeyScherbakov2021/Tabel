@@ -7,6 +7,14 @@
              mc:Ignorable="d" 
              SnapsToDevicePixels="True"
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/../../Styles/ComboBoxNotArrow.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+        
+    </UserControl.Resources>
     <DockPanel>
         <Grid DockPanel.Dock="Right">
             <Grid.RowDefinitions>
@@ -17,9 +25,9 @@
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
+                <ColumnDefinition Width="28"/>
                 <ColumnDefinition/>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
+                <ColumnDefinition Width="28"/>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
@@ -37,24 +45,26 @@
             <TextBox Text="дни" Grid.Row="2"/>
             <TextBox Text="часы" Grid.Row="3"/>
 
-            <TextBox Text="{Binding DaysWeek1}" Grid.Row="0" Grid.Column="1"/>
-            <TextBox Text="100" Grid.Row="1" Grid.Column="1"/>
-            <TextBox Text="10" Grid.Row="2" Grid.Column="1"/>
-            <TextBox Text="100" Grid.Row="3" Grid.Column="1"/>
+            <TextBox Text="{Binding DaysWeek1, Mode=OneWay}" Grid.Row="0" Grid.Column="1" FontWeight="Bold"/>
+            <TextBox Text="{Binding HoursWeek1, Mode=OneWay}" Grid.Row="1" Grid.Column="1" FontWeight="Bold"/>
+            <TextBox Text="{Binding DaysWeek2, Mode=OneWay}" Grid.Row="2" Grid.Column="1" FontWeight="Bold"/>
+            <TextBox Text="{Binding HoursWeek2, Mode=OneWay}" Grid.Row="3" Grid.Column="1" FontWeight="Bold"/>
 
             <TextBox Text="дни" Grid.Row="0"  Grid.Column="2" Grid.RowSpan="2"/>
             <TextBox Text="часы" Grid.Row="2"  Grid.Column="2" Grid.RowSpan="2"/>
 
-            <TextBox Text="20" Grid.Row="0" Grid.Column="3" Grid.RowSpan="2"/>
-            <TextBox Text="196" Grid.Row="2" Grid.Column="3" Grid.RowSpan="2"/>
+            <TextBox Text="{Binding DaysMonth, Mode=OneWay}" Grid.Row="0" Grid.Column="3" Grid.RowSpan="2" FontWeight="Bold"/>
+            <TextBox Text="{Binding HoursMonth, Mode=OneWay}" Grid.Row="2" Grid.Column="3" Grid.RowSpan="2" FontWeight="Bold"/>
 
             <TextBox Text="Я" Grid.Row="0" Grid.Column="4"/>
-            <TextBox Text="Я1,5+" Grid.Row="1" Grid.Column="4" />
-            <TextBox Text="Я2+" Grid.Row="2" Grid.Column="4"/>
+            <TextBox Text="Я1,5+" Grid.Row="1" Grid.Column="4"  Background="#d8FFd8"/>
+            <TextBox Text="Я2+" Grid.Row="2" Grid.Column="4" Background="#b8FFb8"/>
+            <TextBox Text="РВ" Grid.Row="3" Grid.Column="4" Background="MistyRose"/>
 
-            <TextBox Text="188" Grid.Row="0" Grid.Column="5"/>
-            <TextBox Text="10" Grid.Row="1" Grid.Column="5" />
-            <TextBox Text="14" Grid.Row="2" Grid.Column="5"/>
+            <TextBox Text="{Binding WorkedHours1, Mode=OneWay}" Grid.Row="0" Grid.Column="5" FontWeight="Bold"/>
+            <TextBox Text="{Binding WorkedHours15, Mode=OneWay}" Grid.Row="1" Grid.Column="5"  FontWeight="Bold" Background="#d8FFd8"/>
+            <TextBox Text="{Binding WorkedHours2, Mode=OneWay}" Grid.Row="2" Grid.Column="5" FontWeight="Bold" Background="#b8FFb8"/>
+            <TextBox Text="{Binding WorkedOffDays, Mode=OneWay}" Grid.Row="3" Grid.Column="5" FontWeight="Bold"  Background="MistyRose"/>
 
 
             <!--<TextBox Text="10" Grid.Row="2" Grid.Column="1"/>
@@ -83,13 +93,29 @@
 
                                         <StackPanel Orientation="Horizontal">
                                             <ComboBox Width="28" HorizontalContentAlignment="Center" 
-                                                      DisplayMemberPath="t_name"
-                                                      SelectedItem="{Binding td_Kind, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                      ItemsSource="{Binding Path=ItemsKind, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}">
-                                                <!--<ComboBoxItem Content="Я"/>
-                                                <ComboBoxItem Content="О"/>
-                                                <ComboBoxItem Content="В"/>
-                                                <ComboBoxItem Content="РВ"/>-->
+                                                DisplayMemberPath="t_name"
+                                                SelectedIndex="{Binding td_KindId}"
+                                                ItemsSource="{Binding ItemsKind, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}">
+
+                                                <!--<ComboBox.Resources>
+                                                    <Style TargetType="{x:Type SelectionBoxItem}">
+                                                        <Setter Property="Foreground" Value="Red"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding td_KindId}" Value="5">
+                                                                <Setter Property="Foreground" Value="Red"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </ComboBox.Resources>-->
+                                                
+                                                <!--SelectedItem="{Binding Kind, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"-->
+                                                <!--<ComboBoxItem Content="2"/>
+                                                <ComboBoxItem Content="3"/>
+                                                <ComboBoxItem Content="4"/>
+                                                <ComboBoxItem Content="5"/>
+                                                <ComboBoxItem Content="6"/>
+                                                <ComboBoxItem Content="7"/>
+                                                <ComboBoxItem Content="8"/>-->
                                             </ComboBox>
                                             <TextBox Text="{Binding td_Hours}" Padding="2,0" MinWidth="24" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
                                             <TextBox Text="{Binding td_Hours2}" Visibility="{Binding VisibilityHours}" Padding="2,0" MinWidth="24" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
