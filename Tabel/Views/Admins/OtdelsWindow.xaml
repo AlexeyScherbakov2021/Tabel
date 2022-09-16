@@ -55,7 +55,7 @@
                     <Button Content="-" Command="{Binding DeletePersonCommand}" Margin="2"/>
                 </UniformGrid>
 
-                <DataGrid x:Name="dg" ItemsSource="{Binding ListPersonalView}" Margin="4,0" SnapsToDevicePixels="True" Style="{DynamicResource DataGridStyle}" SelectedItem="{Binding SelectedPerson}" >
+                <DataGrid x:Name="dg" ItemsSource="{Binding ListPersonalView}" SelectionMode="Single" Margin="4,0" SnapsToDevicePixels="True" Style="{DynamicResource DataGridStyle}" SelectedItem="{Binding SelectedPerson}" >
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Таб№" Binding="{Binding p_tab_number}"/>
                         <DataGridTextColumn Header="Фамилия" Binding="{Binding p_lastname}"/>

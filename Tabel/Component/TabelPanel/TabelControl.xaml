@@ -87,7 +87,10 @@
                                         <DropShadowEffect BlurRadius="1" Opacity="0.4" ShadowDepth="2"/>
                                     </Border.Effect>
                                     <StackPanel>
-                                        <TextBlock x:Name="NumberDay" Text="{Binding td_Day}" TextAlignment="Center" Background="LightSteelBlue" Foreground="Black" FontWeight="Bold" SnapsToDevicePixels="True"/>
+                                        <TextBlock x:Name="NumberDay" Text="{Binding td_Day}" TextAlignment="Center" Background="LightSteelBlue" Foreground="Black" 
+                                                   FontWeight="Bold" SnapsToDevicePixels="True"
+                                                  ToolTip="Рабочий день"
+                                                   />
 
                                         <StackPanel Orientation="Horizontal">
                                             <ComboBox Width="28" HorizontalContentAlignment="Center" 
@@ -96,7 +99,7 @@
                                                 SelectedIndex="{Binding td_KindId, Mode=TwoWay}"
                                                 ItemsSource="{Binding ItemsKind, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}" GotFocus="ComboBox_GotFocus" SelectionChanged="ComboBox_SelectionChanged">
                                             </ComboBox>
-                                            <TextBox Text="{Binding td_Hours, Mode=TwoWay}" Padding="2,0" MinWidth="24" 
+                                            <TextBox Text="{Binding td_Hours, Mode=TwoWay, StringFormat=0.#}" Padding="2,0" MinWidth="24" 
                                                      HorizontalContentAlignment="Center" 
                                                      VerticalContentAlignment="Center" GotFocus="TextBox_GotFocus" TextChanged="TextBox_TextChanged" 
                                                      
@@ -116,9 +119,11 @@
                                     </Trigger>
                                     <DataTrigger Binding="{Binding CalendarTypeDay}" Value="Holyday">
                                         <Setter Property="Background" Value="#E0C4DE" TargetName="NumberDay"/>
+                                        <Setter Property="ToolTip" Value="Выходной день" TargetName="NumberDay"/>
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding CalendarTypeDay}" Value="ShortWork">
                                         <Setter Property="Background" Value="#D0F0DE" TargetName="NumberDay"/>
+                                        <Setter Property="ToolTip" Value="Короткий день" TargetName="NumberDay"/>
                                     </DataTrigger>
                                 </ControlTemplate.Triggers>
                             </ControlTemplate>

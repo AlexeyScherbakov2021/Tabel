@@ -34,8 +34,8 @@ namespace Tabel.Models2
         }
 
 
-        private int? _td_Hours;
-        public int? td_Hours 
+        private decimal? _td_Hours;
+        public decimal? td_Hours 
         { 
             get => _td_Hours; 
             set

@@ -25,6 +25,8 @@ namespace Tabel.ViewModels.Admins
         private readonly RepositoryOtdel repoOtdel;
         // Список всех отделов
         public ObservableCollection<Otdel> ListOtdel { get; set; }
+
+
         // выбранный отдел
         private Otdel _SelectedOtdel;
         public Otdel SelectedOtdel 
@@ -56,7 +58,10 @@ namespace Tabel.ViewModels.Admins
                 if(Set(ref _ListPersonal, value))
                 {
                     //_ListCollectionPerson = new CollectionViewSource();
+                    if(_ListCollectionPerson.View != null)
+                        _ListCollectionPerson.View.CurrentChanged -= ListPersonalView_CurrentChanged;
                     _ListCollectionPerson.Source = value;
+                    _ListCollectionPerson.View.CurrentChanged += ListPersonalView_CurrentChanged;
                     _ListCollectionPerson.View.Refresh();
                     OnPropertyChanged(nameof(ListPersonalView));
                 }
@@ -77,6 +82,12 @@ namespace Tabel.ViewModels.Admins
             repoPerson = new RepositoryMSSQL<Personal>();
 
             ListOtdel = new ObservableCollection<Otdel>( repoOtdel.Items);
+        }
+
+        private void ListPersonalView_CurrentChanged(object sender, EventArgs e)
+        {
+            repoPerson.Save();
+
         }
 
 

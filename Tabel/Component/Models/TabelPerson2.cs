@@ -19,16 +19,16 @@ namespace Tabel.Models2
 
         public int DaysWeek2 => ((IEnumerable<TabelDay>)TabelDays).Count(s => s.td_KindId == 1  && s.td_Day > 15);
 
-        public int HoursWeek1 => ((IEnumerable<TabelDay>)TabelDays).Where(it => it.td_Day <= 15).Sum(s => s.td_Hours.Value);
+        public decimal HoursWeek1 => ((IEnumerable<TabelDay>)TabelDays).Where(it => it.td_Day <= 15).Sum(s => s.td_Hours.Value);
 
-        public int HoursWeek2 => ((IEnumerable<TabelDay>)TabelDays).Where(it => it.td_Day > 15 ).Sum(s => s.td_Hours.Value);
+        public decimal HoursWeek2 => ((IEnumerable<TabelDay>)TabelDays).Where(it => it.td_Day > 15 ).Sum(s => s.td_Hours.Value);
 
         public int DaysMonth => DaysWeek1 + DaysWeek2;
 
-        public int HoursMonth => HoursWeek1 + HoursWeek2;
+        public decimal HoursMonth => HoursWeek1 + HoursWeek2;
 
 
-        public int WorkedHours1
+        public decimal WorkedHours1
         {
             get
             {
@@ -36,12 +36,12 @@ namespace Tabel.Models2
 
             }
         }
-        public int WorkedHours15
+        public decimal WorkedHours15
         {
             get
             {
                 int summa = 0;
-                List<int> HoursBig = ((IEnumerable<TabelDay>)TabelDays).Where(it => it.td_Hours.Value > 8).Select(s => s.td_Hours.Value - 8).ToList();
+                List<decimal> HoursBig = ((IEnumerable<TabelDay>)TabelDays).Where(it => it.td_Hours.Value > 8).Select(s => s.td_Hours.Value - 8).ToList();
                 foreach(int i in HoursBig)
                 {
                     summa += i > 2 ? 2 : i;
@@ -50,12 +50,12 @@ namespace Tabel.Models2
             }
         }
         
-        public int WorkedHours2
+        public decimal WorkedHours2
         {
             get
             {
                 int summa = 0;
-                List<int> HoursBig = ((IEnumerable<TabelDay>)TabelDays).Where(it => it.td_Hours.Value > 10).Select(s => s.td_Hours.Value - 10).ToList();
+                List<decimal> HoursBig = ((IEnumerable<TabelDay>)TabelDays).Where(it => it.td_Hours.Value > 10).Select(s => s.td_Hours.Value - 10).ToList();
                 foreach (int i in HoursBig)
                 {
                     summa += i;
@@ -66,7 +66,7 @@ namespace Tabel.Models2
         }
        
         
-        public int WorkedOffDays => ((IEnumerable<TabelDay>) TabelDays).Where(it => it.td_KindId == 5).Sum(s => s.td_Hours.Value);
+        public decimal WorkedOffDays => ((IEnumerable<TabelDay>) TabelDays).Where(it => it.td_KindId == 5).Sum(s => s.td_Hours.Value);
 
 
         public void UpdateUI()
