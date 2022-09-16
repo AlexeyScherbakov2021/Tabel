@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Tabel.Component.MonthPanel;
 using Tabel.Infrastructure;
 using Tabel.Models2;
+using Tabel.Repository;
 
 namespace Tabel.Models2
 {
@@ -16,9 +19,9 @@ namespace Tabel.Models2
 
         public int DaysWeek2 => ((IEnumerable<TabelDay>)TabelDays).Count(s => s.td_KindId == 1  && s.td_Day > 15);
 
-        public int HoursWeek1 => ((IEnumerable<TabelDay>)TabelDays).Where(it => it.td_Day <= 15).Sum(s => s.td_Hours);
+        public int HoursWeek1 => ((IEnumerable<TabelDay>)TabelDays).Where(it => it.td_Day <= 15).Sum(s => s.td_Hours.Value);
 
-        public int HoursWeek2 => ((IEnumerable<TabelDay>)TabelDays).Where(it => it.td_Day > 15 ).Sum(s => s.td_Hours);
+        public int HoursWeek2 => ((IEnumerable<TabelDay>)TabelDays).Where(it => it.td_Day > 15 ).Sum(s => s.td_Hours.Value);
 
         public int DaysMonth => DaysWeek1 + DaysWeek2;
 
@@ -29,7 +32,7 @@ namespace Tabel.Models2
         {
             get
             {
-                return ((IEnumerable<TabelDay>)TabelDays).Select(it => it.td_Hours).Sum() - WorkedOffDays;
+                return ((IEnumerable<TabelDay>)TabelDays).Select(it => it.td_Hours.Value).Sum() - WorkedOffDays;
 
             }
         }
@@ -38,7 +41,7 @@ namespace Tabel.Models2
             get
             {
                 int summa = 0;
-                List<int> HoursBig = ((IEnumerable<TabelDay>)TabelDays).Where(it => it.td_Hours > 8).Select(s => s.td_Hours - 8).ToList();
+                List<int> HoursBig = ((IEnumerable<TabelDay>)TabelDays).Where(it => it.td_Hours.Value > 8).Select(s => s.td_Hours.Value - 8).ToList();
                 foreach(int i in HoursBig)
                 {
                     summa += i > 2 ? 2 : i;
@@ -52,7 +55,7 @@ namespace Tabel.Models2
             get
             {
                 int summa = 0;
-                List<int> HoursBig = ((IEnumerable<TabelDay>)TabelDays).Where(it => it.td_Hours > 10).Select(s => s.td_Hours - 10).ToList();
+                List<int> HoursBig = ((IEnumerable<TabelDay>)TabelDays).Where(it => it.td_Hours.Value > 10).Select(s => s.td_Hours.Value - 10).ToList();
                 foreach (int i in HoursBig)
                 {
                     summa += i;
@@ -63,7 +66,7 @@ namespace Tabel.Models2
         }
        
         
-        public int WorkedOffDays => ((IEnumerable<TabelDay>) TabelDays).Where(it => it.td_KindId == 5).Sum(s => s.td_Hours);
+        public int WorkedOffDays => ((IEnumerable<TabelDay>) TabelDays).Where(it => it.td_KindId == 5).Sum(s => s.td_Hours.Value);
 
 
         public void UpdateUI()
@@ -82,8 +85,30 @@ namespace Tabel.Models2
         }
 
 
-        public void SetCalendarHours()
+
+        public void SetCalendarTypeDays()
         {
+            RepositoryCalendar repo = new RepositoryCalendar();
+            IEnumerable<WorkCalendar> cal = repo.Items.AsNoTracking().Where(it => it.cal_year == tabel.t_year 
+                    && it.cal_date.Month == tabel.t_month);
+
+            // выставление выходных дней для списка
+            List<TabelDay> days = TabelDays.ToList();
+            DateTime dt = new DateTime(tabel.t_year, tabel.t_month, 1);
+            while(dt.Month == tabel.t_month)
+            {
+                if (dt.DayOfWeek == DayOfWeek.Saturday || dt.DayOfWeek == DayOfWeek.Sunday)
+                    days[dt.Day - 1].CalendarTypeDay = TypeDays.Holyday;
+                else
+                    days[dt.Day - 1].CalendarTypeDay = TypeDays.Work;
+                dt = dt.AddDays(1);
+            }
+
+            // корректировка измененных дней
+            foreach(var item in cal)
+            {
+                days[item.cal_date.Day - 1].CalendarTypeDay = item.cal_type;
+            }
 
         }
 

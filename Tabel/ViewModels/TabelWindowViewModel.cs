@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data.Entity;
 using System.Linq;
 using System.Security.Cryptography.Xml;
 using System.Text;
@@ -8,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using Tabel.Commands;
+using Tabel.Component.MonthPanel;
 using Tabel.Infrastructure;
 using Tabel.Models2;
 using Tabel.Repository;
@@ -19,7 +21,9 @@ namespace Tabel.ViewModels
     {
         //int count = 2;
 
-        private RepositoryMSSQL<Personal> repoPersonal;// = new RepositoryMSSQL<Personal>();
+        public List<Months> ListMonth => App.ListMonth;
+
+        private RepositoryMSSQL<Personal> repoPersonal = new RepositoryMSSQL<Personal>();
         private readonly RepositoryMSSQL<Otdel> repoOtdel = new RepositoryMSSQL<Otdel>();
         private readonly RepositoryMSSQL<WorkTabel> repoTabel = new RepositoryMSSQL<WorkTabel>();
         //private readonly RepositoryMSSQL<TabelPerson> repoTabelPerson = new RepositoryMSSQL<TabelPerson>();
@@ -29,15 +33,23 @@ namespace Tabel.ViewModels
 
         public IEnumerable<typeDay> ListTypeDays { get; set; }
 
-        //public string[] ListKind { get; set; } = { "1см", "2см", "В", "О" };
         public User User { get; set; }
-        public int CurrentMonth { get; set; }
+
+        private int _CurrentMonth;
+        public int CurrentMonth 
+        { 
+            get => _CurrentMonth; 
+            set
+            {
+                if (Set(ref _CurrentMonth, value))
+                    LoadPersonForOtdel(_SelectedOtdel);
+            }
+        }
+        
         public int CurrentYear { get; set; }
         private DateTime _CurrentDate;
 
         public List<Otdel> ListOtdel { get; set; }
-
-
 
 
         #region Удалить после тестирования
@@ -72,6 +84,7 @@ namespace Tabel.ViewModels
         private Otdel _SelectedOtdel;
         public Otdel SelectedOtdel
         {
+
             get => _SelectedOtdel;
             set
             {
@@ -92,11 +105,17 @@ namespace Tabel.ViewModels
         private bool CanCreateCommand(object p) => true;
         private void OnCreateCommandExecuted(object p)
         {
+
             if (Tabel != null)
                 repoTabel.Remove(Tabel);
 
+            RepositoryCalendar repo = new RepositoryCalendar();
+            IEnumerable<WorkCalendar> cal = repo.Items.AsNoTracking().Where(it => it.cal_year == CurrentYear
+                    && it.cal_date.Month == CurrentMonth);
+
+
             repoPersonal = new RepositoryMSSQL<Personal>();
-            List<Personal> PersonsFromOtdel = repoPersonal.Items.Where(it => it.p_otdel_id == SelectedOtdel.id).ToList();
+            List<Personal> PersonsFromOtdel = repoPersonal.Items.AsNoTracking().Where(it => it.p_otdel_id == SelectedOtdel.id).ToList();
 
             Tabel = new WorkTabel();
             Tabel.t_author_id = User.id;
@@ -117,16 +136,49 @@ namespace Tabel.ViewModels
 
                 for (DateTime IndexDate = StartDay; IndexDate.Month == CurrentMonth; IndexDate = IndexDate.AddDays(1))
                 {
+                    WorkCalendar ChangeDay = cal.FirstOrDefault(it => it.cal_date == IndexDate);
+
                     TabelDay td = new TabelDay();
-                    td.td_Hours = 8;
                     td.td_Day = IndexDate.Day;
-                    if (IndexDate.DayOfWeek == DayOfWeek.Sunday || IndexDate.DayOfWeek == DayOfWeek.Saturday)
-                        td.td_KindId = 2;
+
+                    if (ChangeDay != null)
+                    {
+                        td.CalendarTypeDay = ChangeDay.cal_type;
+                        switch(td.CalendarTypeDay)
+                        {
+                            case TypeDays.Holyday:
+                                td.td_KindId = 2;
+                                td.td_Hours = 0;
+                                break;
+                            case TypeDays.Work:
+                                td.td_KindId = 1;
+                                td.td_Hours = 8;
+                                break;
+                            case TypeDays.ShortWork:
+                                td.td_KindId = 1;
+                                td.td_Hours = 7;
+                                break;
+                        }
+                    }
                     else
-                        td.td_KindId = 0;
+                    {
+                        if (IndexDate.DayOfWeek == DayOfWeek.Sunday || IndexDate.DayOfWeek == DayOfWeek.Saturday)
+                        {
+                            td.td_KindId = 2;
+                            td.CalendarTypeDay = TypeDays.Holyday;
+                            td.td_Hours = 0;
+                        }
+                        else
+                        {
+                            td.td_KindId = 1;
+                            td.CalendarTypeDay = TypeDays.Work;
+                            td.td_Hours = 8;
+                        }
+                    }
                     tp.TabelDays.Add(td);
                 }
 
+                //tp.SetCalendarTypeDays();
                 Tabel.tabelPersons.Add(tp);
             }
 
@@ -196,6 +248,8 @@ namespace Tabel.ViewModels
         //--------------------------------------------------------------------------------------------------
         private void LoadPersonForOtdel(Otdel otdel)
         {
+            if (otdel is null)
+                return;
 
             //InitTest(count++);
             //if (count > 5) count = 2;
@@ -204,10 +258,16 @@ namespace Tabel.ViewModels
                 && it.t_month == CurrentMonth
                 && it.t_otdel_id == otdel.id);
 
-            //List<Personal> PersonsFromOtdel = repoPersonal.Items.Where(it => it.p_otdel_id == SelectedOtdel.id).ToList();
+            List<Personal> PersonsFromOtdel = repoPersonal.Items.AsNoTracking().Where(it => it.p_otdel_id == SelectedOtdel.id).ToList();
 
             if (Tabel != null)
             {
+                foreach(var item in Tabel.tabelPersons)
+                {
+                    item.SetCalendarTypeDays();
+                }
+
+
                 // если график присутствует
                 //foreach (var item in PersonsFromOtdel)
                 //{
@@ -223,21 +283,6 @@ namespace Tabel.ViewModels
             }
 
             OnPropertyChanged(nameof(Tabel));
-
-
-
-
-            if (Tabel != null)
-            { 
-                //Tabel.tabelPersons.First().TabelDays.First().td_Kind++;
-
-            //{
-            //    foreach (var item in Tabel.tabelPersons)
-            //    {
-            //        item.OnPropertyChanged("TabelDays");
-            //    }
-            }
-
         }
 
     }

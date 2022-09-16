@@ -7,4 +7,6 @@ using System.Threading.Tasks;
 namespace Tabel.Infrastructure
 {
     public enum SmenaKind: int { None, First, Second,  DayOff, Otpusk }
+    public enum TabelKind: int { None, Work, DayOff, Komandir, Otpusk, WorkDayOff, DopOtpusk, Bolen, Obuchenie, NotWork};
+
 }

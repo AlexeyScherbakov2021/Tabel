@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using Tabel.Component.MonthPanel;
 using Tabel.Infrastructure;
 
 namespace Tabel.Models2
@@ -15,8 +16,7 @@ namespace Tabel.Models2
         public Visibility VisibilityHours { get; set; } = Visibility.Collapsed;
 
         [NotMapped]
-        public int OrigHours;    
-
+        public TypeDays CalendarTypeDay { get; set; }
 
     }
 }

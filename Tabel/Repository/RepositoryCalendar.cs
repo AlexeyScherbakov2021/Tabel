@@ -17,7 +17,7 @@ namespace Tabel.Repository
         //---------------------------------------------------------------------------------------------
         public IEnumerable<int> GetYears()
         {
-            return db.calendars.Select(it => it.cal_date.Value.Year).Distinct().OrderBy(o => o);
+            return db.calendars.Select(it => it.cal_date.Year).Distinct().OrderBy(o => o);
         }
 
         //---------------------------------------------------------------------------------------------
@@ -25,7 +25,7 @@ namespace Tabel.Repository
         //---------------------------------------------------------------------------------------------
         public IEnumerable<WorkCalendar> GetDaysForYear(int year)
         {
-            return db.calendars.Where(it => it.cal_date.Value.Year == year).OrderBy(o => o.cal_date);
+            return db.calendars.Where(it => it.cal_date.Year == year).OrderBy(o => o.cal_date);
         }
 
         //---------------------------------------------------------------------------------------------
@@ -39,11 +39,11 @@ namespace Tabel.Repository
             {
                 WorkCalendar wc = new WorkCalendar();
                 wc.cal_date = new DateTime(Year, item.Month, item.Day);
-                wc.cal_type = (int)item.Type;
+                wc.cal_type = item.Type;
                 ListWC.Add(wc);
             }
 
-            List<WorkCalendar> oldList = db.calendars.Where(it => it.cal_date.Value.Year == Year).ToList();
+            List<WorkCalendar> oldList = db.calendars.Where(it => it.cal_date.Year == Year).ToList();
 
             //db.calendars.SqlQuery("delete from calendar where cal_date.Year=@year" );
             db.calendars.RemoveRange(oldList);

@@ -118,8 +118,8 @@ namespace Tabel.ViewModels
             IEnumerable<WorkCalendar> days = RepoCal.GetDaysForYear(CurrentYear);
             foreach(var item in days)
             {
-                MonthDays md = new MonthDays(item.cal_date.Value.Day, item.cal_date.Value.Month, (TypeDays)item.cal_type);
-                list12Month[item.cal_date.Value.Month-1].Add(md);
+                MonthDays md = new MonthDays(item.cal_date.Day, item.cal_date.Month, (TypeDays)item.cal_type);
+                list12Month[item.cal_date.Month-1].Add(md);
             }
         }
 

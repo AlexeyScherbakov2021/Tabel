@@ -65,13 +65,11 @@
             <TextBox Text="{Binding WorkedHours15, Mode=OneWay}" Grid.Row="1" Grid.Column="5"  FontWeight="Bold" Background="#d8FFd8"/>
             <TextBox Text="{Binding WorkedHours2, Mode=OneWay}" Grid.Row="2" Grid.Column="5" FontWeight="Bold" Background="#b8FFb8"/>
             <TextBox Text="{Binding WorkedOffDays, Mode=OneWay}" Grid.Row="3" Grid.Column="5" FontWeight="Bold"  Background="MistyRose"/>
-
-
-            <!--<TextBox Text="10" Grid.Row="2" Grid.Column="1"/>
-            <TextBox Text="100" Grid.Row="3" Grid.Column="1"/>-->
-
         </Grid>
+
         <ListBox Padding="2" SelectionMode="Extended" ItemsSource="{Binding Path=SourceCollection , RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
+                 SelectedItem="{Binding SelectedItem, Mode=TwoWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
+                 x:Name="ListBoxDays"
                  >
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -84,41 +82,26 @@
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="{x:Type ListBoxItem}">
-                                <Border x:Name="border" BorderThickness="2" Padding="1" CornerRadius="2" Margin="2,0">
+                                <Border x:Name="border" BorderThickness="1" Padding="1.5" CornerRadius="2" Margin="2,0">
                                     <Border.Effect>
-                                        <DropShadowEffect BlurRadius="4" Opacity="0.4" ShadowDepth="3"/>
+                                        <DropShadowEffect BlurRadius="1" Opacity="0.4" ShadowDepth="2"/>
                                     </Border.Effect>
                                     <StackPanel>
-                                        <TextBlock Text="{Binding td_Day}" TextAlignment="Center" Background="LightSteelBlue" Foreground="Black" FontWeight="Bold" SnapsToDevicePixels="True"/>
+                                        <TextBlock x:Name="NumberDay" Text="{Binding td_Day}" TextAlignment="Center" Background="LightSteelBlue" Foreground="Black" FontWeight="Bold" SnapsToDevicePixels="True"/>
 
                                         <StackPanel Orientation="Horizontal">
                                             <ComboBox Width="28" HorizontalContentAlignment="Center" 
                                                 DisplayMemberPath="t_name"
-                                                SelectedIndex="{Binding td_KindId}"
-                                                ItemsSource="{Binding ItemsKind, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}">
-
-                                                <!--<ComboBox.Resources>
-                                                    <Style TargetType="{x:Type SelectionBoxItem}">
-                                                        <Setter Property="Foreground" Value="Red"/>
-                                                        <Style.Triggers>
-                                                            <DataTrigger Binding="{Binding td_KindId}" Value="5">
-                                                                <Setter Property="Foreground" Value="Red"/>
-                                                            </DataTrigger>
-                                                        </Style.Triggers>
-                                                    </Style>
-                                                </ComboBox.Resources>-->
-                                                
-                                                <!--SelectedItem="{Binding Kind, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"-->
-                                                <!--<ComboBoxItem Content="2"/>
-                                                <ComboBoxItem Content="3"/>
-                                                <ComboBoxItem Content="4"/>
-                                                <ComboBoxItem Content="5"/>
-                                                <ComboBoxItem Content="6"/>
-                                                <ComboBoxItem Content="7"/>
-                                                <ComboBoxItem Content="8"/>-->
+                                                ToolTip="{Binding SelectedItem.t_desc, RelativeSource={RelativeSource Self}}"
+                                                SelectedIndex="{Binding td_KindId, Mode=TwoWay}"
+                                                ItemsSource="{Binding ItemsKind, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}" GotFocus="ComboBox_GotFocus" SelectionChanged="ComboBox_SelectionChanged">
                                             </ComboBox>
-                                            <TextBox Text="{Binding td_Hours}" Padding="2,0" MinWidth="24" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-                                            <TextBox Text="{Binding td_Hours2}" Visibility="{Binding VisibilityHours}" Padding="2,0" MinWidth="24" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                                            <TextBox Text="{Binding td_Hours, Mode=TwoWay}" Padding="2,0" MinWidth="24" 
+                                                     HorizontalContentAlignment="Center" 
+                                                     VerticalContentAlignment="Center" GotFocus="TextBox_GotFocus" TextChanged="TextBox_TextChanged" 
+                                                     
+                                                     />
+                                            <TextBox Text="{Binding td_Hours2, Mode=TwoWay}" Visibility="{Binding VisibilityHours}" Padding="2,0" MinWidth="24" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" GotFocus="TextBox_GotFocus"/>
                                         </StackPanel>
                                     </StackPanel>
                                 </Border>
@@ -131,6 +114,12 @@
                                         <Setter Property="Foreground" Value="White"/>
                                         <Setter Property="BorderBrush" Value="Blue" TargetName="border"/>
                                     </Trigger>
+                                    <DataTrigger Binding="{Binding CalendarTypeDay}" Value="Holyday">
+                                        <Setter Property="Background" Value="#E0C4DE" TargetName="NumberDay"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding CalendarTypeDay}" Value="ShortWork">
+                                        <Setter Property="Background" Value="#D0F0DE" TargetName="NumberDay"/>
+                                    </DataTrigger>
                                 </ControlTemplate.Triggers>
                             </ControlTemplate>
                         </Setter.Value>
