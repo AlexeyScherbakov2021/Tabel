@@ -12,6 +12,9 @@
         <vm:OtdelsWindowViewModel/>
     </UserControl.DataContext>
     <UserControl.Resources>
+
+        <vm:OtdelsWindowViewModel x:Key="context"/>
+
         <HierarchicalDataTemplate DataType="{x:Type m:Otdel}" ItemsSource="{Binding subOtdels}">
             <TextBlock Text="{Binding ot_name}"/>
         </HierarchicalDataTemplate>
@@ -62,6 +65,35 @@
                         <DataGridTextColumn Header="Имя" Binding="{Binding p_name}"/>
                         <DataGridTextColumn Header="Отчество" Binding="{Binding p_midname}"/>
                         <DataGridTextColumn Header="Должность" Binding="{Binding p_profession}"/>
+                        <!--<DataGridTextColumn Header="Разряд" Binding="{Binding category.id}"/>-->
+
+                        <!--<DataGridComboBoxColumn Header="Разряд" ItemsSource="{Binding ListCategory, Source={StaticResource context}}"
+                            DisplayMemberPath="cat_tarif" SelectedValuePath="id" SelectedValueBinding="{Binding p_cat_id}" >
+                        </DataGridComboBoxColumn>-->
+
+                        <DataGridTemplateColumn Header="Разряд">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                    <TextBlock Text="{Binding p_cat_id, StringFormat=0.#}" TextAlignment="Right" Margin="5,0"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            <DataGridTemplateColumn.CellEditingTemplate>
+                                <DataTemplate>
+                                    <ComboBox ItemsSource="{Binding ListCategory, Source={StaticResource context}}" SelectedValuePath="id"  SelectedValue="{Binding p_cat_id}">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Text="{Binding id}" Width="14" />
+                                                    <TextBlock Text="{Binding cat_tarif, StringFormat=0.#}" />
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                        
+                                    </ComboBox>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellEditingTemplate>
+                            </DataGridTemplateColumn>
+                       
                     </DataGrid.Columns>
                 </DataGrid>
             </DockPanel>

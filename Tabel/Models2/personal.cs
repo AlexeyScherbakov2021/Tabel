@@ -14,6 +14,7 @@ namespace Tabel.Models2
         {
             TabelPersons = new HashSet<TabelPerson>();
             SmenaPersons = new HashSet<SmenaPerson>();
+            ModPersons = new HashSet<ModPerson>();
         }
 
         [Key]
@@ -48,6 +49,8 @@ namespace Tabel.Models2
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SmenaPerson> SmenaPersons { get; set; }
+        public virtual ICollection<ModPerson> ModPersons { get; set; }
+
 
         [NotMapped]
         public string FIO => p_lastname + " " + p_name + " " + p_midname;

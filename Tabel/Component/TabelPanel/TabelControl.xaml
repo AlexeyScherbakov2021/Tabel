@@ -46,25 +46,25 @@
             <TextBox Text="часы" Grid.Row="3"/>
 
             <TextBox Text="{Binding DaysWeek1, Mode=OneWay}" Grid.Row="0" Grid.Column="1" FontWeight="Bold"/>
-            <TextBox Text="{Binding HoursWeek1, Mode=OneWay}" Grid.Row="1" Grid.Column="1" FontWeight="Bold"/>
+            <TextBox Text="{Binding HoursWeek1, Mode=OneWay, StringFormat=0.#}" Grid.Row="1" Grid.Column="1" FontWeight="Bold"/>
             <TextBox Text="{Binding DaysWeek2, Mode=OneWay}" Grid.Row="2" Grid.Column="1" FontWeight="Bold"/>
-            <TextBox Text="{Binding HoursWeek2, Mode=OneWay}" Grid.Row="3" Grid.Column="1" FontWeight="Bold"/>
+            <TextBox Text="{Binding HoursWeek2, Mode=OneWay, StringFormat=0.#}" Grid.Row="3" Grid.Column="1" FontWeight="Bold"/>
 
             <TextBox Text="дни" Grid.Row="0"  Grid.Column="2" Grid.RowSpan="2"/>
             <TextBox Text="часы" Grid.Row="2"  Grid.Column="2" Grid.RowSpan="2"/>
 
             <TextBox Text="{Binding DaysMonth, Mode=OneWay}" Grid.Row="0" Grid.Column="3" Grid.RowSpan="2" FontWeight="Bold"/>
-            <TextBox Text="{Binding HoursMonth, Mode=OneWay}" Grid.Row="2" Grid.Column="3" Grid.RowSpan="2" FontWeight="Bold"/>
+            <TextBox Text="{Binding HoursMonth, Mode=OneWay, StringFormat=0.#}" Grid.Row="2" Grid.Column="3" Grid.RowSpan="2" FontWeight="Bold"/>
 
             <TextBox Text="Я" Grid.Row="0" Grid.Column="4"/>
             <TextBox Text="Я1,5+" Grid.Row="1" Grid.Column="4"  Background="#d8FFd8"/>
             <TextBox Text="Я2+" Grid.Row="2" Grid.Column="4" Background="#b8FFb8"/>
             <TextBox Text="РВ" Grid.Row="3" Grid.Column="4" Background="MistyRose"/>
 
-            <TextBox Text="{Binding WorkedHours1, Mode=OneWay}" Grid.Row="0" Grid.Column="5" FontWeight="Bold"/>
-            <TextBox Text="{Binding WorkedHours15, Mode=OneWay}" Grid.Row="1" Grid.Column="5"  FontWeight="Bold" Background="#d8FFd8"/>
-            <TextBox Text="{Binding WorkedHours2, Mode=OneWay}" Grid.Row="2" Grid.Column="5" FontWeight="Bold" Background="#b8FFb8"/>
-            <TextBox Text="{Binding WorkedOffDays, Mode=OneWay}" Grid.Row="3" Grid.Column="5" FontWeight="Bold"  Background="MistyRose"/>
+            <TextBox Text="{Binding WorkedHours1, Mode=OneWay, StringFormat=0.#}" Grid.Row="0" Grid.Column="5" FontWeight="Bold"/>
+            <TextBox Text="{Binding WorkedHours15, Mode=OneWay, StringFormat=0.#}" Grid.Row="1" Grid.Column="5"  FontWeight="Bold" Background="#d8FFd8"/>
+            <TextBox Text="{Binding WorkedHours2, Mode=OneWay, StringFormat=0.#}" Grid.Row="2" Grid.Column="5" FontWeight="Bold" Background="#b8FFb8"/>
+            <TextBox Text="{Binding WorkedOffDays, Mode=OneWay, StringFormat=0.#}" Grid.Row="3" Grid.Column="5" FontWeight="Bold"  Background="MistyRose"/>
         </Grid>
 
         <ListBox Padding="2" SelectionMode="Extended" ItemsSource="{Binding Path=SourceCollection , RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"

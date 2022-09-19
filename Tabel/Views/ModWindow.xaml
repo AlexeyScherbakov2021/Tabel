@@ -1,0 +1,71 @@
+﻿<Window x:Class="Tabel.Views.ModWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:Tabel.ViewModels"
+        xmlns:local="clr-namespace:Tabel.Views"
+        xmlns:ext="clr-namespace:Tabel.Infrastructure.Extend"
+        mc:Ignorable="d"
+        Title="Модель" Height="700" Width="1100" WindowStartupLocation="CenterScreen">
+    <Window.DataContext>
+        <vm:ModWindowViewModel/>
+    </Window.DataContext>
+    <DockPanel>
+        <ToolBarPanel DockPanel.Dock="Top" Orientation="Horizontal" Height="30" Margin="0,0,0,8">
+            <Button Content="Создать новый" Command="{Binding CreateCommand}" Margin="3" Style="{DynamicResource ButtonStyleShadow}"/>
+            <Button Content="Сохранить" Command="{Binding SaveCommand}" Margin="3" Style="{DynamicResource ButtonStyleShadow}"/>
+        </ToolBarPanel>
+
+        <StatusBar DockPanel.Dock="Bottom">
+            <StatusBarItem Content="Пользователь:"/>
+            <StatusBarItem Content="{Binding User.u_fio}"/>
+        </StatusBar>
+        <Expander ExpandDirection="Right" DockPanel.Dock="Left">
+            <ext:ExtendedTreeView ItemsSource="{Binding ListOtdel}" Margin="3" SelectedItem_="{Binding SelectedOtdel, Mode=TwoWay}">
+                <TreeView.Resources>
+                    <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="Transparent" />
+                    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="LightBlue" />
+                    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="Black" />
+                    <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="LightGray" />
+                </TreeView.Resources>
+            </ext:ExtendedTreeView>
+        </Expander>
+
+        <TabControl>
+            <TabItem Header="По табелю">
+                <DataGrid ItemsSource="{Binding CurrentMod.ModPersons}" Style="{DynamicResource DataGridStyle}" IsReadOnly="True">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="ФИО" Binding="{Binding person.FIO}"/>
+                        <DataGridTextColumn Header="Дложность" Binding="{Binding person.p_profession}"/>
+                        <DataGridTextColumn Header="Разряд" Binding="{Binding person.category.id}"/>
+                        <DataGridTextColumn Header="Тариф" Binding="{Binding person.category.cat_tarif, StringFormat=0.#}"/>
+                        <DataGridTextColumn Header="Часы" Binding="{Binding TabelHours, StringFormat=0.#}"/>
+                        <DataGridTextColumn Header="Отсут." Binding="{Binding TabelAbsent}"/>
+                        <DataGridTextColumn Header="Дни" Binding="{Binding TabelDays}"/>
+                        <DataGridTextColumn Header="Оклад" Binding="{Binding Oklad, StringFormat=0.#}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+            <TabItem Header="Премия по выработке">
+                <DataGrid ItemsSource="{Binding CurrentMod.ModPersons}" Style="{DynamicResource DataGridStyle}" >
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="ФИО" Binding="{Binding person.FIO}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Дложность" Binding="{Binding person.p_profession}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Премия по выработке" Binding="{Binding md_premFP, Mode=TwoWay}" IsReadOnly="False"/>
+                        <DataGridTextColumn Header="Премиальный тариф" Binding="{Binding md_prem1_tarif,  Mode=TwoWay}"/>
+                        <DataGridTextColumn Header="Итог" Binding="{Binding}" IsReadOnly="True"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+            </TabItem>
+            <TabItem Header="Бонус"/>
+            <TabItem Header="Премия по участку"/>
+            <TabItem Header="Работа в выходной день"/>
+            <TabItem Header="Доп.работы / Доставка"/>
+            <TabItem Header="Вечерние"/>
+        </TabControl>
+        
+        
+    </DockPanel>
+</Window>

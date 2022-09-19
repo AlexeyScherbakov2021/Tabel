@@ -20,7 +20,7 @@
     <Window.Resources>
         <conv:KindSmenaConverter x:Key="KindSmenaConverter"/>
 
-        <HierarchicalDataTemplate DataType="{x:Type m:Otdel}" ItemsSource="{Binding subOtdels}">
+        <!--<HierarchicalDataTemplate DataType="{x:Type m:Otdel}" ItemsSource="{Binding subOtdels}">
             <TextBlock Text="{Binding ot_name}"/>
         </HierarchicalDataTemplate>
         <Style x:Key="FocusVisual">
@@ -31,7 +31,7 @@
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
-        </Style>
+        </Style>-->
     </Window.Resources>
 
 

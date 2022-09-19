@@ -18,7 +18,7 @@
     <Window.Resources>
         <conv:KindSmenaConverter x:Key="KindSmenaConverter"/>
 
-        <HierarchicalDataTemplate DataType="{x:Type m:Otdel}" ItemsSource="{Binding subOtdels}">
+        <!--<HierarchicalDataTemplate DataType="{x:Type m:Otdel}" ItemsSource="{Binding subOtdels}">
             <TextBlock Text="{Binding ot_name}"/>
         </HierarchicalDataTemplate>
         <Style x:Key="FocusVisual">
@@ -29,7 +29,7 @@
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
-        </Style>
+        </Style>-->
         <SolidColorBrush x:Key="TextBox.Static.Background" Color="#FFFFFFFF"/>
         <Style x:Key="ComboBoxEditableTextBox" TargetType="{x:Type TextBox}">
             <Setter Property="OverridesDefaultStyle" Value="true"/>

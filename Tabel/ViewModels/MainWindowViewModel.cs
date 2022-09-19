@@ -55,6 +55,16 @@ namespace Tabel.ViewModels
             win.ShowDialog();
         }
 
+        //--------------------------------------------------------------------------------
+        // Команда Загрузить Модель
+        //--------------------------------------------------------------------------------
+        public ICommand ExecModCommand => new LambdaCommand(OnExecModCommandExecuted, CanModTabelCommand);
+        private bool CanModTabelCommand(object p) => true;
+        private void OnExecModCommandExecuted(object p)
+        {
+            ModWindow win = new ModWindow();
+            win.ShowDialog();
+        }
 
         #endregion
 

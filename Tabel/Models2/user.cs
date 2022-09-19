@@ -13,6 +13,7 @@ namespace Tabel.Models2
         {
             smenas = new HashSet<Smena>();
             tabels = new HashSet<WorkTabel>();
+            mods = new HashSet<Mod>();
         }
 
         [Key]
@@ -39,5 +40,6 @@ namespace Tabel.Models2
         
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<WorkTabel> tabels { get; set; }
+        public virtual ICollection<Mod> mods { get; set; }
     }
 }

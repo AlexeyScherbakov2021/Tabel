@@ -69,6 +69,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Component\Models\ModPerson2.cs" />
     <Compile Include="Component\Models\TabelDays2.cs" />
     <Compile Include="Component\Models\TabelPerson2.cs" />
     <Compile Include="Component\MonthPanel\Enums.cs" />
@@ -89,6 +90,8 @@
     <Compile Include="Models2\calendar.cs" />
     <Compile Include="Models2\category.cs" />
     <Compile Include="Models2\IEntity.cs" />
+    <Compile Include="Models2\Mod.cs" />
+    <Compile Include="Models2\ModPerson.cs" />
     <Compile Include="Models2\Model2.cs" />
     <Compile Include="Models2\otdel.cs" />
     <Compile Include="Models2\personal.cs" />
@@ -105,6 +108,7 @@
     <Compile Include="Infrastructure\Extend\ExtendedTreeView.cs" />
     <Compile Include="Infrastructure\Extend\ListBoxExt.cs" />
     <Compile Include="ViewModels\Admins\OtdelsWindowViewModel.cs" />
+    <Compile Include="ViewModels\ModWindowViewModel.cs" />
     <Compile Include="ViewModels\SelectOtdelWindowViewModel.cs" />
     <Compile Include="ViewModels\Admins\UserWindowViewModel.cs" />
     <Compile Include="ViewModels\Admins\YearCalendarViewModel.cs" />
@@ -118,6 +122,9 @@
     </Compile>
     <Compile Include="Views\Admins\YearCalendar.xaml.cs">
       <DependentUpon>YearCalendar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ModWindow.xaml.cs">
+      <DependentUpon>ModWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SelectOtdelWindow.xaml.cs">
       <DependentUpon>SelectOtdelWindow.xaml</DependentUpon>
@@ -208,6 +215,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\ModWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\SelectOtdelWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

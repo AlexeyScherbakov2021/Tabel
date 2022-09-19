@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -42,7 +43,12 @@ namespace Tabel.ViewModels.Admins
             } 
         }
 
-        
+        // Разряды ----------------------------------------------------
+        private readonly RepositoryMSSQL<Category> repoCat = new RepositoryMSSQL<Category>();
+
+        public List<Category> ListCategory { get; set; } //= repoCat.Items.AsNoTracking().OrderBy(o => o.id).ToList();
+
+
         // Персонал отдела --------------------------------------------
 
         private readonly RepositoryMSSQL<Personal> repoPerson;
@@ -82,6 +88,7 @@ namespace Tabel.ViewModels.Admins
             repoPerson = new RepositoryMSSQL<Personal>();
 
             ListOtdel = new ObservableCollection<Otdel>( repoOtdel.Items);
+            ListCategory = repoCat.Items.AsNoTracking().OrderBy(o => o.id).ToList();
         }
 
         private void ListPersonalView_CurrentChanged(object sender, EventArgs e)

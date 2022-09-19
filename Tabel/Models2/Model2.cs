@@ -23,6 +23,8 @@ namespace Tabel.Models2
         public virtual DbSet<TabelPerson> tabelPersons { get; set; }
         public virtual DbSet<typeDay> typeDays { get; set; }
         public virtual DbSet<User> users { get; set; }
+        public virtual DbSet<Mod> Mod { get; set; }
+        public virtual DbSet<ModPerson> ModPerson {get;set;}
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -63,6 +65,13 @@ namespace Tabel.Models2
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Otdel>()
+                .HasMany(e => e.mods)
+                .WithRequired(e => e.Otdel)
+                .HasForeignKey(e => e.m_otdelId)
+                .WillCascadeOnDelete(false);
+
+
+            modelBuilder.Entity<Otdel>()
                 .HasMany(e => e.users)
                 .WithOptional(e => e.otdel)
                 .HasForeignKey(e => e.u_otdel_id);
@@ -97,6 +106,12 @@ namespace Tabel.Models2
                 .WithRequired(e => e.personal)
                 .HasForeignKey(e => e.sp_PersonId)
                 .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Personal>()
+                .HasMany(e => e.ModPersons)
+                .WithRequired(e => e.person)
+                .HasForeignKey(e => e.md_personalId);
+
 
             modelBuilder.Entity<Smena>()
                 .Property(e => e.sm_Number)
@@ -169,6 +184,17 @@ namespace Tabel.Models2
                 .WithRequired(e => e.Author)
                 .HasForeignKey(e => e.t_author_id)
                 .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<User>()
+                .HasMany(e => e.mods)
+                .WithRequired(e => e.Author)
+                .HasForeignKey(e => e.m_author)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Mod>()
+                .HasMany(e => e.ModPersons)
+                .WithRequired(e => e.Mod)
+                .HasForeignKey(e => e.md_modId);
 
         }
     }

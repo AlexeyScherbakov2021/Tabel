@@ -116,7 +116,7 @@
             <Button Content="График сменной работы" Command="{Binding ExecSmenaCommand}"/>
             <Button Content="График использования личного транспорта" />
             <Button Content="Табель рабочего времени" Command="{Binding ExecTabelCommand}"/>
-            <Button Content="Модель оплаты" />
+            <Button Content="Модель оплаты"  Command="{Binding ExecModCommand}"/>
             <Button Content="Производствен-ный календарь" Command="{Binding ExecCalCommand}"/>
         </UniformGrid>
     </DockPanel>
