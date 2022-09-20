@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Tabel.Commands;
 using Tabel.Component.MonthPanel;
+using Tabel.Infrastructure;
 using Tabel.Models2;
 using Tabel.Repository;
 using Tabel.ViewModels.Base;
@@ -20,6 +21,7 @@ namespace Tabel.ViewModels
         private readonly RepositoryMSSQL<Otdel> repoOtdel = new RepositoryMSSQL<Otdel>();
         private readonly RepositoryMSSQL<WorkTabel> repoTabel = new RepositoryMSSQL<WorkTabel>();
         private readonly RepositoryMSSQL<Mod> repoModel = new RepositoryMSSQL<Mod>();
+        private readonly RepositoryMSSQL<Smena> repoSmena = new RepositoryMSSQL<Smena>();
 
         public User User { get; set; }
 
@@ -56,6 +58,11 @@ namespace Tabel.ViewModels
         public Mod CurrentMod { get; set; }
 
 
+        #region Для тестирования, потом удалить
+        //public ObservableCollection<ModPerson> ListModPerson { get; set; }
+        //public WorkTabel Tabel { get; set; }
+        #endregion
+
 
         #region Команды
         //--------------------------------------------------------------------------------
@@ -87,6 +94,18 @@ namespace Tabel.ViewModels
 
 
         }
+
+        //--------------------------------------------------------------------------------
+        // Команда Сохранить
+        //--------------------------------------------------------------------------------
+        public ICommand SaveCommand => new LambdaCommand(OnSaveCommandExecuted, CanSaveCommand);
+        private bool CanSaveCommand(object p) => true;
+        private void OnSaveCommandExecuted(object p)
+        {
+            repoModel.Save();
+        }
+
+
         #endregion
 
 
@@ -106,6 +125,7 @@ namespace Tabel.ViewModels
 
 
         //-------------------------------------------------------------------------------------------------------
+        // подгрузка данных из табеля
         //-------------------------------------------------------------------------------------------------------
         private void LoadFromTabel()
         {
@@ -116,6 +136,7 @@ namespace Tabel.ViewModels
                 && it.t_month == CurrentMonth
                 && it.t_otdel_id == SelectedOtdel.id);
 
+            if (CurrentMod.ModPersons is null) return;
 
             foreach(var item in CurrentMod.ModPersons)
             {
@@ -123,7 +144,30 @@ namespace Tabel.ViewModels
                 item.TabelDays = pers.DaysMonth;
                 item.TabelHours = pers.HoursMonth;
                 item.TabelAbsent = 0;
+                item.TabelWorkOffDay = pers.WorkedOffDays;
                 item.Oklad = item.person.category is null ? 0 : item.TabelHours * item.person.category.cat_tarif.Value;
+            }
+
+        }
+
+        //-------------------------------------------------------------------------------------------------------
+        // подгрузка данных из графика смен
+        //-------------------------------------------------------------------------------------------------------
+        private void LoadFromSmena()
+        {
+            if (CurrentMod is null)
+                return;
+
+            var smena = repoSmena.Items.AsNoTracking().FirstOrDefault(it => it.sm_Year == CurrentYear
+                && it.sm_Month == CurrentMonth
+                && it.sm_OtdelId == SelectedOtdel.id);
+
+            if (CurrentMod.ModPersons is null) return;
+
+            foreach (var item in CurrentMod.ModPersons)
+            {
+                var pers = smena.SmenaPerson.FirstOrDefault(it => it.sp_PersonId == item.md_personalId);
+                item.NightHours = pers.SmenaDays.Count(s => s.sd_Kind == SmenaKind.Second) * 4.5m;
             }
 
         }
@@ -135,8 +179,11 @@ namespace Tabel.ViewModels
         private void LoadPersonForModel()
         {
             CurrentMod = repoModel.Items.FirstOrDefault(it => it.m_month == CurrentMonth && it.m_year == CurrentYear && it.m_otdelId == SelectedOtdel.id);
+
             LoadFromTabel();
+            LoadFromSmena();
             OnPropertyChanged(nameof(CurrentMod));
         }
+
     }
 }

@@ -28,15 +28,15 @@ namespace Tabel.Models2
         public decimal HoursMonth => HoursWeek1 + HoursWeek2;
 
 
-        public decimal WorkedHours1
+        public decimal? WorkedHours1
         {
             get
             {
-                return ((IEnumerable<TabelDay>)TabelDays).Select(it => it.td_Hours.Value).Sum() - WorkedOffDays;
+                return ((IEnumerable<TabelDay>)TabelDays).Select(it => it.td_Hours.Value).Sum() - WorkedOffHours;
 
             }
         }
-        public decimal WorkedHours15
+        public decimal? WorkedHours15
         {
             get
             {
@@ -64,9 +64,11 @@ namespace Tabel.Models2
 
             }
         }
-       
-        
-        public decimal WorkedOffDays => ((IEnumerable<TabelDay>) TabelDays).Where(it => it.td_KindId == 5).Sum(s => s.td_Hours.Value);
+
+
+        [NotMapped]
+        public decimal? WorkedOffDays => ((IEnumerable<TabelDay>) TabelDays).Where(it => it.td_KindId == 5).Sum(s => s.td_Day);
+        public decimal? WorkedOffHours => ((IEnumerable<TabelDay>) TabelDays).Where(it => it.td_KindId == 5).Sum(s => s.td_Hours.Value);
 
 
         public void UpdateUI()

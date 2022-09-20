@@ -20,10 +20,11 @@
         </Setter>
     </Style>
 
-    <LinearGradientBrush x:Key="ComboBox.Static.Background" EndPoint="0,1" StartPoint="0,0">
-        <GradientStop Color="#FFF0F0F0" Offset="0.0"/>
-        <GradientStop Color="#FFE5E5E5" Offset="1.0"/>
-    </LinearGradientBrush>
+    <!--<LinearGradientBrush x:Key="ComboBox.Static.Background" EndPoint="0,1" StartPoint="0,0">
+        <GradientStop Color="#FFFFFFFF" Offset="0.0"/>
+        <GradientStop Color="#FFFFFFFF" Offset="1.0"/>
+    </LinearGradientBrush>-->
+    <SolidColorBrush x:Key="ComboBox.Static.Background" Color="White"/>
     <SolidColorBrush x:Key="ComboBox.Static.Border" Color="#FFACACAC"/>
     <SolidColorBrush x:Key="ComboBox.Static.Glyph" Color="#FF606060"/>
     <SolidColorBrush x:Key="ComboBox.Static.Editable.Background" Color="#FFFFFFFF"/>
@@ -212,7 +213,7 @@
         </ControlTemplate.Triggers>
     </ControlTemplate>
     <ControlTemplate x:Key="ComboBoxTemplate" TargetType="{x:Type ComboBox}">
-        <Grid x:Name="templateRoot" SnapsToDevicePixels="true">
+        <Grid x:Name="templateRoot" SnapsToDevicePixels="true" >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <!--<ColumnDefinition MinWidth="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}" Width="0"/>-->
@@ -232,7 +233,12 @@
                 </theme:SystemDropShadowChrome>
             </Popup>
             <ToggleButton x:Name="toggleButton" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Grid.ColumnSpan="2" IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" Style="{StaticResource ComboBoxToggleButton}"/>
-            <TextBlock Text="{TemplateBinding Text}" Foreground="{TemplateBinding Background}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" Margin="{TemplateBinding Padding}" IsHitTestVisible="false"/>
+            <TextBlock Text="{TemplateBinding Text}" Foreground="{TemplateBinding Background}" 
+                       HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                       VerticalAlignment="{TemplateBinding VerticalContentAlignment}" 
+                       SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" 
+                       Margin="{TemplateBinding Padding}" 
+                       IsHitTestVisible="false"/>
 
             <!--<ContentPresenter x:Name="contentPresenter" ContentStringFormat="{TemplateBinding SelectionBoxItemStringFormat}" ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}" Content="{TemplateBinding SelectionBoxItem}" ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" IsHitTestVisible="false" Margin="{TemplateBinding Padding}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>-->
         </Grid>
@@ -259,7 +265,7 @@
     </ControlTemplate>
     
     
-    <Style  TargetType="{x:Type ComboBox}">
+    <Style x:Key="SimpleComboBox"  TargetType="{x:Type ComboBox}">
         <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
         <Setter Property="Background" Value="Black"/>
         <!--<Setter Property="Background" Value="{StaticResource ComboBox.Static.Background}"/>-->

@@ -94,6 +94,7 @@
 
                                         <StackPanel Orientation="Horizontal">
                                             <ComboBox Width="28" HorizontalContentAlignment="Center" 
+                                                Style="{StaticResource SimpleComboBox}"
                                                 DisplayMemberPath="t_name"
                                                 ToolTip="{Binding SelectedItem.t_desc, RelativeSource={RelativeSource Self}}"
                                                 SelectedIndex="{Binding td_KindId, Mode=TwoWay}"

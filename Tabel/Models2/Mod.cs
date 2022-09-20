@@ -13,7 +13,7 @@ namespace Tabel.Models2
     {
         public Mod()
         {
-            ModPersons = new HashSet<ModPerson>();
+            //ModPersons = new HashSet<ModPerson>();
         }
 
         [Key]
@@ -23,10 +23,24 @@ namespace Tabel.Models2
         public int m_month { get; set; }
         public int m_author { get; set; }
         public int m_otdelId { get; set; }
+        private decimal? _m_HoursFromFP;
+        public decimal? m_HoursFromFP 
+        { 
+            get => _m_HoursFromFP; 
+            set 
+            {
+                if (Equals(_m_HoursFromFP, value)) return;
+                _m_HoursFromFP = value;
+                if (ModPersons is null) return;
+                foreach(var item in ModPersons)
+                    item.UpdateUI();
+            } 
+        }
+
 
         public virtual User Author { get; set; }
         public virtual Otdel Otdel { get; set; }
 
-        public virtual ICollection<ModPerson> ModPersons { get; set; }  
+        public virtual IList<ModPerson> ModPersons { get; set; }  
     }
 }

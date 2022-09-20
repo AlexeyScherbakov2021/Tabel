@@ -30,20 +30,7 @@ namespace Tabel.Models2
         public virtual WorkTabel tabel { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        //private ICollection<TabelDay> _TabelDays;
         public virtual ICollection<TabelDay> TabelDays { get; set; }
-        //{ 
-        //    get => _TabelDays ; 
-        //    set
-        //    {
-        //        if (Equals(value, _TabelDays))
-        //            return;
-        //        _TabelDays = value;
-        //        SetCalendarTypeDays(value);
-
-        //    }
-        //}
-
 
     }
 }
