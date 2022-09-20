@@ -108,12 +108,14 @@
     <Compile Include="Infrastructure\Extend\ExtendedTreeView.cs" />
     <Compile Include="Infrastructure\Extend\ListBoxExt.cs" />
     <Compile Include="ViewModels\Admins\OtdelsWindowViewModel.cs" />
-    <Compile Include="ViewModels\ModWindowViewModel.cs" />
+    <Compile Include="ViewModels\Base\IBaseUCViewModel.cs" />
+    <Compile Include="ViewModels\BasicWindowViewModel.cs" />
+    <Compile Include="ViewModels\ModUCViewModel.cs" />
     <Compile Include="ViewModels\SelectOtdelWindowViewModel.cs" />
     <Compile Include="ViewModels\Admins\UserWindowViewModel.cs" />
     <Compile Include="ViewModels\Admins\YearCalendarViewModel.cs" />
-    <Compile Include="ViewModels\SmenaWindowViewModel.cs" />
-    <Compile Include="ViewModels\TabelWindowViewModel.cs" />
+    <Compile Include="ViewModels\SmenaUCViewModel.cs" />
+    <Compile Include="ViewModels\TabelUCViewModel.cs" />
     <Compile Include="Views\Admins\OtdelsWindow.xaml.cs">
       <DependentUpon>OtdelsWindow.xaml</DependentUpon>
     </Compile>
@@ -123,17 +125,20 @@
     <Compile Include="Views\Admins\YearCalendar.xaml.cs">
       <DependentUpon>YearCalendar.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ModWindow.xaml.cs">
-      <DependentUpon>ModWindow.xaml</DependentUpon>
+    <Compile Include="Views\BasicWindow.xaml.cs">
+      <DependentUpon>BasicWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ModUC.xaml.cs">
+      <DependentUpon>ModUC.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SelectOtdelWindow.xaml.cs">
       <DependentUpon>SelectOtdelWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\SmenaWindow.xaml.cs">
-      <DependentUpon>SmenaWindow.xaml</DependentUpon>
+    <Compile Include="Views\SmenaUC.xaml.cs">
+      <DependentUpon>SmenaUC.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\TabelWindow.xaml.cs">
-      <DependentUpon>TabelWindow.xaml</DependentUpon>
+    <Compile Include="Views\TabelUC.xaml.cs">
+      <DependentUpon>TabelUC.xaml</DependentUpon>
     </Compile>
     <Page Include="Component\MonthPanel\MonthControl.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -172,6 +177,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Admins\YearCalendar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\BasicWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -215,7 +224,7 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Views\ModWindow.xaml">
+    <Page Include="Views\ModUC.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -223,11 +232,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\SmenaWindow.xaml">
+    <Page Include="Views\SmenaUC.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\TabelWindow.xaml">
+    <Page Include="Views\TabelUC.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

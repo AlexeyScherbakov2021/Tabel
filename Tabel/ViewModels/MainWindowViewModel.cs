@@ -29,7 +29,9 @@ namespace Tabel.ViewModels
         private bool CanExecSmenaCommand(object p) => true;
         private void OnExecSmenaCommandExecuted(object p)
         {
-            SmenaWindow win = new SmenaWindow();
+            BasicWindow win = new BasicWindow();
+            BasicWindowViewModel vm = new BasicWindowViewModel(new SmenaUC(), "График смен");
+            win.DataContext = vm;
             win.ShowDialog();
         }
 
@@ -51,8 +53,11 @@ namespace Tabel.ViewModels
         private bool CanExecTabelCommand(object p) => true;
         private void OnExecTabelCommandExecuted(object p)
         {
-            TabelWindow win = new TabelWindow();
+            BasicWindow win = new BasicWindow();
+            BasicWindowViewModel vm = new BasicWindowViewModel(new TabelUC(), "Табель");
+            win.DataContext = vm;
             win.ShowDialog();
+
         }
 
         //--------------------------------------------------------------------------------
@@ -62,8 +67,13 @@ namespace Tabel.ViewModels
         private bool CanModTabelCommand(object p) => true;
         private void OnExecModCommandExecuted(object p)
         {
-            ModWindow win = new ModWindow();
+            BasicWindow win = new BasicWindow();
+            BasicWindowViewModel vm = new BasicWindowViewModel(new ModUC(), "Модель расчета");
+            win.DataContext = vm;
             win.ShowDialog();
+
+            //ModWindow win = new ModWindow();
+            //win.ShowDialog();
         }
 
         #endregion

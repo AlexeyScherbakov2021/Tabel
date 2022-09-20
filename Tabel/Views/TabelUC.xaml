@@ -1,0 +1,50 @@
+﻿<UserControl x:Class="Tabel.Views.TabelUC"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Tabel.Views"
+            xmlns:vm="clr-namespace:Tabel.ViewModels"
+            xmlns:conv="clr-namespace:Tabel.Infrastructure.Converters"
+            xmlns:comp="clr-namespace:Tabel.Component.TabelPanel"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.DataContext>
+        <vm:TabelUCViewModel/>
+    </UserControl.DataContext>
+    <UserControl.Resources>
+        <conv:KindSmenaConverter x:Key="KindSmenaConverter"/>
+    </UserControl.Resources>
+    <DockPanel>
+        <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Height="30">
+            <TextBlock Text="Номер документа" Margin="5,0" VerticalAlignment="Center"/>
+            <TextBox Text="{Binding Tabel.t_number}" Width="100"  VerticalAlignment="Center" Margin="5,0"/>
+
+            <TextBlock Text="Дата создания" Margin="5,0" VerticalAlignment="Center"/>
+            <TextBox Text="{Binding Tabel.t_date_create, StringFormat=dd.MM.yyyy HH:mm:ss}" Width="120" VerticalAlignment="Center" Margin="5,0"/>
+            <Button Content="Создать график" Command="{Binding CreateCommand}" Margin="3" Style="{StaticResource ButtonStyleShadow}"/>
+            <Button Content="Сохранить" Command="{Binding SaveCommand}" Margin="3" Style="{StaticResource ButtonStyleShadow}"/>
+        </StackPanel>
+
+        <DataGrid x:Name="dg" ItemsSource="{Binding Tabel.tabelPersons}" AutoGenerateColumns="False" IsReadOnly="False" 
+                  FrozenColumnCount="1" VirtualizingPanel.ScrollUnit="Pixel" CanUserAddRows="False" CanUserDeleteRows="False">
+            <DataGrid.Columns>
+                <DataGridTemplateColumn Header="Сотрудник" IsReadOnly="True" Width="120">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding person.FIO}" TextWrapping="Wrap" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Дни" IsReadOnly="True">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <comp:TabelControl SourceCollection="{Binding TabelDays, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                               ItemsKind="{Binding DataContext.ListTypeDays, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+    </DockPanel>
+</UserControl>
