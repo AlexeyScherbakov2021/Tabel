@@ -100,9 +100,9 @@
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="ФИО" Binding="{Binding person.FIO}" IsReadOnly="True"/>
                         <DataGridTextColumn Header="Должность" Binding="{Binding person.p_profession}" IsReadOnly="True"/>
-                        <DataGridTextColumn Header="Доплата 20%" Binding="{Binding NightOklad, StringFormat=0.#}"/>
-                        <DataGridTextColumn Header="Часы" Binding="{Binding NightHours, StringFormat=0.#}" />
-                        <DataGridTextColumn Header="Сумма" Binding="{Binding NightSumma, StringFormat=0.#}" />
+                        <DataGridTextColumn Header="Доплата 20%" Binding="{Binding NightOklad, StringFormat=0.#}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Часы" Binding="{Binding NightHours, Mode=TwoWay, StringFormat=0.#}" />
+                        <DataGridTextColumn Header="Сумма" Binding="{Binding NightSumma, StringFormat=0.#}" IsReadOnly="True"/>
                     </DataGrid.Columns>
                 </DataGrid>
 

@@ -27,6 +27,7 @@
         </StackPanel>
 
         <DataGrid x:Name="dg" ItemsSource="{Binding Tabel.tabelPersons}" AutoGenerateColumns="False" IsReadOnly="False" 
+                  VerticalGridLinesBrush="LightGray" HorizontalGridLinesBrush="LightGray"
                   FrozenColumnCount="1" VirtualizingPanel.ScrollUnit="Pixel" CanUserAddRows="False" CanUserDeleteRows="False">
             <DataGrid.Columns>
                 <DataGridTemplateColumn Header="Сотрудник" IsReadOnly="True" Width="120">

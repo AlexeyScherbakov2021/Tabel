@@ -10,7 +10,7 @@
     <Window.DataContext>
         <vm:LoginWindowViewModel/>
     </Window.DataContext>
-    <Grid Background="#FFEAEAEA">
+    <Grid Background="#FFEAEAEA"  FocusManager.FocusedElement="{Binding ElementName=pwd}">
         <Label Content="Пользователь" HorizontalAlignment="Left" Margin="10,34,0,0" VerticalAlignment="Top"/>
         <Label Content="Пароль" HorizontalAlignment="Left" Margin="45,72,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.02,-0.115"/>
         <PasswordBox Name="pwd" HorizontalAlignment="Left" Height="23" Margin="101,75,0,0" VerticalAlignment="Top" Width="211" TabIndex="1"/>
@@ -29,7 +29,7 @@
                       ItemsSource="{Binding ListUser}" 
                       SelectedItem="{Binding SelectUser}"
                       Margin="-17,-72,-93,78" Grid.Row="0" 
-                      VerticalAlignment="Center" Width="212" SelectedValuePath="{Binding Password}">
+                      VerticalAlignment="Center" Width="212" >
                 <ComboBox.ItemsPanel>
                     <ItemsPanelTemplate>
                         <VirtualizingStackPanel/>

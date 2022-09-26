@@ -40,36 +40,94 @@
                 </Style>
             </Grid.Resources>
 
-            <TextBox Text="дни" Grid.Row="0"/>
-            <TextBox Text="часы" Grid.Row="1"/>
-            <TextBox Text="дни" Grid.Row="2"/>
-            <TextBox Text="часы" Grid.Row="3"/>
+            <Label Background="White" BorderThickness="0.5" BorderBrush="Black" Padding="3">
+                <TextBlock Text="дни" />
+            </Label>
+            <Label Grid.Row="1"  Background="White" BorderThickness="0.5" Padding="3" BorderBrush="Black" >
+                <TextBlock Text="часы"/>
+            </Label>
+            <Label Grid.Row="2" Background="White" BorderThickness="0.5" Padding="3" BorderBrush="Black">
+                <TextBlock Text="дни"/>
+            </Label>
 
-            <TextBox Text="{Binding DaysWeek1, Mode=OneWay}" Grid.Row="0" Grid.Column="1" FontWeight="Bold"/>
-            <TextBox Text="{Binding HoursWeek1, Mode=OneWay, StringFormat=0.#}" Grid.Row="1" Grid.Column="1" FontWeight="Bold"/>
-            <TextBox Text="{Binding DaysWeek2, Mode=OneWay}" Grid.Row="2" Grid.Column="1" FontWeight="Bold"/>
-            <TextBox Text="{Binding HoursWeek2, Mode=OneWay, StringFormat=0.#}" Grid.Row="3" Grid.Column="1" FontWeight="Bold"/>
+            <Label Grid.Row="3" Background="White" BorderThickness="0.5" Padding="3" BorderBrush="Black">
+                <TextBlock Text="часы" />
+            </Label>
 
-            <TextBox Text="дни" Grid.Row="0"  Grid.Column="2" Grid.RowSpan="2"/>
-            <TextBox Text="часы" Grid.Row="2"  Grid.Column="2" Grid.RowSpan="2"/>
+            <Label Grid.Row="0" Grid.Column="1"  Background="White" BorderThickness="0.5" Padding="3" BorderBrush="Black">
+                <TextBlock Text="{Binding DaysWeek1, Mode=OneWay}" FontWeight="Bold"/>
+            </Label>
+            <Label Grid.Row="1"  Grid.Column="1" Background="White" BorderThickness="0.5" Padding="3" BorderBrush="Black">
+                <TextBlock Text="{Binding HoursWeek1, Mode=OneWay, StringFormat=0.#}" FontWeight="Bold" />
+            </Label>
+            <Label Grid.Row="2"  Grid.Column="1" Background="White" BorderThickness="0.5" Padding="3" BorderBrush="Black">
+                <TextBlock Text="{Binding DaysWeek2, Mode=OneWay}" FontWeight="Bold" />
+            </Label>
+            <Label Grid.Row="3"  Grid.Column="1" Background="White" BorderThickness="0.5" BorderBrush="Black" Padding="3">
+                <TextBlock Text="{Binding HoursWeek2, Mode=OneWay, StringFormat=0.#}" FontWeight="Bold" />
+            </Label>
 
-            <TextBox Text="{Binding DaysMonth, Mode=OneWay}" Grid.Row="0" Grid.Column="3" Grid.RowSpan="2" FontWeight="Bold"/>
-            <TextBox Text="{Binding HoursMonth, Mode=OneWay, StringFormat=0.#}" Grid.Row="2" Grid.Column="3" Grid.RowSpan="2" FontWeight="Bold"/>
 
-            <TextBox Text="Я" Grid.Row="0" Grid.Column="4"/>
-            <TextBox Text="Я1,5+" Grid.Row="1" Grid.Column="4"  Background="#d8FFd8"/>
-            <TextBox Text="Я2+" Grid.Row="2" Grid.Column="4" Background="#b8FFb8"/>
-            <TextBox Text="РВ" Grid.Row="3" Grid.Column="4" Background="MistyRose"/>
 
-            <TextBox Text="{Binding WorkedHours1, Mode=OneWay, StringFormat=0.#}" Grid.Row="0" Grid.Column="5" FontWeight="Bold"/>
-            <TextBox Text="{Binding WorkedHours15, Mode=OneWay, StringFormat=0.#}" Grid.Row="1" Grid.Column="5"  FontWeight="Bold" Background="#d8FFd8"/>
-            <TextBox Text="{Binding WorkedHours2, Mode=OneWay, StringFormat=0.#}" Grid.Row="2" Grid.Column="5" FontWeight="Bold" Background="#b8FFb8"/>
-            <TextBox Text="{Binding WorkedOffDays, Mode=OneWay, StringFormat=0.#}" Grid.Row="3" Grid.Column="5" FontWeight="Bold"  Background="MistyRose"/>
+            <Label Grid.Row="0"  Grid.Column="2" Grid.RowSpan="2" Background="White" BorderThickness="0.5" BorderBrush="Black" Padding="3" VerticalContentAlignment="Center">
+                <TextBlock Text="дни" Grid.Row="0" />
+            </Label>
+            <Label Grid.Row="2"  Grid.Column="2" Grid.RowSpan="2" Background="White" BorderThickness="0.5" BorderBrush="Black" Padding="3" VerticalContentAlignment="Center">
+                <TextBlock Text="часы" />
+            </Label>
+
+            <Label Grid.Row="0"  Grid.Column="3" Grid.RowSpan="2" Background="White" BorderThickness="0.5" BorderBrush="Black" Padding="3" VerticalContentAlignment="Center">
+                <TextBlock Text="{Binding DaysMonth, Mode=OneWay}" FontWeight="Bold" />
+            </Label>
+            <Label Grid.Row="2"  Grid.Column="3" Grid.RowSpan="2" Background="White" BorderThickness="0.5" BorderBrush="Black" Padding="3" VerticalContentAlignment="Center">
+                <TextBlock Text="{Binding HoursMonth, Mode=OneWay, StringFormat=0.#}" FontWeight="Bold" />
+            </Label>
+
+            <Label Grid.Row="0"  Grid.Column="4" Background="White" BorderThickness="0.5" BorderBrush="Black" Padding="3" VerticalContentAlignment="Center">
+                <TextBlock Text="Я" />
+            </Label>
+
+            <Label Grid.Row="1"  Grid.Column="4" Background="#d8FFd8" BorderThickness="0.5" BorderBrush="Black" Padding="3" VerticalContentAlignment="Center">
+                <TextBlock Text="Я1,5+" />
+            </Label>
+
+            <Label Grid.Row="2"  Grid.Column="4" Background="#b8FFb8" BorderThickness="0.5" BorderBrush="Black" Padding="3" VerticalContentAlignment="Center">
+                <TextBlock Text="Я2+" />
+            </Label>
+
+            <Label Grid.Row="3"  Grid.Column="4" Grid.RowSpan="2" Background="MistyRose" BorderThickness="0.5" BorderBrush="Black" Padding="3" VerticalContentAlignment="Center">
+                <TextBlock Text="РВ" />
+            </Label>
+
+            <Label Grid.Row="0"  Grid.Column="5" Background="White" BorderThickness="0.5" BorderBrush="Black" Padding="3" VerticalContentAlignment="Center">
+                <TextBlock Text="{Binding WorkedHours1, Mode=OneWay, StringFormat=0.#}" FontWeight="Bold" />
+            </Label>
+            <Label Grid.Row="1"  Grid.Column="5" Background="#d8FFd8" BorderThickness="0.5" BorderBrush="Black" Padding="3" VerticalContentAlignment="Center">
+                <TextBlock Text="{Binding WorkedHours15, Mode=OneWay, StringFormat=0.#}" FontWeight="Bold" />
+            </Label>
+
+            <Label Grid.Row="2"  Grid.Column="5" Background="#b8FFb8" BorderThickness="0.5" BorderBrush="Black" Padding="3" VerticalContentAlignment="Center">
+                <TextBlock Text="{Binding WorkedHours2, Mode=OneWay, StringFormat=0.#}" FontWeight="Bold" />
+            </Label>
+
+            <Label Grid.Row="3"  Grid.Column="5" Grid.RowSpan="2" Background="MistyRose" BorderThickness="0.5" BorderBrush="Black" Padding="3" VerticalContentAlignment="Center">
+                <TextBlock Text="{Binding WorkedOffHours, Mode=OneWay, StringFormat=0.#}" FontWeight="Bold"/>
+            </Label>
+
+            <!--<Line X1="0" X2="180" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="6" Stroke="Black" StrokeThickness="0.1"/>
+            <Line X1="0" X2="63" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="6" Stroke="Black" StrokeThickness="0.1"/>
+            <Line X1="0" X2="63" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="6" Stroke="Black" StrokeThickness="0.1"/>
+            <Line X1="0" X2="56" Grid.Row="1" Grid.Column="4" Grid.ColumnSpan="6" Stroke="Black" StrokeThickness="0.1"/>
+            <Line X1="0" X2="56" Grid.Row="3" Grid.Column="4" Grid.ColumnSpan="6" Stroke="Black" StrokeThickness="0.1"/>
+
+            <Line Y1="0" Y2="94" Grid.Row="0" Grid.Column="2" Grid.RowSpan="6" Stroke="Black" StrokeThickness="0.1"/>
+            <Line Y1="0" Y2="94" Grid.Row="0" Grid.Column="4" Grid.RowSpan="6" Stroke="Black" StrokeThickness="0.1"/>-->
+
         </Grid>
 
         <ListBox Padding="2" SelectionMode="Extended" ItemsSource="{Binding Path=SourceCollection , RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
                  SelectedItem="{Binding SelectedItem, Mode=TwoWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
-                 x:Name="ListBoxDays"
+                 x:Name="ListBoxDays" BorderBrush="Transparent"
                  >
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>

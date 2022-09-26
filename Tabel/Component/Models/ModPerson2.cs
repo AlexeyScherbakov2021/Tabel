@@ -34,8 +34,21 @@ namespace Tabel.Models2
 
         // ночные часы
         public decimal? NightOklad => person?.category?.cat_tarif * 0.2m;
+        
+        private decimal? _NightHours;
         [NotMapped]
-        public decimal? NightHours { get; set; }
+        public decimal? NightHours 
+        { 
+            get => _NightHours; 
+            set
+            {
+                if(_NightHours == value) return;
+                _NightHours = value;
+                UpdateUI();
+            }
+        }
+
+
         public decimal? NightSumma => NightOklad * NightHours;
 
         public decimal? Itogo => Oklad + SummaPremFP + Bonus + PremOtdel + NightSumma;
@@ -46,7 +59,7 @@ namespace Tabel.Models2
             OnPropertyChanged(nameof(SummaPremFP));
             OnPropertyChanged(nameof(Bonus));
             OnPropertyChanged(nameof(PremOtdel));
-            //OnPropertyChanged(nameof(NightSumma));
+            OnPropertyChanged(nameof(NightSumma));
             OnPropertyChanged(nameof(Itogo));
         }
             

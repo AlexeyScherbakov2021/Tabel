@@ -292,9 +292,10 @@
         </ToolBarPanel>
 
         <DataGrid x:Name="dg" ItemsSource="{Binding SmenaShedule.SmenaPerson}" Style="{DynamicResource DataGridStyle}" 
-                  FrozenColumnCount="1">
+                  VerticalGridLinesBrush="LightGray" HorizontalGridLinesBrush="LightGray"
+                  FrozenColumnCount="1" >
             <DataGrid.Columns>
-                <DataGridTemplateColumn Header="Сотрудник" IsReadOnly="True" Width="120">
+                <DataGridTemplateColumn Header="Сотрудник" IsReadOnly="True" Width="130">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding personal.FIO}" TextWrapping="Wrap" />
@@ -304,7 +305,7 @@
                 <DataGridTemplateColumn Header="Дни">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <ext:ListBoxExt ItemsSource="{Binding SmenaDays}" SelectionMode="Extended" 
+                            <ext:ListBoxExt ItemsSource="{Binding SmenaDays}" SelectionMode="Extended" BorderBrush="Transparent"
                                     SelectedIndex="{Binding SelectIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                     SelectedItems2="{Binding SelectedDays, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
 
@@ -323,11 +324,6 @@
                                                           FontWeight="Bold"
                                                           SelectedItem="{Binding sd_Kind, Converter={StaticResource KindSmenaConverter}}"
                                                           ItemsSource="{Binding DataContext.ListKind, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}">
-                                                    <ComboBox.ItemTemplate>
-                                                        <DataTemplate>
-                                                            <TextBlock Text="{Binding ListSmenaDays.sd_Kind, Converter={StaticResource KindSmenaConverter}}"/>
-                                                        </DataTemplate>
-                                                    </ComboBox.ItemTemplate>
                                                     <i:Interaction.Triggers>
                                                         <i:EventTrigger EventName="SelectionChanged">
                                                             <i:InvokeCommandAction Command="{Binding DataContext.SelectKindCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"

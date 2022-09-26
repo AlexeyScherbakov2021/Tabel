@@ -67,7 +67,7 @@ namespace Tabel.Models2
 
 
         [NotMapped]
-        public decimal? WorkedOffDays => ((IEnumerable<TabelDay>) TabelDays).Where(it => it.td_KindId == 5).Sum(s => s.td_Day);
+        public decimal? WorkedOffDays => ((IEnumerable<TabelDay>) TabelDays).Count(it => it.td_KindId == 5);
         public decimal? WorkedOffHours => ((IEnumerable<TabelDay>) TabelDays).Where(it => it.td_KindId == 5).Sum(s => s.td_Hours.Value);
 
 

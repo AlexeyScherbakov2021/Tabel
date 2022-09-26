@@ -77,44 +77,44 @@ namespace Tabel.ViewModels
         //--------------------------------------------------------------------------------
         // Команда Создать график
         //--------------------------------------------------------------------------------
-        public ICommand CreateCommand => new LambdaCommand(OnCreateCommandExecuted, CanCreateCommand);
-        private bool CanCreateCommand(object p) => true;
-        private void OnCreateCommandExecuted(object p)
-        {
+        //public ICommand CreateCommand => new LambdaCommand(OnCreateCommandExecuted, CanCreateCommand);
+        //private bool CanCreateCommand(object p) => true;
+        //private void OnCreateCommandExecuted(object p)
+        //{
 
 
-        }
+        //}
 
 
 
         //--------------------------------------------------------------------------------
         // Команда Выбрать тип дня
         //--------------------------------------------------------------------------------
-        public ICommand SelectTypeCommand => new LambdaCommand(OnSelectTypeCommandExecuted, CanSelectTypeCommand);
-        private bool CanSelectTypeCommand(object p) => true;
-        private void OnSelectTypeCommandExecuted(object p)
-        {
-        }
+        //public ICommand SelectTypeCommand => new LambdaCommand(OnSelectTypeCommandExecuted, CanSelectTypeCommand);
+        //private bool CanSelectTypeCommand(object p) => true;
+        //private void OnSelectTypeCommandExecuted(object p)
+        //{
+        //}
 
         //--------------------------------------------------------------------------------
         // Команда Загрузить из производственного календаря
         //--------------------------------------------------------------------------------
-        public ICommand LoadDefCommand => new LambdaCommand(OnLoadDefCommandExecuted, CanLoadDefCommand);
-        private bool CanLoadDefCommand(object p) => true;
-        private void OnLoadDefCommandExecuted(object p)
-        {
+        //public ICommand LoadDefCommand => new LambdaCommand(OnLoadDefCommandExecuted, CanLoadDefCommand);
+        //private bool CanLoadDefCommand(object p) => true;
+        //private void OnLoadDefCommandExecuted(object p)
+        //{
 
-        }
+        //}
 
         //--------------------------------------------------------------------------------
         // Команда Сохранить
         //--------------------------------------------------------------------------------
-        public ICommand SaveCommand => new LambdaCommand(OnSaveCommandExecuted, CanSaveCommand);
-        private bool CanSaveCommand(object p) => true;
-        private void OnSaveCommandExecuted(object p)
-        {
-            //repoTabel.Save();
-        }
+        //public ICommand SaveCommand => new LambdaCommand(OnSaveCommandExecuted, CanSaveCommand);
+        //private bool CanSaveCommand(object p) => true;
+        //private void OnSaveCommandExecuted(object p)
+        //{
+        //    //repoTabel.Save();
+        //}
 
 
         #endregion

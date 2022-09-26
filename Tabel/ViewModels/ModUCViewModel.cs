@@ -55,6 +55,7 @@ namespace Tabel.ViewModels
 
             repoModel.Add(CurrentMod, true);
 
+            OnPropertyChanged(nameof(CurrentMod));
 
         }
 
@@ -116,7 +117,7 @@ namespace Tabel.ViewModels
                 && it.t_month == _SelectMonth
                 && it.t_otdel_id == _SelectedOtdel.id);
 
-            if (CurrentMod.ModPersons is null) return;
+            if (CurrentMod?.ModPersons is null || tabel is null) return;
 
             foreach (var item in CurrentMod.ModPersons)
             {
@@ -142,7 +143,7 @@ namespace Tabel.ViewModels
                 && it.sm_Month == _SelectMonth
                 && it.sm_OtdelId == _SelectedOtdel.id);
 
-            if (CurrentMod.ModPersons is null) return;
+            if (CurrentMod.ModPersons is null || smena is null) return;
 
             foreach (var item in CurrentMod.ModPersons)
             {

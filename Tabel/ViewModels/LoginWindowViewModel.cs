@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -39,6 +40,8 @@ namespace Tabel.ViewModels
                     return;
 
                 App.CurrentUser = SelectUser;
+
+
                 if(App.CurrentUser.u_role == 100)
                 {
                     // если это администратор, то запускаем настройки
@@ -48,6 +51,14 @@ namespace Tabel.ViewModels
                 }
                 else
                 {
+                    // записываем в реестр
+                    RegistryKey SoftKey = Registry.CurrentUser.OpenSubKey("SOFTWARE", true);
+                    RegistryKey ProgKey = SoftKey.CreateSubKey("TabelNGK");
+                    ProgKey.SetValue("login", SelectUser.u_login);
+                    ProgKey.Close();
+                    SoftKey.Close();
+
+
                     // если пользователь, то запускаем табель
                     MainWindow win = new MainWindow();
                     win.Show();
@@ -70,6 +81,20 @@ namespace Tabel.ViewModels
 
             repo = new RepositoryMSSQL<User>();
             ListUser = repo.Items.ToArray();
+
+            string login = "Admin";
+            RegistryKey SoftKey = Registry.CurrentUser.OpenSubKey("SOFTWARE");
+            RegistryKey ProgKey = SoftKey.OpenSubKey("TabelNGK");
+            if (ProgKey != null)
+            {
+                login = ProgKey.GetValue("login", "Admin").ToString();
+                ProgKey.Close();
+            }
+            SoftKey.Close();
+
+
+            SelectUser = ListUser.FirstOrDefault(it => it.u_login == login);
+
         }
     }
 }

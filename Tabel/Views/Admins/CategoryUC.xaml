@@ -1,0 +1,38 @@
+﻿<UserControl x:Class="Tabel.Views.Admins.CategoryUC"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:vm="clr-namespace:Tabel.ViewModels.Admins"
+             xmlns:local="clr-namespace:Tabel.Views.Admins"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+             <UserControl.DataContext>
+        <vm:CategoryUCViewModel/>
+    </UserControl.DataContext>
+    <Grid>
+        <DockPanel Margin="10,10,10,10">
+            <StackPanel DockPanel.Dock="Right" Width="50">
+                <Button Content="+" Height="40" Margin="3" Command="{Binding AddCommand}" Style="{DynamicResource ButtonStyleShadow}"/>
+                <Button Content="-" Height="40" Margin="3" Command="{Binding DeleteCommand}" Style="{DynamicResource ButtonStyleShadow}"/>
+            </StackPanel>
+            <Grid >
+                <DataGrid x:Name="dataGrid" ItemsSource="{Binding Categories}" AutoGenerateColumns="False" SelectedItem="{Binding SelectedCategory}"
+                    Style="{StaticResource DataGridStyle}" Margin="0,0,0,0" >
+                    <DataGrid.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Добавить запись" Command="{Binding AddCommand}"/>
+                            <MenuItem Header="Удалить запись" Command="{Binding DeleteCommand}"/>
+                        </ContextMenu>
+                    </DataGrid.ContextMenu>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Разряд" Binding="{Binding id}" Width="80"/>
+                        <DataGridTextColumn Header="Тариф" Binding="{Binding cat_tarif}" Width="130"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+
+        </DockPanel>
+
+    </Grid>
+</UserControl>

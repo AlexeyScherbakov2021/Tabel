@@ -107,6 +107,7 @@
     <Compile Include="Repository\RepositoryTabelPerson.cs" />
     <Compile Include="Infrastructure\Extend\ExtendedTreeView.cs" />
     <Compile Include="Infrastructure\Extend\ListBoxExt.cs" />
+    <Compile Include="ViewModels\Admins\CategoryUCViewModel.cs" />
     <Compile Include="ViewModels\Admins\OtdelsWindowViewModel.cs" />
     <Compile Include="ViewModels\Base\IBaseUCViewModel.cs" />
     <Compile Include="ViewModels\BasicWindowViewModel.cs" />
@@ -116,6 +117,9 @@
     <Compile Include="ViewModels\Admins\YearCalendarViewModel.cs" />
     <Compile Include="ViewModels\SmenaUCViewModel.cs" />
     <Compile Include="ViewModels\TabelUCViewModel.cs" />
+    <Compile Include="Views\Admins\CategoryUC.xaml.cs">
+      <DependentUpon>CategoryUC.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Admins\OtdelsWindow.xaml.cs">
       <DependentUpon>OtdelsWindow.xaml</DependentUpon>
     </Compile>
@@ -165,6 +169,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\AddFormStringWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Admins\CategoryUC.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

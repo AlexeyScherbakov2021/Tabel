@@ -10,7 +10,7 @@
         xmlns:local="clr-namespace:Tabel.Views"
         xmlns:System="clr-namespace:System;assembly=mscorlib" x:Class="Tabel.Views.EditTablesWindow"
         mc:Ignorable="d"
-        Title="Редактирование" Height="800" WindowStartupLocation="CenterScreen">
+        Title="Редактирование" Height="800" Width="1050" WindowStartupLocation="CenterScreen">
     <Window.DataContext>
         <vm:EditTablesWindowModel/>
     </Window.DataContext>
@@ -19,101 +19,16 @@
             
             
             <TabItem Header="Отделы и группы">
-
                 <view:OtdelsWindow VerticalAlignment="Stretch" Margin="0,10" />
-                <!--<UniformGrid Columns="2" Background="#FFE5E5E5">
-
-                    <DockPanel Margin="4,4,4,4">
-
-                        <UniformGrid Columns="2" DockPanel.Dock="Bottom" Height="33">
-                            <Button Content="Добавить" Margin="2" Command="{Binding AddCommand}" CommandParameter="{Binding ElementName=tree, Mode=OneWay}" Style="{DynamicResource ButtonStyleShadow}"/>
-                            <Button Content="Удалить" Margin="2" Command="{Binding DeleteCommand}" CommandParameter="{Binding SelectedItem, ElementName=tree, Mode=OneWay}" Style="{DynamicResource ButtonStyleShadow}"/>
-                        </UniformGrid>
-                        <TreeView x:Name="tree" ItemsSource="{Binding ListOtdel}">
-                            <TreeView.ItemTemplate>
-                                <HierarchicalDataTemplate ItemsSource="{Binding subOtdels}" >
-                                    <TextBlock Text="{Binding ot_name}"/>
-                                </HierarchicalDataTemplate>
-                            </TreeView.ItemTemplate>
-                        </TreeView>
-                    </DockPanel>
-
-                    <ListBox Margin="4"/>
-
-                </UniformGrid>-->
             </TabItem>
-            <!--<TabItem Header="Сотрудники">
-                <Grid Background="#FFE5E5E5">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="3*"/>
-                        <ColumnDefinition Width="1*"/>
-                    </Grid.ColumnDefinitions>
-                    <DockPanel>
-                        <Button Content="Сохранить" Command="{Binding SavePersonCommand}" DockPanel.Dock="Bottom" Style="{DynamicResource ButtonStyleShadow}" FontSize="16" HorizontalAlignment="Center" Padding="50,1,50,1" Margin="0,5,0,5" />
-                        <DataGrid ItemsSource="{Binding ListPersonalView}" AutoGenerateColumns="False" IsReadOnly="False" 
-                            Style="{DynamicResource DataGridStyle}" SelectedItem="{Binding SelectedPerson}" Margin="0,0,0,0" >
-                            <DataGrid.Resources>
-                                <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="LightBlue"/>
-                            </DataGrid.Resources>
-
-                            <DataGrid.Columns>
-                                <DataGridTextColumn Header="Таб.№" Binding="{Binding p_tab_number}" Width="80"/>
-                                <DataGridTextColumn Header="Фамилия" Binding="{Binding p_lastname}" Width="130"/>
-                                <DataGridTextColumn Header="Имя" Binding="{Binding p_name}" Width="130"/>
-                                <DataGridTextColumn Header="Отчество" Binding="{Binding p_midname}" Width="130"/>
-                                <DataGridTextColumn Header="Должность" Binding="{Binding p_profession}" Width="150"/>
-                                <DataGridTextColumn Header="Отдел" Binding="{Binding otdel.ot_name}" Width="140"/>
-                            </DataGrid.Columns>
-                        </DataGrid>
-                    </DockPanel>
-                    <DockPanel Grid.Column="1">
-                        <UniformGrid Columns="2" DockPanel.Dock="Top" Height="30">
-                            <Button Content="Добавить" Margin="3" Command="{Binding AddPersonCommand}" Style="{DynamicResource ButtonStyleShadow}"/>
-                            <Button Content="Удалить" Margin="3"  Command="{Binding DeletePersonCommand}" Style="{DynamicResource ButtonStyleShadow}"/>
-                        </UniformGrid>
-                        <StackPanel Margin="15,10" IsEnabled="{Binding EnabledDetailPerson}">
-                            --><!--<StackPanel.DataContext>
-                                <model:Personal/>
-                            </StackPanel.DataContext>--><!--
-                            <TextBlock Text="Табельный номер" />
-                            <TextBox Text="{Binding SelectedPerson.p_tab_number}" Margin="0,0,0,4"/>
-                            <TextBlock Text="Фамилия" />
-                            <TextBox Text="{Binding SelectedPerson.p_lastname}" Margin="0,0,0,4"/>
-                            <TextBlock Text="Имя" />
-                            <TextBox Text="{Binding SelectedPerson.p_name}" Margin="0,0,0,4"/>
-                            <TextBlock Text="Отчество" />
-                            <TextBox Text="{Binding SelectedPerson.p_midname}" Margin="0,0,0,4"/>
-                            <TextBlock Text="Должность" />
-                            <TextBox Text="{Binding SelectedPerson.p_profession}" Margin="0,0,0,4" />
-                            <TextBlock Text="Отдел или группа" />
-                            <Grid >
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition/>
-                                    <ColumnDefinition Width="23"/>
-                                </Grid.ColumnDefinitions>
-                                <TextBox Text="{Binding SelectedPerson.otdel.ot_name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Column="0"/>
-                                <Button Content="..." Command="{Binding OpenOtdelsCommand}" Grid.Column="1"/>
-                            </Grid>
-                            <TextBlock Text="Разряд" />
-                            <TextBox Text="{Binding SelectedPerson.category.id}" />
-
-                        </StackPanel>
-                    </DockPanel>
-                </Grid>
-            </TabItem>-->
             <TabItem Header="Разряды" d:IsHidden="True" >
-                <Grid Background="#FFE5E5E5"/>
+                <view:CategoryUC VerticalAlignment="Top" HorizontalAlignment="Left" Margin="20,23,0,0"/>
             </TabItem>
             <TabItem Header="Производственный календарь">
-                <view:YearCalendar Margin="0,23,0,0" VerticalAlignment="Top" HorizontalAlignment="Stretch"/>
+                <view:YearCalendar Margin="10,23,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"/>
             </TabItem>
             <TabItem Header="Пользователи">
-                <view:UsersWindow/>
-                <!--<TabItem.ContentTemplate>
-                    <DataTemplate>
-                        <view:UsersWindow/>
-                    </DataTemplate>
-                </TabItem.ContentTemplate>-->
+                <view:UsersWindow  />
             </TabItem>
         </TabControl>
 

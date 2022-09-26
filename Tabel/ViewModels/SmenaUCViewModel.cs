@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,7 +24,7 @@ namespace Tabel.ViewModels
         private readonly RepositoryMSSQL<Smena> repoSmena = new RepositoryMSSQL<Smena>();
         private readonly RepositoryMSSQL<SmenaPerson> repoSmenaPersonal = new RepositoryMSSQL<SmenaPerson>();
 
-        public string[] ListKind { get; set; } = { "1см", "2см", "В", "О" };
+        public string[] ListKind { get; set; } = { "", "1см", "2см", "В", "О" };
 
         // Текщий график смен
         public Smena SmenaShedule { get; set; }
@@ -44,7 +45,10 @@ namespace Tabel.ViewModels
                 repoSmena.Remove(SmenaShedule);
             }
 
-            List<Personal> PersonsFromOtdel = repoPersonal.Items.Where(it => it.p_otdel_id == _SelectedOtdel.id).ToList();
+            List<Personal> PersonsFromOtdel = repoPersonal.Items
+                .Where(it => it.p_otdel_id == _SelectedOtdel.id)
+                .OrderBy(o => o.FIO)
+                .ToList();
 
             SmenaShedule = new Smena();
             SmenaShedule.sm_UserId = App.CurrentUser.id;
@@ -55,7 +59,6 @@ namespace Tabel.ViewModels
             SmenaShedule.SmenaPerson = new ObservableCollection<SmenaPerson>();
 
             // количество дней в месяце
-            //int DaysInMonth = new DateTime(CurrentYear, CurrentMonth, 1).AddMonths(1).AddDays(-1).Day;
             DateTime StartDay = new DateTime(_SelectYear, _SelectMonth, 1);
 
             // если есть персонал в отделе, добавляем его и формируем дни
@@ -63,7 +66,6 @@ namespace Tabel.ViewModels
             {
                 SmenaPerson sp = new SmenaPerson();
                 sp.sp_PersonId = item.id;
-                //sp.personal = item;
                 sp.SmenaDays = new List<SmenaDay>();
 
                 for (DateTime IndexDate = StartDay; IndexDate.Month == _SelectMonth; IndexDate = IndexDate.AddDays(1))
@@ -121,9 +123,12 @@ namespace Tabel.ViewModels
 
             if (SelectOtdel is null) return;
 
-            SmenaShedule = repoSmena.Items.FirstOrDefault(it => it.sm_Year == _SelectYear
+            SmenaShedule = repoSmena.Items
+                .Where(it => it.sm_Year == _SelectYear
                 && it.sm_Month == _SelectMonth
-                && it.sm_OtdelId == _SelectedOtdel.id);
+                && it.sm_OtdelId == _SelectedOtdel.id)
+                .Include(inc => inc.SmenaPerson)
+                .FirstOrDefault();
             List<Personal> PersonsFromOtdel = repoPersonal.Items.Where(it => it.p_otdel_id == _SelectedOtdel.id).ToList();
 
             //if (SmenaShedule != null)
