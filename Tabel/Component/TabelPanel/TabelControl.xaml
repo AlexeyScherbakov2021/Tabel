@@ -40,46 +40,46 @@
                 </Style>
             </Grid.Resources>
 
-            <Label Background="White" BorderThickness="0.5" BorderBrush="Black" Padding="3">
+            <Label Background="White" BorderThickness="0.5" BorderBrush="Black" Padding="3" HorizontalContentAlignment="Center">
                 <TextBlock Text="дни" />
             </Label>
-            <Label Grid.Row="1"  Background="White" BorderThickness="0.5" Padding="3" BorderBrush="Black" >
+            <Label Grid.Row="1"  Background="White" BorderThickness="0.5" Padding="3" BorderBrush="Black"  HorizontalContentAlignment="Center">
                 <TextBlock Text="часы"/>
             </Label>
-            <Label Grid.Row="2" Background="White" BorderThickness="0.5" Padding="3" BorderBrush="Black">
+            <Label Grid.Row="2" Background="White" BorderThickness="0.5" Padding="3" BorderBrush="Black" HorizontalContentAlignment="Center">
                 <TextBlock Text="дни"/>
             </Label>
 
-            <Label Grid.Row="3" Background="White" BorderThickness="0.5" Padding="3" BorderBrush="Black">
+            <Label Grid.Row="3" Background="White" BorderThickness="0.5" Padding="3" BorderBrush="Black" HorizontalContentAlignment="Center">
                 <TextBlock Text="часы" />
             </Label>
 
-            <Label Grid.Row="0" Grid.Column="1"  Background="White" BorderThickness="0.5" Padding="3" BorderBrush="Black">
+            <Label Grid.Row="0" Grid.Column="1"  Background="White" BorderThickness="0.5" Padding="3" BorderBrush="Black" HorizontalContentAlignment="Center">
                 <TextBlock Text="{Binding DaysWeek1, Mode=OneWay}" FontWeight="Bold"/>
             </Label>
-            <Label Grid.Row="1"  Grid.Column="1" Background="White" BorderThickness="0.5" Padding="3" BorderBrush="Black">
+            <Label Grid.Row="1"  Grid.Column="1" Background="White" BorderThickness="0.5" Padding="3" BorderBrush="Black" HorizontalContentAlignment="Center">
                 <TextBlock Text="{Binding HoursWeek1, Mode=OneWay, StringFormat=0.#}" FontWeight="Bold" />
             </Label>
-            <Label Grid.Row="2"  Grid.Column="1" Background="White" BorderThickness="0.5" Padding="3" BorderBrush="Black">
+            <Label Grid.Row="2"  Grid.Column="1" Background="White" BorderThickness="0.5" Padding="3" BorderBrush="Black" HorizontalContentAlignment="Center">
                 <TextBlock Text="{Binding DaysWeek2, Mode=OneWay}" FontWeight="Bold" />
             </Label>
-            <Label Grid.Row="3"  Grid.Column="1" Background="White" BorderThickness="0.5" BorderBrush="Black" Padding="3">
+            <Label Grid.Row="3"  Grid.Column="1" Background="White" BorderThickness="0.5" BorderBrush="Black" Padding="3" HorizontalContentAlignment="Center">
                 <TextBlock Text="{Binding HoursWeek2, Mode=OneWay, StringFormat=0.#}" FontWeight="Bold" />
             </Label>
 
 
 
-            <Label Grid.Row="0"  Grid.Column="2" Grid.RowSpan="2" Background="White" BorderThickness="0.5" BorderBrush="Black" Padding="3" VerticalContentAlignment="Center">
+            <Label Grid.Row="0"  Grid.Column="2" Grid.RowSpan="2" Background="White" BorderThickness="0.5" BorderBrush="Black" Padding="3" VerticalContentAlignment="Center" HorizontalContentAlignment="Center">
                 <TextBlock Text="дни" Grid.Row="0" />
             </Label>
-            <Label Grid.Row="2"  Grid.Column="2" Grid.RowSpan="2" Background="White" BorderThickness="0.5" BorderBrush="Black" Padding="3" VerticalContentAlignment="Center">
+            <Label Grid.Row="2"  Grid.Column="2" Grid.RowSpan="2" Background="White" BorderThickness="0.5" BorderBrush="Black" Padding="3" VerticalContentAlignment="Center" HorizontalContentAlignment="Center">
                 <TextBlock Text="часы" />
             </Label>
 
-            <Label Grid.Row="0"  Grid.Column="3" Grid.RowSpan="2" Background="White" BorderThickness="0.5" BorderBrush="Black" Padding="3" VerticalContentAlignment="Center">
+            <Label Grid.Row="0"  Grid.Column="3" Grid.RowSpan="2" Background="White" BorderThickness="0.5" BorderBrush="Black" Padding="3" VerticalContentAlignment="Center" HorizontalContentAlignment="Center">
                 <TextBlock Text="{Binding DaysMonth, Mode=OneWay}" FontWeight="Bold" />
             </Label>
-            <Label Grid.Row="2"  Grid.Column="3" Grid.RowSpan="2" Background="White" BorderThickness="0.5" BorderBrush="Black" Padding="3" VerticalContentAlignment="Center">
+            <Label Grid.Row="2"  Grid.Column="3" Grid.RowSpan="2" Background="White" BorderThickness="0.5" BorderBrush="Black" Padding="3" VerticalContentAlignment="Center" HorizontalContentAlignment="Center">
                 <TextBlock Text="{Binding HoursMonth, Mode=OneWay, StringFormat=0.#}" FontWeight="Bold" />
             </Label>
 
@@ -99,18 +99,18 @@
                 <TextBlock Text="РВ" />
             </Label>
 
-            <Label Grid.Row="0"  Grid.Column="5" Background="White" BorderThickness="0.5" BorderBrush="Black" Padding="3" VerticalContentAlignment="Center">
+            <Label Grid.Row="0"  Grid.Column="5" Background="White" BorderThickness="0.5" BorderBrush="Black" Padding="3" VerticalContentAlignment="Center" HorizontalContentAlignment="Center">
                 <TextBlock Text="{Binding WorkedHours1, Mode=OneWay, StringFormat=0.#}" FontWeight="Bold" />
             </Label>
-            <Label Grid.Row="1"  Grid.Column="5" Background="#d8FFd8" BorderThickness="0.5" BorderBrush="Black" Padding="3" VerticalContentAlignment="Center">
+            <Label Grid.Row="1"  Grid.Column="5" Background="#d8FFd8" BorderThickness="0.5" BorderBrush="Black" Padding="3" VerticalContentAlignment="Center" HorizontalContentAlignment="Center">
                 <TextBlock Text="{Binding WorkedHours15, Mode=OneWay, StringFormat=0.#}" FontWeight="Bold" />
             </Label>
 
-            <Label Grid.Row="2"  Grid.Column="5" Background="#b8FFb8" BorderThickness="0.5" BorderBrush="Black" Padding="3" VerticalContentAlignment="Center">
+            <Label Grid.Row="2"  Grid.Column="5" Background="#b8FFb8" BorderThickness="0.5" BorderBrush="Black" Padding="3" VerticalContentAlignment="Center" HorizontalContentAlignment="Center">
                 <TextBlock Text="{Binding WorkedHours2, Mode=OneWay, StringFormat=0.#}" FontWeight="Bold" />
             </Label>
 
-            <Label Grid.Row="3"  Grid.Column="5" Grid.RowSpan="2" Background="MistyRose" BorderThickness="0.5" BorderBrush="Black" Padding="3" VerticalContentAlignment="Center">
+            <Label Grid.Row="3"  Grid.Column="5" Grid.RowSpan="2" Background="MistyRose" BorderThickness="0.5" BorderBrush="Black" Padding="3" VerticalContentAlignment="Center" HorizontalContentAlignment="Center">
                 <TextBlock Text="{Binding WorkedOffHours, Mode=OneWay, StringFormat=0.#}" FontWeight="Bold"/>
             </Label>
 
@@ -127,7 +127,7 @@
 
         <ListBox Padding="2" SelectionMode="Extended" ItemsSource="{Binding Path=SourceCollection , RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
                  SelectedItem="{Binding SelectedItem, Mode=TwoWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
-                 x:Name="ListBoxDays" BorderBrush="Transparent"
+                 x:Name="ListBoxDays" BorderBrush="Transparent" MouseMove="ListBoxDays_MouseMove" MouseLeftButtonUp="ListBoxDays_MouseLeftButtonUp" PreviewMouseLeftButtonDown="ListBoxDays_PreviewMouseLeftButtonDown"
                  >
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -145,25 +145,28 @@
                                         <DropShadowEffect BlurRadius="1" Opacity="0.4" ShadowDepth="2"/>
                                     </Border.Effect>
                                     <StackPanel>
-                                        <TextBlock x:Name="NumberDay" Text="{Binding td_Day}" TextAlignment="Center" Background="LightSteelBlue" Foreground="Black" 
-                                                   FontWeight="Bold" SnapsToDevicePixels="True"
+                                        <TextBlock x:Name="NumberDay" Text="{Binding td_Day}" TextAlignment="Center" Background="LightSteelBlue" 
+                                                   Foreground="Black" 
+                                                   FontWeight="Bold" SnapsToDevicePixels="True" Focusable="False"
                                                   ToolTip="Рабочий день"
                                                    />
 
                                         <StackPanel Orientation="Horizontal">
-                                            <ComboBox Width="28" HorizontalContentAlignment="Center" 
+                                            <ComboBox Width="28" HorizontalContentAlignment="Center" Focusable="False"
                                                 Style="{StaticResource SimpleComboBox}"
                                                 DisplayMemberPath="t_name"
                                                 ToolTip="{Binding SelectedItem.t_desc, RelativeSource={RelativeSource Self}}"
                                                 SelectedIndex="{Binding td_KindId, Mode=TwoWay}"
-                                                ItemsSource="{Binding ItemsKind, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}" GotFocus="ComboBox_GotFocus" SelectionChanged="ComboBox_SelectionChanged">
+                                                ItemsSource="{Binding ItemsKind, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}" 
+                                                      GotFocus="ComboBox_GotFocus" SelectionChanged="ComboBox_SelectionChanged">
                                             </ComboBox>
                                             <TextBox Text="{Binding td_Hours, Mode=TwoWay, StringFormat=0.#}" Padding="2,0" MinWidth="24" 
-                                                     HorizontalContentAlignment="Center" 
-                                                     VerticalContentAlignment="Center" GotFocus="TextBox_GotFocus" TextChanged="TextBox_TextChanged" 
-                                                     
+                                                     HorizontalContentAlignment="Center" VerticalContentAlignment="Center" 
+                                                     GotFocus="TextBox_GotFocus" KeyDown="TextBox_KeyDown" 
                                                      />
-                                            <TextBox Text="{Binding td_Hours2, Mode=TwoWay}" Visibility="{Binding VisibilityHours}" Padding="2,0" MinWidth="24" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" GotFocus="TextBox_GotFocus"/>
+                                            <TextBox Text="{Binding td_Hours2, Mode=TwoWay}" Visibility="{Binding VisibilityHours}" Padding="2,0" 
+                                                     MinWidth="24" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" 
+                                                     GotFocus="TextBox_GotFocus"/>
                                         </StackPanel>
                                     </StackPanel>
                                 </Border>

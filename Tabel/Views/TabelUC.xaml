@@ -26,9 +26,9 @@
             <Button Content="Сохранить" Command="{Binding SaveCommand}" Margin="3" Style="{StaticResource ButtonStyleShadow}"/>
         </StackPanel>
 
-        <DataGrid x:Name="dg" ItemsSource="{Binding Tabel.tabelPersons}" AutoGenerateColumns="False" IsReadOnly="False" 
+        <DataGrid x:Name="dg" ItemsSource="{Binding Tabel.tabelPersons}" AutoGenerateColumns="False" IsReadOnly="True" 
                   VerticalGridLinesBrush="LightGray" HorizontalGridLinesBrush="LightGray"
-                  FrozenColumnCount="1" VirtualizingPanel.ScrollUnit="Pixel" CanUserAddRows="False" CanUserDeleteRows="False">
+                  FrozenColumnCount="1" VirtualizingPanel.ScrollUnit="Pixel" CanUserAddRows="False" CanUserDeleteRows="False" Focusable="False"  >
             <DataGrid.Columns>
                 <DataGridTemplateColumn Header="Сотрудник" IsReadOnly="True" Width="120">
                     <DataGridTemplateColumn.CellTemplate>

@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Xml.Linq;
 using Tabel.Models2;
 
 namespace Tabel.Component.TabelPanel
@@ -72,6 +73,7 @@ namespace Tabel.Component.TabelPanel
 
 
         //-----------------------------------------------------------------------------------------
+        // проверка на выделенный диапазон
         //-----------------------------------------------------------------------------------------
         private bool IsSelectInRange(int index)
         {
@@ -120,17 +122,123 @@ namespace Tabel.Component.TabelPanel
         //-----------------------------------------------------------------------------------------
         // изменение часов
         //-----------------------------------------------------------------------------------------
-        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            //if (ListBoxDays.SelectedItems.Count > 1)
-            //{
-            //    TextBox tb = sender as TextBox;
+        //private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        //{
+        //    //if (ListBoxDays.SelectedItems.Count > 1)
+        //    //{
+        //    //    TextBox tb = sender as TextBox;
 
-            //    foreach (TabelDay item in ListBoxDays.SelectedItems)
-            //    {
-            //        item.td_Hours = int.Parse(tb.Text);
-            //    }
-            //}
+        //    //    foreach (TabelDay item in ListBoxDays.SelectedItems)
+        //    //    {
+        //    //        item.td_Hours = int.Parse(tb.Text);
+        //    //    }
+        //    //}
+        //}
+
+
+        //-----------------------------------------------------------------------------------------
+        // событие нажатия кноаки
+        //-----------------------------------------------------------------------------------------
+        private void TextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.Key == Key.Enter)
+            {
+                TextBox tb = sender as TextBox;
+                decimal hours;
+                decimal.TryParse(tb.Text, out hours);
+                foreach (TabelDay item in ListBoxDays.SelectedItems)
+                {
+                    item.td_Hours = hours;
+                }
+                e.Handled = true;
+            }
+
+            if(e.Key == Key.Tab)
+            {
+                e.Handled = true;
+
+                int napr = (e.KeyboardDevice.Modifiers & ModifierKeys.Shift) == ModifierKeys.Shift 
+                    ? ListBoxDays.SelectedIndex - 1 
+                    : ListBoxDays.SelectedIndex + 1;
+
+                if (napr < 0) return;
+
+                ListBoxDays.SelectedIndex = napr;
+
+                var res = GetTabelPanelVisual("TabelPanel");
+
+                ListBoxItem listBoxItem = (ListBoxItem)ProcessElement(res, "ListBoxItem");
+                var parent = VisualTreeHelper.GetParent(listBoxItem);
+                
+                listBoxItem = (ListBoxItem)VisualTreeHelper.GetChild(parent, ListBoxDays.SelectedIndex);
+
+                FrameworkElement elem =  (FrameworkElement)ProcessElement(listBoxItem, "TextBox");
+
+                elem.Focus();
+            }
+
+        }
+
+
+        //-----------------------------------------------------------------------------------------
+        // поиск элемента TabelPanel в графическом дереве
+        //-----------------------------------------------------------------------------------------
+        private DependencyObject GetTabelPanelVisual(string type)
+        {
+            return ProcessElement(ListBoxDays, type);
+        }
+
+        //-----------------------------------------------------------------------------------------
+        // поиск элемента указанного типа в графическом дереве
+        //-----------------------------------------------------------------------------------------
+        public DependencyObject ProcessElement(DependencyObject element, string type)
+        {
+            DependencyObject elem = null;
+
+            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(element); i++)
+            {
+                elem = VisualTreeHelper.GetChild(element, i);
+                string typeName = elem.GetType().Name;
+                if (elem.GetType().Name == type)
+                    return elem;
+
+                elem = ProcessElement(elem, type);
+                if (elem != null)
+                    return elem;
+            }
+
+            return elem;
+        }
+
+
+        private void ListBoxDays_MouseMove(object sender, MouseEventArgs e)
+        {
+
+        }
+
+        private void ListBoxDays_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+
+        }
+
+        private void ListBoxDays_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (!(sender is ListBox lb)) return;
+
+            Point pt = e.GetPosition(lb);
+
+            UIElement element = (UIElement)VisualTreeHelper.HitTest(lb, pt).VisualHit;
+
+            while(element != null)
+            {
+                element = (UIElement)VisualTreeHelper.GetParent(hr.VisualHit);
+                if (element.GetType().Name == "ListBoxItem")
+                    break;
+            }
+
+
+
+
         }
     }
 }

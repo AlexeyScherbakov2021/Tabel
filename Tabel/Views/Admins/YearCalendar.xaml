@@ -7,7 +7,7 @@
              xmlns:vm="clr-namespace:Tabel.ViewModels"
              xmlns:local="clr-namespace:Tabel.Views.Admins"
              xmlns:mcal="clr-namespace:Tabel.Component.MonthPanel"
-             mc:Ignorable="d" Height="570" Width="960">
+             mc:Ignorable="d" >
     <UserControl.DataContext>
         <vm:YearCalendarViewModel/>
     </UserControl.DataContext>
@@ -16,86 +16,96 @@
             <i:InvokeCommandAction Command="{Binding OnLoadedCommand}"/>
         </i:EventTrigger>
     </i:Interaction.Triggers>
-    <DockPanel >
-        <!--<Grid.ColumnDefinitions>
+
+    <Border CornerRadius="3" Background="WhiteSmoke" HorizontalAlignment="Left" VerticalAlignment="Top">
+        <Border.Effect>
+            <DropShadowEffect Opacity="0.5" ShadowDepth="1"  BlurRadius="8"/>
+        </Border.Effect>
+        <GroupBox Padding="10" BorderBrush="Gray" BorderThickness="2">
+            
+        <DockPanel >
+            <!--<Grid.ColumnDefinitions>
             <ColumnDefinition />
             <ColumnDefinition Width="170"/>
         </Grid.ColumnDefinitions>-->
-        <UniformGrid x:Name="uniGrig"  Columns="4" Rows="3" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="7,0,0,0" Height="546" Width="800">
-            <UniformGrid.Resources>
-                <Style TargetType="Border">
-                    <Setter Property="CornerRadius" Value="3"/>
-                    <Setter Property="Background" Value="White"/>
-                    <Setter Property="BorderThickness" Value="0.5"/>
-                    <Setter Property="BorderBrush" Value="Black"/>
-                    <Setter Property="Margin" Value="2"/>
-                    <Setter Property="Effect">
-                        <Setter.Value>
-                            <DropShadowEffect BlurRadius="10" Opacity="0.5" ShadowDepth="0"/>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
-            </UniformGrid.Resources>
+            <UniformGrid x:Name="uniGrig" Columns="4" Rows="3" Height="560" Width="800">
+                <UniformGrid.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="3"/>
+                        <Setter Property="Background" Value="White"/>
+                        <Setter Property="BorderThickness" Value="0.5"/>
+                        <Setter Property="BorderBrush" Value="Black"/>
+                        <Setter Property="Margin" Value="2"/>
+                        <Setter Property="Effect">
+                            <Setter.Value>
+                                <DropShadowEffect BlurRadius="10" Opacity="0.5" ShadowDepth="0"/>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </UniformGrid.Resources>
 
-            <Border >
-                <mcal:MonthControl ChangedDays="{Binding list12Month[0]}" NumberMonth="1" Year="{Binding CurrentYear}" Margin="2"/>
-            </Border>
+                <Border >
+                    <mcal:MonthControl ChangedDays="{Binding list12Month[0]}" NumberMonth="1" Year="{Binding CurrentYear}" Margin="2"/>
+                </Border>
 
-            <Border >
-                <mcal:MonthControl ChangedDays="{Binding list12Month[1]}" NumberMonth="2" Year="{Binding CurrentYear}" Margin="2"/>
-            </Border>
+                <Border >
+                    <mcal:MonthControl ChangedDays="{Binding list12Month[1]}" NumberMonth="2" Year="{Binding CurrentYear}" Margin="2"/>
+                </Border>
 
-            <Border >
-                <mcal:MonthControl ChangedDays="{Binding list12Month[2]}" NumberMonth="3" Year="{Binding CurrentYear}" Margin="2"/>
-            </Border>
+                <Border >
+                    <mcal:MonthControl ChangedDays="{Binding list12Month[2]}" NumberMonth="3" Year="{Binding CurrentYear}" Margin="2"/>
+                </Border>
 
-            <Border >
-                <mcal:MonthControl ChangedDays="{Binding list12Month[3], Mode=TwoWay}" NumberMonth="4" Year="{Binding CurrentYear}" Margin="2"/>
-            </Border>
+                <Border >
+                    <mcal:MonthControl ChangedDays="{Binding list12Month[3], Mode=TwoWay}" NumberMonth="4" Year="{Binding CurrentYear}" Margin="2"/>
+                </Border>
 
-            <Border >
-                <mcal:MonthControl ChangedDays="{Binding list12Month[4]}" NumberMonth="5" Year="{Binding CurrentYear}" Margin="2"/>
-            </Border>
+                <Border >
+                    <mcal:MonthControl ChangedDays="{Binding list12Month[4]}" NumberMonth="5" Year="{Binding CurrentYear}" Margin="2"/>
+                </Border>
 
-            <Border >
-                <mcal:MonthControl ChangedDays="{Binding list12Month[5]}" NumberMonth="6"  Year="{Binding CurrentYear}" Margin="2"/>
-            </Border>
+                <Border >
+                    <mcal:MonthControl ChangedDays="{Binding list12Month[5]}" NumberMonth="6"  Year="{Binding CurrentYear}" Margin="2"/>
+                </Border>
 
-            <Border >
-                <mcal:MonthControl ChangedDays="{Binding list12Month[6]}" NumberMonth="7" Year="{Binding CurrentYear}" Margin="2"/>
-            </Border>
+                <Border >
+                    <mcal:MonthControl ChangedDays="{Binding list12Month[6]}" NumberMonth="7" Year="{Binding CurrentYear}" Margin="2"/>
+                </Border>
 
-            <Border >
-                <mcal:MonthControl ChangedDays="{Binding list12Month[7]}" NumberMonth="8" Year="{Binding CurrentYear}" Margin="2"/>
-            </Border>
+                <Border >
+                    <mcal:MonthControl ChangedDays="{Binding list12Month[7]}" NumberMonth="8" Year="{Binding CurrentYear}" Margin="2"/>
+                </Border>
 
-            <Border >
-                <mcal:MonthControl ChangedDays="{Binding list12Month[8]}" NumberMonth="9" Year="{Binding CurrentYear}" Margin="2"/>
-            </Border>
+                <Border >
+                    <mcal:MonthControl ChangedDays="{Binding list12Month[8]}" NumberMonth="9" Year="{Binding CurrentYear}" Margin="2"/>
+                </Border>
 
-            <Border >
-                <mcal:MonthControl ChangedDays="{Binding list12Month[9]}" NumberMonth="10" Year="{Binding CurrentYear}" Margin="2"/>
-            </Border>
+                <Border >
+                    <mcal:MonthControl ChangedDays="{Binding list12Month[9]}" NumberMonth="10" Year="{Binding CurrentYear}" Margin="2"/>
+                </Border>
 
-            <Border >
-                <mcal:MonthControl ChangedDays="{Binding list12Month[10]}" NumberMonth="11" Year="{Binding CurrentYear}" Margin="2"/>
-            </Border>
+                <Border >
+                    <mcal:MonthControl ChangedDays="{Binding list12Month[10]}" NumberMonth="11" Year="{Binding CurrentYear}" Margin="2"/>
+                </Border>
 
-            <Border >
-                <mcal:MonthControl ChangedDays="{Binding list12Month[11]}" NumberMonth="12" Year="{Binding CurrentYear}" Margin="2"/>
-            </Border>
+                <Border >
+                    <mcal:MonthControl ChangedDays="{Binding list12Month[11]}" NumberMonth="12" Year="{Binding CurrentYear}" Margin="2"/>
+                </Border>
 
-        </UniformGrid>
-        <StackPanel DockPanel.Dock="Right" Margin="10" Orientation="Vertical" VerticalAlignment="Top" >
-            <TextBlock Text="Текущий год"/>
-            <ComboBox Margin="0,2,0,11" ItemsSource="{Binding ListYears}" SelectedItem="{Binding CurrentYear, Mode=TwoWay}" FontSize="18" FontWeight="Bold"/>
-            <Button Content="Добавить год" Margin="0,5" Height="30" Command="{Binding NewYearCommand}" Style="{StaticResource ButtonStyleShadow}"/>
-            <Button Content="По календарю" Margin="0,5" Height="30" Command="{Binding SetAsCalendarCommand}" Style="{StaticResource ButtonStyleShadow}"/>
-            <Button Content="Сохранить" Margin="0,5" Height="30" Command="{Binding SaveCommand}" Style="{StaticResource ButtonStyleShadow}"/>
-            <!--<Button Content="Выходной" Margin="0,5" Command="{Binding SetExDayCommand}" CommandParameter="{x:Static local:MonthControl+TypeDays.Holyday}" Style="{StaticResource ButtonStyleShadow}"/>
+            </UniformGrid>
+            <StackPanel DockPanel.Dock="Right" Margin="10" Orientation="Vertical" VerticalAlignment="Top" >
+                <TextBlock Text="Текущий год"/>
+                <ComboBox Margin="0,2,0,11" ItemsSource="{Binding ListYears}" SelectedItem="{Binding CurrentYear, Mode=TwoWay}" FontSize="18" FontWeight="Bold"/>
+                <Button Content="Добавить год" Margin="0,5" Height="30" Command="{Binding NewYearCommand}" Style="{StaticResource ButtonStyleShadow}"/>
+                <Button Content="По календарю" Margin="0,5" Height="30" Command="{Binding SetAsCalendarCommand}" Style="{StaticResource ButtonStyleShadow}"/>
+                <Button Content="Сохранить" Margin="0,5" Height="30" Command="{Binding SaveCommand}" Style="{StaticResource ButtonStyleShadow}"/>
+                <!--<Button Content="Выходной" Margin="0,5" Command="{Binding SetExDayCommand}" CommandParameter="{x:Static local:MonthControl+TypeDays.Holyday}" Style="{StaticResource ButtonStyleShadow}"/>
             <Button Content="Короткий" Margin="0,5" Command="{Binding SetExDayCommand}" CommandParameter="{x:Static local:MonthControl+TypeDays.Short}" Style="{StaticResource ButtonStyleShadow}"/>
             <Button Content="Рабочий" Margin="0,5" Command="{Binding SetExDayCommand}" CommandParameter="{x:Static local:MonthControl+TypeDays.Work}" Style="{StaticResource ButtonStyleShadow}"/>
             <Button Content="Добавить год" Margin="0,5" Command="{Binding NewYearCommand}" Style="{StaticResource ButtonStyleShadow}"/>-->
-        </StackPanel>
-    </DockPanel>
+            </StackPanel>
+        </DockPanel>
+        </GroupBox>
+    </Border>
+    
 </UserControl>

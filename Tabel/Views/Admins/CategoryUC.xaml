@@ -11,28 +11,35 @@
         <vm:CategoryUCViewModel/>
     </UserControl.DataContext>
     <Grid>
-        <DockPanel Margin="10,10,10,10">
-            <StackPanel DockPanel.Dock="Right" Width="50">
-                <Button Content="+" Height="40" Margin="3" Command="{Binding AddCommand}" Style="{DynamicResource ButtonStyleShadow}"/>
-                <Button Content="-" Height="40" Margin="3" Command="{Binding DeleteCommand}" Style="{DynamicResource ButtonStyleShadow}"/>
-            </StackPanel>
-            <Grid >
-                <DataGrid x:Name="dataGrid" ItemsSource="{Binding Categories}" AutoGenerateColumns="False" SelectedItem="{Binding SelectedCategory}"
+        <Border Background="WhiteSmoke" CornerRadius="3">
+            <Border.Effect>
+                <DropShadowEffect Opacity="0.5" ShadowDepth="1"  BlurRadius="8"/>
+            </Border.Effect>
+            <GroupBox BorderBrush="Gray" BorderThickness="2" Padding="5">
+                <DockPanel Margin="10,10,10,10">
+                    <StackPanel DockPanel.Dock="Right" Width="50">
+                        <Button Content="+" Height="40" Margin="3" Command="{Binding AddCommand}" Style="{DynamicResource ButtonStyleShadow}"/>
+                        <Button Content="-" Height="40" Margin="3" Command="{Binding DeleteCommand}" Style="{DynamicResource ButtonStyleShadow}"/>
+                    </StackPanel>
+                    <Grid >
+                        <DataGrid x:Name="dataGrid" ItemsSource="{Binding Categories}" AutoGenerateColumns="False" SelectedItem="{Binding SelectedCategory}"
                     Style="{StaticResource DataGridStyle}" Margin="0,0,0,0" >
-                    <DataGrid.ContextMenu>
-                        <ContextMenu>
-                            <MenuItem Header="Добавить запись" Command="{Binding AddCommand}"/>
-                            <MenuItem Header="Удалить запись" Command="{Binding DeleteCommand}"/>
-                        </ContextMenu>
-                    </DataGrid.ContextMenu>
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="Разряд" Binding="{Binding id}" Width="80"/>
-                        <DataGridTextColumn Header="Тариф" Binding="{Binding cat_tarif}" Width="130"/>
-                    </DataGrid.Columns>
-                </DataGrid>
-            </Grid>
+                            <DataGrid.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Header="Добавить запись" Command="{Binding AddCommand}"/>
+                                    <MenuItem Header="Удалить запись" Command="{Binding DeleteCommand}"/>
+                                </ContextMenu>
+                            </DataGrid.ContextMenu>
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Разряд" Binding="{Binding id}" Width="80"/>
+                                <DataGridTextColumn Header="Тариф" Binding="{Binding cat_tarif}" Width="130"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
 
-        </DockPanel>
+                </DockPanel>
+            </GroupBox>
+        </Border>
 
     </Grid>
 </UserControl>

@@ -27,8 +27,8 @@
             <StatusBarItem Content="Пользователь:"/>
             <StatusBarItem Content="{Binding User.u_fio}"/>
         </StatusBar>
-        <Expander ExpandDirection="Right" DockPanel.Dock="Left">
-            <ext:ExtendedTreeView ItemsSource="{Binding ListOtdel}" Margin="3" SelectedItem_="{Binding SelectedOtdel, Mode=TwoWay}">
+        <Expander ExpandDirection="Right" DockPanel.Dock="Left" ToolTip="Отделы и группы" Background="Snow">
+            <ext:ExtendedTreeView ItemsSource="{Binding ListOtdel}" Margin="3" Padding="0,0,10,0" SelectedItem_="{Binding SelectedOtdel, Mode=TwoWay}">
                 <TreeView.Resources>
                     <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="Transparent" />
                     <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="LightBlue" />
@@ -36,7 +36,7 @@
                     <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="LightGray" />
                 </TreeView.Resources>
             </ext:ExtendedTreeView>
-        </Expander>
+        </Expander >
             <Border DockPanel.Dock="Top" Background="Gainsboro" CornerRadius="3" Padding="3">
             <Border.Effect>
                 <DropShadowEffect ShadowDepth="1" BlurRadius="8" Opacity="0.4"/>

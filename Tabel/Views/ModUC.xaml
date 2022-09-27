@@ -20,7 +20,14 @@
 
         <TabControl>
             <TabItem Header="По табелю">
-                <DataGrid ItemsSource="{Binding CurrentMod.ModPersons}" Style="{DynamicResource DataGridStyle}" IsReadOnly="True">
+                <DockPanel  Background="Gainsboro">
+                    <Grid DockPanel.Dock="Top" Margin="8" Height="20">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="100"/>
+                        </Grid.ColumnDefinitions>
+                    </Grid>
+                    <DataGrid ItemsSource="{Binding CurrentMod.ModPersons}" Style="{DynamicResource DataGridStyle}" IsReadOnly="True">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="ФИО" Binding="{Binding person.FIO}"/>
                         <DataGridTextColumn Header="Дложность" Binding="{Binding person.p_profession}"/>
@@ -33,16 +40,17 @@
                         <DataGridTextColumn Header="Итого" Binding="{Binding Itogo, StringFormat=0.#}" FontWeight="Bold"/>
                     </DataGrid.Columns>
                 </DataGrid>
+                </DockPanel>
             </TabItem>
             <TabItem Header="Премия по выработке">
                 <DockPanel  Background="Gainsboro">
-                    <Grid DockPanel.Dock="Top" Margin="8">
+                    <Grid DockPanel.Dock="Top" Margin="8" Height="20">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="100"/>
                             <ColumnDefinition Width="100"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="Часы из ФП" Grid.Column="0"/>
-                        <TextBox Text="{Binding CurrentMod.m_HoursFromFP, Mode=TwoWay}" Grid.Column="1"/>
+                        <TextBox Text="{Binding CurrentMod.m_HoursFromFP, Mode=TwoWay}" Grid.Column="1" VerticalAlignment="Center"/>
                     </Grid>
                     <DataGrid ItemsSource="{Binding CurrentMod.ModPersons}" Style="{StaticResource DataGridStyle}" >
                         <DataGrid.Columns>
@@ -58,7 +66,14 @@
             </TabItem>
 
             <TabItem Header="Бонус">
-                <DataGrid ItemsSource="{Binding CurrentMod.ModPersons}" Style="{StaticResource DataGridStyle}" >
+                <DockPanel  Background="Gainsboro">
+                    <Grid DockPanel.Dock="Top" Margin="8" Height="20">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="100"/>
+                        </Grid.ColumnDefinitions>
+                    </Grid>
+                    <DataGrid ItemsSource="{Binding CurrentMod.ModPersons}" Style="{StaticResource DataGridStyle}" >
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="ФИО" Binding="{Binding person.FIO}" IsReadOnly="True"/>
                         <DataGridTextColumn Header="Должность" Binding="{Binding person.p_profession}" IsReadOnly="True"/>
@@ -67,44 +82,69 @@
                         <DataGridTextColumn Header="Расчет" Binding="{Binding Bonus, StringFormat=0.#}" IsReadOnly="True"/>
                     </DataGrid.Columns>
                 </DataGrid>
+                </DockPanel>
             </TabItem>
 
             <TabItem Header="Премия по участку">
-                <DataGrid ItemsSource="{Binding CurrentMod.ModPersons}" Style="{StaticResource DataGridStyle}" >
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="ФИО" Binding="{Binding person.FIO}" IsReadOnly="True"/>
-                        <DataGridTextColumn Header="Должность" Binding="{Binding person.p_profession}" IsReadOnly="True"/>
-                        <DataGridTextColumn Header="Макс. премия" Binding="{Binding md_prem_otdel, Mode=TwoWay, StringFormat=0.#}"/>
-                        <DataGridTextColumn Header="% выполнения" Binding="{Binding md_prem_otdel_proc, Mode=TwoWay, StringFormat=0.#}" />
-                        <DataGridTextColumn Header="Премия" Binding="{Binding PremOtdel, StringFormat=0.#}" IsReadOnly="True"/>
-                    </DataGrid.Columns>
-                </DataGrid>
+                <DockPanel  Background="Gainsboro">
+                    <Grid DockPanel.Dock="Top" Margin="8" Height="20">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="100"/>
+                        </Grid.ColumnDefinitions>
+                    </Grid>
+                    <DataGrid ItemsSource="{Binding CurrentMod.ModPersons}" Style="{StaticResource DataGridStyle}" >
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="ФИО" Binding="{Binding person.FIO}" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Должность" Binding="{Binding person.p_profession}" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Макс. премия" Binding="{Binding md_prem_otdel, Mode=TwoWay, StringFormat=0.#}"/>
+                            <DataGridTextColumn Header="% выполнения" Binding="{Binding md_prem_otdel_proc, Mode=TwoWay, StringFormat=0.#}" />
+                            <DataGridTextColumn Header="Премия" Binding="{Binding PremOtdel, StringFormat=0.#}" IsReadOnly="True"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </DockPanel>
             </TabItem>
 
             <TabItem Header="Работа в выходной день">
-                <DataGrid ItemsSource="{Binding CurrentMod.ModPersons}" Style="{StaticResource DataGridStyle}" >
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="ФИО" Binding="{Binding person.FIO}" IsReadOnly="True"/>
-                        <DataGridTextColumn Header="Должность" Binding="{Binding person.p_profession}" IsReadOnly="True"/>
-                        <DataGridTextColumn Header="Число дней" Binding="{Binding TabelWorkOffDay, Mode=TwoWay}"/>
-                        <DataGridTextColumn Header="Доплата" Binding="{Binding md_tarif_offDay, Mode=TwoWay, StringFormat=0.##}" />
-                    </DataGrid.Columns>
-                </DataGrid>
+                <DockPanel  Background="Gainsboro">
+                    <Grid DockPanel.Dock="Top" Margin="8" Height="20">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="100"/>
+                        </Grid.ColumnDefinitions>
+                    </Grid>
+                    <DataGrid ItemsSource="{Binding CurrentMod.ModPersons}" Style="{StaticResource DataGridStyle}" >
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="ФИО" Binding="{Binding person.FIO}" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Должность" Binding="{Binding person.p_profession}" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Число дней" Binding="{Binding TabelWorkOffDay, Mode=TwoWay}"/>
+                            <DataGridTextColumn Header="Доплата" Binding="{Binding md_tarif_offDay, Mode=TwoWay, StringFormat=0.##}" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </DockPanel>
 
             </TabItem>
 
             <TabItem Header="Доп.работы / Доставка"/>
 
             <TabItem Header="Вечерние">
-                <DataGrid ItemsSource="{Binding CurrentMod.ModPersons}" Style="{StaticResource DataGridStyle}" >
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="ФИО" Binding="{Binding person.FIO}" IsReadOnly="True"/>
-                        <DataGridTextColumn Header="Должность" Binding="{Binding person.p_profession}" IsReadOnly="True"/>
-                        <DataGridTextColumn Header="Доплата 20%" Binding="{Binding NightOklad, StringFormat=0.#}" IsReadOnly="True"/>
-                        <DataGridTextColumn Header="Часы" Binding="{Binding NightHours, Mode=TwoWay, StringFormat=0.#}" />
-                        <DataGridTextColumn Header="Сумма" Binding="{Binding NightSumma, StringFormat=0.#}" IsReadOnly="True"/>
-                    </DataGrid.Columns>
-                </DataGrid>
+                <DockPanel  Background="Gainsboro">
+                    <Grid DockPanel.Dock="Top" Margin="8" Height="20">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="100"/>
+                        </Grid.ColumnDefinitions>
+                    </Grid>
+                    <DataGrid ItemsSource="{Binding CurrentMod.ModPersons}" Style="{StaticResource DataGridStyle}" >
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="ФИО" Binding="{Binding person.FIO}" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Должность" Binding="{Binding person.p_profession}" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Доплата 20%" Binding="{Binding NightOklad, StringFormat=0.#}" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Часы" Binding="{Binding NightHours, Mode=TwoWay, StringFormat=0.#}" />
+                            <DataGridTextColumn Header="Сумма" Binding="{Binding NightSumma, StringFormat=0.#}" IsReadOnly="True"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </DockPanel>
 
             </TabItem>
         </TabControl>
