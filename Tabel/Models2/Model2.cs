@@ -25,6 +25,9 @@ namespace Tabel.Models2
         public virtual DbSet<User> users { get; set; }
         public virtual DbSet<Mod> Mod { get; set; }
         public virtual DbSet<ModPerson> ModPerson {get;set;}
+        public virtual DbSet<Transport> Transports { get; set; }
+        public virtual DbSet<TransPerson> TransPersons { get; set; }
+        public virtual DbSet<TransDay> TransDays { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -56,6 +59,12 @@ namespace Tabel.Models2
                 .HasMany(e => e.smenas)
                 .WithRequired(e => e.otdel)
                 .HasForeignKey(e => e.sm_OtdelId)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Otdel>()
+                .HasMany(e => e.transport)
+                .WithRequired(e => e.otdel)
+                .HasForeignKey(e => e.tr_OtdelId)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Otdel>()
@@ -112,6 +121,10 @@ namespace Tabel.Models2
                 .WithRequired(e => e.person)
                 .HasForeignKey(e => e.md_personalId);
 
+            modelBuilder.Entity<Personal>()
+                .HasMany(e => e.TransportPersons)
+                .WithRequired(e => e.person)
+                .HasForeignKey(e => e.tp_PersonId);
 
             modelBuilder.Entity<Smena>()
                 .Property(e => e.sm_Number)
@@ -132,6 +145,13 @@ namespace Tabel.Models2
                 .HasMany(e => e.TabelDays)
                 .WithOptional(e => e.TabelPerson)
                 .HasForeignKey(e => e.td_TabelPersonId)
+                .WillCascadeOnDelete();
+
+
+            modelBuilder.Entity<TransPerson>()
+                .HasMany(e => e.TransDays)
+                .WithOptional(e => e.TransPerson)
+                .HasForeignKey(e => e.td_TransPersonId)
                 .WillCascadeOnDelete();
 
 
@@ -180,6 +200,12 @@ namespace Tabel.Models2
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<User>()
+                .HasMany(e => e.transport)
+                .WithRequired(e => e.user)
+                .HasForeignKey(e => e.tr_UserId)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<User>()
                 .HasMany(e => e.tabels)
                 .WithRequired(e => e.Author)
                 .HasForeignKey(e => e.t_author_id)
@@ -195,6 +221,11 @@ namespace Tabel.Models2
                 .HasMany(e => e.ModPersons)
                 .WithRequired(e => e.Mod)
                 .HasForeignKey(e => e.md_modId);
+
+            modelBuilder.Entity<Transport>()
+                .HasMany(e => e.TransportPerson)
+                .WithRequired(e => e.Transport)
+                .HasForeignKey(e => e.tp_TranspId);
 
         }
     }

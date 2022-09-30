@@ -72,8 +72,20 @@ namespace Tabel.ViewModels
             win.DataContext = vm;
             win.ShowDialog();
 
-            //ModWindow win = new ModWindow();
-            //win.ShowDialog();
+        }
+
+        //--------------------------------------------------------------------------------
+        // Команда Загрузить Транспорт
+        //--------------------------------------------------------------------------------
+        public ICommand ExecTranspCommand => new LambdaCommand(OnExecTranspCommandExecuted, CanTranspTabelCommand);
+        private bool CanTranspTabelCommand(object p) => true;
+        private void OnExecTranspCommandExecuted(object p)
+        {
+            BasicWindow win = new BasicWindow();
+            BasicWindowViewModel vm = new BasicWindowViewModel(new TransportUC(), "Использование транспорта");
+            win.DataContext = vm;
+            win.ShowDialog();
+
         }
 
         #endregion

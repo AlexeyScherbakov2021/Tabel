@@ -1,0 +1,75 @@
+﻿<UserControl x:Class="Tabel.Views.TransportUC"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+            xmlns:vm="clr-namespace:Tabel.ViewModels"
+            xmlns:ext="clr-namespace:Tabel.Infrastructure.Extend"
+             xmlns:local="clr-namespace:Tabel.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.DataContext>
+        <vm:TransportUCViewModel/>
+    </UserControl.DataContext>
+    <DockPanel>
+        <ToolBarPanel DockPanel.Dock="Top" Orientation="Horizontal" Height="30" >
+            <TextBlock Text="Номер документа" Margin="5,0" VerticalAlignment="Center"/>
+            <TextBox Text="{Binding SmenaShedule.sm_Number}" Margin="5,0" VerticalAlignment="Center" Width="120"/>
+            <TextBlock Text="Дата создания" Margin="5,0" VerticalAlignment="Center"/>
+            <TextBox Text="{Binding SmenaShedule.sm_DateCreate, StringFormat=dd.MM.yyyy HH:mm:ss}" Margin="5,0" VerticalAlignment="Center" Width="120"/>
+
+            <Button Content="Создать график" Command="{Binding CreateCommand}" Margin="3" Style="{DynamicResource ButtonStyleShadow}"/>
+            <Button Content="Сохранить" Command="{Binding SaveCommand}" Margin="3" Style="{DynamicResource ButtonStyleShadow}"/>
+        </ToolBarPanel>
+
+        <DataGrid x:Name="dg" ItemsSource="{Binding Transp.TransportPerson}" Style="{StaticResource DataGridStyle}" 
+                  VerticalGridLinesBrush="LightGray" HorizontalGridLinesBrush="LightGray"
+                  FrozenColumnCount="1" >
+            <DataGrid.Columns>
+                <DataGridTemplateColumn Header="Сотрудник" IsReadOnly="True" Width="130">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding person.FIO}" TextWrapping="Wrap" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Дни">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <ext:ListBoxExt ItemsSource="{Binding TransDays}" SelectionMode="Extended" BorderBrush="Transparent"
+                                    SelectedIndex="{Binding SelectIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    SelectedItems2="{Binding SelectedDays, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+
+                                <ListBox.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Horizontal"/>
+                                    </ItemsPanelTemplate>
+                                </ListBox.ItemsPanel>
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border x:Name="border" Background="Gainsboro" Margin="-2,0" CornerRadius="3" BorderThickness="1" BorderBrush="Black" Padding="5,1">
+                                            <UniformGrid Rows="2" Margin="0,0" >
+                                                <TextBlock Text="{Binding td_Day}" HorizontalAlignment="Center"/>
+                                                <CheckBox IsChecked="{Binding td_Kind, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                            </UniformGrid>
+                                        </Border>
+                                        <DataTemplate.Triggers>
+                                            <DataTrigger  Binding="{Binding OffDay}" Value="True">
+                                                <Setter Property="Background" Value="MistyRose" TargetName="border"/>
+                                            </DataTrigger>
+                                        </DataTemplate.Triggers>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ext:ListBoxExt>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn Header="Тариф" Binding="{Binding tp_tarif, Mode=TwoWay}" IsReadOnly="False"/>
+                <DataGridTextColumn Header="Всего дней" Binding="{Binding ItogDays}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Итого" Binding="{Binding Summa}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Компенс.такси" Binding="{Binding tp_Kompens, Mode=TwoWay}" />
+                <DataGridTextColumn Header="Всего" Binding="{Binding Itogo}" IsReadOnly="True"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </DockPanel>
+</UserControl>

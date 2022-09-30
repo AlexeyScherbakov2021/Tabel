@@ -127,7 +127,7 @@
 
         <ListBox Padding="2" SelectionMode="Extended" ItemsSource="{Binding Path=SourceCollection , RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
                  SelectedItem="{Binding SelectedItem, Mode=TwoWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
-                 x:Name="ListBoxDays" BorderBrush="Transparent" MouseMove="ListBoxDays_MouseMove" MouseLeftButtonUp="ListBoxDays_MouseLeftButtonUp" PreviewMouseLeftButtonDown="ListBoxDays_PreviewMouseLeftButtonDown"
+                 x:Name="ListBoxDays" BorderBrush="Transparent" 
                  >
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -162,11 +162,11 @@
                                             </ComboBox>
                                             <TextBox Text="{Binding td_Hours, Mode=TwoWay, StringFormat=0.#}" Padding="2,0" MinWidth="24" 
                                                      HorizontalContentAlignment="Center" VerticalContentAlignment="Center" 
-                                                     GotFocus="TextBox_GotFocus" KeyDown="TextBox_KeyDown" 
+                                                     GotFocus="TextBox_GotFocus" KeyDown="TextBox_KeyDown"  
                                                      />
                                             <TextBox Text="{Binding td_Hours2, Mode=TwoWay}" Visibility="{Binding VisibilityHours}" Padding="2,0" 
                                                      MinWidth="24" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" 
-                                                     GotFocus="TextBox_GotFocus"/>
+                                                     GotFocus="TextBox_GotFocus"  />
                                         </StackPanel>
                                     </StackPanel>
                                 </Border>

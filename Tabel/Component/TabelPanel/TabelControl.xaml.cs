@@ -206,39 +206,9 @@ namespace Tabel.Component.TabelPanel
                 if (elem != null)
                     return elem;
             }
-
             return elem;
         }
 
 
-        private void ListBoxDays_MouseMove(object sender, MouseEventArgs e)
-        {
-
-        }
-
-        private void ListBoxDays_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-
-        }
-
-        private void ListBoxDays_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            if (!(sender is ListBox lb)) return;
-
-            Point pt = e.GetPosition(lb);
-
-            UIElement element = (UIElement)VisualTreeHelper.HitTest(lb, pt).VisualHit;
-
-            while(element != null)
-            {
-                element = (UIElement)VisualTreeHelper.GetParent(hr.VisualHit);
-                if (element.GetType().Name == "ListBoxItem")
-                    break;
-            }
-
-
-
-
-        }
     }
 }

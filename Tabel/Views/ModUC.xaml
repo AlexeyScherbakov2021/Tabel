@@ -125,7 +125,25 @@
 
             </TabItem>
 
-            <TabItem Header="Доп.работы / Доставка"/>
+            <TabItem Header="Доп.работы / Доставка">
+                <DockPanel  Background="Gainsboro">
+                    <Grid DockPanel.Dock="Top" Margin="8" Height="20">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="100"/>
+                        </Grid.ColumnDefinitions>
+                    </Grid>
+                    <DataGrid ItemsSource="{Binding CurrentMod.ModPersons}" Style="{StaticResource DataGridStyle}" >
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="ФИО" Binding="{Binding person.FIO}" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Должность" Binding="{Binding person.p_profession}" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Доп.работа" Binding="{Binding NightOklad}" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Сумма" Binding="{Binding NightSumma, StringFormat=0.#}" IsReadOnly="True"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </DockPanel>
+
+            </TabItem>
 
             <TabItem Header="Вечерние">
                 <DockPanel  Background="Gainsboro">

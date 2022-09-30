@@ -72,6 +72,8 @@
     <Compile Include="Component\Models\ModPerson2.cs" />
     <Compile Include="Component\Models\TabelDays2.cs" />
     <Compile Include="Component\Models\TabelPerson2.cs" />
+    <Compile Include="Component\Models\TransDay2.cs" />
+    <Compile Include="Component\Models\TransPerson2.cs" />
     <Compile Include="Component\MonthPanel\Enums.cs" />
     <Compile Include="Component\MonthPanel\MonthControl.xaml.cs">
       <DependentUpon>MonthControl.xaml</DependentUpon>
@@ -101,6 +103,9 @@
     <Compile Include="Models2\tabel.cs" />
     <Compile Include="Models2\tabelPerson.cs" />
     <Compile Include="Models2\TabelDay.cs" />
+    <Compile Include="Models2\TransDay.cs" />
+    <Compile Include="Models2\TransPerson.cs" />
+    <Compile Include="Models2\Transport.cs" />
     <Compile Include="Models2\typeDay.cs" />
     <Compile Include="Models2\user.cs" />
     <Compile Include="Repository\RepositoryCalendar.cs" />
@@ -117,6 +122,7 @@
     <Compile Include="ViewModels\Admins\YearCalendarViewModel.cs" />
     <Compile Include="ViewModels\SmenaUCViewModel.cs" />
     <Compile Include="ViewModels\TabelUCViewModel.cs" />
+    <Compile Include="ViewModels\TransportUCViewModel.cs" />
     <Compile Include="Views\Admins\CategoryUC.xaml.cs">
       <DependentUpon>CategoryUC.xaml</DependentUpon>
     </Compile>
@@ -143,6 +149,9 @@
     </Compile>
     <Compile Include="Views\TabelUC.xaml.cs">
       <DependentUpon>TabelUC.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TransportUC.xaml.cs">
+      <DependentUpon>TransportUC.xaml</DependentUpon>
     </Compile>
     <Page Include="Component\MonthPanel\MonthControl.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -245,6 +254,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\TabelUC.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\TransportUC.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

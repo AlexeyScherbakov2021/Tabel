@@ -46,6 +46,7 @@ namespace Tabel.ViewModels
             }
 
             List<Personal> PersonsFromOtdel = repoPersonal.Items
+                .AsNoTracking()
                 .Where(it => it.p_otdel_id == _SelectedOtdel.id)
                 .OrderBy(o => o.FIO)
                 .ToList();

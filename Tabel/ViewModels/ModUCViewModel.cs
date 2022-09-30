@@ -19,6 +19,7 @@ namespace Tabel.ViewModels
         private readonly RepositoryMSSQL<WorkTabel> repoTabel = new RepositoryMSSQL<WorkTabel>();
         private readonly RepositoryMSSQL<Mod> repoModel = new RepositoryMSSQL<Mod>();
         private readonly RepositoryMSSQL<Smena> repoSmena = new RepositoryMSSQL<Smena>();
+        private readonly RepositoryMSSQL<Transport> repoTransport = new RepositoryMSSQL<Transport>();
 
         private Otdel _SelectedOtdel;
         private int _SelectMonth;
@@ -100,7 +101,31 @@ namespace Tabel.ViewModels
 
             LoadFromTabel();
             LoadFromSmena();
+            LoadFromTransprot();
             OnPropertyChanged(nameof(CurrentMod));
+
+
+        }
+
+        //-------------------------------------------------------------------------------------------------------
+        // подгрузка данных из данных по транспорту
+        //-------------------------------------------------------------------------------------------------------
+        private void LoadFromTransprot()
+        {
+            if (CurrentMod is null)
+                return;
+
+            var Transp = repoTransport.Items.AsNoTracking().FirstOrDefault(it => it.tr_Year == _SelectYear 
+                    && it.tr_Month == _SelectMonth
+                    && it.otdel == _SelectedOtdel);
+
+            if (CurrentMod?.ModPersons is null || Transp is null) return;
+
+            foreach (var item in CurrentMod.ModPersons)
+            {
+                var pers = Transp.TransportPerson.FirstOrDefault(it => it.tp_PersonId == item.md_personalId);
+
+            }
 
 
         }

@@ -28,9 +28,7 @@ namespace Tabel.Models2
 
         public decimal? Bonus => TabelDays == 0 ? 0 : md_bonus_max * md_bonus_proc / 100 * (TabelDays - TabelAbsent) / TabelDays;
 
-
         public decimal? PremOtdel => md_prem_otdel * md_prem_otdel_proc / 100;
-
 
         // ночные часы
         public decimal? NightOklad => person?.category?.cat_tarif * 0.2m;
@@ -62,7 +60,6 @@ namespace Tabel.Models2
             OnPropertyChanged(nameof(NightSumma));
             OnPropertyChanged(nameof(Itogo));
         }
-            
 
     }
 }

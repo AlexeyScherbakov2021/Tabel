@@ -17,6 +17,7 @@ namespace Tabel.Models2
             tabels = new HashSet<WorkTabel>();
             users = new HashSet<User>();
             mods = new HashSet<Mod>();  
+            transport = new HashSet<Transport>();
         }
 
         [Key]
@@ -45,5 +46,6 @@ namespace Tabel.Models2
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<User> users { get; set; }
         public virtual ICollection<Mod> mods { get; set; }
+        public virtual ICollection<Transport> transport { get; set; }
     }
 }
