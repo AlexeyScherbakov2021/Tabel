@@ -85,6 +85,7 @@
     </Compile>
     <Compile Include="Component\TabelPanel\TabelPanel.cs" />
     <Compile Include="Component\TabelPanel\TestConvert.cs" />
+    <Compile Include="Infrastructure\Converters\Convert0ToNull.cs" />
     <Compile Include="Infrastructure\Converters\KindSmenaConverter.cs" />
     <Compile Include="Infrastructure\Enums.cs" />
     <Compile Include="Infrastructure\Months.cs" />
@@ -172,6 +173,10 @@
     <Page Include="Styles\DataGrid.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\ToolTipStyle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Styles\TreeView.xaml">
       <Generator>MSBuild:Compile</Generator>

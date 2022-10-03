@@ -62,6 +62,7 @@ namespace Tabel.ViewModels
             {
                 TabelPerson tp = new TabelPerson();
                 tp.tp_person_id = item.id;
+                //tp.person = item;
                 tp.TabelDays = new ObservableCollection<TabelDay>();
 
                 for (DateTime IndexDate = StartDay; IndexDate.Month == _SelectMonth; IndexDate = IndexDate.AddDays(1))
@@ -114,6 +115,12 @@ namespace Tabel.ViewModels
 
             if (Tabel.tabelPersons.Count > 0)
                 repoTabel.Add(Tabel, true);
+
+
+            Tabel = repoTabel.Items
+                .Where(it => it.id == Tabel.id)
+                .Include(inc => inc.tabelPersons.Select(s => s.person))
+                .FirstOrDefault();
 
             OnPropertyChanged(nameof(Tabel));
 
@@ -168,7 +175,7 @@ namespace Tabel.ViewModels
                 && it.t_month == Month
                 && it.t_otdel_id == otdel.id);
 
-            List<Personal> PersonsFromOtdel = repoPersonal.Items.AsNoTracking().Where(it => it.p_otdel_id == otdel.id).ToList();
+            //List<Personal> PersonsFromOtdel = repoPersonal.Items.AsNoTracking().Where(it => it.p_otdel_id == otdel.id).ToList();
 
             if (Tabel != null)
             {

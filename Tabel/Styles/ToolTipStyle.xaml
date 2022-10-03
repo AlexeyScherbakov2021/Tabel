@@ -1,0 +1,26 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Style TargetType="ToolTip">
+        <!--<Setter Property="BorderThickness" Value="1"/>-->
+        <!--<Setter Property="Background" Value="#FFFFAFAF"/>-->
+        <Setter Property="MaxWidth" Value="270"/>
+        <Setter Property="MaxHeight" Value="64"/>
+        <Setter Property="HasDropShadow" Value="True"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ToolTip">
+                    <Border BorderThickness="3" Width="{TemplateBinding Width}"  Height="{TemplateBinding Height}" Background="LightYellow"
+                                CornerRadius="5">
+                        <TextBlock TextWrapping="Wrap" HorizontalAlignment="Center" TextAlignment="Center" VerticalAlignment="Top" Margin="3"
+                                Text="{TemplateBinding Content}">
+                        </TextBlock>
+                        <Border.Effect>
+                            <DropShadowEffect BlurRadius="11" Color="#FF777777" ShadowDepth="3"/>
+                        </Border.Effect>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>

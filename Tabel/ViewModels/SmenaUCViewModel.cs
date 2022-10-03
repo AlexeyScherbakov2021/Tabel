@@ -45,11 +45,7 @@ namespace Tabel.ViewModels
                 repoSmena.Remove(SmenaShedule);
             }
 
-            List<Personal> PersonsFromOtdel = repoPersonal.Items
-                .AsNoTracking()
-                .Where(it => it.p_otdel_id == _SelectedOtdel.id)
-                .OrderBy(o => o.FIO)
-                .ToList();
+            List<Personal> PersonsFromOtdel = repoPersonal.Items.AsNoTracking().Where(it => it.p_otdel_id == _SelectedOtdel.id).ToList();
 
             SmenaShedule = new Smena();
             SmenaShedule.sm_UserId = App.CurrentUser.id;
@@ -85,6 +81,12 @@ namespace Tabel.ViewModels
 
             if (SmenaShedule.SmenaPerson.Count > 0)
                 repoSmena.Add(SmenaShedule, true);
+
+            SmenaShedule = repoSmena.Items
+                .Where(it => it.id == SmenaShedule.id)
+                .Include(inc => inc.SmenaPerson.Select(s => s.personal))
+                .FirstOrDefault();
+
 
             OnPropertyChanged(nameof(SmenaShedule));
 

@@ -14,9 +14,9 @@ namespace Tabel.Models2
         [NotMapped]
         public int ItogDays => TransDays.Where(it => it.td_Kind == 1).Count();
         [NotMapped]
-        public decimal? Summa => ItogDays * tp_tarif;
+        public decimal? Summa => ItogDays * tp_tarif ?? 0;
         [NotMapped]
-        public decimal? Itogo => Summa + tp_Kompens;
+        public decimal? Itogo => Summa + tp_Kompens ?? 0;
 
         public void UpdateUI()
         {

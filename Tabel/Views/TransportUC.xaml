@@ -14,11 +14,11 @@
     <DockPanel>
         <ToolBarPanel DockPanel.Dock="Top" Orientation="Horizontal" Height="30" >
             <TextBlock Text="Номер документа" Margin="5,0" VerticalAlignment="Center"/>
-            <TextBox Text="{Binding SmenaShedule.sm_Number}" Margin="5,0" VerticalAlignment="Center" Width="120"/>
+            <TextBox Text="{Binding Transp.tr_Number}" Margin="5,0" VerticalAlignment="Center" Width="120"/>
             <TextBlock Text="Дата создания" Margin="5,0" VerticalAlignment="Center"/>
-            <TextBox Text="{Binding SmenaShedule.sm_DateCreate, StringFormat=dd.MM.yyyy HH:mm:ss}" Margin="5,0" VerticalAlignment="Center" Width="120"/>
+            <TextBox Text="{Binding Transp.tr_DateCreate, StringFormat=dd.MM.yyyy HH:mm:ss}" Margin="5,0" VerticalAlignment="Center" Width="120"/>
 
-            <Button Content="Создать график" Command="{Binding CreateCommand}" Margin="3" Style="{DynamicResource ButtonStyleShadow}"/>
+            <Button Content="Создать" Command="{Binding CreateCommand}" Margin="3" Style="{DynamicResource ButtonStyleShadow}"/>
             <Button Content="Сохранить" Command="{Binding SaveCommand}" Margin="3" Style="{DynamicResource ButtonStyleShadow}"/>
         </ToolBarPanel>
 

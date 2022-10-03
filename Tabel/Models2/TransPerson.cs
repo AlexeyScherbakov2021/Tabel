@@ -40,7 +40,20 @@ namespace Tabel.Models2
             } 
         }
 
-        public decimal? tp_Kompens { get; set; }
+        private decimal? _tp_Kompens;
+        public decimal? tp_Kompens 
+        {
+            get => _tp_Kompens;
+            set
+            {
+                if (_tp_Kompens != value)
+                {
+                    _tp_Kompens = value;
+                    UpdateUI();
+                }
+
+            }
+        }
 
         public Transport Transport { get; set; }
         public virtual Personal person { get; set; }

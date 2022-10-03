@@ -33,7 +33,7 @@ namespace Tabel.ViewModels
         // Команда Создать 
         //--------------------------------------------------------------------------------
         public ICommand CreateCommand => new LambdaCommand(OnCreateCommandExecuted, CanCreateCommand);
-        private bool CanCreateCommand(object p) => true;
+        private bool CanCreateCommand(object p) => _SelectedOtdel != null;
         private void OnCreateCommandExecuted(object p)
         {
             if (Transp != null)
@@ -42,12 +42,7 @@ namespace Tabel.ViewModels
             }
 
             List<Personal> PersonsFromOtdel = repoPersonal.Items.AsNoTracking().Where(it => it.p_otdel_id == _SelectedOtdel.id).ToList();
-
-
-            //List<Personal> PersonsFromOtdel = repoPersonal.Items
-            //    .Where(it => it.p_otdel_id == _SelectedOtdel.id)
-            //    .OrderBy(o => o.FIO)
-            //    .ToList();
+    
 
             Transp = new Transport();
             Transp.tr_UserId = App.CurrentUser.id;
@@ -65,6 +60,7 @@ namespace Tabel.ViewModels
             {
                 TransPerson tp = new TransPerson();
                 tp.tp_PersonId = item.id;
+                //tp.person = item;
                 tp.TransDays = new List<TransDay>();
 
                 for (DateTime IndexDate = StartDay; IndexDate.Month == _SelectMonth; IndexDate = IndexDate.AddDays(1))
@@ -83,6 +79,10 @@ namespace Tabel.ViewModels
 
             if (Transp.TransportPerson.Count > 0)
                 repoTransp.Add(Transp, true);
+
+            Transp = repoTransp.Items.Where(it => it.id == Transp.id)
+                .Include(i => i.TransportPerson.Select(s => s.person))
+                .FirstOrDefault();
 
             OnPropertyChanged(nameof(Transp));
 
@@ -127,7 +127,8 @@ namespace Tabel.ViewModels
                 && it.tr_OtdelId == _SelectedOtdel.id)
                 .Include(inc => inc.TransportPerson)
                 .FirstOrDefault();
-            List<Personal> PersonsFromOtdel = repoPersonal.Items.Where(it => it.p_otdel_id == _SelectedOtdel.id).ToList();
+            
+            //List<Personal> PersonsFromOtdel = repoPersonal.Items.Where(it => it.p_otdel_id == _SelectedOtdel.id).ToList();
 
             SetTypeDays();
             OnPropertyChanged(nameof(Transp));

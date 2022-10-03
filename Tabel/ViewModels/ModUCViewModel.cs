@@ -49,12 +49,17 @@ namespace Tabel.ViewModels
             {
                 ModPerson newPerson = new ModPerson();
                 newPerson.md_personalId = pers.id;
-
+                //newPerson.person = pers;
 
                 CurrentMod.ModPersons.Add(newPerson);
             }
 
             repoModel.Add(CurrentMod, true);
+
+            CurrentMod = repoModel.Items
+                .Where(it => it.id == CurrentMod.id)
+                .Include(inc => inc.ModPersons.Select(s => s.person))
+                .FirstOrDefault();
 
             OnPropertyChanged(nameof(CurrentMod));
 

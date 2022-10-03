@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Tabel.Component.TabelPanel"
+             xmlns:conv="clr-namespace:Tabel.Infrastructure.Converters"
              mc:Ignorable="d" 
              SnapsToDevicePixels="True"
              d:DesignHeight="450" d:DesignWidth="800">
@@ -12,9 +13,13 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/../../Styles/ComboBoxNotArrow.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+
+            <conv:Convert0ToNull x:Key="Convert0ToNull"/>
         </ResourceDictionary>
-        
+    
+
     </UserControl.Resources>
+
     <DockPanel>
         <Grid DockPanel.Dock="Right">
             <Grid.RowDefinitions>
@@ -159,11 +164,20 @@
                                                 SelectedIndex="{Binding td_KindId, Mode=TwoWay}"
                                                 ItemsSource="{Binding ItemsKind, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}" 
                                                       GotFocus="ComboBox_GotFocus" SelectionChanged="ComboBox_SelectionChanged">
+                                                <ComboBox.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <Border Background="Snow" Width="26" CornerRadius="3" BorderBrush="Gray" BorderThickness="1" ToolTip="{Binding t_desc}">
+                                                            <TextBlock HorizontalAlignment="Center" Text="{Binding t_name}" />
+                                                        </Border>
+                                                    </DataTemplate>
+                                                </ComboBox.ItemTemplate>
                                             </ComboBox>
-                                            <TextBox Text="{Binding td_Hours, Mode=TwoWay, StringFormat=0.#}" Padding="2,0" MinWidth="24" 
+                                            <TextBox Text="{Binding td_Hours, Mode=TwoWay, StringFormat=0.#, Converter={StaticResource Convert0ToNull}}" 
+                                                     Padding="2,0" MinWidth="24" 
                                                      HorizontalContentAlignment="Center" VerticalContentAlignment="Center" 
-                                                     GotFocus="TextBox_GotFocus" KeyDown="TextBox_KeyDown"  
-                                                     />
+                                                     GotFocus="TextBox_GotFocus" KeyDown="TextBox_KeyDown">
+                                            </TextBox>  
+                                                     
                                             <TextBox Text="{Binding td_Hours2, Mode=TwoWay}" Visibility="{Binding VisibilityHours}" Padding="2,0" 
                                                      MinWidth="24" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" 
                                                      GotFocus="TextBox_GotFocus"  />
