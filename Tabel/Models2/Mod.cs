@@ -38,6 +38,7 @@ namespace Tabel.Models2
         }
 
 
+
         public virtual User Author { get; set; }
         public virtual Otdel Otdel { get; set; }
 

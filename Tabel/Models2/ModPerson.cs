@@ -30,17 +30,17 @@ namespace Tabel.Models2
             }
         }
 
-        private decimal? _md_prem1_tarif;
-        public decimal? md_prem1_tarif
-        {
-            get => _md_prem1_tarif;
-            set
-            {
-                if (Equals(_md_prem1_tarif, value)) return;
-                _md_prem1_tarif = value;
-                UpdateUI();
-            }
-        }
+        //private decimal? _md_prem1_tarif;
+        //public decimal? md_prem1_tarif
+        //{
+        //    get => _md_prem1_tarif;
+        //    set
+        //    {
+        //        if (Equals(_md_prem1_tarif, value)) return;
+        //        _md_prem1_tarif = value;
+        //        UpdateUI();
+        //    }
+        //}
 
         private decimal? _md_bonus_max;
         public decimal? md_bonus_max 
@@ -50,6 +50,18 @@ namespace Tabel.Models2
             {
                 if (Equals(_md_bonus_max, value)) return;
                 _md_bonus_max = value;
+                UpdateUI();
+            }
+        }
+
+        private bool _md_bonus_exec;
+        public bool md_bonus_exec 
+        { 
+            get => _md_bonus_exec; 
+            set
+            {
+                if (Equals(_md_bonus_exec, value)) return;
+                _md_bonus_exec = value;
                 UpdateUI();
             }
         }

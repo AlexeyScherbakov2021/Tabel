@@ -21,12 +21,14 @@ namespace Tabel.Models2
 
         [NotMapped]
         public decimal? TabelWorkOffDay { get; set; }
+        [NotMapped]
+        public decimal? DayOffSumma { get; set; }
 
         public decimal? SummaHoursFP => (md_premFP * Mod?.m_HoursFromFP) / 100m;
         public decimal? SummaPremFP =>
-            TabelDays == 0 ? 0 : SummaHoursFP * md_prem1_tarif * (TabelDays - TabelAbsent) / TabelDays;
+            TabelDays == 0 ? 0 : SummaHoursFP * person.category.cat_prem_tarif * (TabelDays - TabelAbsent) / TabelDays;
 
-        public decimal? Bonus => TabelDays == 0 ? 0 : md_bonus_max * md_bonus_proc / 100 * (TabelDays - TabelAbsent) / TabelDays;
+        public decimal? Bonus => (TabelDays == 0 || !_md_bonus_exec) ? 0 : md_bonus_max * md_bonus_proc / 100 * (TabelDays - TabelAbsent) / TabelDays;
 
         public decimal? PremOtdel => md_prem_otdel * md_prem_otdel_proc / 100;
 
@@ -46,10 +48,15 @@ namespace Tabel.Models2
             }
         }
 
-
         public decimal? NightSumma => NightOklad * NightHours;
 
-        public decimal? Itogo => Oklad + SummaPremFP + Bonus + PremOtdel + NightSumma;
+
+        public decimal? Itogo => Oklad + (SummaPremFP ?? 0) + (Bonus ?? 0) + (PremOtdel ?? 0) 
+            + (NightSumma ?? 0) + (DayOffSumma ?? 0) + (TransportSumma ?? 0);
+
+        [NotMapped]
+        public decimal? TransportSumma { get; set; }
+
 
         public void UpdateUI()
         {

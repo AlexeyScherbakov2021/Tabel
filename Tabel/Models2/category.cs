@@ -21,6 +21,7 @@ namespace Tabel.Models2
         public int id { get; set; }
 
         public decimal? cat_tarif { get; set; }
+        public decimal? cat_prem_tarif { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Personal> personals { get; set; }

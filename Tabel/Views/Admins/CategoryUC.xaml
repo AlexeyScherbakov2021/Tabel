@@ -33,6 +33,7 @@
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Разряд" Binding="{Binding id}" Width="80"/>
                                 <DataGridTextColumn Header="Тариф" Binding="{Binding cat_tarif}" Width="130"/>
+                                <DataGridTextColumn Header="Премиальный тариф" Binding="{Binding cat_prem_tarif}" Width="130"/>
                             </DataGrid.Columns>
                         </DataGrid>
                     </Grid>

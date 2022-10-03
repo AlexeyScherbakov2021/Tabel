@@ -49,6 +49,10 @@ namespace Tabel.ViewModels
             {
                 ModPerson newPerson = new ModPerson();
                 newPerson.md_personalId = pers.id;
+                newPerson.md_tarif_offDay = pers.category.cat_tarif * 8;
+                if (newPerson.md_tarif_offDay < 1500)
+                    newPerson.md_tarif_offDay = 1500;
+
                 //newPerson.person = pers;
 
                 CurrentMod.ModPersons.Add(newPerson);
@@ -122,16 +126,15 @@ namespace Tabel.ViewModels
 
             var Transp = repoTransport.Items.AsNoTracking().FirstOrDefault(it => it.tr_Year == _SelectYear 
                     && it.tr_Month == _SelectMonth
-                    && it.otdel == _SelectedOtdel);
+                    && it.tr_OtdelId == _SelectedOtdel.id);
 
             if (CurrentMod?.ModPersons is null || Transp is null) return;
 
             foreach (var item in CurrentMod.ModPersons)
             {
                 var pers = Transp.TransportPerson.FirstOrDefault(it => it.tp_PersonId == item.md_personalId);
-
+                item.TransportSumma = pers?.Summa;
             }
-
 
         }
 
@@ -156,6 +159,7 @@ namespace Tabel.ViewModels
                 item.TabelHours = pers.HoursMonth;
                 item.TabelAbsent = 0;
                 item.TabelWorkOffDay = pers.WorkedOffDays;
+                item.DayOffSumma = item.TabelWorkOffDay * item.md_tarif_offDay;
                 item.Oklad = item.person.category is null ? 0 : item.TabelHours * item.person.category.cat_tarif.Value;
             }
 
