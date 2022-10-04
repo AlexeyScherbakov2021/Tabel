@@ -92,7 +92,7 @@ namespace Tabel.ViewModels
         // Команда Сохранить
         //--------------------------------------------------------------------------------
         public ICommand SaveCommand => new LambdaCommand(OnSaveCommandExecuted, CanSaveCommand);
-        private bool CanSaveCommand(object p) => true;
+        private bool CanSaveCommand(object p) => Transp != null;
         private void OnSaveCommandExecuted(object p)
         {
             repoTransp.Save();

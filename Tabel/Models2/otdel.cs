@@ -2,6 +2,7 @@ namespace Tabel.Models2
 {
     using System;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
@@ -11,7 +12,8 @@ namespace Tabel.Models2
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Otdel()
         {
-            subOtdels = new HashSet<Otdel>();
+            //subOtdels = new HashSet<Otdel>();
+            subOtdels = new ObservableCollection<Otdel>();
             personals = new HashSet<Personal>();
             smenas = new HashSet<Smena>();
             tabels = new HashSet<WorkTabel>();
@@ -30,7 +32,7 @@ namespace Tabel.Models2
         public int? ot_parent { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Otdel> subOtdels { get; set; }
+        public virtual ObservableCollection<Otdel> subOtdels { get; set; }
 
         public virtual Otdel parent { get; set; }
 

@@ -40,6 +40,7 @@ namespace Tabel.Models2
         public int? p_otdel_id { get; set; }
 
         public int? p_cat_id { get; set; }
+        public bool? p_delete { get; set; }
 
         public virtual Category category { get; set; }
 

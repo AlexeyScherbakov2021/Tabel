@@ -15,9 +15,10 @@
         <ToolBarPanel DockPanel.Dock="Top" Orientation="Horizontal" Height="30" Margin="0,0,0,8">
             <!--<Button Content="Создать график" Command="{Binding CreateCommand}" Margin="3" Style="{DynamicResource ButtonStyleShadow}"/>
             <Button Content="Сохранить" Command="{Binding SaveCommand}" Margin="3" Style="{DynamicResource ButtonStyleShadow}"/>-->
-            <TextBlock Text="Год" Margin="10,0" VerticalAlignment="Center"/>
-            <TextBox Text="{Binding CurrentYear}"  VerticalAlignment="Center" Width="100"/>
-            <TextBlock Text="Месяц"  VerticalAlignment="Center" Margin="5,0"/>
+            <TextBlock Text="Год" Margin="210,0,8,0" VerticalAlignment="Center"/>
+            <!--<TextBox Text="{Binding CurrentYear}"  VerticalAlignment="Center" Width="100"/>-->
+            <ComboBox ItemsSource="{Binding ListYears}"  VerticalAlignment="Center" Width="100" SelectedItem="{Binding CurrentYear}"/>
+            <TextBlock Text="Месяц"  VerticalAlignment="Center" Margin="8,0"/>
             <ComboBox  ItemsSource="{Binding ListMonth}"  VerticalAlignment="Center" Width="150"
                       DisplayMemberPath="Name" SelectedValuePath="Number" SelectedValue="{Binding CurrentMonth, Mode=TwoWay}"
                       />
@@ -27,22 +28,42 @@
             <StatusBarItem Content="Пользователь:"/>
             <StatusBarItem Content="{Binding User.u_fio}"/>
         </StatusBar>
-        <Expander ExpandDirection="Right" DockPanel.Dock="Left" ToolTip="Отделы и группы" Background="Snow">
-            <ext:ExtendedTreeView ItemsSource="{Binding ListOtdel}" Margin="3" Padding="0,0,10,0" SelectedItem_="{Binding SelectedOtdel, Mode=TwoWay}">
-                <TreeView.Resources>
-                    <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="Transparent" />
-                    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="LightBlue" />
-                    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="Black" />
-                    <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="LightGray" />
-                </TreeView.Resources>
-            </ext:ExtendedTreeView>
-        </Expander >
-            <Border DockPanel.Dock="Top" Background="Gainsboro" CornerRadius="3" Padding="3">
+        <Grid  DockPanel.Dock="Left">
+            <Expander ExpandDirection="Right" ToolTip="Отделы и группы" Background="Snow" Margin="0">
+                <ext:ExtendedTreeView ItemsSource="{Binding ListOtdel}" Margin="3" Padding="0,0,10,0" SelectedItem_="{Binding SelectedOtdel, Mode=TwoWay}">
+                    <ext:ExtendedTreeView.Resources>
+                        <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="Transparent" />
+                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="LightBlue" />
+                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="Black" />
+                        <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="LightGray" />
+                    </ext:ExtendedTreeView.Resources>
+                </ext:ExtendedTreeView>
+            </Expander>
+            <TextBlock Text="Отделы и группы" RenderTransformOrigin="0.5,0.5" FontSize="18" Margin="3,120,-2,0" HorizontalAlignment="Left" IsHitTestVisible="False">
+                <TextBlock.LayoutTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform Angle="90"/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </TextBlock.LayoutTransform>
+                <TextBlock.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform Angle="0.2"/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </TextBlock.RenderTransform>
+            </TextBlock>
+        </Grid>
+        <Border DockPanel.Dock="Top" Background="LightSteelBlue" CornerRadius="3" Padding="3" Margin="3,0">
             <Border.Effect>
                 <DropShadowEffect ShadowDepth="1" BlurRadius="8" Opacity="0.4"/>
             </Border.Effect>
                 <TextBlock Text="{Binding SelectedOtdel.ot_name}" HorizontalAlignment="Center" FontSize="18" FontWeight="Bold"/>
-            </Border>
+        </Border>
 
         <ContentPresenter Content="{Binding SourceContent}"/>
     </DockPanel>

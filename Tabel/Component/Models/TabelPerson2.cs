@@ -84,6 +84,7 @@ namespace Tabel.Models2
             OnPropertyChanged("WorkedHours15");
             OnPropertyChanged("WorkedHours2");
             OnPropertyChanged("WorkedOffDays");
+            OnPropertyChanged("WorkedOffHours");
         }
 
 
@@ -91,7 +92,7 @@ namespace Tabel.Models2
         public void SetCalendarTypeDays()
         {
             RepositoryCalendar repo = new RepositoryCalendar();
-            IEnumerable<WorkCalendar> cal = repo.Items.AsNoTracking().Where(it => it.cal_year == tabel.t_year 
+            IEnumerable<WorkCalendar> cal = repo.Items.AsNoTracking().Where(it => it.cal_date.Year == tabel.t_year 
                     && it.cal_date.Month == tabel.t_month);
 
             // выставление выходных дней для списка

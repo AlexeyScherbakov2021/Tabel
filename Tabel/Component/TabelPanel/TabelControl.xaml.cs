@@ -151,9 +151,12 @@ namespace Tabel.Component.TabelPanel
                     item.td_Hours = hours;
                 }
                 e.Handled = true;
+
+                MoveToNextDay(ListBoxDays.SelectedIndex + 1);
+
             }
 
-            if(e.Key == Key.Tab)
+            if (e.Key == Key.Tab)
             {
                 e.Handled = true;
 
@@ -163,19 +166,39 @@ namespace Tabel.Component.TabelPanel
 
                 if (napr < 0) return;
 
-                ListBoxDays.SelectedIndex = napr;
+                MoveToNextDay(napr);
 
-                var res = GetTabelPanelVisual("TabelPanel");
+                //ListBoxDays.SelectedIndex = napr;
 
-                ListBoxItem listBoxItem = (ListBoxItem)ProcessElement(res, "ListBoxItem");
-                var parent = VisualTreeHelper.GetParent(listBoxItem);
+                //var res = GetTabelPanelVisual("TabelPanel");
+
+                //ListBoxItem listBoxItem = (ListBoxItem)ProcessElement(res, "ListBoxItem");
+                //var parent = VisualTreeHelper.GetParent(listBoxItem);
                 
-                listBoxItem = (ListBoxItem)VisualTreeHelper.GetChild(parent, ListBoxDays.SelectedIndex);
+                //listBoxItem = (ListBoxItem)VisualTreeHelper.GetChild(parent, ListBoxDays.SelectedIndex);
 
-                FrameworkElement elem =  (FrameworkElement)ProcessElement(listBoxItem, "TextBox");
+                //FrameworkElement elem =  (FrameworkElement)ProcessElement(listBoxItem, "TextBox");
 
-                elem.Focus();
+                //elem.Focus();
             }
+
+        }
+
+
+        private void MoveToNextDay(int newIndex)
+        {
+            ListBoxDays.SelectedIndex = newIndex;
+
+            var res = GetTabelPanelVisual("TabelPanel");
+
+            ListBoxItem listBoxItem = (ListBoxItem)ProcessElement(res, "ListBoxItem");
+            var parent = VisualTreeHelper.GetParent(listBoxItem);
+
+            listBoxItem = (ListBoxItem)VisualTreeHelper.GetChild(parent, ListBoxDays.SelectedIndex);
+
+            FrameworkElement elem = (FrameworkElement)ProcessElement(listBoxItem, "TextBox");
+
+            elem.Focus();
 
         }
 

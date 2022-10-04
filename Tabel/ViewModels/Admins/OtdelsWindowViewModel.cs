@@ -94,7 +94,6 @@ namespace Tabel.ViewModels.Admins
         private void ListPersonalView_CurrentChanged(object sender, EventArgs e)
         {
             repoPerson.Save();
-
         }
 
 
@@ -103,11 +102,27 @@ namespace Tabel.ViewModels.Admins
         // Команда Добавить отдел
         //--------------------------------------------------------------------------------
         public ICommand AddOtdelCommand => new LambdaCommand(OnAddOtdelCommandExecuted, CanAddOtdelCommand);
-        private bool CanAddOtdelCommand(object p) => SelectedOtdel != null;
+        private bool CanAddOtdelCommand(object p) => true;
         private void OnAddOtdelCommandExecuted(object p)
         {
             Otdel NewOtdel = new Otdel();
             NewOtdel.ot_name = "Новый отдел";
+            //NewOtdel.ot_parent = SelectedOtdel.id;
+            repoOtdel.Add(NewOtdel, true);
+            ListOtdel.Add(NewOtdel);
+
+            //SelectedOtdel.subOtdels.Add(NewOtdel);
+        }
+
+        //--------------------------------------------------------------------------------
+        // Команда Добавить группу
+        //--------------------------------------------------------------------------------
+        public ICommand AddGroupCommand => new LambdaCommand(OnAddGroupCommandExecuted, CanAddGroupCommand);
+        private bool CanAddGroupCommand(object p) => SelectedOtdel != null;
+        private void OnAddGroupCommandExecuted(object p)
+        {
+            Otdel NewOtdel = new Otdel();
+            NewOtdel.ot_name = "Новая группа";
             NewOtdel.ot_parent = SelectedOtdel.id;
 
             repoOtdel.Add(NewOtdel, true);
@@ -119,13 +134,24 @@ namespace Tabel.ViewModels.Admins
         // Команда Удалить отдел
         //--------------------------------------------------------------------------------
         public ICommand DeleteOtdelCommand => new LambdaCommand(OnDeleteOtdelCommandExecuted, CanDeleteOtdelCommand);
-        private bool CanDeleteOtdelCommand(object p) => SelectedOtdel != null && SelectedOtdel.parent != null;
+        private bool CanDeleteOtdelCommand(object p) => SelectedOtdel != null && SelectedOtdel.subOtdels.Count == 0;
         private void OnDeleteOtdelCommandExecuted(object p)
         {
             if(MessageBox.Show($"Удалить «{SelectedOtdel.ot_name}»","Подтверждение", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
             {
-                repoOtdel.Delete(SelectedOtdel, true);
-                //SelectedOtdel.parent.subOtdels.Remove(SelectedOtdel);
+                var parentID = SelectedOtdel.ot_parent;
+
+                try
+                {
+                    repoOtdel.Delete(SelectedOtdel, true);
+                    //SelectedOtdel.parent.subOtdels.Remove(SelectedOtdel);
+                    if (parentID == null)
+                        ListOtdel.Remove(SelectedOtdel);
+                }
+                catch
+                {
+                   
+                }
             }
         }
 

@@ -16,7 +16,7 @@
         <conv:KindSmenaConverter x:Key="KindSmenaConverter"/>
     </UserControl.Resources>
     <DockPanel>
-        <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Height="30">
+        <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Height="30" Margin="10,8,0,4">
             <TextBlock Text="Номер документа" Margin="5,0" VerticalAlignment="Center"/>
             <TextBox Text="{Binding Tabel.t_number}" Width="100"  VerticalAlignment="Center" Margin="5,0"/>
 
@@ -26,7 +26,7 @@
             <Button Content="Сохранить" Command="{Binding SaveCommand}" Margin="3" Style="{StaticResource ButtonStyleShadow}"/>
         </StackPanel>
 
-        <DataGrid x:Name="dg" ItemsSource="{Binding Tabel.tabelPersons}" AutoGenerateColumns="False" IsReadOnly="True" 
+        <DataGrid x:Name="dg" ItemsSource="{Binding ListTabelPerson}" AutoGenerateColumns="False" IsReadOnly="True" 
                   VerticalGridLinesBrush="LightGray" HorizontalGridLinesBrush="DarkGray"
                   FrozenColumnCount="1" VirtualizingPanel.ScrollUnit="Pixel" CanUserAddRows="False" CanUserDeleteRows="False" Focusable="False"  >
             <DataGrid.Columns>

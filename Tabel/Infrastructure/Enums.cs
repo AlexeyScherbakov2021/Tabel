@@ -8,5 +8,6 @@ namespace Tabel.Infrastructure
 {
     public enum SmenaKind: int { None, First, Second,  DayOff, Otpusk }
     public enum TabelKind: int { None, Work, DayOff, Komandir, Otpusk, WorkDayOff, DopOtpusk, Bolen, Obuchenie, NotWork};
+    public enum UserRoles: int { Admin, Extend, User};
 
 }

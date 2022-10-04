@@ -43,6 +43,10 @@ namespace Tabel.ViewModels
             }
         }
 
+
+        public List<int> ListYears { get; set; }
+
+
         private int _CurrentYear;
         public int CurrentYear 
         { 
@@ -136,8 +140,12 @@ namespace Tabel.ViewModels
             CurrentMonth = _CurrentDate.Month;
             CurrentYear = _CurrentDate.Year;
             User = App.CurrentUser;
-            User = new User() { u_otdel_id = 44, u_login = "Petrov", id = 10, u_fio = "Петров" };
+            //User = new User() { u_otdel_id = 44, u_login = "Petrov", id = 10, u_fio = "Петров" };
             ListOtdel = repoOtdel.Items.Where(it => it.id == User.u_otdel_id).ToList();
+            SelectedOtdel = ListOtdel?[0];
+
+            RepositoryCalendar repoCal = new RepositoryCalendar();
+            ListYears = repoCal.GetYears().ToList();
 
         }
     }

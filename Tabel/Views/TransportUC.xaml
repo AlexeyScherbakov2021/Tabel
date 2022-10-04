@@ -12,7 +12,7 @@
         <vm:TransportUCViewModel/>
     </UserControl.DataContext>
     <DockPanel>
-        <ToolBarPanel DockPanel.Dock="Top" Orientation="Horizontal" Height="30" >
+        <ToolBarPanel DockPanel.Dock="Top" Orientation="Horizontal" Height="30"  Margin="10,8,0,4">
             <TextBlock Text="Номер документа" Margin="5,0" VerticalAlignment="Center"/>
             <TextBox Text="{Binding Transp.tr_Number}" Margin="5,0" VerticalAlignment="Center" Width="120"/>
             <TextBlock Text="Дата создания" Margin="5,0" VerticalAlignment="Center"/>

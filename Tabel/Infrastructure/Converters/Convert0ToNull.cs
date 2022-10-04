@@ -23,8 +23,13 @@ namespace Tabel.Infrastructure.Converters
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
+            decimal result;
             string s = value.ToString();
-            return s == "" ? 0 : Decimal.Parse(s);
+            Decimal.TryParse(s, out result);
+
+            return result;
+
+            //return s == "" ? 0 : Decimal.TryParse(s, out result);
         }
     }
 }

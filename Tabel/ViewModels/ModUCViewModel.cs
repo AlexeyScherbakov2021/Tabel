@@ -33,7 +33,7 @@ namespace Tabel.ViewModels
         // Команда Создать график
         //--------------------------------------------------------------------------------
         public ICommand CreateCommand => new LambdaCommand(OnCreateCommandExecuted, CanCreateCommand);
-        private bool CanCreateCommand(object p) => true;
+        private bool CanCreateCommand(object p) => _SelectedOtdel != null;
         private void OnCreateCommandExecuted(object p)
         {
             CurrentMod = new Mod();
@@ -73,7 +73,7 @@ namespace Tabel.ViewModels
         // Команда Сохранить
         //--------------------------------------------------------------------------------
         public ICommand SaveCommand => new LambdaCommand(OnSaveCommandExecuted, CanSaveCommand);
-        private bool CanSaveCommand(object p) => true;
+        private bool CanSaveCommand(object p) => CurrentMod != null;
         private void OnSaveCommandExecuted(object p)
         {
             repoModel.Save();
