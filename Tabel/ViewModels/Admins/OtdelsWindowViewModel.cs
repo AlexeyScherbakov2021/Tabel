@@ -23,9 +23,11 @@ namespace Tabel.ViewModels.Admins
     {
         // Отделы -----------------------------------------------------
 
-        private readonly RepositoryOtdel repoOtdel;
+        private readonly RepositoryMSSQL<Otdel> repoOtdel;
         // Список всех отделов
         public ObservableCollection<Otdel> ListOtdel { get; set; }
+
+        public Visibility VisibleAdmin => App.CurrentUser.u_role == Infrastructure.UserRoles.Admin ? Visibility.Visible : Visibility.Collapsed;
 
 
         // выбранный отдел
@@ -84,10 +86,18 @@ namespace Tabel.ViewModels.Admins
         //--------------------------------------------------------------------------------
         public OtdelsWindowViewModel()
         {
-            repoOtdel = new RepositoryOtdel();
+            repoOtdel = new RepositoryMSSQL<Otdel>();
             repoPerson = new RepositoryMSSQL<Personal>();
 
-            ListOtdel = new ObservableCollection<Otdel>( repoOtdel.Items);
+
+            if (App.CurrentUser.u_role == UserRoles.Admin)
+                ListOtdel = new ObservableCollection<Otdel>(repoOtdel.Items.Where(it => it.ot_parent == null));
+            else
+                ListOtdel = new ObservableCollection<Otdel>(repoOtdel.Items.Where(it => it.id == App.CurrentUser.u_otdel_id));
+
+            SelectedOtdel = ListOtdel?[0];
+
+
             ListCategory = repoCat.Items.AsNoTracking().OrderBy(o => o.id).ToList();
         }
 

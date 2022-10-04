@@ -42,15 +42,15 @@ namespace Tabel.ViewModels
                 App.CurrentUser = SelectUser;
 
 
-                if(App.CurrentUser.u_role == 100)
-                {
-                    // если это администратор, то запускаем настройки
-                    EditTablesWindow win = new EditTablesWindow();
-                    win.Show();
-                    App.Current.MainWindow = win;
-                }
-                else
-                {
+                //if(App.CurrentUser.u_role == Infrastructure.UserRoles.Admin)
+                //{
+                //    // если это администратор, то запускаем настройки
+                //    EditTablesWindow win = new EditTablesWindow();
+                //    win.Show();
+                //    App.Current.MainWindow = win;
+                //}
+                //else
+                //{
                     // записываем в реестр
                     RegistryKey SoftKey = Registry.CurrentUser.OpenSubKey("SOFTWARE", true);
                     RegistryKey ProgKey = SoftKey.CreateSubKey("TabelNGK");
@@ -63,7 +63,7 @@ namespace Tabel.ViewModels
                     MainWindow win = new MainWindow();
                     win.Show();
                     App.Current.MainWindow = win;
-                }
+                //}
 
 
             }

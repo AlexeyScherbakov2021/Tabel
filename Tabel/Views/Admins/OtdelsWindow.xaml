@@ -31,9 +31,9 @@
 
             <DockPanel>
                 <UniformGrid Columns="2" DockPanel.Dock="Bottom">
-                    <Button Content="Добавить отдел" Command="{Binding AddOtdelCommand}" Margin="2"/>
-                    <Button Content="Добавить группу" Command="{Binding AddGroupCommand}" Margin="2"/>
-                    <Button Content="Удалить" Command="{Binding DeleteOtdelCommand}" Margin="2"/>
+                    <Button Content="Добавить отдел" Command="{Binding AddOtdelCommand}" Margin="2" Visibility="{Binding VisibleAdmin}"/>
+                    <Button Content="Добавить группу" Command="{Binding AddGroupCommand}" Margin="2" Visibility="{Binding VisibleAdmin}"/>
+                    <Button Content="Удалить" Command="{Binding DeleteOtdelCommand}" Margin="2" Visibility="{Binding VisibleAdmin}"/>
                 </UniformGrid>
                 <TextBlock Text="Отделы и группы" DockPanel.Dock="Top" FontSize="14"/>
                 <ext:ExtendedTreeView ItemsSource="{Binding ListOtdel}" Margin="3" SelectedItem_="{Binding SelectedOtdel, Mode=TwoWay}">

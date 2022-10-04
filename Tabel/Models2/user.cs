@@ -5,6 +5,7 @@ namespace Tabel.Models2
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
+    using Tabel.Infrastructure;
 
     public partial class User : IEntity
     {
@@ -27,7 +28,7 @@ namespace Tabel.Models2
         [StringLength(50)]
         public string u_pass { get; set; }
 
-        public int? u_role { get; set; }
+        public UserRoles u_role { get; set; }
 
         public int? u_otdel_id { get; set; }
 

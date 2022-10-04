@@ -95,10 +95,14 @@
             </UniformGrid>
             <StackPanel DockPanel.Dock="Right" Margin="10" Orientation="Vertical" VerticalAlignment="Top" >
                 <TextBlock Text="Текущий год"/>
-                <ComboBox Margin="0,2,0,11" ItemsSource="{Binding ListYears}" SelectedItem="{Binding CurrentYear, Mode=TwoWay}" FontSize="18" FontWeight="Bold"/>
-                <Button Content="Добавить год" Margin="0,5" Height="30" Command="{Binding NewYearCommand}" Style="{StaticResource ButtonStyleShadow}"/>
-                <Button Content="По календарю" Margin="0,5" Height="30" Command="{Binding SetAsCalendarCommand}" Style="{StaticResource ButtonStyleShadow}"/>
-                <Button Content="Сохранить" Margin="0,5" Height="30" Command="{Binding SaveCommand}" Style="{StaticResource ButtonStyleShadow}"/>
+                <ComboBox Margin="0,2,0,11" ItemsSource="{Binding ListYears}" SelectedItem="{Binding CurrentYear, Mode=TwoWay}" FontSize="18" 
+                          FontWeight="Bold"/>
+                <Button Content="Добавить год" Margin="0,5" Height="30" Command="{Binding NewYearCommand}" 
+                        Style="{StaticResource ButtonStyleShadow}" Visibility="{Binding VisibleAdmin}"/>
+                <Button Content="По календарю" Margin="0,5" Height="30" Command="{Binding SetAsCalendarCommand}" 
+                        Style="{StaticResource ButtonStyleShadow}" Visibility="{Binding VisibleAdmin}"/>
+                <Button Content="Сохранить" Margin="0,5" Height="30" Command="{Binding SaveCommand}"
+                        Style="{StaticResource ButtonStyleShadow}" Visibility="{Binding VisibleAdmin}"/>
                 <!--<Button Content="Выходной" Margin="0,5" Command="{Binding SetExDayCommand}" CommandParameter="{x:Static local:MonthControl+TypeDays.Holyday}" Style="{StaticResource ButtonStyleShadow}"/>
             <Button Content="Короткий" Margin="0,5" Command="{Binding SetExDayCommand}" CommandParameter="{x:Static local:MonthControl+TypeDays.Short}" Style="{StaticResource ButtonStyleShadow}"/>
             <Button Content="Рабочий" Margin="0,5" Command="{Binding SetExDayCommand}" CommandParameter="{x:Static local:MonthControl+TypeDays.Work}" Style="{StaticResource ButtonStyleShadow}"/>

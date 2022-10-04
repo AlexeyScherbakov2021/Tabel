@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using Tabel.Commands;
 using Tabel.Component.MonthPanel;
@@ -18,6 +19,8 @@ namespace Tabel.ViewModels
     internal class YearCalendarViewModel : ViewModel
     {
         private readonly RepositoryCalendar RepoCal = new RepositoryCalendar();
+
+        public Visibility VisibleAdmin => App.CurrentUser.u_role == Infrastructure.UserRoles.Admin ? Visibility.Visible : Visibility.Hidden;  
 
         public ObservableCollection<MonthDays>[] list12Month { get; set; }
 

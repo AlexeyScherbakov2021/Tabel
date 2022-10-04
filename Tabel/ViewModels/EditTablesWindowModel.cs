@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
@@ -19,6 +20,8 @@ namespace Tabel.ViewModels
     internal class EditTablesWindowModel : ViewModel
     {
         RepositoryMSSQL<Category> repo = new RepositoryMSSQL<Category>();
+
+        public Visibility VisibleAdmin => App.CurrentUser.u_role == Infrastructure.UserRoles.Admin ? Visibility.Visible : Visibility.Collapsed;
 
 
         #region Команды
