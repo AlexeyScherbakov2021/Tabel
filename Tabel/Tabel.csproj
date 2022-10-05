@@ -70,6 +70,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Component\Models\ModPerson2.cs" />
+    <Compile Include="Component\Models\SmenaDay2.cs" />
     <Compile Include="Component\Models\TabelDays2.cs" />
     <Compile Include="Component\Models\TabelPerson2.cs" />
     <Compile Include="Component\Models\TransDay2.cs" />

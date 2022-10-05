@@ -36,7 +36,7 @@ namespace Tabel.ViewModels
         // Команда Создать 
         //--------------------------------------------------------------------------------
         public ICommand CreateCommand => new LambdaCommand(OnCreateCommandExecuted, CanCreateCommand);
-        private bool CanCreateCommand(object p) => _SelectedOtdel != null;
+        private bool CanCreateCommand(object p) => _SelectedOtdel != null && _SelectedOtdel.ot_parent is null;
         private void OnCreateCommandExecuted(object p)
         {
             if (Transp != null)
@@ -104,7 +104,7 @@ namespace Tabel.ViewModels
         // Команда Сохранить
         //--------------------------------------------------------------------------------
         public ICommand SaveCommand => new LambdaCommand(OnSaveCommandExecuted, CanSaveCommand);
-        private bool CanSaveCommand(object p) => Transp != null;
+        private bool CanSaveCommand(object p) => _SelectedOtdel != null && Transp != null;
         private void OnSaveCommandExecuted(object p)
         {
             repoTransPerson.Save();

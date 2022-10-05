@@ -291,7 +291,7 @@
             <Button Content="Сохранить" Command="{Binding SaveCommand}" Margin="3" Style="{DynamicResource ButtonStyleShadow}"/>
         </ToolBarPanel>
 
-        <DataGrid x:Name="dg" ItemsSource="{Binding SmenaShedule.SmenaPerson}" Style="{DynamicResource DataGridStyle}" 
+        <DataGrid x:Name="dg" ItemsSource="{Binding ListSmenaPerson}" Style="{DynamicResource DataGridStyle}" 
                   VerticalGridLinesBrush="LightGray" HorizontalGridLinesBrush="LightGray"
                   FrozenColumnCount="1" >
             <DataGrid.Columns>
@@ -317,23 +317,28 @@
                                 </ListBox.ItemsPanel>
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
-                                        <UniformGrid Rows="2" Margin="-2,0" >
-                                            <TextBlock Text="{Binding sd_Day}" HorizontalAlignment="Center"/>
-                                            <Border Background="LightSeaGreen" CornerRadius="2" ClipToBounds="True">
-                                                <ComboBox Width="28" HorizontalContentAlignment="Center" Padding="2,0"
+                                        <Border x:Name="border" Background="Gainsboro" Margin="-2,0" CornerRadius="3" BorderThickness="1" BorderBrush="Black" Padding="5,1">
+                                            <UniformGrid Rows="2" Margin="-2,0" >
+                                                    <TextBlock Text="{Binding sd_Day}" HorizontalAlignment="Center"/>
+                                                    <ComboBox Width="28" HorizontalContentAlignment="Center" Padding="2,0"
                                                           FontWeight="Bold"
                                                           SelectedItem="{Binding sd_Kind, Converter={StaticResource KindSmenaConverter}}"
                                                           ItemsSource="{Binding DataContext.ListKind, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}">
-                                                    <i:Interaction.Triggers>
-                                                        <i:EventTrigger EventName="SelectionChanged">
-                                                            <i:InvokeCommandAction Command="{Binding DataContext.SelectKindCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
+                                                        <i:Interaction.Triggers>
+                                                            <i:EventTrigger EventName="SelectionChanged">
+                                                                <i:InvokeCommandAction Command="{Binding DataContext.SelectKindCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
                                                                 CommandParameter="{Binding DataContext, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBox}}}"
                                                                 />
-                                                        </i:EventTrigger>
-                                                    </i:Interaction.Triggers>
-                                                </ComboBox>
-                                            </Border>
+                                                            </i:EventTrigger>
+                                                        </i:Interaction.Triggers>
+                                                    </ComboBox>
                                         </UniformGrid>
+                                        </Border>
+                                        <DataTemplate.Triggers>
+                                            <DataTrigger  Binding="{Binding OffDay}" Value="True">
+                                                <Setter Property="Background" Value="MistyRose" TargetName="border"/>
+                                            </DataTrigger>
+                                        </DataTemplate.Triggers>
                                     </DataTemplate>
                                 </ListBox.ItemTemplate>
                             </ext:ListBoxExt>
