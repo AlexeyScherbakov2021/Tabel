@@ -170,29 +170,10 @@ namespace Tabel.ViewModels
                         );
             }
 
-
-            //List<Personal> PersonsFromOtdel = repoPersonal.Items.Where(it => it.p_otdel_id == _SelectedOtdel.id).ToList();
-
-            //if (SmenaShedule != null)
-            //{
-            //    // если график присутствует
-            //    foreach (var item in PersonsFromOtdel)
-            //    {
-            //        SmenaPerson pers = repoSmenaPersonal.Items.FirstOrDefault(it => it.sp_SmenaId == SmenaShedule.id && it.sp_PersonId == item.id);
-            //        if (pers is null)
-            //        {
-            //            // формируем новый график на месяц для сотрудника, который отсутствовал
-            //        }
-
-            //    }
-
-            //}
-
             SetTypeDays();
 
             OnPropertyChanged(nameof(ListSmenaPerson));
             OnPropertyChanged(nameof(SmenaShedule));
-
 
         }
 

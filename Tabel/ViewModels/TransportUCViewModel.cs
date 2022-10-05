@@ -134,7 +134,6 @@ namespace Tabel.ViewModels
 
             if (SelectOtdel is null) return;
 
-
             if (_SelectedOtdel.ot_parent is null)
             {
                 Transp = repoTransp.Items.FirstOrDefault(it => it.tr_Year == Year
@@ -160,20 +159,10 @@ namespace Tabel.ViewModels
                         );
             }
 
-
-            //Transp = repoTransp.Items
-            //    .Where(it => it.tr_Year == _SelectYear
-            //    && it.tr_Month == _SelectMonth
-            //    && it.tr_OtdelId == _SelectedOtdel.id)
-            //    .Include(inc => inc.TransportPerson)
-            //    .FirstOrDefault();
-            
-            //List<Personal> PersonsFromOtdel = repoPersonal.Items.Where(it => it.p_otdel_id == _SelectedOtdel.id).ToList();
-
             SetTypeDays();
 
-            OnPropertyChanged(nameof(ListTransPerson));
             OnPropertyChanged(nameof(Transp));
+            OnPropertyChanged(nameof(ListTransPerson));
 
         }
 

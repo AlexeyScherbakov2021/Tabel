@@ -118,7 +118,7 @@ namespace Tabel.ViewModels.Admins
             Otdel NewOtdel = new Otdel();
             NewOtdel.ot_name = "Новый отдел";
             //NewOtdel.ot_parent = SelectedOtdel.id;
-            repoOtdel.Add(NewOtdel);
+            repoOtdel.Add(NewOtdel, true);
             ListOtdel.Add(NewOtdel);
 
             //SelectedOtdel.subOtdels.Add(NewOtdel);
@@ -135,7 +135,7 @@ namespace Tabel.ViewModels.Admins
             NewOtdel.ot_name = "Новая группа";
             NewOtdel.ot_parent = SelectedOtdel.ot_parent ?? SelectedOtdel.id;
 
-            repoOtdel.Add(NewOtdel);
+            repoOtdel.Add(NewOtdel, true);
 
             //SelectedOtdel.subOtdels.Add(NewOtdel);
         }
@@ -163,7 +163,7 @@ namespace Tabel.ViewModels.Admins
 
                 try
                 {
-                    repoOtdel.Delete(SelectedOtdel);
+                    repoOtdel.Delete(SelectedOtdel, true);
                     //SelectedOtdel.parent.subOtdels.Remove(SelectedOtdel);
                     if (parentID == null)
                         ListOtdel.Remove(SelectedOtdel);
