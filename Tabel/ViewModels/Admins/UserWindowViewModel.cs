@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,7 +18,7 @@ namespace Tabel.ViewModels
 {
     internal class UserWindowViewModel : ViewModel
     {
-        IRepository<User> repoUser;
+        readonly IRepository<User> repoUser;
         private readonly RepositoryOtdel repoOtdel;
 
         public ObservableCollection<Otdel> ListOtdel { get; set; }
@@ -116,9 +117,9 @@ namespace Tabel.ViewModels
         public UserWindowViewModel()
         {
             repoUser = new RepositoryMSSQL<User>();
-            repoOtdel = new RepositoryOtdel();
             ListUser = new ObservableCollection<User>(repoUser.Items);
-            ListOtdel = new ObservableCollection<Otdel>(repoOtdel.Items);
+            repoOtdel = new RepositoryOtdel();
+            ListOtdel = new ObservableCollection<Otdel>(repoOtdel.Items.AsNoTracking());
         }
 
     }

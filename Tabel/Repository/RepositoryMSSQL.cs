@@ -8,6 +8,7 @@ using System.Net;
 using System.Security;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using Tabel.Models2;
 
 namespace Tabel.Repository
@@ -50,8 +51,9 @@ namespace Tabel.Repository
 
             if (item is null) throw new ArgumentNullException(nameof(item));
             db.Entry(item).State = EntityState.Added;
-            if(Autosave)
-                db.SaveChanges();
+            if (Autosave)
+                //db.SaveChanges();
+                Save();
             return item;
         }
 
@@ -75,7 +77,7 @@ namespace Tabel.Repository
 
             db.Entry(item).State = EntityState.Deleted;
             if (Autosave)
-                db.SaveChanges();
+               Save();
         }
 
 
@@ -90,19 +92,26 @@ namespace Tabel.Repository
             if (item is null) throw new ArgumentNullException(nameof(item));
             db.Entry(item).State = EntityState.Modified;
             if (Autosave)
-                db.SaveChanges();
+               Save();
 
         }
 
         public void Save()
         {
-            db.SaveChanges();
+            try
+            {
+                db.SaveChanges();
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка записи в базу", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         public void Remove(T item)
         {
             db.Set<T>().Remove(item);
-            db.SaveChanges();
+            Save();
         }
 
     }

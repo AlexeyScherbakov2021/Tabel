@@ -5,9 +5,15 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Tabel.Views.Admins"
              xmlns:ext="clr-namespace:Tabel.Infrastructure.Extend"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:m="clr-namespace:Tabel.Models2"
              xmlns:vm="clr-namespace:Tabel.ViewModels.Admins"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="434">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="LostFocus">
+            <i:InvokeCommandAction Command="{Binding LostFocusCommand}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
     <UserControl.DataContext>
         <vm:OtdelsWindowViewModel/>
     </UserControl.DataContext>
@@ -15,9 +21,9 @@
 
         <vm:OtdelsWindowViewModel x:Key="context"/>
 
-        <HierarchicalDataTemplate DataType="{x:Type m:Otdel}" ItemsSource="{Binding subOtdels}">
-            <TextBlock Text="{Binding ot_name}"/>
-        </HierarchicalDataTemplate>
+        <!--<HierarchicalDataTemplate DataType="{x:Type m:Otdel}" ItemsSource="{Binding subOtdels1}">
+            <TextBox Text="{Binding ot_name}"/>
+        </HierarchicalDataTemplate>-->
     </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -30,11 +36,13 @@
             </Border.Effect>
 
             <DockPanel>
-                <UniformGrid Columns="2" DockPanel.Dock="Bottom">
+                <StackPanel DockPanel.Dock="Bottom">
+                    <!--<TextBox Text="{Binding SelectedOtdel.ot_name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="2" IsTabStop="False"/>-->
+                    <!--<Button Content="Изменить" Margin="2"/>-->
                     <Button Content="Добавить отдел" Command="{Binding AddOtdelCommand}" Margin="2" Visibility="{Binding VisibleAdmin}"/>
                     <Button Content="Добавить группу" Command="{Binding AddGroupCommand}" Margin="2" Visibility="{Binding VisibleAdmin}"/>
                     <Button Content="Удалить" Command="{Binding DeleteOtdelCommand}" Margin="2" Visibility="{Binding VisibleAdmin}"/>
-                </UniformGrid>
+                </StackPanel>
                 <TextBlock Text="Отделы и группы" DockPanel.Dock="Top" FontSize="14"/>
                 <ext:ExtendedTreeView ItemsSource="{Binding ListOtdel}" Margin="3" SelectedItem_="{Binding SelectedOtdel, Mode=TwoWay}">
                     <ext:ExtendedTreeView.Resources>
@@ -51,12 +59,12 @@
                 <DropShadowEffect BlurRadius="15" ShadowDepth="0" Color="#000000" Opacity="0.5"/>
             </Border.Effect>
             <DockPanel>
-                <TextBlock Text="{Binding SelectedOtdel.ot_name}" DockPanel.Dock="Top" FontSize="16" Margin="4" HorizontalAlignment="Stretch"
+                <TextBox Text="{Binding SelectedOtdel.ot_name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Top" FontSize="16" Margin="4" HorizontalAlignment="Stretch"
                            TextAlignment="Center" FontWeight="Bold"
                            Background="Khaki"/>
                 <UniformGrid Columns="2" DockPanel.Dock="Bottom" Margin="6">
-                    <Button Content="+" Command="{Binding AddPersonCommand}" CommandParameter="{Binding ElementName=dg}" Margin="2"/>
-                    <Button Content="-" Command="{Binding DeletePersonCommand}" Margin="2"/>
+                    <Button Content="Добавить сотрудника" Command="{Binding AddPersonCommand}" CommandParameter="{Binding ElementName=dg}" Margin="2"/>
+                    <Button Content="Удалить сотрудника" Command="{Binding DeletePersonCommand}" Margin="2"/>
                 </UniformGrid>
 
                 <DataGrid x:Name="dg" ItemsSource="{Binding ListPersonalView}" SelectionMode="Single" Margin="4,0" SnapsToDevicePixels="True" Style="{DynamicResource DataGridStyle}" SelectedItem="{Binding SelectedPerson}" >

@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:infr="clr-namespace:Tabel.Infrastructure"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:local="clr-namespace:Tabel.Views.Admins"
              xmlns:vm="clr-namespace:Tabel.ViewModels"
@@ -11,6 +12,7 @@
     <UserControl.DataContext>
         <vm:UserWindowViewModel/>
     </UserControl.DataContext>
+    
     <!--<UserControl.InputBindings>
         <KeyBinding Key="Esc" Command="{Binding EndEditCommand}"/>
     </UserControl.InputBindings>-->
@@ -42,7 +44,9 @@
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Пользователь" Binding="{Binding u_login}" Width="80"/>
                         <DataGridTextColumn Header="Пароль" Binding="{Binding u_pass}" Width="130"/>
-                        <DataGridTextColumn Header="Админ" Binding="{Binding u_role}" Width="130"/>
+                        <!--<DataGridTextColumn Header="Права" Binding="{Binding u_role}" Width="130"/>-->
+                        <DataGridComboBoxColumn Header="Права" ItemsSource="{Binding Source={infr:UserRolesBinding {x:Type infr:UserRoles}}}"  
+                            SelectedItemBinding="{Binding u_role}"   Width="130"/>
                         <DataGridTemplateColumn Header="Рабочий отдел" Width="190">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>

@@ -27,7 +27,7 @@
                             <ColumnDefinition Width="100"/>
                         </Grid.ColumnDefinitions>
                     </Grid>
-                    <DataGrid ItemsSource="{Binding CurrentMod.ModPersons}" Style="{DynamicResource DataGridStyle}" IsReadOnly="True">
+                    <DataGrid ItemsSource="{Binding ListModPerson}" Style="{DynamicResource DataGridStyle}" IsReadOnly="True">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="ФИО" Binding="{Binding person.FIO}"/>
                         <DataGridTextColumn Header="Дложность" Binding="{Binding person.p_profession}"/>

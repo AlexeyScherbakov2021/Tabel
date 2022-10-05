@@ -8,7 +8,8 @@
 
 
     <HierarchicalDataTemplate DataType="{x:Type m:Otdel}" ItemsSource="{Binding subOtdels}">
-        <TextBlock Text="{Binding ot_name}"/>
+        <!--<TextBox Text="{Binding ot_name}" IsHitTestVisible="False" BorderThickness="0" Margin="2,2"/>-->
+        <TextBlock Text="{Binding ot_name}" />
     </HierarchicalDataTemplate>
     <Style x:Key="FocusVisual">
         <Setter Property="Control.Template">

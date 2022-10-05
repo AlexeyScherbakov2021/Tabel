@@ -138,6 +138,9 @@ namespace Tabel.ViewModels
                 .Include(inc => inc.tabelPersons.Select(s => s.person))
                 .FirstOrDefault();
 
+            ListTabelPerson = new ObservableCollection<TabelPerson>(Tabel.tabelPersons);
+
+            OnPropertyChanged(nameof(ListTabelPerson));
             OnPropertyChanged(nameof(Tabel));
 
         }
@@ -156,7 +159,7 @@ namespace Tabel.ViewModels
         // Команда Сохранить
         //--------------------------------------------------------------------------------
         public ICommand SaveCommand => new LambdaCommand(OnSaveCommandExecuted, CanSaveCommand);
-        private bool CanSaveCommand(object p) => _SelectedOtdel != null;
+        private bool CanSaveCommand(object p) => _SelectedOtdel != null && Tabel != null;
         private void OnSaveCommandExecuted(object p)
         {
             //repoTabel.Save();

@@ -24,5 +24,6 @@ namespace Tabel.Views.Admins
         {
             InitializeComponent();
         }
+
     }
 }

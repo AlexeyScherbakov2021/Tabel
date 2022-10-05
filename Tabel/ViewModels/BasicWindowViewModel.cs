@@ -142,7 +142,8 @@ namespace Tabel.ViewModels
             User = App.CurrentUser;
             //User = new User() { u_otdel_id = 44, u_login = "Petrov", id = 10, u_fio = "Петров" };
             ListOtdel = repoOtdel.Items.Where(it => it.id == User.u_otdel_id).ToList();
-            SelectedOtdel = ListOtdel?[0];
+            if(ListOtdel?.Count > 0)
+                SelectedOtdel = ListOtdel[0];
 
             RepositoryCalendar repoCal = new RepositoryCalendar();
             ListYears = repoCal.GetYears().ToList();

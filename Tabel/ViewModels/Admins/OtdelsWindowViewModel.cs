@@ -118,7 +118,7 @@ namespace Tabel.ViewModels.Admins
             Otdel NewOtdel = new Otdel();
             NewOtdel.ot_name = "Новый отдел";
             //NewOtdel.ot_parent = SelectedOtdel.id;
-            repoOtdel.Add(NewOtdel, true);
+            repoOtdel.Add(NewOtdel);
             ListOtdel.Add(NewOtdel);
 
             //SelectedOtdel.subOtdels.Add(NewOtdel);
@@ -133,11 +133,21 @@ namespace Tabel.ViewModels.Admins
         {
             Otdel NewOtdel = new Otdel();
             NewOtdel.ot_name = "Новая группа";
-            NewOtdel.ot_parent = SelectedOtdel.id;
+            NewOtdel.ot_parent = SelectedOtdel.ot_parent ?? SelectedOtdel.id;
 
-            repoOtdel.Add(NewOtdel, true);
+            repoOtdel.Add(NewOtdel);
 
             //SelectedOtdel.subOtdels.Add(NewOtdel);
+        }
+
+        //--------------------------------------------------------------------------------
+        // Команда потеря фокуса
+        //--------------------------------------------------------------------------------
+        public ICommand LostFocusCommand => new LambdaCommand(OnLostFocusCommandExecuted, CanLostFocusCommand);
+        private bool CanLostFocusCommand(object p) => SelectedOtdel != null;
+        private void OnLostFocusCommandExecuted(object p)
+        {
+            repoOtdel.Save();
         }
 
         //--------------------------------------------------------------------------------
@@ -153,7 +163,7 @@ namespace Tabel.ViewModels.Admins
 
                 try
                 {
-                    repoOtdel.Delete(SelectedOtdel, true);
+                    repoOtdel.Delete(SelectedOtdel);
                     //SelectedOtdel.parent.subOtdels.Remove(SelectedOtdel);
                     if (parentID == null)
                         ListOtdel.Remove(SelectedOtdel);
@@ -175,6 +185,7 @@ namespace Tabel.ViewModels.Admins
             Personal NewPerson = new Personal();
             NewPerson.p_lastname = "Новый сотрудник";
             NewPerson.p_otdel_id = SelectedOtdel.id;
+            NewPerson.p_delete = false;
 
             repoPerson.Add(NewPerson, true);
             ListPersonal.Add(NewPerson);
