@@ -22,7 +22,7 @@
             <Button Content="Сохранить" Command="{Binding SaveCommand}" Margin="3" Style="{DynamicResource ButtonStyleShadow}"/>
         </ToolBarPanel>
 
-        <DataGrid x:Name="dg" ItemsSource="{Binding Transp.TransportPerson}" Style="{StaticResource DataGridStyle}" 
+        <DataGrid x:Name="dg" ItemsSource="{Binding ListTransPerson}" Style="{StaticResource DataGridStyle}" 
                   VerticalGridLinesBrush="LightGray" HorizontalGridLinesBrush="LightGray"
                   FrozenColumnCount="1" >
             <DataGrid.Columns>

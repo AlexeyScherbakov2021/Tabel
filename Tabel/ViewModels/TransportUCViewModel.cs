@@ -5,6 +5,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using Tabel.Commands;
 using Tabel.Component.MonthPanel;
@@ -24,8 +25,10 @@ namespace Tabel.ViewModels
         private readonly RepositoryMSSQL<Personal> repoPersonal = new RepositoryMSSQL<Personal>();
         private readonly RepositoryMSSQL<Transport> repoTransp = new RepositoryMSSQL<Transport>();
         private readonly RepositoryMSSQL<TransPerson> repoTrnaspPersonal = new RepositoryMSSQL<TransPerson>();
+        private readonly RepositoryMSSQL<TransPerson> repoTransPerson = new RepositoryMSSQL<TransPerson>();
 
         public Transport Transp { get; set; }
+        public ObservableCollection<TransPerson> ListTransPerson { get; set; }
 
 
         #region Команды
@@ -38,10 +41,16 @@ namespace Tabel.ViewModels
         {
             if (Transp != null)
             {
+                if (MessageBox.Show("Текущая форма будет удалена. Продолжить?", "Предупреждение", MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.OK)
+                    return;
                 repoTransp.Remove(Transp);
             }
 
-            List<Personal> PersonsFromOtdel = repoPersonal.Items.AsNoTracking().Where(it => it.p_otdel_id == _SelectedOtdel.id).ToList();
+            RepositoryMSSQL<Otdel> repoOtdel = new RepositoryMSSQL<Otdel>();
+            List<int> listOtdels = repoOtdel.Items.AsNoTracking().Where(it => it.ot_parent == _SelectedOtdel.id).Select(s => s.id).ToList();
+
+            List<Personal> PersonsFromOtdel = repoPersonal.Items.AsNoTracking().Where(it => it.p_otdel_id == _SelectedOtdel.id
+                || listOtdels.Contains(it.p_otdel_id.Value)).ToList();
     
 
             Transp = new Transport();
@@ -84,6 +93,9 @@ namespace Tabel.ViewModels
                 .Include(i => i.TransportPerson.Select(s => s.person))
                 .FirstOrDefault();
 
+            ListTransPerson = new ObservableCollection<TransPerson>(Transp.TransportPerson);
+
+            OnPropertyChanged(nameof(ListTransPerson));
             OnPropertyChanged(nameof(Transp));
 
         }
@@ -95,7 +107,7 @@ namespace Tabel.ViewModels
         private bool CanSaveCommand(object p) => Transp != null;
         private void OnSaveCommandExecuted(object p)
         {
-            repoTransp.Save();
+            repoTransPerson.Save();
         }
 
         //--------------------------------------------------------------------------------
@@ -118,19 +130,49 @@ namespace Tabel.ViewModels
             _SelectMonth = Month;
             _SelectYear = Year;
             _SelectedOtdel = SelectOtdel;
+            ListTransPerson = null;
 
             if (SelectOtdel is null) return;
 
-            Transp = repoTransp.Items
-                .Where(it => it.tr_Year == _SelectYear
-                && it.tr_Month == _SelectMonth
-                && it.tr_OtdelId == _SelectedOtdel.id)
-                .Include(inc => inc.TransportPerson)
-                .FirstOrDefault();
+
+            if (_SelectedOtdel.ot_parent is null)
+            {
+                Transp = repoTransp.Items.FirstOrDefault(it => it.tr_Year == Year
+                    && it.tr_Month == Month
+                    && it.tr_OtdelId == _SelectedOtdel.id);
+                if (Transp != null)
+                    ListTransPerson = new ObservableCollection<TransPerson>(repoTransPerson.Items
+                        .Where(it => it.tp_TranspId == Transp.id)
+                        .OrderBy(o => o.person.p_lastname)
+                        .ThenBy(o => o.person.p_name)
+                        );
+            }
+            else
+            {
+                Transp = repoTransp.Items.FirstOrDefault(it => it.tr_Year == Year
+                    && it.tr_Month == Month
+                    && it.tr_OtdelId == _SelectedOtdel.ot_parent);
+                if (Transp != null)
+                    ListTransPerson = new ObservableCollection<TransPerson>(repoTransPerson.Items
+                        .Where(it => it.tp_TranspId == Transp.id && it.person.p_otdel_id == _SelectedOtdel.id)
+                        .OrderBy(o => o.person.p_lastname)
+                        .ThenBy(o => o.person.p_name)
+                        );
+            }
+
+
+            //Transp = repoTransp.Items
+            //    .Where(it => it.tr_Year == _SelectYear
+            //    && it.tr_Month == _SelectMonth
+            //    && it.tr_OtdelId == _SelectedOtdel.id)
+            //    .Include(inc => inc.TransportPerson)
+            //    .FirstOrDefault();
             
             //List<Personal> PersonsFromOtdel = repoPersonal.Items.Where(it => it.p_otdel_id == _SelectedOtdel.id).ToList();
 
             SetTypeDays();
+
+            OnPropertyChanged(nameof(ListTransPerson));
             OnPropertyChanged(nameof(Transp));
 
         }
@@ -148,7 +190,7 @@ namespace Tabel.ViewModels
 
             List<WorkCalendar> cal = repoDays.Items.AsNoTracking().Where(it => it.cal_date.Year == _SelectYear && it.cal_date.Month == _SelectMonth).ToList();
 
-            foreach (var item in Transp.TransportPerson)
+            foreach (var item in ListTransPerson)
             {
                 // расставляем выходные по каледнарю
                 foreach ( var day in item.TransDays)

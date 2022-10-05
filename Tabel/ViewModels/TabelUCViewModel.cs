@@ -53,12 +53,11 @@ namespace Tabel.ViewModels
                     && it.cal_date.Month == _SelectMonth);
 
 
-            // получение сотрудников отдела
-            repoPersonal = new RepositoryMSSQL<Personal>();
-
             RepositoryMSSQL<Otdel> repoOtdel = new RepositoryMSSQL<Otdel>();
             List<int> listOtdels = repoOtdel.Items.AsNoTracking().Where(it => it.ot_parent == _SelectedOtdel.id).Select(s => s.id).ToList();
 
+            // получение сотрудников отдела
+            repoPersonal = new RepositoryMSSQL<Personal>();
 
             List<Personal> PersonsFromOtdel = repoPersonal.Items.AsNoTracking().Where(it => it.p_otdel_id == _SelectedOtdel.id
                 || listOtdels.Contains(it.p_otdel_id.Value)).ToList();
@@ -132,7 +131,6 @@ namespace Tabel.ViewModels
             if (Tabel.tabelPersons.Count > 0)
                 repoTabel.Add(Tabel, true);
 
-
             Tabel = repoTabel.Items
                 .Where(it => it.id == Tabel.id)
                 .Include(inc => inc.tabelPersons.Select(s => s.person))
@@ -189,8 +187,7 @@ namespace Tabel.ViewModels
             _SelectedOtdel = otdel;
             ListTabelPerson = null;
 
-            if (otdel is null)
-                return;
+            if (otdel is null)  return;
 
             if (_SelectedOtdel.ot_parent is null)
             {

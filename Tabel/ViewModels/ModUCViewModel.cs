@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
 using Tabel.Commands;
 using Tabel.Infrastructure;
 using Tabel.Models2;
@@ -177,11 +178,23 @@ namespace Tabel.ViewModels
             if (CurrentMod is null)
                 return;
 
-            var Transp = repoTransport.Items.AsNoTracking().FirstOrDefault(it => it.tr_Year == _SelectYear 
-                    && it.tr_Month == _SelectMonth
-                    && it.tr_OtdelId == _SelectedOtdel.id);
+            Transport Transp;
 
-            if (CurrentMod?.ModPersons is null || Transp is null) return;
+            if (_SelectedOtdel.ot_parent is null)
+            {
+                Transp = repoTransport.Items.AsNoTracking().FirstOrDefault(it => it.tr_Year == _SelectYear
+                        && it.tr_Month == _SelectMonth
+                        && it.tr_OtdelId == _SelectedOtdel.id);
+            }
+            else
+            {
+                Transp = repoTransport.Items.AsNoTracking().FirstOrDefault(it => it.tr_Year == _SelectYear
+                    && it.tr_Month == _SelectMonth
+                    && it.tr_OtdelId == _SelectedOtdel.ot_parent);
+            }
+
+
+            if (ListModPerson is null || Transp is null) return;
 
             foreach (var item in ListModPerson)
             {
@@ -203,7 +216,7 @@ namespace Tabel.ViewModels
                 && it.t_month == _SelectMonth
                 && it.t_otdel_id == _SelectedOtdel.id);
 
-            if (CurrentMod?.ModPersons is null || tabel is null) return;
+            if (ListModPerson is null || tabel is null) return;
 
             foreach (var item in ListModPerson)
             {
@@ -230,7 +243,7 @@ namespace Tabel.ViewModels
                 && it.sm_Month == _SelectMonth
                 && it.sm_OtdelId == _SelectedOtdel.id);
 
-            if (CurrentMod.ModPersons is null || smena is null) return;
+            if (ListModPerson is null || smena is null) return;
 
             foreach (var item in ListModPerson)
             {
