@@ -14,7 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Xml.Linq;
-using Tabel.Models2;
+using Tabel.Models;
 
 namespace Tabel.Component.TabelPanel
 {

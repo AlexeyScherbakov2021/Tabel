@@ -9,8 +9,9 @@
                 <ResourceDictionary Source="/Styles/Button.xaml"/>
                 <ResourceDictionary Source="/Styles/DataGrid.xaml"/>
                 <ResourceDictionary Source="/Styles/TreeView.xaml"/>
+                <ResourceDictionary Source="/Styles/TreeViewMulti.xaml"/>
                 <ResourceDictionary Source="/Styles/ToolTipStyle.xaml"/>
-               
+              
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources></Application>

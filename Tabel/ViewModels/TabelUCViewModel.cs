@@ -9,9 +9,10 @@ using System.Windows;
 using System.Windows.Input;
 using Tabel.Commands;
 using Tabel.Component.MonthPanel;
-using Tabel.Models2;
+using Tabel.Models;
 using Tabel.Repository;
 using Tabel.ViewModels.Base;
+using Tabel.Views.PrintForm;
 
 namespace Tabel.ViewModels
 {
@@ -26,7 +27,7 @@ namespace Tabel.ViewModels
         public IEnumerable<typeDay> ListTypeDays { get; set; }
         public ObservableCollection<TabelPerson> ListTabelPerson { get; set; }
 
-        private Otdel _SelectedOtdel;
+        public Otdel SelectedOtdel { get; set; }
         private int _SelectMonth;
         private int _SelectYear;
 
@@ -35,7 +36,7 @@ namespace Tabel.ViewModels
         // Команда Создать график
         //--------------------------------------------------------------------------------
         public ICommand CreateCommand => new LambdaCommand(OnCreateCommandExecuted, CanCreateCommand);
-        private bool CanCreateCommand(object p) => _SelectedOtdel != null && _SelectedOtdel.ot_parent is null;
+        private bool CanCreateCommand(object p) => SelectedOtdel != null && SelectedOtdel.ot_parent is null;
         private void OnCreateCommandExecuted(object p)
         {
 
@@ -54,17 +55,17 @@ namespace Tabel.ViewModels
 
 
             RepositoryMSSQL<Otdel> repoOtdel = new RepositoryMSSQL<Otdel>();
-            List<int> listOtdels = repoOtdel.Items.AsNoTracking().Where(it => it.ot_parent == _SelectedOtdel.id).Select(s => s.id).ToList();
+            List<int> listOtdels = repoOtdel.Items.AsNoTracking().Where(it => it.ot_parent == SelectedOtdel.id).Select(s => s.id).ToList();
 
             // получение сотрудников отдела
             repoPersonal = new RepositoryMSSQL<Personal>();
 
-            List<Personal> PersonsFromOtdel = repoPersonal.Items.AsNoTracking().Where(it => it.p_otdel_id == _SelectedOtdel.id
+            List<Personal> PersonsFromOtdel = repoPersonal.Items.AsNoTracking().Where(it => (it.p_otdel_id == SelectedOtdel.id && it.p_delete == false)
                 || listOtdels.Contains(it.p_otdel_id.Value)).ToList();
 
             Tabel = new WorkTabel();
             Tabel.t_author_id = App.CurrentUser.id;
-            Tabel.t_otdel_id = _SelectedOtdel.id;
+            Tabel.t_otdel_id = SelectedOtdel.id;
             Tabel.t_month = _SelectMonth;
             Tabel.t_year = _SelectYear;
             Tabel.t_date_create = DateTime.Now;
@@ -146,22 +147,24 @@ namespace Tabel.ViewModels
         //--------------------------------------------------------------------------------
         // Команда Загрузить из производственного календаря
         //--------------------------------------------------------------------------------
-        public ICommand LoadDefCommand => new LambdaCommand(OnLoadDefCommandExecuted, CanLoadDefCommand);
-        private bool CanLoadDefCommand(object p) => Tabel != null && _SelectedOtdel != null;
-        private void OnLoadDefCommandExecuted(object p)
+        public ICommand PrintCommand => new LambdaCommand(OnPrintCommandExecuted, CanPrintCommand);
+        private bool CanPrintCommand(object p) => Tabel != null && SelectedOtdel != null;
+        private void OnPrintCommandExecuted(object p)
         {
-
+            TabelPrint print = new TabelPrint();
+            print.DataContext = this;
+            print.ShowDialog();
         }
 
         //--------------------------------------------------------------------------------
         // Команда Сохранить
         //--------------------------------------------------------------------------------
         public ICommand SaveCommand => new LambdaCommand(OnSaveCommandExecuted, CanSaveCommand);
-        private bool CanSaveCommand(object p) => _SelectedOtdel != null && Tabel != null;
+        private bool CanSaveCommand(object p) => SelectedOtdel != null && Tabel != null;
         private void OnSaveCommandExecuted(object p)
         {
-            //repoTabel.Save();
             repoTabelPerson.Save();
+            repoTabel.Save();
         }
 
         #endregion
@@ -184,12 +187,12 @@ namespace Tabel.ViewModels
         {
             _SelectMonth = Month;
             _SelectYear = Year;
-            _SelectedOtdel = otdel;
+            SelectedOtdel = otdel;
             ListTabelPerson = null;
 
             if (otdel is null)  return;
 
-            if (_SelectedOtdel.ot_parent is null)
+            if (SelectedOtdel.ot_parent is null)
             {
                 Tabel = repoTabel.Items.FirstOrDefault(it => it.t_year == Year
                     && it.t_month == Month

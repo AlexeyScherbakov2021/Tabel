@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Tabel.Commands;
-using Tabel.Models2;
+using Tabel.Models;
 using Tabel.Repository;
 using Tabel.Views;
 

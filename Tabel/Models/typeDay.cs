@@ -1,37 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Data.Entity.Spatial;
-
-
-
 namespace Tabel.Models
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
+    using System.Data.Entity.Spatial;
+
     [Table("typeDay")]
     public partial class typeDay : IEntity
     {
-
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public typeDay()
         {
-            TabelPersons = new HashSet<TabelPerson>();
+            TabelDays = new HashSet<TabelDay>();
         }
 
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         [Column("idTypeDay")]
         public int id { get; set; }
 
-        [StringLength(2)]
+        [StringLength(3)]
         public string t_name { get; set; }
 
         [StringLength(200)]
         public string t_desc { get; set; }
 
-        public virtual ICollection<TabelPerson> TabelPersons { get; set; }
-
-
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<TabelDay> TabelDays { get; set; }
     }
 }

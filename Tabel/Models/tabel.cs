@@ -12,15 +12,16 @@ namespace Tabel.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public WorkTabel()
         {
-            TabelPersons = new HashSet<TabelPerson>();
+            tabelPersons = new HashSet<TabelPerson>();
         }
 
         [Key]
         [Column("idTabel")]
-        //[DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int id { get; set; }
 
-        [StringLength(30)]
+        public int t_otdel_id { get; set; }
+
+        [StringLength(50)]
         public string t_number { get; set; }
 
         public DateTime? t_date_create { get; set; }
@@ -31,15 +32,16 @@ namespace Tabel.Models
 
         public int? t_status { get; set; }
 
-        public int? t_otdel_id { get; set; }
-
-        public virtual Otdel otdel { get; set; }
-
         [StringLength(180)]
         public string t_author { get; set; }
 
-        public virtual ICollection<TabelPerson> TabelPersons { get; set; }
+        public int? t_author_id { get; set; }
 
+        public virtual Otdel otdel { get; set; }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<TabelPerson> tabelPersons { get; set; }
+
+        public virtual User Author { get; set; }
     }
 }

@@ -9,7 +9,7 @@ using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using Tabel.Models2;
+using Tabel.Models;
 
 namespace Tabel.Repository
 {

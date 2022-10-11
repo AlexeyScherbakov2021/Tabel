@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:Tabel.Views.Admins"
              xmlns:ext="clr-namespace:Tabel.Infrastructure.Extend"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-             xmlns:m="clr-namespace:Tabel.Models2"
+             xmlns:m="clr-namespace:Tabel.Models"
              xmlns:vm="clr-namespace:Tabel.ViewModels.Admins"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="434">
     <i:Interaction.Triggers>

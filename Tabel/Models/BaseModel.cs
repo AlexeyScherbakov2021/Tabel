@@ -10,51 +10,48 @@ namespace Tabel.Models
         public BaseModel()
             : base("name=BaseModel")
         {
-            
         }
 
+        public virtual DbSet<WorkCalendar> calendars { get; set; }
         public virtual DbSet<Category> categories { get; set; }
-        public virtual DbSet<TabelPerson> days { get; set; }
+        public virtual DbSet<Mod> Mods { get; set; }
+        public virtual DbSet<ModPerson> ModPersons { get; set; }
         public virtual DbSet<Otdel> otdels { get; set; }
         public virtual DbSet<Personal> personals { get; set; }
+        public virtual DbSet<Smena> smenas { get; set; }
+        public virtual DbSet<SmenaDay> SmenaDays { get; set; }
+        public virtual DbSet<SmenaPerson> SmenaPersons { get; set; }
         public virtual DbSet<WorkTabel> tabels { get; set; }
+        public virtual DbSet<TabelDay> TabelDays { get; set; }
+        public virtual DbSet<TabelPerson> tabelPersons { get; set; }
+        public virtual DbSet<TransDay> TransDays { get; set; }
+        public virtual DbSet<TransPerson> TransPersons { get; set; }
+        public virtual DbSet<Transport> Transports { get; set; }
+        public virtual DbSet<typeDay> typeDays { get; set; }
         public virtual DbSet<User> users { get; set; }
-        public virtual DbSet<WorkCalendar> calendars { get; set; }
-        public virtual DbSet<Smena> Smena { get; set; }
-        public virtual DbSet<SmenaPersonal> SmenaPersonals { get; set; }
-        public virtual DbSet<SmenaDay> SmenaDays { get; set; }  
-
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-
-            modelBuilder.Entity<Smena>()
-                .HasMany(e => e.ListSmenaPerson)
-                .WithOptional(e => e.Smena)
-                .HasForeignKey(e => e.sp_SmenaId)
-                .WillCascadeOnDelete();
-
-            modelBuilder.Entity<SmenaPersonal>()
-                .HasMany(e => e.ListSmenaDays)
-                .WithOptional(e => e.SmenaPerson)
-                .HasForeignKey(e => e.sd_SmenaPersonId)
-                .WillCascadeOnDelete();
-
-
-
-            modelBuilder.Entity<Category>()
-                .Property(e => e.cat_tarif)
-                .HasPrecision(18, 4);
-
             modelBuilder.Entity<Category>()
                 .HasMany(e => e.personals)
                 .WithOptional(e => e.category)
                 .HasForeignKey(e => e.p_cat_id);
 
+            modelBuilder.Entity<Mod>()
+                .HasMany(e => e.ModPersons)
+                .WithOptional(e => e.Mod)
+                .HasForeignKey(e => e.md_modId)
+                .WillCascadeOnDelete();
 
             modelBuilder.Entity<Otdel>()
                 .Property(e => e.ot_name)
                 .IsUnicode(false);
+
+            modelBuilder.Entity<Otdel>()
+                .HasMany(e => e.mods)
+                .WithRequired(e => e.otdel)
+                .HasForeignKey(e => e.m_otdelId)
+                .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Otdel>()
                 .HasMany(e => e.subOtdels)
@@ -68,14 +65,31 @@ namespace Tabel.Models
                 .WillCascadeOnDelete();
 
             modelBuilder.Entity<Otdel>()
+                .HasMany(e => e.smenas)
+                .WithRequired(e => e.otdel)
+                .HasForeignKey(e => e.sm_OtdelId)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Otdel>()
                 .HasMany(e => e.tabels)
-                .WithOptional(e => e.otdel)
-                .HasForeignKey(e => e.t_otdel_id);
+                .WithRequired(e => e.otdel)
+                .HasForeignKey(e => e.t_otdel_id)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Otdel>()
+                .HasMany(e => e.Transports)
+                .WithRequired(e => e.otdel)
+                .HasForeignKey(e => e.tr_OtdelId);
 
             modelBuilder.Entity<Otdel>()
                 .HasMany(e => e.users)
                 .WithOptional(e => e.otdel)
                 .HasForeignKey(e => e.u_otdel_id);
+
+            modelBuilder.Entity<Otdel>()
+                .HasMany(e => e.users1)
+                .WithMany(e => e.otdels)
+                .Map(m => m.ToTable("UserOtdels").MapLeftKey("Otdel_ID").MapRightKey("User_ID"));
 
             modelBuilder.Entity<Personal>()
                 .Property(e => e.p_tab_number)
@@ -98,15 +112,42 @@ namespace Tabel.Models
                 .IsUnicode(false);
 
             modelBuilder.Entity<Personal>()
-                .HasMany(e => e.TabelPersons)
+                .HasMany(e => e.ModPersons)
                 .WithRequired(e => e.person)
-                .HasForeignKey(e => e.d_person_id);
+                .HasForeignKey(e => e.md_personalId)
+                .WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<typeDay>()
-                .HasMany(e => e.TabelPersons)
-                .WithRequired(e => e.type_day)
-                .HasForeignKey(e => e.d_type);
+            modelBuilder.Entity<Personal>()
+                .HasMany(e => e.tabelPersons)
+                .WithRequired(e => e.person)
+                .HasForeignKey(e => e.tp_person_id);
 
+            modelBuilder.Entity<Personal>()
+                .HasMany(e => e.SmenaPersons)
+                .WithRequired(e => e.personal)
+                .HasForeignKey(e => e.sp_PersonId)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Personal>()
+                .HasMany(e => e.TransPersons)
+                .WithRequired(e => e.person)
+                .HasForeignKey(e => e.tp_PersonId)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Smena>()
+                .Property(e => e.sm_Number)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Smena>()
+                .HasMany(e => e.SmenaPerson)
+                .WithRequired(e => e.smena)
+                .HasForeignKey(e => e.sp_SmenaId);
+
+            modelBuilder.Entity<SmenaPerson>()
+                .HasMany(e => e.SmenaDays)
+                .WithOptional(e => e.SmenaPerson)
+                .HasForeignKey(e => e.sd_SmenaPersonId)
+                .WillCascadeOnDelete();
 
             modelBuilder.Entity<WorkTabel>()
                 .Property(e => e.t_number)
@@ -117,10 +158,46 @@ namespace Tabel.Models
                 .IsUnicode(false);
 
             modelBuilder.Entity<WorkTabel>()
-                .HasMany(e => e.TabelPersons)
-                .WithOptional(e => e.tabel)
-                .HasForeignKey(e => e.d_tabel_id)
-                .WillCascadeOnDelete();
+                .HasMany(e => e.tabelPersons)
+                .WithRequired(e => e.tabel)
+                .HasForeignKey(e => e.tp_tabel_id);
+
+            modelBuilder.Entity<TabelDay>()
+                .Property(e => e.td_Hours)
+                .HasPrecision(18, 1);
+
+            modelBuilder.Entity<TabelPerson>()
+                .HasMany(e => e.TabelDays)
+                .WithRequired(e => e.TabelPerson)
+                .HasForeignKey(e => e.td_TabelPersonId);
+
+            modelBuilder.Entity<TransPerson>()
+                .HasMany(e => e.TransDays)
+                .WithRequired(e => e.TransPerson)
+                .HasForeignKey(e => e.td_TransPersonId);
+
+            modelBuilder.Entity<Transport>()
+                .Property(e => e.tr_Number)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Transport>()
+                .HasMany(e => e.TransportPerson)
+                .WithRequired(e => e.Transport)
+                .HasForeignKey(e => e.tp_TranspId);
+
+            modelBuilder.Entity<typeDay>()
+                .Property(e => e.t_name)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<typeDay>()
+                .Property(e => e.t_desc)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<typeDay>()
+                .HasMany(e => e.TabelDays)
+                .WithRequired(e => e.typeDay)
+                .HasForeignKey(e => e.td_KindId)
+                .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<User>()
                 .Property(e => e.u_login)
@@ -133,6 +210,29 @@ namespace Tabel.Models
             modelBuilder.Entity<User>()
                 .Property(e => e.u_fio)
                 .IsUnicode(false);
+
+            modelBuilder.Entity<User>()
+                .HasMany(e => e.mods)
+                .WithRequired(e => e.user)
+                .HasForeignKey(e => e.m_author)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<User>()
+                .HasMany(e => e.smenas)
+                .WithRequired(e => e.user)
+                .HasForeignKey(e => e.sm_UserId)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<User>()
+                .HasMany(e => e.tabels)
+                .WithOptional(e => e.Author)
+                .HasForeignKey(e => e.t_author_id);
+
+            modelBuilder.Entity<User>()
+                .HasMany(e => e.transport)
+                .WithRequired(e => e.user)
+                .HasForeignKey(e => e.tr_UserId)
+                .WillCascadeOnDelete(false);
         }
     }
 }

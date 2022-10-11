@@ -7,10 +7,10 @@ using System.Text;
 using System.Threading.Tasks;
 using Tabel.Component.MonthPanel;
 using Tabel.Infrastructure;
-using Tabel.Models2;
+using Tabel.Models;
 using Tabel.Repository;
 
-namespace Tabel.Models2
+namespace Tabel.Models
 {
     public partial class TabelPerson : Observable
     {

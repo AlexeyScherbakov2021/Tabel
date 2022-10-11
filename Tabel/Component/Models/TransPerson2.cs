@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Tabel.Infrastructure;
-using Tabel.Models2;
+using Tabel.Models;
 
-namespace Tabel.Models2
+namespace Tabel.Models
 {
     public partial class TransPerson : Observable
     {

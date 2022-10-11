@@ -91,25 +91,25 @@
     <Compile Include="Infrastructure\Enums.cs" />
     <Compile Include="Infrastructure\Months.cs" />
     <Compile Include="Infrastructure\MonthStart1.cs" />
-    <Compile Include="Models2\calendar.cs" />
-    <Compile Include="Models2\category.cs" />
-    <Compile Include="Models2\IEntity.cs" />
-    <Compile Include="Models2\Mod.cs" />
-    <Compile Include="Models2\ModPerson.cs" />
-    <Compile Include="Models2\Model2.cs" />
-    <Compile Include="Models2\otdel.cs" />
-    <Compile Include="Models2\personal.cs" />
-    <Compile Include="Models2\smena.cs" />
-    <Compile Include="Models2\SmenaDay.cs" />
-    <Compile Include="Models2\SmenaPerson.cs" />
-    <Compile Include="Models2\tabel.cs" />
-    <Compile Include="Models2\tabelPerson.cs" />
-    <Compile Include="Models2\TabelDay.cs" />
-    <Compile Include="Models2\TransDay.cs" />
-    <Compile Include="Models2\TransPerson.cs" />
-    <Compile Include="Models2\Transport.cs" />
-    <Compile Include="Models2\typeDay.cs" />
-    <Compile Include="Models2\user.cs" />
+    <Compile Include="Models\IEntity.cs" />
+    <Compile Include="Models\calendar.cs" />
+    <Compile Include="Models\category.cs" />
+    <Compile Include="Models\Mod.cs" />
+    <Compile Include="Models\BaseModel.cs" />
+    <Compile Include="Models\ModPerson.cs" />
+    <Compile Include="Models\otdel.cs" />
+    <Compile Include="Models\personal.cs" />
+    <Compile Include="Models\smena.cs" />
+    <Compile Include="Models\SmenaDay.cs" />
+    <Compile Include="Models\SmenaPerson.cs" />
+    <Compile Include="Models\tabel.cs" />
+    <Compile Include="Models\TabelDay.cs" />
+    <Compile Include="Models\tabelPerson.cs" />
+    <Compile Include="Models\TransDay.cs" />
+    <Compile Include="Models\TransPerson.cs" />
+    <Compile Include="Models\Transport.cs" />
+    <Compile Include="Models\typeDay.cs" />
+    <Compile Include="Models\user.cs" />
     <Compile Include="Repository\RepositoryCalendar.cs" />
     <Compile Include="Repository\RepositoryTabelPerson.cs" />
     <Compile Include="Infrastructure\Extend\ExtendedTreeView.cs" />
@@ -142,6 +142,12 @@
     </Compile>
     <Compile Include="Views\ModUC.xaml.cs">
       <DependentUpon>ModUC.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PrintForm\SmenaPrint.xaml.cs">
+      <DependentUpon>SmenaPrint.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PrintForm\TabelPrint.xaml.cs">
+      <DependentUpon>TabelPrint.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SelectOtdelWindow.xaml.cs">
       <DependentUpon>SelectOtdelWindow.xaml</DependentUpon>
@@ -178,6 +184,10 @@
     <Page Include="Styles\ToolTipStyle.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\TreeViewMulti.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Styles\TreeView.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -248,6 +258,14 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Views\ModUC.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PrintForm\SmenaPrint.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PrintForm\TabelPrint.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

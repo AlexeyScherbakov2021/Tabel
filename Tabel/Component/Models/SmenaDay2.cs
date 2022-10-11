@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Tabel.Models2
+namespace Tabel.Models
 {
     public partial class SmenaDay
     {

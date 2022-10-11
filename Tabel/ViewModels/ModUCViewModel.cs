@@ -10,7 +10,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using Tabel.Commands;
 using Tabel.Infrastructure;
-using Tabel.Models2;
+using Tabel.Models;
 using Tabel.Repository;
 using Tabel.ViewModels.Base;
 
@@ -60,7 +60,7 @@ namespace Tabel.ViewModels
             RepositoryMSSQL<Otdel> repoOtdel = new RepositoryMSSQL<Otdel>();
             List<int> listOtdels = repoOtdel.Items.AsNoTracking().Where(it => it.ot_parent == _SelectedOtdel.id).Select(s => s.id).ToList();
 
-            var persons = repoPersonal.Items.AsNoTracking().Where(it => it.p_otdel_id == _SelectedOtdel.id 
+            var persons = repoPersonal.Items.AsNoTracking().Where(it => (it.p_otdel_id == _SelectedOtdel.id && it.p_delete == false)
                         || listOtdels.Contains(it.p_otdel_id.Value));
 
             foreach (var pers in persons)

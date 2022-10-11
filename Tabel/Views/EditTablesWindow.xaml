@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:Tabel.ViewModels"
         xmlns:view="clr-namespace:Tabel.Views.Admins"
-        xmlns:model="clr-namespace:Tabel.Models2"
+        xmlns:model="clr-namespace:Tabel.Models"
         xmlns:local="clr-namespace:Tabel.Views"
         xmlns:System="clr-namespace:System;assembly=mscorlib" x:Class="Tabel.Views.EditTablesWindow"
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"

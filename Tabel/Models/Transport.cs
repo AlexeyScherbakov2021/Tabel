@@ -6,37 +6,37 @@ namespace Tabel.Models
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    [Table("smena")]
-    public partial class Smena : IEntity
+    [Table("Transport")]
+    public partial class Transport : IEntity
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Smena()
+        public Transport()
         {
-            SmenaPerson = new HashSet<SmenaPerson>();
+            //TransPersons = new HashSet<TransPerson>();
         }
 
         [Key]
-        [Column("sm_Id")]
+        [Column("tr_Id")]
         public int id { get; set; }
 
         [StringLength(20)]
-        public string sm_Number { get; set; }
+        public string tr_Number { get; set; }
 
-        public DateTime sm_DateCreate { get; set; }
+        public DateTime tr_DateCreate { get; set; }
 
-        public int sm_Month { get; set; }
+        public int tr_Month { get; set; }
 
-        public int sm_Year { get; set; }
+        public int tr_Year { get; set; }
 
-        public int sm_UserId { get; set; }
+        public int tr_UserId { get; set; }
 
-        public int sm_OtdelId { get; set; }
+        public int tr_OtdelId { get; set; }
 
         public virtual Otdel otdel { get; set; }
 
-        public virtual User user { get; set; }
-
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<SmenaPerson> SmenaPerson { get; set; }
+        public virtual IList<TransPerson> TransportPerson { get; set; }
+
+        public virtual User user { get; set; }
     }
 }

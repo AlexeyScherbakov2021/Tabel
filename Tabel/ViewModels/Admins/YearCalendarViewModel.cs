@@ -9,7 +9,7 @@ using System.Windows;
 using System.Windows.Input;
 using Tabel.Commands;
 using Tabel.Component.MonthPanel;
-using Tabel.Models2;
+using Tabel.Models;
 using Tabel.Repository;
 using Tabel.ViewModels.Base;
 using Tabel.Views.Admins;

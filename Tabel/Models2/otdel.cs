@@ -49,5 +49,8 @@ namespace Tabel.Models2
         public virtual ICollection<User> users { get; set; }
         public virtual ICollection<Mod> mods { get; set; }
         public virtual ICollection<Transport> transport { get; set; }
+
+        [NotMapped]
+        public bool IsValue { get; set; }
     }
 }

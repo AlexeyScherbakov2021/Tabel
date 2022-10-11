@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Tabel.Infrastructure;
 
-namespace Tabel.Models2
+namespace Tabel.Models
 {
     public partial class ModPerson : Observable
     {

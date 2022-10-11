@@ -10,7 +10,7 @@ using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
 using Tabel.Commands;
-using Tabel.Models2;
+using Tabel.Models;
 using Tabel.Repository;
 using Tabel.ViewModels.Base;
 
@@ -39,6 +39,7 @@ namespace Tabel.ViewModels
             }
         }
 
+
         private void ListUserView_CurrentChanged(object sender, EventArgs e)
         {
             IsOpenPopup = false;
@@ -48,7 +49,37 @@ namespace Tabel.ViewModels
         CollectionViewSource _listUserViewSource;
         public ICollectionView ListUserView => _listUserViewSource?.View;
 
-        public User SelectedUser { get; set; }
+        private User _SelectedUser;
+        public User SelectedUser 
+        { 
+            get => _SelectedUser; 
+            set
+            {
+                if (_SelectedUser == value) return;
+
+                if (_SelectedUser != null)
+                {
+                    foreach (Otdel otdel in ListOtdel)
+                    {
+                        if (otdel.IsChecked)
+                        {
+                            Otdel newOtdel = new Otdel();
+                            newOtdel.id = otdel.id;
+                            _SelectedUser.otdels.Add(otdel);
+                        }
+                        else
+                            _SelectedUser.otdels.Remove(otdel);
+                    }
+                }
+                _SelectedUser = value;
+
+                foreach (Otdel otdel in ListOtdel)
+                {
+                    otdel.IsChecked = _SelectedUser.otdels.Any(it => it.id == otdel.id);
+                }
+
+            }
+        }
 
         private bool _IsOpenPopup = false;
         public bool IsOpenPopup { get => _IsOpenPopup; set { Set(ref _IsOpenPopup, value); } }

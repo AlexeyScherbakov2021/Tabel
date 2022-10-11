@@ -8,7 +8,7 @@ using System.Windows;
 using Tabel.Component.MonthPanel;
 using Tabel.Infrastructure;
 
-namespace Tabel.Models2
+namespace Tabel.Models
 {
     public partial class TabelDay : Observable
     {

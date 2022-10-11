@@ -7,21 +7,6 @@
     <Color x:Key="SelectedUnfocusedColor">LightGray</Color>
 
 
-    <HierarchicalDataTemplate DataType="{x:Type m:Otdel}" ItemsSource="{Binding subOtdels}">
-        <!--<TextBox Text="{Binding ot_name}" IsHitTestVisible="False" BorderThickness="0" Margin="2,2"/>-->
-        <TextBlock Text="{Binding ot_name}" />
-    </HierarchicalDataTemplate>
-    <Style x:Key="FocusVisual">
-        <Setter Property="Control.Template">
-            <Setter.Value>
-                <ControlTemplate>
-                    <Rectangle Margin="2" StrokeDashArray="1 2" Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" SnapsToDevicePixels="true" StrokeThickness="1"/>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
-
     <Style x:Key="ExpandCollapseToggleStyle" TargetType="ToggleButton">
         <Setter Property="Focusable" Value="False" />
 
@@ -71,7 +56,7 @@
     </Style>
 
 
-    <Style TargetType="{x:Type TreeViewItem}">
+    <Style TargetType="{x:Type TreeViewItem}" x:Key="TreeItemMultiSelect">
         <!-- 1: [Параметры по умолчанию] -->
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="HorizontalContentAlignment" Value="{Binding Path=HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
@@ -140,7 +125,7 @@
                         <!-- 5: [Кнопка-экспандер ] -->
                         <ToggleButton x:Name="Expander" Style="{StaticResource ExpandCollapseToggleStyle}" ClickMode="Press" IsChecked="{Binding IsExpanded, RelativeSource={RelativeSource TemplatedParent}}" />
 
-                        <!--<CheckBox Margin="0,0,-4,0" IsChecked="{Binding IsValue}"/>-->
+                        <CheckBox Margin="0,0,-4,0" IsChecked="{Binding IsChecked}"/>
                         <!-- 6: [Рамка, в которой содержится заголовок родителя] -->
                         <Border x:Name="Bd" Grid.Column="1" Margin="4,0"
                                 Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" 

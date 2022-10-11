@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using Tabel.Infrastructure;
-using Tabel.Models2;
+using Tabel.Models;
 using Tabel.Views;
 
 namespace Tabel

@@ -80,7 +80,10 @@
                     </DataGrid.Columns>
                 </DataGrid>
                 <Popup IsOpen="{Binding IsOpenPopup}" Placement="MousePoint" Width="240" Height="200" UseLayoutRounding="True" ScrollViewer.CanContentScroll="True" VerticalOffset="8" HorizontalOffset="-200">
-                    <TreeView x:Name="tree" ItemsSource="{Binding ListOtdel}">
+                    <TreeView x:Name="tree" ItemsSource="{Binding ListOtdel}" >
+                        <TreeView.Resources>
+                            <Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource TreeItemMultiSelect}"/>
+                        </TreeView.Resources>
                         <TreeView.ItemTemplate>
                             <HierarchicalDataTemplate ItemsSource="{Binding subOtdels}" >
                                 <TextBlock Text="{Binding ot_name}">
