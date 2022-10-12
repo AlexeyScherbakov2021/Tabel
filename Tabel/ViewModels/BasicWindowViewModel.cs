@@ -145,7 +145,13 @@ namespace Tabel.ViewModels
             RepositoryCalendar repoCal = new RepositoryCalendar();
             ListYears = repoCal.GetYears().ToList();
 
-            ListOtdel = repoOtdel.Items.Where(it => it.id == User.u_otdel_id).ToList();
+            //ListOtdel = repoOtdel.Items.ToList();
+
+            RepositoryOtdel repo = new RepositoryOtdel();
+
+            ListOtdel = repo.GetTreeOtdels(User.otdels).ToList();
+
+            //ListOtdel = repoOtdel.Items.Where(it => it.id == User.u_otdel_id).ToList();
             if (ListOtdel?.Count > 0)
                 SelectedOtdel = ListOtdel[0];
         }

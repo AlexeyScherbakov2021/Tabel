@@ -23,7 +23,7 @@ namespace Tabel.ViewModels.Admins
     {
         // Отделы -----------------------------------------------------
 
-        private readonly RepositoryMSSQL<Otdel> repoOtdel;
+        private readonly RepositoryOtdel repoOtdel;
         // Список всех отделов
         public ObservableCollection<Otdel> ListOtdel { get; set; }
 
@@ -86,16 +86,19 @@ namespace Tabel.ViewModels.Admins
         //--------------------------------------------------------------------------------
         public OtdelsWindowViewModel()
         {
-            repoOtdel = new RepositoryMSSQL<Otdel>();
+            repoOtdel = new RepositoryOtdel();
             repoPerson = new RepositoryMSSQL<Personal>();
 
-
             if (App.CurrentUser.u_role == UserRoles.Admin)
-                ListOtdel = new ObservableCollection<Otdel>(repoOtdel.Items.Where(it => it.ot_parent == null));
+                ListOtdel = new ObservableCollection<Otdel>(repoOtdel.Items);
             else
-                ListOtdel = new ObservableCollection<Otdel>(repoOtdel.Items.Where(it => it.id == App.CurrentUser.u_otdel_id));
+            {
+                ListOtdel = new ObservableCollection<Otdel>(repoOtdel.GetTreeOtdels(App.CurrentUser.otdels));
 
-            SelectedOtdel = ListOtdel?[0];
+                //ListOtdel = new ObservableCollection<Otdel>(repoOtdel.Items.Where(it => it.id == App.CurrentUser.u_otdel_id));
+            }
+
+            SelectedOtdel = ListOtdel.Count > 0 ?  ListOtdel[0] : null;
 
 
             ListCategory = repoCat.Items.AsNoTracking().OrderBy(o => o.id).ToList();
@@ -136,8 +139,8 @@ namespace Tabel.ViewModels.Admins
             NewOtdel.ot_parent = SelectedOtdel.ot_parent ?? SelectedOtdel.id;
 
             repoOtdel.Add(NewOtdel, true);
-
             //SelectedOtdel.subOtdels.Add(NewOtdel);
+            //SelectedOtdel.OnPropertyChanged(nameof(SelectedOtdel.subOtdels));
         }
 
         //--------------------------------------------------------------------------------

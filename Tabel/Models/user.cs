@@ -31,7 +31,7 @@ namespace Tabel.Models
 
         public UserRoles u_role { get; set; }
 
-        public int? u_otdel_id { get; set; }
+        //public int? u_otdel_id { get; set; }
 
         [StringLength(150)]
         public string u_fio { get; set; }
@@ -39,7 +39,7 @@ namespace Tabel.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Mod> mods { get; set; }
 
-        public virtual Otdel otdel { get; set; }
+        //public virtual Otdel otdel { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Smena> smenas { get; set; }

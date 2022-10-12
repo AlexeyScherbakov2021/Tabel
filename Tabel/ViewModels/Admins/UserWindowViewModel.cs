@@ -157,8 +157,8 @@ namespace Tabel.ViewModels
         {
             if(p is Otdel otdel)
             {
-                SelectedUser.u_otdel_id = otdel.id;
-                SelectedUser.otdel = null;
+                //SelectedUser.u_otdel_id = otdel.id;
+                //SelectedUser.otdel = null;
                 repoUser.Update(SelectedUser);
                 IsOpenPopup = false;
                 ListUserView.Refresh();

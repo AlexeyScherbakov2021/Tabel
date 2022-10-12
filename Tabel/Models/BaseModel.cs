@@ -81,10 +81,10 @@ namespace Tabel.Models
                 .WithRequired(e => e.otdel)
                 .HasForeignKey(e => e.tr_OtdelId);
 
-            modelBuilder.Entity<Otdel>()
-                .HasMany(e => e.users)
-                .WithOptional(e => e.otdel)
-                .HasForeignKey(e => e.u_otdel_id);
+            //modelBuilder.Entity<Otdel>()
+            //    .HasMany(e => e.users)
+            //    .WithOptional(e => e.otdel)
+            //    .HasForeignKey(e => e.u_otdel_id);
 
             modelBuilder.Entity<Otdel>()
                 .HasMany(e => e.users1)

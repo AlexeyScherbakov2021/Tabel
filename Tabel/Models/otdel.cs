@@ -17,7 +17,7 @@ namespace Tabel.Models
             smenas = new HashSet<Smena>();
             tabels = new HashSet<WorkTabel>();
             Transports = new HashSet<Transport>();
-            users = new HashSet<User>();
+            //users = new HashSet<User>();
             users1 = new HashSet<User>();
         }
 
@@ -50,8 +50,8 @@ namespace Tabel.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Transport> Transports { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<User> users { get; set; }
+        //[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        //public virtual ICollection<User> users { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<User> users1 { get; set; }
