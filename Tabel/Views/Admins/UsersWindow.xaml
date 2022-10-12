@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:infr="clr-namespace:Tabel.Infrastructure"
+             xmlns:conv="clr-namespace:Tabel.Infrastructure.Converters"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:local="clr-namespace:Tabel.Views.Admins"
              xmlns:vm="clr-namespace:Tabel.ViewModels"
@@ -12,6 +13,11 @@
     <UserControl.DataContext>
         <vm:UserWindowViewModel/>
     </UserControl.DataContext>
+
+    <UserControl.Resources>
+        <conv:OtdelsUserConverter x:Key="OtdelsUserConverter"/>
+    </UserControl.Resources>
+    
     
     <!--<UserControl.InputBindings>
         <KeyBinding Key="Esc" Command="{Binding EndEditCommand}"/>
@@ -55,25 +61,25 @@
                                             <ColumnDefinition />
                                             <ColumnDefinition Width="28"/>
                                         </Grid.ColumnDefinitions>
-                                        <TextBlock Text="{Binding otdel.ot_name}"/>
+                                        <TextBlock Text="{Binding otdels, Mode=TwoWay, Converter={StaticResource OtdelsUserConverter}}"/>
                                         <Button Content="..." Margin="1" Grid.Column="1" CommandParameter="{Binding SelectedItem, ElementName=dataGrid}"
                                             Command="{Binding DataContext.OtdelCommand, ElementName=userControl}"/>
                                     </Grid>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
-                            <DataGridTemplateColumn.CellEditingTemplate>
+                            <!--<DataGridTemplateColumn.CellEditingTemplate>
                                 <DataTemplate>
                                     <Grid>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition />
                                             <ColumnDefinition Width="28"/>
                                         </Grid.ColumnDefinitions>
-                                        <TextBlock Text="{Binding otdel.ot_name}"/>
+                                        <TextBlock Text="{Binding otdel, Mode=TwoWay, Converter={StaticResource OtdelsUserConverter}}"/>
                                         <Button Content="..." Margin="1" Grid.Column="1" CommandParameter="{Binding SelectedItem, ElementName=dataGrid}"
                                             Command="{Binding DataContext.OtdelCommand, ElementName=userControl}"/>
                                     </Grid>
                                 </DataTemplate>
-                            </DataGridTemplateColumn.CellEditingTemplate>
+                            </DataGridTemplateColumn.CellEditingTemplate>-->
                         </DataGridTemplateColumn>
                        
                         <DataGridTextColumn Header="ФИО" Binding="{Binding u_fio}" Width="150"/>

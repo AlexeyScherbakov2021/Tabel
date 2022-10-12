@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Data.Entity;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
@@ -42,6 +43,8 @@ namespace Tabel.ViewModels
 
         private void ListUserView_CurrentChanged(object sender, EventArgs e)
         {
+            //if (IsOpenPopup)
+            //    GetOtdelsFromUser(_SelectedUser, ListOtdel);
             IsOpenPopup = false;
             repoUser.Save();
         }
@@ -57,33 +60,53 @@ namespace Tabel.ViewModels
             {
                 if (_SelectedUser == value) return;
 
-                if (_SelectedUser != null)
-                {
-                    foreach (Otdel otdel in ListOtdel)
-                    {
-                        if (otdel.IsChecked)
-                        {
-                            Otdel newOtdel = new Otdel();
-                            newOtdel.id = otdel.id;
-                            _SelectedUser.otdels.Add(otdel);
-                        }
-                        else
-                            _SelectedUser.otdels.Remove(otdel);
-                    }
-                }
+                GetOtdelsFromUser(_SelectedUser, ListOtdel);
                 _SelectedUser = value;
-
-                foreach (Otdel otdel in ListOtdel)
-                {
-                    otdel.IsChecked = _SelectedUser.otdels.Any(it => it.id == otdel.id);
-                }
-
+                SetOtdelsToUser(_SelectedUser, ListOtdel);
             }
         }
 
         private bool _IsOpenPopup = false;
         public bool IsOpenPopup { get => _IsOpenPopup; set { Set(ref _IsOpenPopup, value); } }
 
+
+        //--------------------------------------------------------------------------------
+        // Отметка в списке отделов для пользователя
+        //--------------------------------------------------------------------------------
+        private void SetOtdelsToUser(User user,  ICollection<Otdel> ListSiblingOtdel)
+        {
+            if (user is null || ListSiblingOtdel?.Count == 0) return;
+
+            foreach (Otdel otdel in ListSiblingOtdel)
+            {
+                otdel.IsChecked = user.otdels.Any(it => it.id == otdel.id);
+                otdel.OnPropertyChanged(nameof(otdel.IsChecked));
+                if (otdel.subOtdels.Count > 0)
+                    SetOtdelsToUser(user, otdel.subOtdels);
+            }
+
+        }
+
+        //--------------------------------------------------------------------------------
+        // Получение отделов для пользователя
+        //--------------------------------------------------------------------------------
+        private void GetOtdelsFromUser(User user, ICollection<Otdel> ListSiblingOtdel)
+        {
+            if (user is null || ListSiblingOtdel?.Count == 0) return;
+
+            foreach (Otdel otdel in ListSiblingOtdel)
+            {
+                if (otdel.IsChecked)
+                    user.otdels.Add(otdel);
+                else
+                    user.otdels.Remove(otdel);
+
+                if (otdel.subOtdels.Count > 0)
+                    GetOtdelsFromUser(user, otdel.subOtdels);
+            }
+
+            user.OnPropertyChanged(nameof(user.otdels));
+        }
 
 
         #region Команды
@@ -120,6 +143,8 @@ namespace Tabel.ViewModels
         private bool CanOtdelCommand(object p) => true;
         private void OnOtdelCommandExecuted(object p)
         {
+            if (IsOpenPopup)
+                GetOtdelsFromUser(_SelectedUser, ListOtdel);
             IsOpenPopup = !IsOpenPopup;
         }
 
@@ -150,7 +175,7 @@ namespace Tabel.ViewModels
             repoUser = new RepositoryMSSQL<User>();
             ListUser = new ObservableCollection<User>(repoUser.Items);
             repoOtdel = new RepositoryOtdel();
-            ListOtdel = new ObservableCollection<Otdel>(repoOtdel.Items.AsNoTracking());
+            ListOtdel = new ObservableCollection<Otdel>(repoOtdel.Items);
         }
 
     }

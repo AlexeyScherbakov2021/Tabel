@@ -17,6 +17,8 @@ namespace Tabel
     public partial class App : Application
     {
         public static User CurrentUser;
+        public static readonly BaseModel db = new BaseModel();
+
 
         public static List<Months> ListMonth = new List<Months>()
         {

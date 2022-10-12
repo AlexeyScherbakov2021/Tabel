@@ -16,7 +16,7 @@ namespace Tabel.Repository
     internal class RepositoryMSSQL<T> : IRepository<T> where T : class, IEntity, new()
     {
         //SqlConnection conn;
-        protected static readonly BaseModel db = new BaseModel();
+        protected BaseModel db => App.db;
         protected readonly DbSet<T> _Set;
         public virtual IQueryable<T> Items => _Set;
 

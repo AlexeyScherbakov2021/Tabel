@@ -7,7 +7,7 @@ namespace Tabel.Models
     using System.Data.Entity.Spatial;
     using Tabel.Infrastructure;
 
-    public partial class User : IEntity
+    public partial class User : Observable, IEntity
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public User()

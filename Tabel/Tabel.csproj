@@ -70,6 +70,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Component\Models\ModPerson2.cs" />
+    <Compile Include="Component\Models\Otdel2.cs" />
     <Compile Include="Component\Models\SmenaDay2.cs" />
     <Compile Include="Component\Models\TabelDays2.cs" />
     <Compile Include="Component\Models\TabelPerson2.cs" />
@@ -88,6 +89,7 @@
     <Compile Include="Component\TabelPanel\TestConvert.cs" />
     <Compile Include="Infrastructure\Converters\Convert0ToNull.cs" />
     <Compile Include="Infrastructure\Converters\KindSmenaConverter.cs" />
+    <Compile Include="Infrastructure\Converters\OtdelsUserConverter.cs" />
     <Compile Include="Infrastructure\Enums.cs" />
     <Compile Include="Infrastructure\Months.cs" />
     <Compile Include="Infrastructure\MonthStart1.cs" />

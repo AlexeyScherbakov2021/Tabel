@@ -84,7 +84,6 @@ namespace Tabel.ViewModels
                 Transp.TransportPerson.Add(tp);
             }
 
-            SetTypeDays();
 
             if (Transp.TransportPerson.Count > 0)
                 repoTransp.Add(Transp, true);
@@ -94,6 +93,7 @@ namespace Tabel.ViewModels
                 .FirstOrDefault();
 
             ListTransPerson = new ObservableCollection<TransPerson>(Transp.TransportPerson);
+            SetTypeDays();
 
             OnPropertyChanged(nameof(ListTransPerson));
             OnPropertyChanged(nameof(Transp));
