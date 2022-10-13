@@ -11,6 +11,15 @@
     <UserControl.DataContext>
         <vm:ModUCViewModel/>
     </UserControl.DataContext>
+    <UserControl.Resources>
+
+        <vm:ModUCViewModel x:Key="context"/>
+
+        <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource StyleCheckComboBox }">
+        </Style>
+
+
+    </UserControl.Resources>
     <DockPanel>
         <ToolBarPanel DockPanel.Dock="Top" Orientation="Horizontal" Height="30" Margin="10,8,0,4">
             <Button Content="Создать новый" Command="{Binding CreateCommand}" Margin="3" Style="{DynamicResource ButtonStyleShadow}"/>
@@ -28,18 +37,18 @@
                         </Grid.ColumnDefinitions>
                     </Grid>
                     <DataGrid ItemsSource="{Binding ListModPerson}" Style="{DynamicResource DataGridStyle}" IsReadOnly="True">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="ФИО" Binding="{Binding person.FIO}"/>
-                        <DataGridTextColumn Header="Дложность" Binding="{Binding person.p_profession}"/>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="ФИО" Binding="{Binding person.FIO}"/>
+                            <DataGridTextColumn Header="Дложность" Binding="{Binding person.p_profession}"/>
                             <DataGridTextColumn Header="Разряд" Binding="{Binding person.category.id}" CellStyle="{StaticResource CellRight}"/>
                             <DataGridTextColumn Header="Тариф" Binding="{Binding person.category.cat_tarif, StringFormat=0.#}" CellStyle="{StaticResource CellRight}"/>
                             <DataGridTextColumn Header="Часы" Binding="{Binding TabelHours, StringFormat=0.#}" CellStyle="{StaticResource CellRight}"/>
                             <DataGridTextColumn Header="Отсут." Binding="{Binding TabelAbsent}" CellStyle="{StaticResource CellRight}"/>
                             <DataGridTextColumn Header="Дни" Binding="{Binding TabelDays}" CellStyle="{StaticResource CellRight}"/>
                             <DataGridTextColumn Header="Оклад" Binding="{Binding Oklad, StringFormat=0.#}" CellStyle="{StaticResource CellRight}"/>
-                        <DataGridTextColumn Header="Итого" Binding="{Binding Itogo, StringFormat=0.#}" FontWeight="Bold" CellStyle="{StaticResource CellRight}"/>
-                    </DataGrid.Columns>
-                </DataGrid>
+                            <DataGridTextColumn Header="Итого" Binding="{Binding Itogo, StringFormat=0.#}" FontWeight="Bold" CellStyle="{StaticResource CellRight}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
                 </DockPanel>
             </TabItem>
             <TabItem Header="Премия по выработке">
@@ -74,15 +83,15 @@
                         </Grid.ColumnDefinitions>
                     </Grid>
                     <DataGrid ItemsSource="{Binding ListModPerson}" Style="{StaticResource DataGridStyle}" >
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="ФИО" Binding="{Binding person.FIO}" IsReadOnly="True"/>
-                        <DataGridTextColumn Header="Должность" Binding="{Binding person.p_profession}" IsReadOnly="True"/>
-                        <DataGridCheckBoxColumn Header="Выполнено" Binding="{Binding md_bonus_exec, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="ФИО" Binding="{Binding person.FIO}" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Должность" Binding="{Binding person.p_profession}" IsReadOnly="True"/>
+                            <DataGridCheckBoxColumn Header="Выполнено" Binding="{Binding md_bonus_exec, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                             <DataGridTextColumn Header="%" Binding="{Binding md_bonus_proc, Mode=TwoWay, StringFormat=0.#}" CellStyle="{StaticResource CellRight}"/>
                             <DataGridTextColumn Header="Макс. бонус" Binding="{Binding md_bonus_max, Mode=TwoWay, StringFormat=0.#}"  CellStyle="{StaticResource CellRight}"/>
                             <DataGridTextColumn Header="Расчет" Binding="{Binding Bonus, StringFormat=0.#}" IsReadOnly="True" CellStyle="{StaticResource CellRight}"/>
-                    </DataGrid.Columns>
-                </DataGrid>
+                        </DataGrid.Columns>
+                    </DataGrid>
                 </DockPanel>
             </TabItem>
 
@@ -135,17 +144,19 @@
                             <ColumnDefinition Width="100"/>
                         </Grid.ColumnDefinitions>
                     </Grid>
-                    <DataGrid ItemsSource="{Binding ListModPerson}" Style="{StaticResource DataGridStyle}" IsReadOnly="True">
+                    <DataGrid ItemsSource="{Binding ListModPerson}" Style="{StaticResource DataGridStyle}" IsReadOnly="False">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="ФИО" Binding="{Binding person.FIO}" />
-                            <DataGridTextColumn Header="Должность" Binding="{Binding person.p_profession}" />
-                            <DataGridTextColumn Header="Доп. работа"   CellStyle="{StaticResource CellRight}"/>
-                            <DataGridTextColumn Header="Тариф"  CellStyle="{StaticResource CellRight}"/>
+                            <DataGridTextColumn Header="ФИО" Binding="{Binding person.FIO}" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Должность" Binding="{Binding person.p_profession}"  IsReadOnly="True"/>
+                            <DataGridComboBoxColumn Header="Доп. работа" DisplayMemberPath="aw_Name" 
+                                ItemsSource="{Binding ListAddWorks, Source={StaticResource context}}" ElementStyle="{Binding Mode=OneWay, Source={StaticResource StyleCheckComboBox}}"
+                             />
+                            <DataGridTextColumn Header="Тариф"  CellStyle="{StaticResource CellRight}" IsReadOnly="True"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </DockPanel>
             </TabItem>
-            
+
             <TabItem Header="Доставка">
                 <DockPanel  Background="Gainsboro">
                     <Grid DockPanel.Dock="Top" Margin="8" Height="20">

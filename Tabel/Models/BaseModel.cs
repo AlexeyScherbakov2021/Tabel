@@ -48,9 +48,14 @@ namespace Tabel.Models
         public virtual DbSet<Transport> Transports { get; set; }
         public virtual DbSet<typeDay> typeDays { get; set; }
         public virtual DbSet<User> users { get; set; }
+        public virtual DbSet<AddWorks> addWorks { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<AddWorks>()
+                .Property(e => e.aw_Name)
+                .IsUnicode(false);
+
             modelBuilder.Entity<Category>()
                 .HasMany(e => e.personals)
                 .WithOptional(e => e.category)
@@ -109,6 +114,11 @@ namespace Tabel.Models
                 .HasMany(e => e.users1)
                 .WithMany(e => e.otdels)
                 .Map(m => m.ToTable("UserOtdels").MapLeftKey("Otdel_ID").MapRightKey("User_ID"));
+
+            modelBuilder.Entity<ModPerson>()
+                .HasMany(e => e.ListAddWorks)
+                .WithMany(e => e.ListModPerson)
+                .Map(m => m.ToTable("ModPersonAddWorks").MapLeftKey("mp_Id").MapRightKey("aw_Id"));
 
             modelBuilder.Entity<Personal>()
                 .Property(e => e.p_tab_number)

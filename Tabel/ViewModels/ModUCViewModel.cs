@@ -24,12 +24,15 @@ namespace Tabel.ViewModels
         private readonly RepositoryMSSQL<Smena> repoSmena = new RepositoryMSSQL<Smena>();
         private readonly RepositoryMSSQL<ModPerson> repoModPerson = new RepositoryMSSQL<ModPerson>();
         private readonly RepositoryMSSQL<Transport> repoTransport = new RepositoryMSSQL<Transport>();
+        private readonly RepositoryMSSQL<AddWorks> repoAddWorks = new RepositoryMSSQL<AddWorks>();
 
         private Otdel _SelectedOtdel;
         private int _SelectMonth;
         private int _SelectYear;
 
         public ObservableCollection<ModPerson> ListModPerson { get; set; }
+
+        public List<AddWorks> ListAddWorks { get; set; }
 
         public Mod CurrentMod { get; set; }
 
@@ -114,6 +117,9 @@ namespace Tabel.ViewModels
         public ModUCViewModel()
         {
             DateTime _CurrentDate = DateTime.Now;
+
+            ListAddWorks = repoAddWorks.Items.AsNoTracking().ToList();
+
             //User = App.CurrentUser;
             //User = new User() { u_otdel_id = 44, u_login = "Petrov", id = 10, u_fio = "Петров" };
 

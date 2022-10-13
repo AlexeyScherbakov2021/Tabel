@@ -93,6 +93,7 @@
     <Compile Include="Infrastructure\Enums.cs" />
     <Compile Include="Infrastructure\Months.cs" />
     <Compile Include="Infrastructure\MonthStart1.cs" />
+    <Compile Include="Models\AddWorks.cs" />
     <Compile Include="Models\IEntity.cs" />
     <Compile Include="Models\calendar.cs" />
     <Compile Include="Models\category.cs" />
@@ -116,6 +117,7 @@
     <Compile Include="Repository\RepositoryTabelPerson.cs" />
     <Compile Include="Infrastructure\Extend\ExtendedTreeView.cs" />
     <Compile Include="Infrastructure\Extend\ListBoxExt.cs" />
+    <Compile Include="ViewModels\Admins\AddWorksUCViewModel.cs" />
     <Compile Include="ViewModels\Admins\CategoryUCViewModel.cs" />
     <Compile Include="ViewModels\Admins\OtdelsWindowViewModel.cs" />
     <Compile Include="ViewModels\Base\IBaseUCViewModel.cs" />
@@ -127,6 +129,9 @@
     <Compile Include="ViewModels\SmenaUCViewModel.cs" />
     <Compile Include="ViewModels\TabelUCViewModel.cs" />
     <Compile Include="ViewModels\TransportUCViewModel.cs" />
+    <Compile Include="Views\Admins\AddWorksUC.xaml.cs">
+      <DependentUpon>AddWorksUC.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Admins\CategoryUC.xaml.cs">
       <DependentUpon>CategoryUC.xaml</DependentUpon>
     </Compile>
@@ -175,6 +180,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Styles\CheckComboBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Styles\ComboBoxNotArrow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -196,6 +205,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\AddFormStringWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Admins\AddWorksUC.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

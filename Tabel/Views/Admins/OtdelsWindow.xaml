@@ -18,7 +18,6 @@
         <vm:OtdelsWindowViewModel/>
     </UserControl.DataContext>
     <UserControl.Resources>
-
         <vm:OtdelsWindowViewModel x:Key="context"/>
 
         <!--<HierarchicalDataTemplate DataType="{x:Type m:Otdel}" ItemsSource="{Binding subOtdels1}">

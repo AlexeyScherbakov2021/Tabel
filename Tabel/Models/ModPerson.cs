@@ -113,9 +113,9 @@ namespace Tabel.Models
         [Column(TypeName = "numeric")]
         public decimal? md_tarif_offDay { get; set; }
 
-
         public virtual Mod Mod { get; set; }
-
         public virtual Personal person { get; set; }
+
+        public virtual ICollection<AddWorks> ListAddWorks { get; set; }
     }
 }

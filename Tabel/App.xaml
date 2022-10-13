@@ -11,7 +11,7 @@
                 <ResourceDictionary Source="/Styles/TreeView.xaml"/>
                 <ResourceDictionary Source="/Styles/TreeViewMulti.xaml"/>
                 <ResourceDictionary Source="/Styles/ToolTipStyle.xaml"/>
-              
+                <ResourceDictionary Source="/Styles/CheckComboBox.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources></Application>

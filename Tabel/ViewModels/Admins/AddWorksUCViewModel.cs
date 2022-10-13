@@ -13,17 +13,18 @@ using Tabel.ViewModels.Base;
 
 namespace Tabel.ViewModels.Admins
 {
-    internal class CategoryUCViewModel : ViewModel
+    internal class AddWorksUCViewModel : ViewModel
     {
-        private readonly RepositoryMSSQL<Category> repoCategory;
-        public ObservableCollection<Category> Categories { get; set; }
-        public Category SelectedCategory { get; set; }
+        private readonly RepositoryMSSQL<AddWorks> repoAddWorks;
+        public ObservableCollection<AddWorks> ListAddWorks { get; set; }
+        public AddWorks SelectedWork { get; set; }
 
-        public CategoryUCViewModel()
+        public AddWorksUCViewModel()
         {
-            repoCategory = new RepositoryMSSQL<Category>();
+            repoAddWorks = new RepositoryMSSQL<AddWorks>();
 
-            Categories = new ObservableCollection<Category>( repoCategory.Items );
+            ListAddWorks = new ObservableCollection<AddWorks>(repoAddWorks.Items);
+
         }
 
         #region Команды
@@ -34,26 +35,25 @@ namespace Tabel.ViewModels.Admins
         private bool CanAddCommand(object p) => true;
         private void OnAddCommandExecuted(object p)
         {
-            int NextCat = Categories.Max(it => it.id) + 1;
-
-            Category newCat = new Category { id = NextCat, cat_tarif = 0 };
-            Categories.Add(newCat);
-            repoCategory.Add(newCat, true);
+            
+            AddWorks newWork = new AddWorks { aw_Name = "Новая работа", aw_Tarif = 0 };
+            ListAddWorks.Add(newWork);
+            repoAddWorks.Add(newWork, true);
         }
         //--------------------------------------------------------------------------------
         // Команда Удалить
         //--------------------------------------------------------------------------------
         public ICommand DeleteCommand => new LambdaCommand(OnDeleteCommandExecuted, CanDeleteCommand);
-        private bool CanDeleteCommand(object p) => SelectedCategory != null;
+        private bool CanDeleteCommand(object p) => SelectedWork != null;
         private void OnDeleteCommandExecuted(object p)
         {
-            if (MessageBox.Show($"Удалить разряд {SelectedCategory.id} ?", "Предупреждение", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            if (MessageBox.Show($"Удалить работу {SelectedWork.aw_Name} ?", "Предупреждение", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
             {
-                repoCategory.Delete(SelectedCategory, true);
-                Categories.Remove(SelectedCategory);
+                repoAddWorks.Delete(SelectedWork, true);
+                ListAddWorks.Remove(SelectedWork);
             }
         }
-    #endregion
+        #endregion
 
     }
 }
