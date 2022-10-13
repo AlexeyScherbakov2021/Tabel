@@ -16,6 +16,9 @@ namespace Tabel.Repository
         void Delete(T item, bool Autosave = false);
         void Update(T item, bool Autosave = false);
 
+
         void Save();
+
+        BaseModel GetDB();
     }
 }

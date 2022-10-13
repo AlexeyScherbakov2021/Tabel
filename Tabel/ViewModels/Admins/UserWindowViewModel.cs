@@ -174,7 +174,7 @@ namespace Tabel.ViewModels
         {
             repoUser = new RepositoryMSSQL<User>();
             ListUser = new ObservableCollection<User>(repoUser.Items);
-            repoOtdel = new RepositoryOtdel();
+            repoOtdel = new RepositoryOtdel(repoUser.GetDB());
             ListOtdel = new ObservableCollection<Otdel>(repoOtdel.Items);
         }
 

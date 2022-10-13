@@ -16,13 +16,16 @@ namespace Tabel.Repository
     internal class RepositoryMSSQL<T> : IRepository<T> where T : class, IEntity, new()
     {
         //SqlConnection conn;
-        protected BaseModel db => App.db;
+        //protected BaseModel db => App.db;
+        protected BaseModel db;// = new BaseModel();
         protected readonly DbSet<T> _Set;
         public virtual IQueryable<T> Items => _Set;
 
 
-        public RepositoryMSSQL()
+        public RepositoryMSSQL(BaseModel Db = null)
         {
+            db = Db ?? new BaseModel();
+
             //db = new BaseModel();
             _Set = db.Set<T>();
 
@@ -115,6 +118,10 @@ namespace Tabel.Repository
             db.Set<T>().Remove(item);
             Save();
         }
+
+        public BaseModel GetDB() => db;
+
+
 
     }
 }

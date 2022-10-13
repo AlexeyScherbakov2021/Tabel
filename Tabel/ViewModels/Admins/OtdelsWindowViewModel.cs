@@ -24,6 +24,7 @@ namespace Tabel.ViewModels.Admins
         // Отделы -----------------------------------------------------
 
         private readonly RepositoryOtdel repoOtdel;
+        //private readonly RepositoryMSSQL<Otdel> repoOtdel;
         // Список всех отделов
         public ObservableCollection<Otdel> ListOtdel { get; set; }
 
@@ -87,10 +88,14 @@ namespace Tabel.ViewModels.Admins
         public OtdelsWindowViewModel()
         {
             repoOtdel = new RepositoryOtdel();
+            //repoOtdel = new RepositoryMSSQL<Otdel>();
             repoPerson = new RepositoryMSSQL<Personal>();
 
             if (App.CurrentUser.u_role == UserRoles.Admin)
-                ListOtdel = new ObservableCollection<Otdel>(repoOtdel.Items);
+            {
+                ListOtdel = new ObservableCollection<Otdel>(repoOtdel.Items.Where(it => it.ot_parent == null));
+                //ListOtdel = new ObservableCollection<Otdel>(repoOtdel.Items);
+            }
             else
             {
                 ListOtdel = new ObservableCollection<Otdel>(repoOtdel.GetTreeOtdels(App.CurrentUser.otdels));

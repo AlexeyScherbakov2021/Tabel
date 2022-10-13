@@ -14,6 +14,14 @@ namespace Tabel.Repository
     {
         public override IQueryable<Otdel> Items => base.Items.Where(it => it.parent == null);//.Include(it => it.subOtdels);
 
+
+        public RepositoryOtdel(BaseModel Db = null) : base(Db)
+        {
+
+        }
+
+
+
         public Otdel AddOtdel(Otdel item, Otdel parent = null)
         {
             if (item is null) throw new ArgumentNullException(nameof(item));
