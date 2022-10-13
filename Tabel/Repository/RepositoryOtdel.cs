@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
@@ -23,10 +24,10 @@ namespace Tabel.Repository
 
         public ICollection<Otdel> GetTreeOtdels(ICollection<Otdel> ListUserOtdels)
         {
-            List<Otdel> ListOtdels = new List<Otdel>();
+            ICollection<Otdel> ListOtdels = new Collection<Otdel>();
 
             // получение корневых отделов
-            ICollection<Otdel> ListRootOtdels = Items.AsNoTracking().ToList();
+            IEnumerable<Otdel> ListRootOtdels = Items.AsNoTracking();
 
             // удаление ненужных отделов
             foreach(var item in ListRootOtdels)
@@ -37,7 +38,7 @@ namespace Tabel.Repository
 
             // добавлеие подотделов, которых еще не добавлены
             RepositoryMSSQL<Otdel> repo1 = new RepositoryMSSQL<Otdel>();
-            ICollection<Otdel> AllOtdels = repo1.Items.AsNoTracking().Where(it => it.parent != null).ToList();
+            IEnumerable<Otdel> AllOtdels = repo1.Items.AsNoTracking().Where(it => it.parent != null);
             foreach(var item in AllOtdels)
             {
 

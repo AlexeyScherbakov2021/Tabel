@@ -140,7 +140,10 @@ namespace Tabel.ViewModels.Admins
 
             repoOtdel.Add(NewOtdel, true);
             //SelectedOtdel.subOtdels.Add(NewOtdel);
-            //SelectedOtdel.OnPropertyChanged(nameof(SelectedOtdel.subOtdels));
+
+            SelectedOtdel.OnPropertyChanged(nameof(SelectedOtdel.subOtdels));
+            OnPropertyChanged(nameof(SelectedOtdel));
+            OnPropertyChanged(nameof(ListOtdel));
         }
 
         //--------------------------------------------------------------------------------
@@ -167,6 +170,7 @@ namespace Tabel.ViewModels.Admins
                 try
                 {
                     repoOtdel.Delete(SelectedOtdel, true);
+                    //repoOtdel.Remove(SelectedOtdel);
                     //SelectedOtdel.parent.subOtdels.Remove(SelectedOtdel);
                     if (parentID == null)
                         ListOtdel.Remove(SelectedOtdel);

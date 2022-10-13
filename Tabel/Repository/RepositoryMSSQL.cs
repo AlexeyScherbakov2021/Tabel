@@ -75,6 +75,8 @@ namespace Tabel.Repository
             if (item is null || item.id <= 0)
                 return;
 
+            
+
             db.Entry(item).State = EntityState.Deleted;
             if (Autosave)
                Save();
