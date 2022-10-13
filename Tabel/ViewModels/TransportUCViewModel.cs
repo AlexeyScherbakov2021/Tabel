@@ -24,7 +24,7 @@ namespace Tabel.ViewModels
 
         private readonly RepositoryMSSQL<Personal> repoPersonal = new RepositoryMSSQL<Personal>();
         private readonly RepositoryMSSQL<Transport> repoTransp = new RepositoryMSSQL<Transport>();
-        private readonly RepositoryMSSQL<TransPerson> repoTrnaspPersonal = new RepositoryMSSQL<TransPerson>();
+        //private readonly RepositoryMSSQL<TransPerson> repoTrnaspPersonal = new RepositoryMSSQL<TransPerson>();
         private readonly RepositoryMSSQL<TransPerson> repoTransPerson = new RepositoryMSSQL<TransPerson>();
 
         public Transport Transp { get; set; }
@@ -108,6 +108,7 @@ namespace Tabel.ViewModels
         private void OnSaveCommandExecuted(object p)
         {
             repoTransPerson.Save();
+            repoTransp.Save();
         }
 
         //--------------------------------------------------------------------------------

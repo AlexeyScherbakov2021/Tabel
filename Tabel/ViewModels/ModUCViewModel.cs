@@ -100,6 +100,7 @@ namespace Tabel.ViewModels
         private bool CanSaveCommand(object p) => CurrentMod != null && _SelectedOtdel != null;
         private void OnSaveCommandExecuted(object p)
         {
+            repoModPerson.Save();
             repoModel.Save();
         }
 

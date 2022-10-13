@@ -24,7 +24,7 @@ namespace Tabel.Repository
 
         public RepositoryMSSQL(BaseModel Db = null)
         {
-            db = Db ?? new BaseModel();
+            db = Db ?? BaseModel.CreateDB();
 
             //db = new BaseModel();
             _Set = db.Set<T>();
@@ -46,6 +46,24 @@ namespace Tabel.Repository
 //#endif
 
         }
+
+//        private BaseModel CreateDB()
+//        {
+//            string ConnectString;
+
+//#if DEBUG
+//            ConnectString = ConfigurationManager.ConnectionStrings["BaseModel"].ConnectionString;
+//            ConnectString += ";user id=fpLoginName;password=ctcnhjt,s";
+//            //ConnectString = ConfigurationManager.ConnectionStrings["ModelLocal"].ConnectionString;
+//#else
+//            ConnectString = ConfigurationManager.ConnectionStrings["BaseModel"].ConnectionString;
+//            ConnectString += ";user id=fpLoginName;password=ctcnhjt,s";
+//#endif
+//            return new BaseModel(ConnectString);
+
+//        }
+
+
 
         public T Add(T item, bool Autosave = false)
         {

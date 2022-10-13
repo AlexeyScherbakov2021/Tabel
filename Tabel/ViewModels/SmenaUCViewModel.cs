@@ -109,6 +109,7 @@ namespace Tabel.ViewModels
         private bool CanSaveCommand(object p) => _SelectedOtdel != null && SmenaShedule != null ;
         private void OnSaveCommandExecuted(object p)
         {
+            repoSmenaPersonal.Save();
             repoSmena.Save();
         }
 

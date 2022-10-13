@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Configuration;
 using System.Data.Entity;
 using System.Linq;
 
@@ -7,8 +8,26 @@ namespace Tabel.Models
 {
     public partial class BaseModel : DbContext
     {
-        public BaseModel()
-            : base("name=BaseModel")
+
+        public static BaseModel CreateDB()
+        {
+            string ConnectString;
+
+#if DEBUG
+            ConnectString = ConfigurationManager.ConnectionStrings["BaseModel"].ConnectionString;
+            ConnectString += ";user id=fpLoginName;password=ctcnhjt,s";
+            //ConnectString = ConfigurationManager.ConnectionStrings["ModelLocal"].ConnectionString;
+#else
+            ConnectString = ConfigurationManager.ConnectionStrings["BaseModel"].ConnectionString;
+            ConnectString += ";user id=fpLoginName;password=ctcnhjt,s";
+#endif
+            return new BaseModel(ConnectString);
+
+        }
+
+
+
+        public BaseModel(string cs) : base(cs)   //: base("name=BaseModel")
         {
         }
 
