@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Tabel.Views"
             xmlns:vm="clr-namespace:Tabel.ViewModels"
+             xmlns:conv="clr-namespace:Tabel.Infrastructure.Converters"
             xmlns:ext="clr-namespace:Tabel.Infrastructure.Extend"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
@@ -13,6 +14,7 @@
     </UserControl.DataContext>
     <UserControl.Resources>
 
+        <conv:AddWorksConverter x:Key="AddWorksConverter"/>
         <vm:ModUCViewModel x:Key="context"/>
 
         <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource StyleCheckComboBox }">
@@ -144,14 +146,54 @@
                             <ColumnDefinition Width="100"/>
                         </Grid.ColumnDefinitions>
                     </Grid>
-                    <DataGrid ItemsSource="{Binding ListModPerson}" Style="{StaticResource DataGridStyle}" IsReadOnly="False">
+                    <DataGrid ItemsSource="{Binding ListModPerson}" Style="{StaticResource DataGridStyle}" IsReadOnly="False"
+                              SelectedItem="{Binding SelectedPerson, Mode=TwoWay}"
+                              >
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="ФИО" Binding="{Binding person.FIO}" IsReadOnly="True"/>
                             <DataGridTextColumn Header="Должность" Binding="{Binding person.p_profession}"  IsReadOnly="True"/>
+
                             <DataGridComboBoxColumn Header="Доп. работа" DisplayMemberPath="aw_Name" 
-                                ItemsSource="{Binding ListAddWorks, Source={StaticResource context}}" ElementStyle="{Binding Mode=OneWay, Source={StaticResource StyleCheckComboBox}}"
+                                ItemsSource="{Binding ListWorks, Source={StaticResource context}}" ElementStyle="{Binding Mode=OneWay, Source={StaticResource StyleCheckComboBox}}"
                              />
                             <DataGridTextColumn Header="Тариф"  CellStyle="{StaticResource CellRight}" IsReadOnly="True"/>
+
+                            <DataGridTemplateColumn Header="Test">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding ListAddWorks, Converter={StaticResource AddWorksConverter}}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                                <DataGridTemplateColumn.CellEditingTemplate>
+                                    <DataTemplate>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition MinWidth="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}" Width="0"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Popup IsOpen="{Binding IsChecked, ElementName=toggle}" Grid.ColumnSpan="2" >
+                                                <ListBox ItemsSource="{Binding ListWorks, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}"  >
+                                                    <ListBox.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <StackPanel Orientation="Horizontal">
+                                                                <CheckBox  Content="{Binding aw_Name}"  IsChecked="{Binding IsChecked, Mode=TwoWay}"/>
+                                                            </StackPanel>
+                                                        </DataTemplate>
+                                                    </ListBox.ItemTemplate>
+                                                </ListBox>
+                                            </Popup>
+                                            <ToggleButton x:Name="toggle" Content="..." DockPanel.Dock="Right" Grid.ColumnSpan="2" 
+                                                          Style="{StaticResource ComboBoxToggleButton}">
+                                            </ToggleButton>
+                                            <TextBlock Text="{Binding ListAddWorks, Converter={StaticResource AddWorksConverter}}" IsHitTestVisible="False" Foreground="Black"/>
+                                        </Grid>
+                                        <!--<ComboBox ItemsSource="{Binding ListWorks, Source={StaticResource context}}"
+                                                  DisplayMemberPath="aw_Name"
+                                                  Text="7777"
+                                                  />-->
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellEditingTemplate>
+                            </DataGridTemplateColumn>
                         </DataGrid.Columns>
                     </DataGrid>
                 </DockPanel>

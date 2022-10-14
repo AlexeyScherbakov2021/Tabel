@@ -87,6 +87,7 @@
     </Compile>
     <Compile Include="Component\TabelPanel\TabelPanel.cs" />
     <Compile Include="Component\TabelPanel\TestConvert.cs" />
+    <Compile Include="Infrastructure\Converters\AddWorksConverter.cs" />
     <Compile Include="Infrastructure\Converters\Convert0ToNull.cs" />
     <Compile Include="Infrastructure\Converters\KindSmenaConverter.cs" />
     <Compile Include="Infrastructure\Converters\OtdelsUserConverter.cs" />

@@ -109,7 +109,6 @@ namespace Tabel.Models
             }
         }
 
-
         [Column(TypeName = "numeric")]
         public decimal? md_tarif_offDay { get; set; }
 

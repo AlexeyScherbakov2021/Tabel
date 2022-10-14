@@ -42,7 +42,7 @@ namespace Tabel.ViewModels
 
             if (Tabel != null)
             {
-                if (MessageBox.Show("Текущий табель будет удален. Подтверждаете?", "Предупреждение", MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.OK)
+                if (MessageBox.Show("Текущий табель будет удален. Подтверждаете?", "Предупреждение", MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
                     return;
 
                 repoTabel.Remove(Tabel);

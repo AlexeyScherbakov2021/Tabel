@@ -44,7 +44,7 @@ namespace Tabel.ViewModels
         {
             if (SmenaShedule != null)
             {
-                if (MessageBox.Show("Текущая форма будет удалена. Продолжить?", "Предупреждение", MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.OK)
+                if (MessageBox.Show("Текущая форма будет удалена. Продолжить?", "Предупреждение", MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
                     return;
                 repoSmena.Remove(SmenaShedule);
             }

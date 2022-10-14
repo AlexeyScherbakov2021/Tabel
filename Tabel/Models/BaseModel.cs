@@ -14,9 +14,9 @@ namespace Tabel.Models
             string ConnectString;
 
 #if DEBUG
-            ConnectString = ConfigurationManager.ConnectionStrings["BaseModel"].ConnectionString;
-            ConnectString += ";user id=fpLoginName;password=ctcnhjt,s";
-            //ConnectString = ConfigurationManager.ConnectionStrings["ModelLocal"].ConnectionString;
+            //ConnectString = ConfigurationManager.ConnectionStrings["BaseModel"].ConnectionString;
+            //ConnectString += ";user id=fpLoginName;password=ctcnhjt,s";
+            ConnectString = ConfigurationManager.ConnectionStrings["BaseModelLocal"].ConnectionString;
 #else
             ConnectString = ConfigurationManager.ConnectionStrings["BaseModel"].ConnectionString;
             ConnectString += ";user id=fpLoginName;password=ctcnhjt,s";

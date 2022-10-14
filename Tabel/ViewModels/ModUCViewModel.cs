@@ -32,9 +32,26 @@ namespace Tabel.ViewModels
 
         public ObservableCollection<ModPerson> ListModPerson { get; set; }
 
-        public List<AddWorks> ListAddWorks { get; set; }
+        public List<AddWorks> ListWorks { get; set; }
 
         public Mod CurrentMod { get; set; }
+
+
+        private ModPerson _SelectedPerson;
+        public ModPerson SelectedPerson
+        {
+            get => _SelectedPerson;
+            set
+            {
+                if (_SelectedPerson == value) return;
+
+                GetWorksFromPerson(_SelectedPerson, ListWorks);
+                _SelectedPerson = value;
+                SetWorksToPerson(_SelectedPerson, ListWorks);
+            }
+        }
+
+
 
         #region Команды
         //--------------------------------------------------------------------------------
@@ -46,7 +63,7 @@ namespace Tabel.ViewModels
         {
             if (CurrentMod != null)
             {
-                if (MessageBox.Show("Текущая форма будет удалена. Подтверждаете?", "Предупреждение", MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.OK)
+                if (MessageBox.Show("Текущая форма будет удалена. Подтверждаете?", "Предупреждение", MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
                     return;
 
                 repoModel.Remove(CurrentMod);
@@ -107,6 +124,16 @@ namespace Tabel.ViewModels
             repoModel.Save();
         }
 
+        //--------------------------------------------------------------------------------
+        // Команда Открыть - закрыть список работ
+        //--------------------------------------------------------------------------------
+        //public ICommand OpenCloseWorksCommand => new LambdaCommand(OnOpenCloseWorksCommandExecuted, CanOpenCloseWorksCommand);
+        //private bool CanOpenCloseWorksCommand(object p) => true;
+        //private void OnOpenCloseWorksCommandExecuted(object p)
+        //{
+        //    var item = SelectedPerson;
+        //}
+
 
         #endregion
 
@@ -118,7 +145,7 @@ namespace Tabel.ViewModels
         {
             DateTime _CurrentDate = DateTime.Now;
 
-            ListAddWorks = repoAddWorks.Items.AsNoTracking().ToList();
+            ListWorks = repoAddWorks.Items.AsNoTracking().ToList();
 
             //User = App.CurrentUser;
             //User = new User() { u_otdel_id = 44, u_login = "Petrov", id = 10, u_fio = "Петров" };
@@ -173,8 +200,6 @@ namespace Tabel.ViewModels
             LoadFromTransprot();
             OnPropertyChanged(nameof(ListModPerson));
             OnPropertyChanged(nameof(CurrentMod));
-
-
         }
 
         //-------------------------------------------------------------------------------------------------------
@@ -258,6 +283,41 @@ namespace Tabel.ViewModels
                 item.NightHours = pers.SmenaDays.Count(s => s.sd_Kind == SmenaKind.Second) * 4.5m;
             }
 
+        }
+
+
+        //--------------------------------------------------------------------------------
+        // Отметка в списке работ для сотрудника
+        //--------------------------------------------------------------------------------
+        private void SetWorksToPerson(ModPerson person, ICollection<AddWorks> ListWorks)
+        {
+            if (person is null || ListWorks is null) return;
+
+            foreach (AddWorks work in ListWorks)
+            {
+                work.IsChecked = person.ListAddWorks.Any(it => it.id == work.id);
+                work.OnPropertyChanged(nameof(work.IsChecked));
+            }
+
+        }
+
+        //--------------------------------------------------------------------------------
+        // Получение работ для сотрудника
+        //--------------------------------------------------------------------------------
+        private void GetWorksFromPerson(ModPerson person, ICollection<AddWorks> ListWorks)
+        {
+            if (person is null || ListWorks is null) return;
+
+            foreach (AddWorks work in ListWorks)
+            {
+                if (work.IsChecked)
+                    person.ListAddWorks.Add(work);
+                else
+                    person.ListAddWorks.Remove(work);
+
+            }
+
+            person.OnPropertyChanged(nameof(person.ListAddWorks));
         }
 
 

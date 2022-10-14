@@ -5,11 +5,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Tabel.Infrastructure;
 
 namespace Tabel.Models
 {
     [Table("AddWorks")]
-    public partial class AddWorks : IEntity
+    public partial class AddWorks : Observable, IEntity
     {
         [Key]
         [Column("aw_Id")]
