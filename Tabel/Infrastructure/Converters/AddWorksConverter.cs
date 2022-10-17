@@ -16,13 +16,16 @@ namespace Tabel.Infrastructure.Converters
             ICollection<AddWorks> ListWorks = (ICollection<AddWorks>)value;
 
             string s = "";
-            foreach (var item in ListWorks)
+            if (ListWorks != null)
             {
-                if (s != "")
-                    s += "; ";
-                s += item.aw_Name;
-            }
 
+                foreach (var item in ListWorks)
+                {
+                    if (s != "")
+                        s += "; ";
+                    s += item.aw_Name;
+                }
+            }
             return s;
 
         }

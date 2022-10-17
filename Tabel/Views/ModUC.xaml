@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Tabel.Views.ModUC"
+﻿<UserControl x:Name="userControl" x:Class="Tabel.Views.ModUC"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -153,12 +153,11 @@
                             <DataGridTextColumn Header="ФИО" Binding="{Binding person.FIO}" IsReadOnly="True"/>
                             <DataGridTextColumn Header="Должность" Binding="{Binding person.p_profession}"  IsReadOnly="True"/>
 
-                            <DataGridComboBoxColumn Header="Доп. работа" DisplayMemberPath="aw_Name" 
-                                ItemsSource="{Binding ListWorks, Source={StaticResource context}}" ElementStyle="{Binding Mode=OneWay, Source={StaticResource StyleCheckComboBox}}"
-                             />
-                            <DataGridTextColumn Header="Тариф"  CellStyle="{StaticResource CellRight}" IsReadOnly="True"/>
+                            <!--<DataGridComboBoxColumn Header="Доп. работа" 
+                                ItemsSource="{Binding DataContext.ListWorks, ElementName=userControl}" ElementStyle="{Binding Mode=OneWay, Source={StaticResource StyleCheckComboBox}}"
+                             />-->
 
-                            <DataGridTemplateColumn Header="Test">
+                            <DataGridTemplateColumn Header="Работы">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <TextBlock Text="{Binding ListAddWorks, Converter={StaticResource AddWorksConverter}}"/>
@@ -172,17 +171,18 @@
                                                 <ColumnDefinition MinWidth="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}" Width="0"/>
                                             </Grid.ColumnDefinitions>
                                             <Popup IsOpen="{Binding IsChecked, ElementName=toggle}" Grid.ColumnSpan="2" >
-                                                <ListBox ItemsSource="{Binding ListWorks, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}"  >
+                                                <ListBox ItemsSource="{Binding DataContext.ListWorks, ElementName=userControl}"  >
                                                     <ListBox.ItemTemplate>
                                                         <DataTemplate>
                                                             <StackPanel Orientation="Horizontal">
-                                                                <CheckBox  Content="{Binding aw_Name}"  IsChecked="{Binding IsChecked, Mode=TwoWay}"/>
+                                                                <CheckBox Content="{Binding aw_Name}" IsChecked="{Binding IsChecked, Mode=TwoWay}"/>
                                                             </StackPanel>
                                                         </DataTemplate>
                                                     </ListBox.ItemTemplate>
                                                 </ListBox>
                                             </Popup>
-                                            <ToggleButton x:Name="toggle" Content="..." DockPanel.Dock="Right" Grid.ColumnSpan="2" 
+                                            <ToggleButton x:Name="toggle" DockPanel.Dock="Right" Grid.ColumnSpan="2" 
+                                                          IsChecked="{Binding DataContext.IsCheckedButton, ElementName=userControl}"
                                                           Style="{StaticResource ComboBoxToggleButton}">
                                             </ToggleButton>
                                             <TextBlock Text="{Binding ListAddWorks, Converter={StaticResource AddWorksConverter}}" IsHitTestVisible="False" Foreground="Black"/>
@@ -194,6 +194,8 @@
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellEditingTemplate>
                             </DataGridTemplateColumn>
+                            <DataGridTextColumn Header="Тариф" Binding="{Binding AddWorksSumma}"  CellStyle="{StaticResource CellRight}" IsReadOnly="True"/>
+
                         </DataGrid.Columns>
                     </DataGrid>
                 </DockPanel>
@@ -231,7 +233,7 @@
                             <DataGridTextColumn Header="ФИО" Binding="{Binding person.FIO}" IsReadOnly="True"/>
                             <DataGridTextColumn Header="Должность" Binding="{Binding person.p_profession}" IsReadOnly="True"/>
                             <DataGridTextColumn Header="Доплата 20%" Binding="{Binding NightOklad, StringFormat=0.#}" IsReadOnly="True" CellStyle="{StaticResource CellRight}"/>
-                            <DataGridTextColumn Header="Часы" Binding="{Binding NightHours, Mode=TwoWay, StringFormat=0.#}"  CellStyle="{StaticResource CellRight}"/>
+                            <DataGridTextColumn Header="Часы" Binding="{Binding NightHours, Mode=TwoWay, StringFormat=0.#}"  CellStyle="{StaticResource CellRight}"  IsReadOnly="True"/>
                             <DataGridTextColumn Header="Сумма" Binding="{Binding NightSumma, StringFormat=0.#}" IsReadOnly="True" CellStyle="{StaticResource CellRight}"/>
                         </DataGrid.Columns>
                     </DataGrid>

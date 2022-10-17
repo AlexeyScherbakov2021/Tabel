@@ -37,6 +37,21 @@ namespace Tabel.ViewModels
         public Mod CurrentMod { get; set; }
 
 
+        private bool _IsCheckedButton;
+        public bool IsCheckedButton
+        {
+            get => _IsCheckedButton;
+            set
+            {
+                _IsCheckedButton = value;
+                if(!value)
+                {
+                    GetWorksFromPerson(_SelectedPerson, ListWorks);
+                }
+            }
+        }
+
+
         private ModPerson _SelectedPerson;
         public ModPerson SelectedPerson
         {
@@ -48,6 +63,8 @@ namespace Tabel.ViewModels
                 GetWorksFromPerson(_SelectedPerson, ListWorks);
                 _SelectedPerson = value;
                 SetWorksToPerson(_SelectedPerson, ListWorks);
+                //repoModPerson.Save();
+
             }
         }
 
@@ -145,7 +162,9 @@ namespace Tabel.ViewModels
         {
             DateTime _CurrentDate = DateTime.Now;
 
-            ListWorks = repoAddWorks.Items.AsNoTracking().ToList();
+            repoAddWorks = new RepositoryMSSQL<AddWorks>(repoModPerson.GetDB());
+
+            ListWorks = repoAddWorks.Items.ToList();
 
             //User = App.CurrentUser;
             //User = new User() { u_otdel_id = 44, u_login = "Petrov", id = 10, u_fio = "Петров" };
@@ -318,6 +337,9 @@ namespace Tabel.ViewModels
             }
 
             person.OnPropertyChanged(nameof(person.ListAddWorks));
+            //person.OnPropertyChanged(nameof(person.AddWorksSumma));
+            person.UpdateUI();
+
         }
 
 
