@@ -30,11 +30,11 @@
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
-                <ColumnDefinition Width="28"/>
+                <ColumnDefinition Width="32"/>
                 <ColumnDefinition/>
-                <ColumnDefinition Width="28"/>
+                <ColumnDefinition Width="32"/>
                 <ColumnDefinition/>
-                <ColumnDefinition/>
+                <ColumnDefinition Width="32"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <Grid.Resources>
@@ -68,7 +68,7 @@
             <Label Grid.Row="2"  Grid.Column="1" Background="White" BorderThickness="0.5" Padding="3" BorderBrush="Black" HorizontalContentAlignment="Center">
                 <TextBlock Text="{Binding DaysWeek2, Mode=OneWay}" FontWeight="Bold" />
             </Label>
-            <Label Grid.Row="3"  Grid.Column="1" Background="White" BorderThickness="0.5" BorderBrush="Black" Padding="3" HorizontalContentAlignment="Center">
+            <Label Grid.Row="3"  Grid.Column="1" Background="White"  BorderThickness="0.5" BorderBrush="Black" Padding="3" HorizontalContentAlignment="Center">
                 <TextBlock Text="{Binding HoursWeek2, Mode=OneWay, StringFormat=0.#}" FontWeight="Bold" />
             </Label>
 

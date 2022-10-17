@@ -68,9 +68,9 @@
                 </DataGridTemplateColumn>
                 <DataGridTextColumn Header="Тариф" Binding="{Binding tp_tarif, Mode=TwoWay}" IsReadOnly="False" CellStyle="{StaticResource CellRight}"/>
                 <DataGridTextColumn Header="Всего дней" Binding="{Binding ItogDays}" IsReadOnly="True" CellStyle="{StaticResource CellRight}"/>
-                <DataGridTextColumn Header="Итого" Binding="{Binding Summa}" IsReadOnly="True" CellStyle="{StaticResource CellRight}"/>
-                <DataGridTextColumn Header="Компенс.такси" Binding="{Binding tp_Kompens, Mode=TwoWay}"  CellStyle="{StaticResource CellRight}"/>
-                <DataGridTextColumn Header="Всего" Binding="{Binding Itogo}" IsReadOnly="True" CellStyle="{StaticResource CellRight}"/>
+                <DataGridTextColumn Header="Итого" Binding="{Binding Summa, StringFormat=N2}" Width="70" IsReadOnly="True" CellStyle="{StaticResource CellRight}"/>
+                <DataGridTextColumn Header="Компенс.такси" Binding="{Binding tp_Kompens, Mode=TwoWay, StringFormat=N2}" Width="70"  CellStyle="{StaticResource CellRight}"/>
+                <DataGridTextColumn Header="Всего" Binding="{Binding Itogo, StringFormat=N2}" Width="70" IsReadOnly="True" CellStyle="{StaticResource CellRight}"/>
             </DataGrid.Columns>
         </DataGrid>
     </DockPanel>
