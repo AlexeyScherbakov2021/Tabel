@@ -89,31 +89,31 @@ namespace Tabel.Models
 
 
 
-        public void SetCalendarTypeDays()
-        {
-            RepositoryCalendar repo = new RepositoryCalendar();
-            IEnumerable<WorkCalendar> cal = repo.Items.AsNoTracking().Where(it => it.cal_date.Year == tabel.t_year 
-                    && it.cal_date.Month == tabel.t_month);
+        //public void SetCalendarTypeDays()
+        //{
+        //    RepositoryCalendar repo = new RepositoryCalendar();
+        //    IEnumerable<WorkCalendar> cal = repo.Items.AsNoTracking().Where(it => it.cal_date.Year == tabel.t_year 
+        //            && it.cal_date.Month == tabel.t_month);
 
-            // выставление выходных дней для списка
-            List<TabelDay> days = TabelDays.ToList();
-            DateTime dt = new DateTime(tabel.t_year, tabel.t_month, 1);
-            while(dt.Month == tabel.t_month)
-            {
-                if (dt.DayOfWeek == DayOfWeek.Saturday || dt.DayOfWeek == DayOfWeek.Sunday)
-                    days[dt.Day - 1].CalendarTypeDay = TypeDays.Holyday;
-                else
-                    days[dt.Day - 1].CalendarTypeDay = TypeDays.Work;
-                dt = dt.AddDays(1);
-            }
+        //    // выставление выходных дней для списка
+        //    List<TabelDay> days = TabelDays.ToList();
+        //    DateTime dt = new DateTime(tabel.t_year, tabel.t_month, 1);
+        //    while(dt.Month == tabel.t_month)
+        //    {
+        //        if (dt.DayOfWeek == DayOfWeek.Saturday || dt.DayOfWeek == DayOfWeek.Sunday)
+        //            days[dt.Day - 1].CalendarTypeDay = TypeDays.Holyday;
+        //        else
+        //            days[dt.Day - 1].CalendarTypeDay = TypeDays.Work;
+        //        dt = dt.AddDays(1);
+        //    }
 
-            // корректировка измененных дней
-            foreach(var item in cal)
-            {
-                days[item.cal_date.Day - 1].CalendarTypeDay = item.cal_type;
-            }
+        //    // корректировка измененных дней
+        //    foreach(var item in cal)
+        //    {
+        //        days[item.cal_date.Day - 1].CalendarTypeDay = item.cal_type;
+        //    }
 
-        }
+        //}
 
 
     }

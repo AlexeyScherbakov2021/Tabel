@@ -62,7 +62,11 @@ namespace Tabel.ViewModels
             Transp.TransportPerson = new ObservableCollection<TransPerson>();
 
             // количество дней в месяце
-            DateTime StartDay = new DateTime(_SelectYear, _SelectMonth, 1);
+            //DateTime StartDay = new DateTime(_SelectYear, _SelectMonth, 1);
+
+            // получение данных производственного календаря
+            RepositoryCalendar repo = new RepositoryCalendar();
+            var ListDays = repo.GetListDays(_SelectYear, _SelectMonth);
 
             // если есть персонал в отделе, добавляем его и формируем дни
             foreach (var item in PersonsFromOtdel)
@@ -72,10 +76,13 @@ namespace Tabel.ViewModels
                 //tp.person = item;
                 tp.TransDays = new List<TransDay>();
 
-                for (DateTime IndexDate = StartDay; IndexDate.Month == _SelectMonth; IndexDate = IndexDate.AddDays(1))
+                //for (DateTime IndexDate = StartDay; IndexDate.Month == _SelectMonth; IndexDate = IndexDate.AddDays(1))
+                foreach (var listItem in ListDays)
                 {
                     TransDay td = new TransDay();
-                    td.td_Day = IndexDate.Day;
+                    td.td_Day = listItem.Day;
+                    td.OffDay = listItem.KindDay == TypeDays.Holyday;
+
                     //if (IndexDate.DayOfWeek == DayOfWeek.Sunday || IndexDate.DayOfWeek == DayOfWeek.Saturday)
                     //    td.OffDay = true;
                     tp.TransDays.Add(td);
@@ -93,7 +100,7 @@ namespace Tabel.ViewModels
                 .FirstOrDefault();
 
             ListTransPerson = new ObservableCollection<TransPerson>(Transp.TransportPerson);
-            SetTypeDays();
+            //SetTypeDays();
 
             OnPropertyChanged(nameof(ListTransPerson));
             OnPropertyChanged(nameof(Transp));
@@ -174,30 +181,38 @@ namespace Tabel.ViewModels
         {
             if (Transp is null) return;
 
-            RepositoryMSSQL<WorkCalendar> repoDays = new RepositoryMSSQL<WorkCalendar>();
-            // количество дней в месяце
-            DateTime StartDay = new DateTime(_SelectYear, _SelectMonth, 1);
+            // получение данных производственного календаря
+            RepositoryCalendar repo = new RepositoryCalendar();
+            var ListDays = repo.GetListDays(_SelectYear, _SelectMonth);
 
-            List<WorkCalendar> cal = repoDays.Items.AsNoTracking().Where(it => it.cal_date.Year == _SelectYear && it.cal_date.Month == _SelectMonth).ToList();
+            //RepositoryMSSQL<WorkCalendar> repoDays = new RepositoryMSSQL<WorkCalendar>();
+            // количество дней в месяце
+            //DateTime StartDay = new DateTime(_SelectYear, _SelectMonth, 1);
+
+            //List<WorkCalendar> cal = repoDays.Items.AsNoTracking().Where(it => it.cal_date.Year == _SelectYear && it.cal_date.Month == _SelectMonth).ToList();
 
             foreach (var item in ListTransPerson)
             {
                 // расставляем выходные по каледнарю
+
+                int i = 0;
                 foreach ( var day in item.TransDays)
                 {
-                    DayOfWeek week = new DateTime(_SelectYear, _SelectMonth, day.td_Day).DayOfWeek;
-                    if (week == DayOfWeek.Sunday || week == DayOfWeek.Saturday)
-                    {
-                        day.OffDay = true;
-                    }
+                    day.OffDay = ListDays[i].KindDay == TypeDays.Holyday;
+                    //DayOfWeek week = new DateTime(_SelectYear, _SelectMonth, day.td_Day).DayOfWeek;
+                    //if (week == DayOfWeek.Sunday || week == DayOfWeek.Saturday)
+                    //{
+                    //    day.OffDay = true;
+                    //}
+                    i++;
                 }
 
-                // дополняем измененные дни
-                foreach(var day in cal)
-                {
-                    TransDay td = item.TransDays.FirstOrDefault(it => it.td_Day == day.cal_date.Day);
-                    td.OffDay = day.cal_type == TypeDays.Holyday;
-                }
+                //// дополняем измененные дни
+                //foreach(var day in cal)
+                //{
+                //    TransDay td = item.TransDays.FirstOrDefault(it => it.td_Day == day.cal_date.Day);
+                //    td.OffDay = day.cal_type == TypeDays.Holyday;
+                //}
 
             }
 

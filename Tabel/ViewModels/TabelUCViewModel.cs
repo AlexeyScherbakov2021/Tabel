@@ -50,7 +50,6 @@ namespace Tabel.ViewModels
 
             // получение данных производственного календаря
             RepositoryCalendar repo = new RepositoryCalendar();
-
             var ListDays = repo.GetListDays(_SelectYear, _SelectMonth);
 
             //IEnumerable<WorkCalendar> cal = repo.Items.AsNoTracking().Where(it => it.cal_date.Year == _SelectYear
@@ -246,16 +245,43 @@ namespace Tabel.ViewModels
                         );
             }
 
-
-            if (ListTabelPerson != null)
-            {
-                foreach (var item in ListTabelPerson)
-                    item.SetCalendarTypeDays();
-            }
+            SetTypeDays();
+            //if (ListTabelPerson != null)
+            //{
+            //    foreach (var item in ListTabelPerson)
+            //        item.SetCalendarTypeDays();
+            //}
 
             OnPropertyChanged(nameof(ListTabelPerson));
             OnPropertyChanged(nameof(Tabel));
         }
+
+        //--------------------------------------------------------------------------------------
+        // расстановка топв дней по производственному календарю
+        //--------------------------------------------------------------------------------------
+        private void SetTypeDays()
+        {
+            if (Tabel is null) return;
+
+            // получение данных производственного календаря
+            RepositoryCalendar repo = new RepositoryCalendar();
+            var ListDays = repo.GetListDays(_SelectYear, _SelectMonth);
+
+            foreach (var item in ListTabelPerson)
+            {
+                // расставляем выходные по каледнарю
+                int i = 0;
+                foreach (var day in item.TabelDays)
+                {
+                    day.CalendarTypeDay = ListDays[i].KindDay;
+                    i++;
+                }
+
+            }
+
+
+        }
+
 
     }
 }

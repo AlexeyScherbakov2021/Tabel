@@ -63,8 +63,12 @@ namespace Tabel.ViewModels
             SmenaShedule.sm_DateCreate = DateTime.Now;
             SmenaShedule.SmenaPerson = new ObservableCollection<SmenaPerson>();
 
+            // получение данных производственного календаря
+            RepositoryCalendar repo = new RepositoryCalendar();
+            var ListDays = repo.GetListDays(_SelectYear, _SelectMonth);
+
             // количество дней в месяце
-            DateTime StartDay = new DateTime(_SelectYear, _SelectMonth, 1);
+            //DateTime StartDay = new DateTime(_SelectYear, _SelectMonth, 1);
 
             // если есть персонал в отделе, добавляем его и формируем дни
             foreach (var item in PersonsFromOtdel)
@@ -73,14 +77,20 @@ namespace Tabel.ViewModels
                 sp.sp_PersonId = item.id;
                 sp.SmenaDays = new List<SmenaDay>();
 
-                for (DateTime IndexDate = StartDay; IndexDate.Month == _SelectMonth; IndexDate = IndexDate.AddDays(1))
+                foreach (var listItem in ListDays)
                 {
                     SmenaDay sd = new SmenaDay();
-                    sd.sd_Day = IndexDate.Day;
-                    if (IndexDate.DayOfWeek == DayOfWeek.Sunday || IndexDate.DayOfWeek == DayOfWeek.Saturday)
+                    sd.sd_Day = listItem.Day;
+                    if (listItem.KindDay == TypeDays.Holyday)
+                    {
                         sd.sd_Kind = SmenaKind.DayOff;
+                        sd.OffDay = true;
+                    }
                     else
+                    {
                         sd.sd_Kind = SmenaKind.First;
+                        sd.OffDay = false;
+                    }
                     sp.SmenaDays.Add(sd);
                 }
 
@@ -185,30 +195,38 @@ namespace Tabel.ViewModels
         {
             if (SmenaShedule is null) return;
 
-            RepositoryMSSQL<WorkCalendar> repoDays = new RepositoryMSSQL<WorkCalendar>();
-            // количество дней в месяце
-            DateTime StartDay = new DateTime(_SelectYear, _SelectMonth, 1);
+            // получение данных производственного календаря
+            RepositoryCalendar repo = new RepositoryCalendar();
+            var ListDays = repo.GetListDays(_SelectYear, _SelectMonth);
 
-            List<WorkCalendar> cal = repoDays.Items.AsNoTracking().Where(it => it.cal_date.Year == _SelectYear && it.cal_date.Month == _SelectMonth).ToList();
+            //RepositoryMSSQL<WorkCalendar> repoDays = new RepositoryMSSQL<WorkCalendar>();
+            //// количество дней в месяце
+            //DateTime StartDay = new DateTime(_SelectYear, _SelectMonth, 1);
+
+            //List<WorkCalendar> cal = repoDays.Items.AsNoTracking().Where(it => it.cal_date.Year == _SelectYear && it.cal_date.Month == _SelectMonth).ToList();
 
             foreach (var item in ListSmenaPerson)
             {
                 // расставляем выходные по каледнарю
-                foreach (var day in item.SmenaDays)
-                {
-                    DayOfWeek week = new DateTime(_SelectYear, _SelectMonth, day.sd_Day).DayOfWeek;
-                    if (week == DayOfWeek.Sunday || week == DayOfWeek.Saturday)
-                    {
-                        day.OffDay = true;
-                    }
-                }
 
-                // дополняем измененные дни
-                foreach (var day in cal)
-                {
-                    SmenaDay sd = item.SmenaDays.FirstOrDefault(it => it.sd_Day == day.cal_date.Day);
-                    sd.OffDay = day.cal_type == TypeDays.Holyday;
-                }
+
+                int i = 0;
+                foreach (var day in item.SmenaDays)
+                    day.OffDay = ListDays[i++].KindDay == TypeDays.Holyday;
+                //{
+                //    DayOfWeek week = new DateTime(_SelectYear, _SelectMonth, day.sd_Day).DayOfWeek;
+                //    if (week == DayOfWeek.Sunday || week == DayOfWeek.Saturday)
+                //    {
+                //        day.OffDay = true;
+                //    }
+                //}
+
+                //// дополняем измененные дни
+                //foreach (var day in cal)
+                //{
+                //    SmenaDay sd = item.SmenaDays.FirstOrDefault(it => it.sd_Day == day.cal_date.Day);
+                //    sd.OffDay = day.cal_type == TypeDays.Holyday;
+                //}
 
             }
 
