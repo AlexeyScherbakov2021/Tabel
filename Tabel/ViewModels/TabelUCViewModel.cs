@@ -50,8 +50,11 @@ namespace Tabel.ViewModels
 
             // получение данных производственного календаря
             RepositoryCalendar repo = new RepositoryCalendar();
-            IEnumerable<WorkCalendar> cal = repo.Items.AsNoTracking().Where(it => it.cal_date.Year == _SelectYear
-                    && it.cal_date.Month == _SelectMonth);
+
+            var ListDays = repo.GetListDays(_SelectYear, _SelectMonth);
+
+            //IEnumerable<WorkCalendar> cal = repo.Items.AsNoTracking().Where(it => it.cal_date.Year == _SelectYear
+            //        && it.cal_date.Month == _SelectMonth);
 
 
             RepositoryMSSQL<Otdel> repoOtdel = new RepositoryMSSQL<Otdel>();
@@ -71,7 +74,7 @@ namespace Tabel.ViewModels
             Tabel.t_date_create = DateTime.Now;
             Tabel.tabelPersons = new ObservableCollection<TabelPerson>();
 
-            DateTime StartDay = new DateTime(_SelectYear, _SelectMonth, 1);
+            //DateTime StartDay = new DateTime(_SelectYear, _SelectMonth, 1);
 
             // если есть персонал в отделе, добавляем его и формируем дни
             foreach (var item in PersonsFromOtdel)
@@ -81,51 +84,77 @@ namespace Tabel.ViewModels
                 //tp.person = item;
                 tp.TabelDays = new ObservableCollection<TabelDay>();
 
-                for (DateTime IndexDate = StartDay; IndexDate.Month == _SelectMonth; IndexDate = IndexDate.AddDays(1))
+                foreach(var listItem in ListDays)
                 {
-                    WorkCalendar ChangeDay = cal.FirstOrDefault(it => it.cal_date == IndexDate);
-
                     TabelDay td = new TabelDay();
-                    td.td_Day = IndexDate.Day;
-
-                    if (ChangeDay != null)
+                    td.td_Day = listItem.Day;
+                    td.CalendarTypeDay = listItem.KindDay;
+                    switch (td.CalendarTypeDay)
                     {
-                        td.CalendarTypeDay = ChangeDay.cal_type;
-                        switch (td.CalendarTypeDay)
-                        {
-                            case TypeDays.Holyday:
-                                td.td_KindId = 2;
-                                td.td_Hours = 0;
-                                break;
-                            case TypeDays.Work:
-                                td.td_KindId = 1;
-                                td.td_Hours = 8;
-                                break;
-                            case TypeDays.ShortWork:
-                                td.td_KindId = 1;
-                                td.td_Hours = 7;
-                                break;
-                        }
-                    }
-                    else
-                    {
-                        if (IndexDate.DayOfWeek == DayOfWeek.Sunday || IndexDate.DayOfWeek == DayOfWeek.Saturday)
-                        {
+                        case TypeDays.Holyday:
                             td.td_KindId = 2;
-                            td.CalendarTypeDay = TypeDays.Holyday;
                             td.td_Hours = 0;
-                        }
-                        else
-                        {
+                            break;
+                        case TypeDays.Work:
                             td.td_KindId = 1;
-                            td.CalendarTypeDay = TypeDays.Work;
                             td.td_Hours = 8;
-                        }
+                            break;
+                        case TypeDays.ShortWork:
+                            td.td_KindId = 1;
+                            td.td_Hours = 7;
+                            break;
                     }
+
                     tp.TabelDays.Add(td);
+
                 }
 
-                //tp.SetCalendarTypeDays();
+
+            //    for (DateTime IndexDate = StartDay; IndexDate.Month == _SelectMonth; IndexDate = IndexDate.AddDays(1))
+            //    {
+            //        WorkCalendar ChangeDay = cal.FirstOrDefault(it => it.cal_date == IndexDate);
+
+            //        TabelDay td = new TabelDay();
+            //        td.td_Day = IndexDate.Day;
+
+            //        if (ChangeDay != null)
+            //        {
+            //            td.CalendarTypeDay = ChangeDay.cal_type;
+            //            switch (td.CalendarTypeDay)
+            //            {
+            //                case TypeDays.Holyday:
+            //                    td.td_KindId = 2;
+            //                    td.td_Hours = 0;
+            //                    break;
+            //                case TypeDays.Work:
+            //                    td.td_KindId = 1;
+            //                    td.td_Hours = 8;
+            //                    break;
+            //                case TypeDays.ShortWork:
+            //                    td.td_KindId = 1;
+            //                    td.td_Hours = 7;
+            //                    break;
+            //            }
+            //        }
+            //        else
+            //        {
+            //            if (IndexDate.DayOfWeek == DayOfWeek.Sunday || IndexDate.DayOfWeek == DayOfWeek.Saturday)
+            //            {
+            //                td.td_KindId = 2;
+            //                td.CalendarTypeDay = TypeDays.Holyday;
+            //                td.td_Hours = 0;
+            //            }
+            //            else
+            //            {
+            //                td.td_KindId = 1;
+            //                td.CalendarTypeDay = TypeDays.Work;
+            //                td.td_Hours = 8;
+            //            }
+            //        }
+            //        tp.TabelDays.Add(td);
+            //    }
+
+            //    //tp.SetCalendarTypeDays();
                 Tabel.tabelPersons.Add(tp);
             }
 

@@ -14,7 +14,7 @@ namespace Tabel.Models
         [Column("idCal")]
         public int id { get; set; }
 
-        public int cal_year { get; set; }
+        //public int cal_year { get; set; }
 
         [Column(TypeName = "date")]
         public DateTime cal_date { get; set; }

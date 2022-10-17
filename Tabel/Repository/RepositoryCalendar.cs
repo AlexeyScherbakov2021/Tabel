@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Data.Entity.Core.Objects;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -53,6 +54,67 @@ namespace Tabel.Repository
 
             return true;
         }
+
+
+
+        //---------------------------------------------------------------------------------------------
+        // Получние дней месяца с типом дня
+        //---------------------------------------------------------------------------------------------
+        public List<(int Day, TypeDays KindDay, decimal Hours)> GetListDays(int year, int month)
+        {
+            List<(int Day, TypeDays KindDay, decimal Hours)> list = new List<(int, TypeDays, decimal)>();
+
+            IEnumerable<WorkCalendar> cal = db.calendars.AsNoTracking().Where(it => it.cal_date.Year == year
+                    && it.cal_date.Month == month);
+
+
+            DateTime StartDay = new DateTime(year, month, 1);
+
+            for (DateTime IndexDate = StartDay; IndexDate.Month == month; IndexDate = IndexDate.AddDays(1))
+            {
+                WorkCalendar ChangeDay = cal.FirstOrDefault(it => it.cal_date == IndexDate);
+                TypeDays typeDay;
+                int hours = 0;
+
+                if (ChangeDay != null)
+                {
+                    typeDay = ChangeDay.cal_type;
+                    switch (typeDay)
+                    {
+                        case TypeDays.Holyday:
+                            hours = 0;
+                            break;
+                        case TypeDays.Work:
+                            hours = 8;
+                            break;
+                        case TypeDays.ShortWork:
+                            hours = 7;
+                            break;
+                    }
+                }
+                else
+                {
+                    if (IndexDate.DayOfWeek == DayOfWeek.Sunday || IndexDate.DayOfWeek == DayOfWeek.Saturday)
+                    {
+                        typeDay =TypeDays.Holyday;
+                        hours = 0;
+                    }
+                    else
+                    {
+                        typeDay = TypeDays.Work;
+                        hours = 8;
+                    }
+                }
+
+
+                //(int, TypeDays, decimal) newDay = (IndexDate.Day, typeDay, hours);
+                list.Add((IndexDate.Day, typeDay, hours));
+
+            }
+
+            return list;
+        }
+
 
     }
 }
