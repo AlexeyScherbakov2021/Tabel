@@ -10,25 +10,7 @@
         Title="TabelPrint" Height="800" Width="1200" WindowStartupLocation="CenterScreen">
     <Grid>
         <FlowDocumentReader >
-            <FlowDocument>
-                <Paragraph>
-                    <Run Text="Отдел"/>
-                    <Run Text="{Binding SelectedOtdel.ot_name}"/>
-                    <LineBreak/>
-                    <Run Text="Номер"/>
-                    <Run Text="{Binding Tabel.t_number}"/>
-                    <Run Text="Дата составления"/>
-                    <Run Text="{Binding Tabel.t_date_create, StringFormat=dd.MM.yyyy}" />
-
-                </Paragraph>
-                <Paragraph>
-                    <Run>
-                       
-                    </Run>
-                    <ItemsControl ItemsSource="{Binding ListTabelPerson}" DisplayMemberPath="person.FIO">
-                    </ItemsControl>
-                </Paragraph>
-            </FlowDocument>
+            <DocumentViewer/>
         </FlowDocumentReader>
 
     </Grid>

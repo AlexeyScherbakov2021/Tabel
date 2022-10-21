@@ -119,22 +119,6 @@ namespace Tabel.Component.TabelPanel
             }
         }
 
-        //-----------------------------------------------------------------------------------------
-        // изменение часов
-        //-----------------------------------------------------------------------------------------
-        //private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
-        //{
-        //    //if (ListBoxDays.SelectedItems.Count > 1)
-        //    //{
-        //    //    TextBox tb = sender as TextBox;
-
-        //    //    foreach (TabelDay item in ListBoxDays.SelectedItems)
-        //    //    {
-        //    //        item.td_Hours = int.Parse(tb.Text);
-        //    //    }
-        //    //}
-        //}
-
 
         //-----------------------------------------------------------------------------------------
         // событие нажатия кноаки

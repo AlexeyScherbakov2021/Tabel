@@ -16,10 +16,7 @@
 
             <conv:Convert0ToNull x:Key="Convert0ToNull"/>
         </ResourceDictionary>
-    
-
     </UserControl.Resources>
-
     <DockPanel>
         <Grid DockPanel.Dock="Right">
             <Grid.RowDefinitions>
