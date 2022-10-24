@@ -61,6 +61,11 @@ namespace Tabel.Models
 
         [NotMapped]
         public string FIO => p_lastname + " " + p_name + " " + p_midname;
+        [NotMapped]
+        public string ShortFIO => p_lastname + " " +    
+            (String.IsNullOrEmpty(p_name) ? ""
+              : (p_name[0] + ". " +
+                (String.IsNullOrEmpty(p_midname) ? "" : (p_midname[0] + ". "))));
 
     }
 }

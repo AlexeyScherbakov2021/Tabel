@@ -7,9 +7,12 @@ using System.Windows.Markup;
 
 namespace Tabel.Infrastructure
 {
-    public enum SmenaKind: int { None, First, Second,  DayOff, Otpusk }
-    public enum TabelKind: int { None, Work, DayOff, Komandir, Otpusk, WorkDayOff, DopOtpusk, Bolen, Obuchenie, NotWork};
-    public enum UserRoles: int { Admin, Управление, Пользователь};
+    public enum SmenaKind : int { None, First, Second, DayOff, Otpusk };
+
+
+
+    public enum TabelKind : int { None, Work, DayOff, Komandir, Otpusk, WorkDayOff, DopOtpusk, Bolen, Obuchenie, NotWork };
+    public enum UserRoles : int { Admin, Управление, Пользователь };
 
 
 
@@ -19,8 +22,8 @@ namespace Tabel.Infrastructure
 
         public UserRolesBinding(Type enumType)
         {
-            if(enumType is null || !enumType.IsEnum)
-                    throw new Exception("не тот тип");
+            if (enumType is null || !enumType.IsEnum)
+                throw new Exception("не тот тип");
 
             EnumType = enumType;
         }
@@ -30,4 +33,19 @@ namespace Tabel.Infrastructure
             return Enum.GetValues(EnumType);
         }
     }
+
+    public class EnumToString
+    {
+        public static List<string> ListSmenaKind = new List<string>() {"",  "1см", "2см", "В", "О" };
+
+        public static string SmenaKindToString(SmenaKind num)
+        {
+            return ListSmenaKind[(int)num];
+        }
+
+    }
+        
+
+
+
 }

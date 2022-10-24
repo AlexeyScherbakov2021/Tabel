@@ -1,7 +1,9 @@
-﻿using System;
+﻿using ClosedXML.Excel;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data.Entity;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,13 +28,19 @@ namespace Tabel.ViewModels
         private readonly RepositoryMSSQL<Smena> repoSmena = new RepositoryMSSQL<Smena>();
         private readonly RepositoryMSSQL<SmenaPerson> repoSmenaPersonal = new RepositoryMSSQL<SmenaPerson>();
 
-        public string[] ListKind { get; set; } = { "1см", "2см", "В", "О" };
+        public string[] ListKind { get; set; } //= { "1см", "2см", "В", "О" };
 
         // Текщий график смен
         public Smena SmenaShedule { get; set; }
         public ObservableCollection<SmenaPerson> ListSmenaPerson { get; set; }
 
         //private DateTime _CurrentDate;
+
+        public SmenaUCViewModel()
+        {
+            ListKind = EnumToString.ListSmenaKind.ToArray();
+        }
+
 
         #region Команды
         //--------------------------------------------------------------------------------
@@ -126,10 +134,62 @@ namespace Tabel.ViewModels
         //--------------------------------------------------------------------------------
         // 
         //--------------------------------------------------------------------------------
-        public ICommand SelectKindCommand => new LambdaCommand(OnSelectKindCommandExecuted, CanSelectKindCommand);
-        private bool CanSelectKindCommand(object p) => SmenaShedule != null;
-        private void OnSelectKindCommandExecuted(object p)
+        public ICommand PrintCommand => new LambdaCommand(OnPrintCommandExecuted, CanPrintdCommand);
+        private bool CanPrintdCommand(object p) => SmenaShedule != null;
+        private void OnPrintCommandExecuted(object p)
         {
+            using (XLWorkbook wb = new XLWorkbook(@"Отчеты\График смен.xlsx"))
+            {
+                var ws = wb.Worksheets.Worksheet(1);
+
+                ws.Cell("P3").Value = _SelectedOtdel.ot_name;
+                ws.Cell("C8").Value = SmenaShedule.sm_Number;
+                ws.Cell("D8").Value = SmenaShedule.sm_DateCreate.ToString("dd.MM.yyyy");
+                ws.Cell("K7").Value = "График смен - " + App.ListMonth.First(it => it.Number == _SelectMonth).Name;
+                DateTime startDate = new DateTime(_SelectYear, _SelectMonth, 1);
+                ws.Cell("AG9").Value = startDate.ToString("dd.MM.yyyy");
+                DateTime endDate = startDate.AddMonths(1).AddDays(-1);
+                ws.Cell("AJ9").Value = endDate.ToString("dd.MM.yyyy");
+
+                int ColNum = 5;
+                //int ColWeek = 5;
+                int NumWeek = 0;
+
+                while (startDate <= endDate)
+                {
+                    NumWeek = (startDate.DayOfYear - 1) / 7 + 1;
+                    if(startDate.Day == 1 || startDate.DayOfWeek == DayOfWeek.Monday)
+                        ws.Cell(11, ColNum).Value = NumWeek;
+
+                    ws.Cell(12, ColNum).Value = startDate;
+                    startDate = startDate.AddDays(1);
+                    ColNum++;
+                    //ColWeek++;
+                }
+
+
+                    int RowNum = 13;
+                ws.Row(RowNum).InsertRowsBelow(ListSmenaPerson.Count() - 1);
+                foreach (var item in ListSmenaPerson)
+                {
+                    ws.Cell(RowNum, 3).Value = item.personal.ShortFIO;
+                    ColNum = 5;
+                    foreach(var day in item.SmenaDays)
+                    {
+                        ws.Cell(RowNum, ColNum).Value = EnumToString.SmenaKindToString(day.sd_Kind);
+                        if(day.sd_Kind == SmenaKind.DayOff)
+                            ws.Cell(RowNum, ColNum).Style.Fill.BackgroundColor = XLColor.LightGray;
+                        ColNum++;
+                    }
+
+                    RowNum++;
+                }
+
+
+
+                wb.SaveAs(@"C:\Temp\temp.xlsx");
+                Process.Start(@"C:\Temp\temp.xlsx");
+            }
 
         }
         #endregion
