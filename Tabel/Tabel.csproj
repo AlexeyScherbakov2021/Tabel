@@ -101,6 +101,7 @@
     <Compile Include="Infrastructure\Converters\KindSmenaConverter.cs" />
     <Compile Include="Infrastructure\Converters\OtdelsUserConverter.cs" />
     <Compile Include="Infrastructure\Enums.cs" />
+    <Compile Include="Infrastructure\FileOperation.cs" />
     <Compile Include="Infrastructure\Months.cs" />
     <Compile Include="Infrastructure\MonthStart1.cs" />
     <Compile Include="Models\AddWorks.cs" />
@@ -109,6 +110,7 @@
     <Compile Include="Models\category.cs" />
     <Compile Include="Models\Mod.cs" />
     <Compile Include="Models\BaseModel.cs" />
+    <Compile Include="Models\ModOtdelSumFP.cs" />
     <Compile Include="Models\ModPerson.cs" />
     <Compile Include="Models\otdel.cs" />
     <Compile Include="Models\personal.cs" />

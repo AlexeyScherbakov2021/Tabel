@@ -1,7 +1,10 @@
-﻿using System;
+﻿using ClosedXML.Excel;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data.Entity;
+using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -116,6 +119,85 @@ namespace Tabel.ViewModels
         {
             repoTransPerson.Save();
             repoTransp.Save();
+        }
+
+
+        //--------------------------------------------------------------------------------
+        // Распечатать
+        //--------------------------------------------------------------------------------
+        public ICommand PrintCommand => new LambdaCommand(OnPrintCommandExecuted, CanPrintdCommand);
+        private bool CanPrintdCommand(object p) => Transp != null;
+        private void OnPrintCommandExecuted(object p)
+        {
+            using (XLWorkbook wb = new XLWorkbook(@"Отчеты\График ЛТ.xlsx"))
+            {
+                var ws = wb.Worksheets.Worksheet(1);
+
+                ws.Cell(3,8).Value = "Использование личного транспорта сотрудниками участка " + Transp.otdel.ot_name;
+                ws.Cell(3, 3).Value = Transp.tr_DateCreate.ToString("dd.MM.yyyy");
+                ws.Cell(3, 35).Value = (new DateTime(Transp.tr_Year, Transp.tr_Month, 1)).ToString("`MMMM yyyy");
+                ws.Cell(10, 30).Value = "Составил: " + App.CurrentUser.u_fio;
+
+                int ColNum = 4;
+                int NumWeek = 0;
+                int OldWeek = 0;
+                int StartColumn = ColNum;
+                GregorianCalendar cal = new GregorianCalendar(GregorianCalendarTypes.Localized);
+                DateTime startDate = new DateTime(_SelectYear, _SelectMonth, 1);
+                DateTime endDate = startDate.AddMonths(1).AddDays(-1);
+
+                while (startDate <= endDate)
+                {
+                    NumWeek = cal.GetWeekOfYear(startDate, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
+                    if (startDate.Day == 1 || startDate.DayOfWeek == DayOfWeek.Monday)
+                        ws.Cell(5, ColNum).Value = NumWeek;
+
+                    if (OldWeek != 0 && NumWeek != OldWeek)
+                    {
+                        ws.Range(5, StartColumn, 5, ColNum - 1).Merge();
+                        ws.Cell(5, StartColumn).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                        StartColumn = ColNum;
+                    }
+
+                    OldWeek = NumWeek;
+                    ws.Cell(6, ColNum).Value = startDate;
+                    ws.Cell(7, ColNum).Value = startDate.ToString("ddd");
+                    startDate = startDate.AddDays(1);
+                    ColNum++;
+                    //ColWeek++;
+                }
+
+                ws.Range(5, StartColumn, 5, ColNum - 1).Merge();
+                ws.Cell(5, StartColumn).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+
+                int RowNum = 8;
+                ws.Row(RowNum).InsertRowsBelow(ListTransPerson.Count() - 1);
+                foreach (var item in ListTransPerson)
+                {
+                    ws.Cell(RowNum, 2).Value = item.person.ShortFIO;
+                    ColNum = 4;
+                    foreach (var day in item.TransDays)
+                    {
+                        if (day.td_Kind == 1)
+                            ws.Cell(RowNum, ColNum).Value = day.td_Kind;
+                        if (day.OffDay)
+                            ws.Cell(RowNum, ColNum).Style.Fill.BackgroundColor = XLColor.LightGray;
+                        ColNum++;
+                    }
+                    ws.Cell(RowNum, 35).Value = item.ItogDays;
+                    ws.Cell(RowNum, 36).Value = item.tp_tarif;
+                    ws.Cell(RowNum, 37).Value = item.Summa;
+                    ws.Cell(RowNum, 38).Value = item.tp_Kompens;
+                    ws.Cell(RowNum, 39).Value = item.Itogo;
+
+                    RowNum++;
+                }
+
+                string TempFile = FileOperation.GenerateTempFileNameWithDelete("TempTransp.xlsx");
+                wb.SaveAs(TempFile);
+                Process.Start(TempFile);
+            }
+
         }
 
         //--------------------------------------------------------------------------------

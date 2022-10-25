@@ -20,6 +20,7 @@
 
             <Button Content="Создать" Command="{Binding CreateCommand}" Margin="3" Style="{DynamicResource ButtonStyleShadow}"/>
             <Button Content="Сохранить" Command="{Binding SaveCommand}" Margin="3" Style="{DynamicResource ButtonStyleShadow}"/>
+            <Button Content="Распечатать" Command="{Binding PrintCommand}" Margin="3" Style="{DynamicResource ButtonStyleShadow}"/>
         </ToolBarPanel>
 
         <DataGrid x:Name="dg" ItemsSource="{Binding ListTransPerson}" Style="{StaticResource DataGridStyle}" 

@@ -5,22 +5,21 @@ namespace Tabel.Models2
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
-    using Tabel.Infrastructure;
 
-    public partial class User : IEntity
+    public partial class user
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public User()
+        public user()
         {
-            smenas = new HashSet<Smena>();
-            tabels = new HashSet<WorkTabel>();
-            mods = new HashSet<Mod>();
-            transport = new HashSet<Transport>();
+            Mods = new HashSet<Mod>();
+            smenas = new HashSet<smena>();
+            tabels = new HashSet<tabel>();
+            Transports = new HashSet<Transport>();
+            otdels = new HashSet<otdel>();
         }
 
         [Key]
-        [Column("idUser")]
-        public int id { get; set; }
+        public int idUser { get; set; }
 
         [StringLength(50)]
         public string u_login { get; set; }
@@ -28,22 +27,28 @@ namespace Tabel.Models2
         [StringLength(50)]
         public string u_pass { get; set; }
 
-        public UserRoles u_role { get; set; }
+        public int u_role { get; set; }
 
         public int? u_otdel_id { get; set; }
 
         [StringLength(150)]
         public string u_fio { get; set; }
 
-        public virtual Otdel otdel { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Mod> Mods { get; set; }
+
+        public virtual otdel otdel { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Smena> smenas { get; set; }
-        
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<WorkTabel> tabels { get; set; }
-        public virtual ICollection<Mod> mods { get; set; }
-        public virtual ICollection<Transport> transport { get; set; }
+        public virtual ICollection<smena> smenas { get; set; }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tabel> tabels { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Transport> Transports { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<otdel> otdels { get; set; }
     }
 }

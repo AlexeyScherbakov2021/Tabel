@@ -1,7 +1,9 @@
-﻿using System;
+﻿using ClosedXML.Excel;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data.Entity;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,6 +11,7 @@ using System.Windows;
 using System.Windows.Input;
 using Tabel.Commands;
 using Tabel.Component.MonthPanel;
+using Tabel.Infrastructure;
 using Tabel.Models;
 using Tabel.Repository;
 using Tabel.ViewModels.Base;
@@ -179,9 +182,87 @@ namespace Tabel.ViewModels
         private bool CanPrintCommand(object p) => Tabel != null && SelectedOtdel != null;
         private void OnPrintCommandExecuted(object p)
         {
-            TabelPrint print = new TabelPrint();
-            print.DataContext = this;
-            print.ShowDialog();
+            //TabelPrint print = new TabelPrint();
+            //print.DataContext = this;
+            //print.ShowDialog();
+
+
+            using (XLWorkbook wb = new XLWorkbook(@"Отчеты\Табель.xlsx"))
+            {
+                int NumPP = 1;
+
+                var ws = wb.Worksheets.Worksheet(2);
+
+                // Заполение шапки
+                ws.Cell("A8").Value = Tabel.otdel.ot_name;
+                ws.Cell("AJ12").Value = Tabel.t_number;
+                ws.Cell("AP12").Value = Tabel.t_date_create.Value.ToString("dd.MM.yyyy");
+
+                DateTime startDate = new DateTime(_SelectYear, Tabel.t_month, 1);
+                ws.Cell("AY12").Value = startDate.ToString("dd.MM.yyyy");
+                DateTime endDate = startDate.AddMonths(1).AddDays(-1);
+                ws.Cell("BB12").Value = endDate.ToString("dd.MM.yyyy");
+                //ws.Cell("AA15").Value = "Составил: " + App.CurrentUser.u_fio;
+
+
+                int RowNum = 24;
+                ws.Row(27).InsertRowsBelow((ListTabelPerson.Count() - 1) * 4);
+                var range = ws.Range(RowNum, 1, RowNum + 3, 75);
+
+                for (int i = 0; i < ListTabelPerson.Count() - 1; i++)
+                {
+                    RowNum += 4;
+                    range.CopyTo(ws.Cell(RowNum, 1));
+                }
+
+                RowNum = 24;
+                foreach (var item in ListTabelPerson)
+                {
+                    ws.Cell(RowNum, 1).Value = NumPP++;
+                    ws.Cell(RowNum, 3).Value = item.person.FIO;
+                    ws.Cell(RowNum, 11).Value = item.person.p_tab_number;
+
+                    // отработано за половину месяца
+                    ws.Cell(RowNum, 30).Value = item.DaysWeek1;
+                    ws.Cell(RowNum + 1, 30).Value = item.HoursWeek1;
+                    ws.Cell(RowNum + 2, 30).Value = item.DaysWeek2;
+                    ws.Cell(RowNum + 3, 30).Value = item.HoursWeek2;
+
+                    // отработано за месяц
+                    ws.Cell(RowNum, 33).Value = item.DaysMonth;
+                    ws.Cell(RowNum + 2, 33).Value = item.HoursMonth;
+
+                    // правая часть
+                    ws.Cell(RowNum, 73).Value = item.WorkedHours1;
+                    ws.Cell(RowNum + 1, 73).Value = item.WorkedHours15;
+                    ws.Cell(RowNum + 2, 73).Value = item.WorkedHours2;
+                    ws.Cell(RowNum + 3, 73).Value = item.WorkedOffHours;
+
+                    int ColNum = 14;
+                    foreach(var day in item.TabelDays)
+                    {
+                        ws.Cell(RowNum, ColNum).Value = day.typeDay.t_name;
+                        if(day.td_Hours.Value != 0)
+                            ws.Cell(RowNum + 1, ColNum).Value =  day.td_Hours;
+
+                        ColNum++;
+                        if(ColNum > 29)
+                        {
+                            ColNum = 14;
+                            RowNum += 2;
+                        }
+                    }
+
+                    RowNum += 2;
+
+                }
+
+                string TempFile = FileOperation.GenerateTempFileNameWithDelete("TempTabel.xlsx");
+                wb.SaveAs(TempFile);
+                Process.Start(TempFile);
+
+            }
+
         }
 
         //--------------------------------------------------------------------------------

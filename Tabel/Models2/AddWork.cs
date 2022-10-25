@@ -6,27 +6,24 @@ namespace Tabel.Models2
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    [Table("tabelPerson")]
-    public partial class tabelPerson
+    public partial class AddWork
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public tabelPerson()
+        public AddWork()
         {
-            TabelDays = new HashSet<TabelDay>();
+            ModPersons = new HashSet<ModPerson>();
         }
 
         [Key]
-        public int tp_Id { get; set; }
+        public int aw_Id { get; set; }
 
-        public int tp_person_id { get; set; }
+        [StringLength(150)]
+        public string aw_Name { get; set; }
 
-        public int tp_tabel_id { get; set; }
-
-        public virtual personal personal { get; set; }
-
-        public virtual tabel tabel { get; set; }
+        [Column(TypeName = "numeric")]
+        public decimal? aw_Tarif { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<TabelDay> TabelDays { get; set; }
+        public virtual ICollection<ModPerson> ModPersons { get; set; }
     }
 }

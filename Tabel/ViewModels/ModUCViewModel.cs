@@ -26,10 +26,26 @@ namespace Tabel.ViewModels
         private readonly RepositoryMSSQL<ModPerson> repoModPerson = new RepositoryMSSQL<ModPerson>();
         private readonly RepositoryMSSQL<Transport> repoTransport = new RepositoryMSSQL<Transport>();
         private readonly RepositoryMSSQL<AddWorks> repoAddWorks = new RepositoryMSSQL<AddWorks>();
+        private readonly RepositoryMSSQL<ModOtdelSumFP> repoFP = new RepositoryMSSQL<ModOtdelSumFP>();
 
         private Otdel _SelectedOtdel;
         private int _SelectMonth;
         private int _SelectYear;
+        //public decimal? sumFP
+        //{
+        //    get
+        //    {
+        //        if (_SelectedOtdel != null && _SelectedOtdel.ModOtdelSumFPs.Count > 0)
+        //            return _SelectedOtdel.ModOtdelSumFPs[0].mo_sumFP;
+        //        else
+        //            return null;
+        //    }
+        //    set
+        //    {
+        //        if(_SelectedOtdel != null && _SelectedOtdel.ModOtdelSumFPs.Count > 0)
+        //            _SelectedOtdel.ModOtdelSumFPs[0].mo_sumFP = value;
+        //    } 
+        //}
 
         public ObservableCollection<ModPerson> ListModPerson { get; set; }
 
@@ -67,6 +83,13 @@ namespace Tabel.ViewModels
                 //repoModPerson.Save();
 
             }
+        }
+
+        private ModOtdelSumFP _SumFP;
+        public ModOtdelSumFP SumFP
+        {
+            get => _SumFP;
+            set { Set(ref _SumFP, value); }
         }
 
 
@@ -140,6 +163,7 @@ namespace Tabel.ViewModels
         {
             repoModPerson.Save();
             repoModel.Save();
+            repoFP.Save();
         }
 
         //--------------------------------------------------------------------------------
@@ -209,8 +233,9 @@ namespace Tabel.ViewModels
                         .OrderBy(o => o.person.p_lastname)
                         .ThenBy(o => o.person.p_name)
                         );
-
             }
+
+            SumFP = repoFP.Items.FirstOrDefault(it => it.mo_otdel_id == _SelectedOtdel.id && it.mo_mod_id == CurrentMod.id);
 
             //CurrentMod = repoModel.Items.FirstOrDefault(it => it.m_month == _SelectMonth && it.m_year == _SelectYear 
             //&& it.m_otdelId == _SelectedOtdel.id);
@@ -220,6 +245,8 @@ namespace Tabel.ViewModels
             LoadFromTransprot();
             OnPropertyChanged(nameof(ListModPerson));
             OnPropertyChanged(nameof(CurrentMod));
+            //OnPropertyChanged(nameof(sumFP));
+
         }
 
         //-------------------------------------------------------------------------------------------------------

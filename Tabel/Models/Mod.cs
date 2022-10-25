@@ -12,6 +12,7 @@ namespace Tabel.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Mod()
         {
+            ModOtdelSumFPs = new HashSet<ModOtdelSumFP>();
             //ModPersons = new HashSet<ModPerson>();
         }
 
@@ -43,12 +44,15 @@ namespace Tabel.Models
             }
         }
 
-
         public virtual Otdel otdel { get; set; }
 
         public virtual User user { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual IList<ModPerson> ModPersons { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ModOtdelSumFP> ModOtdelSumFPs { get; set; }
+
     }
 }

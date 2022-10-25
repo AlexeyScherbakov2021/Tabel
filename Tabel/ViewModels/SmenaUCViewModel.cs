@@ -15,6 +15,8 @@ using Tabel.Infrastructure;
 using Tabel.Models;
 using Tabel.Repository;
 using Tabel.ViewModels.Base;
+using System.Globalization;
+using System.IO;
 
 namespace Tabel.ViewModels
 {
@@ -132,7 +134,7 @@ namespace Tabel.ViewModels
         }
 
         //--------------------------------------------------------------------------------
-        // 
+        // Распечатать
         //--------------------------------------------------------------------------------
         public ICommand PrintCommand => new LambdaCommand(OnPrintCommandExecuted, CanPrintdCommand);
         private bool CanPrintdCommand(object p) => SmenaShedule != null;
@@ -142,33 +144,50 @@ namespace Tabel.ViewModels
             {
                 var ws = wb.Worksheets.Worksheet(1);
 
-                ws.Cell("P3").Value = _SelectedOtdel.ot_name;
+                ws.Cell("P3").Value = SmenaShedule.otdel.ot_name;
                 ws.Cell("C8").Value = SmenaShedule.sm_Number;
                 ws.Cell("D8").Value = SmenaShedule.sm_DateCreate.ToString("dd.MM.yyyy");
-                ws.Cell("K7").Value = "График смен - " + App.ListMonth.First(it => it.Number == _SelectMonth).Name;
+                ws.Cell("K7").Value = "График смен - " + App.ListMonth.First(it => it.Number == SmenaShedule.sm_Month).Name;
                 DateTime startDate = new DateTime(_SelectYear, _SelectMonth, 1);
                 ws.Cell("AG9").Value = startDate.ToString("dd.MM.yyyy");
                 DateTime endDate = startDate.AddMonths(1).AddDays(-1);
                 ws.Cell("AJ9").Value = endDate.ToString("dd.MM.yyyy");
+                ws.Cell("AA15").Value = "Составил: " + App.CurrentUser.u_fio;
 
                 int ColNum = 5;
+                //int korr = (int)new DateTime(_SelectYear, 1, 1).DayOfWeek;
+                //korr = korr <= 1 ? korr = -2 : korr - 9;
                 //int ColWeek = 5;
                 int NumWeek = 0;
+                int OldWeek = 0;
+                int StartColumn = ColNum;
+                GregorianCalendar cal = new GregorianCalendar(GregorianCalendarTypes.Localized);
 
                 while (startDate <= endDate)
                 {
-                    NumWeek = (startDate.DayOfYear - 1) / 7 + 1;
+                    //NumWeek = (startDate.DayOfYear + korr) / 7 + 1;
+                    NumWeek = cal.GetWeekOfYear(startDate, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
                     if(startDate.Day == 1 || startDate.DayOfWeek == DayOfWeek.Monday)
                         ws.Cell(11, ColNum).Value = NumWeek;
 
+                    if(OldWeek != 0 && NumWeek != OldWeek)
+                    {
+                        ws.Range(11, StartColumn, 11, ColNum - 1).Merge();
+                        ws.Cell(11, StartColumn).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                        StartColumn = ColNum;
+                    }
+
+                    OldWeek = NumWeek;
                     ws.Cell(12, ColNum).Value = startDate;
                     startDate = startDate.AddDays(1);
                     ColNum++;
                     //ColWeek++;
                 }
+                ws.Range(11, StartColumn, 11, ColNum - 1).Merge();
+                ws.Cell(11, StartColumn).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
 
 
-                    int RowNum = 13;
+                int RowNum = 13;
                 ws.Row(RowNum).InsertRowsBelow(ListSmenaPerson.Count() - 1);
                 foreach (var item in ListSmenaPerson)
                 {
@@ -185,15 +204,13 @@ namespace Tabel.ViewModels
                     RowNum++;
                 }
 
-
-
-                wb.SaveAs(@"C:\Temp\temp.xlsx");
-                Process.Start(@"C:\Temp\temp.xlsx");
+                string TempFile = FileOperation.GenerateTempFileNameWithDelete("TempGrSmen.xlsx");
+                wb.SaveAs(TempFile);
+                Process.Start(TempFile);
             }
 
         }
         #endregion
-
 
         //--------------------------------------------------------------------------------------------------
         // получение списка персонала из отдела

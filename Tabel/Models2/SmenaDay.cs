@@ -5,20 +5,18 @@ namespace Tabel.Models2
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
-    using Tabel.Infrastructure;
 
     [Table("SmenaDay")]
-    public partial class SmenaDay : IEntity
+    public partial class SmenaDay
     {
         [Key]
-        [Column("sd_id")]
-        public int id { get; set; }
+        public int sd_Id { get; set; }
 
         public int? sd_SmenaPersonId { get; set; }
 
         public int sd_Day { get; set; }
 
-        public SmenaKind sd_Kind { get; set; }
+        public int sd_Kind { get; set; }
 
         public virtual SmenaPerson SmenaPerson { get; set; }
     }

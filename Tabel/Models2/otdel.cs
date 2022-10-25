@@ -2,29 +2,28 @@ namespace Tabel.Models2
 {
     using System;
     using System.Collections.Generic;
-    using System.Collections.ObjectModel;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    public partial class Otdel : IEntity
+    public partial class otdel
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Otdel()
+        public otdel()
         {
-            //subOtdels = new HashSet<Otdel>();
-            subOtdels = new ObservableCollection<Otdel>();
-            personals = new HashSet<Personal>();
-            smenas = new HashSet<Smena>();
-            tabels = new HashSet<WorkTabel>();
-            users = new HashSet<User>();
-            mods = new HashSet<Mod>();  
-            transport = new HashSet<Transport>();
+            Mods = new HashSet<Mod>();
+            ModOtdelSumFPs = new HashSet<ModOtdelSumFP>();
+            otdels1 = new HashSet<otdel>();
+            personals = new HashSet<personal>();
+            smenas = new HashSet<smena>();
+            tabels = new HashSet<tabel>();
+            Transports = new HashSet<Transport>();
+            users = new HashSet<user>();
+            users1 = new HashSet<user>();
         }
 
         [Key]
-        [Column("idOtdel")]
-        public int id { get; set; }
+        public int idOtdel { get; set; }
 
         [StringLength(100)]
         public string ot_name { get; set; }
@@ -32,25 +31,32 @@ namespace Tabel.Models2
         public int? ot_parent { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ObservableCollection<Otdel> subOtdels { get; set; }
-
-        public virtual Otdel parent { get; set; }
+        public virtual ICollection<Mod> Mods { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Personal> personals { get; set; }
+        public virtual ICollection<ModOtdelSumFP> ModOtdelSumFPs { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Smena> smenas { get; set; }
+        public virtual ICollection<otdel> otdels1 { get; set; }
+
+        public virtual otdel otdel1 { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<WorkTabel> tabels { get; set; }
+        public virtual ICollection<personal> personals { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<User> users { get; set; }
-        public virtual ICollection<Mod> mods { get; set; }
-        public virtual ICollection<Transport> transport { get; set; }
+        public virtual ICollection<smena> smenas { get; set; }
 
-        [NotMapped]
-        public bool IsValue { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tabel> tabels { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Transport> Transports { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<user> users { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<user> users1 { get; set; }
     }
 }

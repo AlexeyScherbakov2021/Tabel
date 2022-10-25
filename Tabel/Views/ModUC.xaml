@@ -61,7 +61,7 @@
                             <ColumnDefinition Width="100"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="Часы из ФП" Grid.Column="0"/>
-                        <TextBox Text="{Binding CurrentMod.m_HoursFromFP, Mode=TwoWay}" Grid.Column="1" VerticalAlignment="Center"/>
+                        <TextBox Text="{Binding SumFP.mo_sumFP, Mode=TwoWay}" Grid.Column="1" VerticalAlignment="Center"/>
                     </Grid>
                     <DataGrid ItemsSource="{Binding ListModPerson}" Style="{StaticResource DataGridStyle}" >
                         <DataGrid.Columns>
