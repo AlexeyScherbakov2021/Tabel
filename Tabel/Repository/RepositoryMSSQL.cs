@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Net;
@@ -121,6 +122,7 @@ namespace Tabel.Repository
 
         public void Save()
         {
+
             try
             {
                 db.SaveChanges();

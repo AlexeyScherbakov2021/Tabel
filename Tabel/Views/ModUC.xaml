@@ -32,7 +32,7 @@
         <TabControl>
             <TabItem Header="По табелю">
                 <DockPanel  Background="Gainsboro">
-                    <Grid DockPanel.Dock="Top" Margin="8" Height="20">
+                    <Grid DockPanel.Dock="Top" Margin="8,0" Height="30">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="100"/>
                             <ColumnDefinition Width="100"/>
@@ -55,22 +55,26 @@
             </TabItem>
             <TabItem Header="Премия по выработке">
                 <DockPanel  Background="Gainsboro">
-                    <Grid DockPanel.Dock="Top" Margin="8" Height="20">
+                    <Grid DockPanel.Dock="Top" Margin="8,0" Height="30">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="100"/>
                             <ColumnDefinition Width="100"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="Часы из ФП" Grid.Column="0"/>
-                        <TextBox Text="{Binding SumFP.mo_sumFP, Mode=TwoWay}" Grid.Column="1" VerticalAlignment="Center"/>
+                        <!--<CheckBox Grid.Column=""/>-->
+                        <!--<TextBlock Text="Часы из ФП" Grid.Column="0"/>-->
+                        <!--<TextBox Text="{Binding SumFP.mo_sumFP, Mode=TwoWay}" Grid.Column="1" VerticalAlignment="Center"/>-->
                     </Grid>
                     <DataGrid ItemsSource="{Binding ListModPerson}" Style="{StaticResource DataGridStyle}" >
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="ФИО" Binding="{Binding person.FIO}" IsReadOnly="True"/>
                             <DataGridTextColumn Header="Должность" Binding="{Binding person.p_profession}" IsReadOnly="True"/>
-                            <DataGridTextColumn Header="Премия по выработке" Binding="{Binding md_premFP, Mode=TwoWay, StringFormat=0.#}" CellStyle="{StaticResource CellRight}"/>
-                            <DataGridTextColumn Header="Всего часов" Binding="{Binding SummaHoursFP, StringFormat=0.##}" IsReadOnly="True" CellStyle="{StaticResource CellRight}"/>
-                            <DataGridTextColumn Header="Премиальный тариф" Binding="{Binding person.category.cat_prem_tarif, StringFormat=0.#}" IsReadOnly="True"  CellStyle="{StaticResource CellRight}"/>
+                            <DataGridTextColumn Header="% премии" Binding="{Binding md_premFP, Mode=TwoWay, StringFormat=N2}" CellStyle="{StaticResource CellRight}"/>
+                            <DataGridTextColumn Header="Часы из ФП" Binding="{Binding md_sumFromFP, StringFormat=N2}" CellStyle="{StaticResource CellRight}"/>
+                            <DataGridTextColumn Header="Расчетные часы" Binding="{Binding SummaHoursFP, StringFormat=N2}" IsReadOnly="True" CellStyle="{StaticResource CellRight}"/>
+                            <DataGridTextColumn Header="Премиальный тариф" Binding="{Binding person.category.cat_prem_tarif, StringFormat=N2}" IsReadOnly="True"  CellStyle="{StaticResource CellRight}"/>
                             <DataGridTextColumn Header="Премия" Binding="{Binding SummaPremFP, StringFormat=N2}" Width="90" IsReadOnly="True" CellStyle="{StaticResource CellRight}"/>
+                            <DataGridTextColumn Header="Группа" Binding="{Binding md_group}" CellStyle="{StaticResource CellRight}"/>
+                            <DataGridTextColumn Header="% группы" Binding="{Binding ProcGroup, StringFormat=0.##%}" CellStyle="{StaticResource CellRight}"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </DockPanel>
@@ -78,19 +82,39 @@
 
             <TabItem Header="Бонус">
                 <DockPanel  Background="Gainsboro">
-                    <Grid DockPanel.Dock="Top" Margin="8" Height="20">
+                    <Grid DockPanel.Dock="Top" Margin="8,0" Height="30">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="100"/>
-                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="{Binding ActualWidth, ElementName=col1}"/>
+                            <ColumnDefinition Width="{Binding ActualWidth, ElementName=col2}"/>
+                            <ColumnDefinition Width="{Binding ActualWidth, ElementName=col3}"/>
+                            <ColumnDefinition Width="{Binding ActualWidth, ElementName=col4}"/>
+                            <ColumnDefinition Width="{Binding ActualWidth, ElementName=col5}"/>
+                            <!--<ColumnDefinition Width="*"/>-->
                         </Grid.ColumnDefinitions>
+                        <Button Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" Width="40"
+                                Command="{Binding CheckCommand}" CommandParameter="{Binding ElementName=dgBonus}"
+                                HorizontalContentAlignment="Left"
+                                Style="{StaticResource ButtonStyleShadow}">
+                            <CheckBox IsChecked="{Binding IsCheckBonus}"/>
+                        </Button>
+                        <Button  Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" Width="60" 
+                                 HorizontalContentAlignment="Left"
+                                 Style="{StaticResource ButtonStyleShadow}">
+                            <TextBox Text="000" Width="35"/>
+                        </Button>
+                        <Button  Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Center" Width="80" 
+                                 HorizontalContentAlignment="Left"
+                                 Style="{StaticResource ButtonStyleShadow}">
+                            <TextBox Text="000" Width="54"/>
+                        </Button>
                     </Grid>
-                    <DataGrid ItemsSource="{Binding ListModPerson}" Style="{StaticResource DataGridStyle}" >
+                    <DataGrid x:Name="dgBonus" ItemsSource="{Binding ListModPerson}" Style="{StaticResource DataGridStyle}" >
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="ФИО" Binding="{Binding person.FIO}" IsReadOnly="True"/>
-                            <DataGridTextColumn Header="Должность" Binding="{Binding person.p_profession}" IsReadOnly="True"/>
-                            <DataGridCheckBoxColumn Header="Выполнено" Binding="{Binding md_bonus_exec, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                            <DataGridTextColumn Header="%" Binding="{Binding md_bonus_proc, Mode=TwoWay, StringFormat=0.#}"  Width="50" CellStyle="{StaticResource CellRight}"/>
-                            <DataGridTextColumn Header="Макс. бонус" Binding="{Binding md_bonus_max, Mode=TwoWay, StringFormat=N0}"  CellStyle="{StaticResource CellRight}"/>
+                            <DataGridTextColumn x:Name="col1" Header="ФИО" Binding="{Binding person.FIO}" IsReadOnly="True"/>
+                            <DataGridTextColumn x:Name="col2" Header="Должность" Binding="{Binding person.p_profession}" IsReadOnly="True"/>
+                            <DataGridCheckBoxColumn x:Name="col3" Header="Выполнено" Binding="{Binding md_bonus_exec, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            <DataGridTextColumn x:Name="col4" Header="%" MinWidth="80" Binding="{Binding md_bonus_proc, Mode=TwoWay, StringFormat=0.#}"  Width="50" CellStyle="{StaticResource CellRight}"/>
+                            <DataGridTextColumn x:Name="col5" MinWidth="100" Header="Макс. бонус" Binding="{Binding md_bonus_max, Mode=TwoWay, StringFormat=N0}"  CellStyle="{StaticResource CellRight}"/>
                             <DataGridTextColumn Header="Расчет" Binding="{Binding Bonus, StringFormat=N2}" Width="80" IsReadOnly="True" CellStyle="{StaticResource CellRight}"/>
                         </DataGrid.Columns>
                     </DataGrid>
@@ -99,7 +123,7 @@
 
             <TabItem Header="Премия по участку">
                 <DockPanel  Background="Gainsboro">
-                    <Grid DockPanel.Dock="Top" Margin="8" Height="20">
+                    <Grid DockPanel.Dock="Top" Margin="8,0" Height="30">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="100"/>
                             <ColumnDefinition Width="100"/>
@@ -119,7 +143,7 @@
 
             <TabItem Header="Работа в выходной день">
                 <DockPanel  Background="Gainsboro">
-                    <Grid DockPanel.Dock="Top" Margin="8" Height="20">
+                    <Grid DockPanel.Dock="Top" Margin="8,0" Height="30">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="100"/>
                             <ColumnDefinition Width="100"/>
@@ -140,7 +164,7 @@
 
             <TabItem Header="Доп. работы">
                 <DockPanel  Background="Gainsboro">
-                    <Grid DockPanel.Dock="Top" Margin="8" Height="20">
+                    <Grid DockPanel.Dock="Top" Margin="8,0" Height="30">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="100"/>
                             <ColumnDefinition Width="100"/>
@@ -203,7 +227,7 @@
 
             <TabItem Header="Доставка">
                 <DockPanel  Background="Gainsboro">
-                    <Grid DockPanel.Dock="Top" Margin="8" Height="20">
+                    <Grid DockPanel.Dock="Top" Margin="8,0" Height="30">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="100"/>
                             <ColumnDefinition Width="100"/>
@@ -222,7 +246,7 @@
 
             <TabItem Header="Вечерние">
                 <DockPanel  Background="Gainsboro">
-                    <Grid DockPanel.Dock="Top" Margin="8" Height="20">
+                    <Grid DockPanel.Dock="Top" Margin="8,0" Height="30">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="100"/>
                             <ColumnDefinition Width="100"/>

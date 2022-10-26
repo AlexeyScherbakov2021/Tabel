@@ -24,11 +24,17 @@ namespace Tabel.Models
         [NotMapped]
         public decimal? DayOffSumma { get; set; }
 
-        public decimal? SummaHoursFP => (md_premFP * Mod?.m_HoursFromFP) / 100m;
-        public decimal? SummaPremFP =>
-            TabelDays == 0 ? 0 : SummaHoursFP * person.category.cat_prem_tarif * (TabelDays - TabelAbsent) / TabelDays;
+        [NotMapped]
+        public decimal? SummaHoursFP { get; set; }  // => (md_premFP * Mod?.m_HoursFromFP) / 100m;
 
-        public decimal? Bonus => (TabelDays == 0 || !_md_bonus_exec) ? 0 : md_bonus_max * md_bonus_proc / 100 * (TabelDays - TabelAbsent) / TabelDays;
+        [NotMapped]
+        public decimal? SummaPremFP { get; set; }
+        //=> TabelDays == 0 ? 0 : SummaHoursFP * person.category.cat_prem_tarif * (TabelDays - TabelAbsent) / TabelDays;
+
+        [NotMapped]
+        public decimal? ProcGroup { get; set; }
+
+        public decimal? Bonus => (TabelDays == 0 || !_md_bonus_exec) ? null : md_bonus_max * md_bonus_proc / 100 * (TabelDays - TabelAbsent) / TabelDays;
 
         public decimal? PremOtdel => md_prem_otdel * md_prem_otdel_proc / 100;
 

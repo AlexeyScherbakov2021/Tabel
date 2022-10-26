@@ -50,7 +50,7 @@ namespace Tabel.Models
         public virtual DbSet<typeDay> typeDays { get; set; }
         public virtual DbSet<User> users { get; set; }
         public virtual DbSet<AddWorks> addWorks { get; set; }
-        public virtual DbSet<ModOtdelSumFP> ModOtdelSumFPs { get; set; }
+        //public virtual DbSet<ModOtdelSumFP> ModOtdelSumFPs { get; set; }
 
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -59,16 +59,16 @@ namespace Tabel.Models
                 .Property(e => e.aw_Name)
                 .IsUnicode(false);
 
-            modelBuilder.Entity<Otdel>()
-                .HasMany(e => e.ModOtdelSumFPs)
-                .WithRequired(e => e.otdel)
-                .HasForeignKey(e => e.mo_otdel_id)
-                .WillCascadeOnDelete(false);
+            //modelBuilder.Entity<Otdel>()
+            //    .HasMany(e => e.ModOtdelSumFPs)
+            //    .WithRequired(e => e.otdel)
+            //    .HasForeignKey(e => e.mo_otdel_id)
+            //    .WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<Mod>()
-                .HasMany(e => e.ModOtdelSumFPs)
-                .WithRequired(e => e.Mod)
-                .HasForeignKey(e => e.mo_mod_id);
+            //modelBuilder.Entity<Mod>()
+            //    .HasMany(e => e.ModOtdelSumFPs)
+            //    .WithRequired(e => e.Mod)
+            //    .HasForeignKey(e => e.mo_mod_id);
 
 
             modelBuilder.Entity<Category>()

@@ -110,7 +110,6 @@
     <Compile Include="Models\category.cs" />
     <Compile Include="Models\Mod.cs" />
     <Compile Include="Models\BaseModel.cs" />
-    <Compile Include="Models\ModOtdelSumFP.cs" />
     <Compile Include="Models\ModPerson.cs" />
     <Compile Include="Models\otdel.cs" />
     <Compile Include="Models\personal.cs" />

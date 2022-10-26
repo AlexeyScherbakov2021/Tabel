@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using Tabel.Commands;
@@ -26,11 +27,17 @@ namespace Tabel.ViewModels
         private readonly RepositoryMSSQL<ModPerson> repoModPerson = new RepositoryMSSQL<ModPerson>();
         private readonly RepositoryMSSQL<Transport> repoTransport = new RepositoryMSSQL<Transport>();
         private readonly RepositoryMSSQL<AddWorks> repoAddWorks = new RepositoryMSSQL<AddWorks>();
-        private readonly RepositoryMSSQL<ModOtdelSumFP> repoFP = new RepositoryMSSQL<ModOtdelSumFP>();
+        //private readonly RepositoryMSSQL<ModOtdelSumFP> repoFP = new RepositoryMSSQL<ModOtdelSumFP>();
+
+        static bool lockPropertyChanged = false;
+
 
         private Otdel _SelectedOtdel;
         private int _SelectMonth;
         private int _SelectYear;
+
+        public bool IsCheckBonus { get; set; }
+
         //public decimal? sumFP
         //{
         //    get
@@ -85,18 +92,18 @@ namespace Tabel.ViewModels
             }
         }
 
-        private ModOtdelSumFP _SumFP;
-        public ModOtdelSumFP SumFP
-        {
-            get => _SumFP;
-            set { Set(ref _SumFP, value); }
-        }
+        //private ModOtdelSumFP _SumFP;
+        //public ModOtdelSumFP SumFP
+        //{
+        //    get => _SumFP;
+        //    set { Set(ref _SumFP, value); }
+        //}
 
 
 
         #region Команды
         //--------------------------------------------------------------------------------
-        // Команда Создать график
+        // Команда Создать 
         //--------------------------------------------------------------------------------
         public ICommand CreateCommand => new LambdaCommand(OnCreateCommandExecuted, CanCreateCommand);
         private bool CanCreateCommand(object p) => _SelectedOtdel != null && _SelectedOtdel.ot_parent is null;
@@ -163,19 +170,26 @@ namespace Tabel.ViewModels
         {
             repoModPerson.Save();
             repoModel.Save();
-            repoFP.Save();
+            //repoFP.Save();
         }
 
         //--------------------------------------------------------------------------------
-        // Команда Открыть - закрыть список работ
+        // Команда Отметить выбранные
         //--------------------------------------------------------------------------------
-        //public ICommand OpenCloseWorksCommand => new LambdaCommand(OnOpenCloseWorksCommandExecuted, CanOpenCloseWorksCommand);
-        //private bool CanOpenCloseWorksCommand(object p) => true;
-        //private void OnOpenCloseWorksCommandExecuted(object p)
-        //{
-        //    var item = SelectedPerson;
-        //}
+        public ICommand CheckCommand => new LambdaCommand(OnCheckCommandExecuted, CanCheckCommand);
+        private bool CanCheckCommand(object p) => true;
+        private void OnCheckCommandExecuted(object p)
+        {
+            if( p is DataGrid dg)
+            {
+                foreach (ModPerson item in dg.SelectedItems)
+                {
+                    item.md_bonus_exec = IsCheckBonus;
+                    item.OnPropertyChanged(nameof(item.md_bonus_exec));
+                }
+            }
 
+        }
 
         #endregion
 
@@ -210,6 +224,15 @@ namespace Tabel.ViewModels
             if (SelectOtdel is null) return;
 
 
+            // удаление подписки на изменение элеменов списка сотрудников
+            if (ListModPerson != null)
+            {
+                foreach (var modPerson in ListModPerson)
+                {
+                    modPerson.PropertyChanged -= ModPerson_PropertyChanged;
+                }
+            }
+
             if (_SelectedOtdel.ot_parent is null)
             {
                 CurrentMod = repoModel.Items.FirstOrDefault(it => it.m_year == Year
@@ -235,18 +258,130 @@ namespace Tabel.ViewModels
                         );
             }
 
-            SumFP = repoFP.Items.FirstOrDefault(it => it.mo_otdel_id == _SelectedOtdel.id && it.mo_mod_id == CurrentMod.id);
 
-            //CurrentMod = repoModel.Items.FirstOrDefault(it => it.m_month == _SelectMonth && it.m_year == _SelectYear 
-            //&& it.m_otdelId == _SelectedOtdel.id);
+            // Подписка на изменение элеменов списка сотрудников
+            foreach (var modPerson in ListModPerson)
+            {
+                modPerson.PropertyChanged += ModPerson_PropertyChanged;
+                // расчет премии из ФП
+                CalcHoursAndPrem(modPerson);
+
+                // рассчет суммарных процентов в премии ФП
+                List<string> ListGroups = ListModPerson.Select(it => it.md_group).Distinct().ToList();
+                foreach (var group in ListGroups)
+                {
+                    List<ModPerson> groupPerson = ListModPerson.Where(it => it.md_group == group).ToList();
+                    CalcChangeProcent(groupPerson);
+                }
+
+            }
 
             LoadFromTabel();
             LoadFromSmena();
             LoadFromTransprot();
             OnPropertyChanged(nameof(ListModPerson));
             OnPropertyChanged(nameof(CurrentMod));
-            //OnPropertyChanged(nameof(sumFP));
 
+        }
+
+
+        //-------------------------------------------------------------------------------------------------------
+        // установка расчетных часов и премии
+        //-------------------------------------------------------------------------------------------------------
+        private void CalcHoursAndPrem(ModPerson modPerson)
+        {
+            modPerson.SummaHoursFP = modPerson.md_sumFromFP * modPerson.md_premFP / 100;
+            modPerson.SummaPremFP = modPerson.TabelDays == 0
+                ? 0
+                : modPerson.SummaHoursFP * modPerson.person.category.cat_prem_tarif * (modPerson.TabelDays - modPerson.TabelAbsent)
+                        / modPerson.TabelDays;
+
+            modPerson.OnPropertyChanged(nameof(modPerson.SummaHoursFP));
+            modPerson.OnPropertyChanged(nameof(modPerson.SummaPremFP));
+
+        }
+
+
+        //-------------------------------------------------------------------------------------------------------
+        // установка суммарного процента по группе
+        //-------------------------------------------------------------------------------------------------------
+        private void CalcChangeProcent(IEnumerable<ModPerson> groupPerson)
+        {
+
+            decimal? SummaProc = groupPerson.Sum(it => it.md_premFP) / 100m;
+            if (groupPerson != null)
+            {
+                foreach (var item in groupPerson)
+                {
+                    item.ProcGroup = SummaProc;
+                    item.OnPropertyChanged(nameof(item.ProcGroup));
+                }
+            }
+
+        }
+
+
+
+        //-------------------------------------------------------------------------------------------------------
+        // событие изменения полей Группа и сумма из ФП
+        //-------------------------------------------------------------------------------------------------------
+        private void ModPerson_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            List<ModPerson> groupPerson;
+            var modPerson = sender as ModPerson;
+
+            switch(e.PropertyName)
+            {
+                case "md_premFP":
+                    CalcHoursAndPrem(modPerson);
+
+                    groupPerson = ListModPerson.Where(it => it.md_group == modPerson.md_group
+                      || (it.md_group is null && modPerson.md_group == "")).ToList();
+
+                    CalcChangeProcent(groupPerson);
+                    break;
+
+                case "md_sumFromFP":
+                    if (lockPropertyChanged) return;
+
+                    lockPropertyChanged = true;
+
+                    groupPerson = ListModPerson.Where(it => it.md_group == modPerson.md_group
+                      || (it.md_group is null && modPerson.md_group == "")).ToList();
+
+                    if (groupPerson != null)
+                    {
+                        decimal? summFP = modPerson is null ? 0 : modPerson.md_sumFromFP;
+
+                        foreach (var item in groupPerson)
+                        {
+                            item.md_sumFromFP = summFP;
+                            item.OnPropertyChanged(nameof(item.md_sumFromFP));
+                            CalcHoursAndPrem(item);
+                        }
+                    }
+                    lockPropertyChanged = false;
+                    break;
+
+                case "md_group":
+
+                    decimal? summ = ListModPerson
+                        .Where(it => it.md_group == modPerson.md_group && it.id != modPerson.id)
+                        .Select(s => s.md_sumFromFP).FirstOrDefault();
+                    if(summ != null)
+                        modPerson.md_sumFromFP = summ;
+                    CalcHoursAndPrem(modPerson);
+
+                    List<string> ListGroups = ListModPerson.Select(it => it.md_group).Distinct().ToList();
+
+                    foreach(var group in ListGroups)
+                    {
+                        groupPerson = ListModPerson.Where(it => it.md_group == group).ToList();
+                        CalcChangeProcent(groupPerson);
+                    }
+
+                    break;
+            }
         }
 
         //-------------------------------------------------------------------------------------------------------
@@ -306,7 +441,8 @@ namespace Tabel.ViewModels
             {
 
                 var pers = tabel.tabelPersons.FirstOrDefault(it => it.tp_person_id == item.md_personalId);
-                item.TabelDays = pers.DaysMonth;
+                //item.TabelDays = pers.DaysMonth;
+                item.TabelDays = 31;
                 item.TabelHours = pers.HoursMonth;
                 item.TabelWorkOffDay = pers.WorkedOffDays;
                 item.DayOffSumma = item.TabelWorkOffDay * item.md_tarif_offDay;

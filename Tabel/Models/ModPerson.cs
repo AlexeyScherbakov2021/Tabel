@@ -29,12 +29,19 @@ namespace Tabel.Models
             get => _md_premFP;
             set
             {
-                if (Equals(_md_premFP, value)) return;
-                _md_premFP = value;
-                UpdateUI();
+                Set(ref _md_premFP, value);
+                //if (Equals(_md_premFP, value)) return;
+                //_md_premFP = value;
+                //UpdateUI();
             }
         }
 
+        [StringLength(20)]
+        public string md_group { get => _md_group; set { Set(ref _md_group, value); } }
+        public string _md_group;
+
+        public decimal? md_sumFromFP { get => _md_sumFromFP; set { Set(ref _md_sumFromFP, value); } }
+        public decimal? _md_sumFromFP;
 
         [Column(TypeName = "numeric")]
         public decimal? md_prem1_tarif { get; set; }
