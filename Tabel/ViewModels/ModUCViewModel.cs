@@ -38,22 +38,6 @@ namespace Tabel.ViewModels
 
         public bool IsCheckBonus { get; set; }
 
-        //public decimal? sumFP
-        //{
-        //    get
-        //    {
-        //        if (_SelectedOtdel != null && _SelectedOtdel.ModOtdelSumFPs.Count > 0)
-        //            return _SelectedOtdel.ModOtdelSumFPs[0].mo_sumFP;
-        //        else
-        //            return null;
-        //    }
-        //    set
-        //    {
-        //        if(_SelectedOtdel != null && _SelectedOtdel.ModOtdelSumFPs.Count > 0)
-        //            _SelectedOtdel.ModOtdelSumFPs[0].mo_sumFP = value;
-        //    } 
-        //}
-
         public ObservableCollection<ModPerson> ListModPerson { get; set; }
 
         public List<AddWorks> ListWorks { get; set; }
@@ -258,27 +242,29 @@ namespace Tabel.ViewModels
                         );
             }
 
-
-            // Подписка на изменение элеменов списка сотрудников
-            foreach (var modPerson in ListModPerson)
+            if (CurrentMod != null)
             {
-                modPerson.PropertyChanged += ModPerson_PropertyChanged;
-                // расчет премии из ФП
-                CalcHoursAndPrem(modPerson);
+                LoadFromTabel();
+                LoadFromSmena();
+                LoadFromTransprot();
 
-                // рассчет суммарных процентов в премии ФП
-                List<string> ListGroups = ListModPerson.Select(it => it.md_group).Distinct().ToList();
-                foreach (var group in ListGroups)
+                // Подписка на изменение элеменов списка сотрудников
+                foreach (var modPerson in ListModPerson)
                 {
-                    List<ModPerson> groupPerson = ListModPerson.Where(it => it.md_group == group).ToList();
-                    CalcChangeProcent(groupPerson);
+                    modPerson.PropertyChanged += ModPerson_PropertyChanged;
+                    // расчет премии из ФП
+                    CalcHoursAndPrem(modPerson);
+
+                    // рассчет суммарных процентов в премии ФП
+                    List<string> ListGroups = ListModPerson.Select(it => it.md_group).Distinct().ToList();
+                    foreach (var group in ListGroups)
+                    {
+                        List<ModPerson> groupPerson = ListModPerson.Where(it => it.md_group == group).ToList();
+                        CalcChangeProcent(groupPerson);
+                    }
+
                 }
-
             }
-
-            LoadFromTabel();
-            LoadFromSmena();
-            LoadFromTransprot();
             OnPropertyChanged(nameof(ListModPerson));
             OnPropertyChanged(nameof(CurrentMod));
 
@@ -293,7 +279,7 @@ namespace Tabel.ViewModels
             modPerson.SummaHoursFP = modPerson.md_sumFromFP * modPerson.md_premFP / 100;
             modPerson.SummaPremFP = modPerson.TabelDays == 0
                 ? 0
-                : modPerson.SummaHoursFP * modPerson.person.category.cat_prem_tarif * (modPerson.TabelDays - modPerson.TabelAbsent)
+                : modPerson.SummaHoursFP * modPerson.md_cat_prem_tarif * (modPerson.TabelDays - modPerson.TabelAbsent)
                         / modPerson.TabelDays;
 
             modPerson.OnPropertyChanged(nameof(modPerson.SummaHoursFP));
@@ -333,10 +319,11 @@ namespace Tabel.ViewModels
             switch(e.PropertyName)
             {
                 case "md_premFP":
+                case "md_cat_prem_tarif":
                     CalcHoursAndPrem(modPerson);
 
                     groupPerson = ListModPerson.Where(it => it.md_group == modPerson.md_group
-                      || (it.md_group is null && modPerson.md_group == "")).ToList();
+                      /*|| (it.md_group is null && modPerson.md_group == "")*/).ToList();
 
                     CalcChangeProcent(groupPerson);
                     break;
@@ -347,7 +334,7 @@ namespace Tabel.ViewModels
                     lockPropertyChanged = true;
 
                     groupPerson = ListModPerson.Where(it => it.md_group == modPerson.md_group
-                      || (it.md_group is null && modPerson.md_group == "")).ToList();
+                      /*|| (it.md_group is null && modPerson.md_group == "")*/).ToList();
 
                     if (groupPerson != null)
                     {
@@ -442,7 +429,7 @@ namespace Tabel.ViewModels
 
                 var pers = tabel.tabelPersons.FirstOrDefault(it => it.tp_person_id == item.md_personalId);
                 //item.TabelDays = pers.DaysMonth;
-                item.TabelDays = 31;
+                item.TabelDays = listDays.Count;
                 item.TabelHours = pers.HoursMonth;
                 item.TabelWorkOffDay = pers.WorkedOffDays;
                 item.DayOffSumma = item.TabelWorkOffDay * item.md_tarif_offDay;

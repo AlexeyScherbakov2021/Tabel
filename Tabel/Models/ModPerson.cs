@@ -119,6 +119,38 @@ namespace Tabel.Models
         [Column(TypeName = "numeric")]
         public decimal? md_tarif_offDay { get; set; }
 
+
+
+        private decimal? _md_kvalif_prem;
+        [Column(TypeName = "numeric")]
+        public decimal? md_kvalif_prem 
+        {
+            get => _md_kvalif_prem;
+            set
+            {
+                if (Equals(_md_kvalif_prem, value)) return;
+                _md_kvalif_prem = value;
+                UpdateUI();
+            }
+        }
+
+        private decimal? _md_cat_prem_tarif;
+        [Column(TypeName = "numeric")]
+        public decimal? md_cat_prem_tarif
+        {
+            get => _md_cat_prem_tarif;
+            set
+            {
+
+                if (value > person?.category?.cat_max_level)
+                    value = person.category.cat_max_level;
+                if (Set(ref _md_cat_prem_tarif, value)) 
+                    UpdateUI();
+            }
+        }
+
+
+
         public virtual Mod Mod { get; set; }
         public virtual Personal person { get; set; }
 

@@ -58,13 +58,18 @@ namespace Tabel.Models
 
 
         public decimal? Itogo => Oklad + (SummaPremFP ?? 0) + (Bonus ?? 0) + (PremOtdel ?? 0) 
-            + (NightSumma ?? 0) + (DayOffSumma ?? 0) + (TransportSumma ?? 0) + (AddWorksSumma ?? 0);
+            + (NightSumma ?? 0) + (DayOffSumma ?? 0) + (TransportSumma ?? 0) + (AddWorksSumma ?? 0)
+            + (Kvalif_Summa ?? 0);
 
         [NotMapped]
         public decimal? TransportSumma { get; set; }
 
         [NotMapped]
         public decimal? AddWorksSumma => ListAddWorks is null ? 0 : ListAddWorks.Sum(it => it.aw_Tarif);
+
+        [NotMapped]
+        public decimal? Kvalif_Summa => md_kvalif_prem;
+
 
 
         public void UpdateUI()
@@ -76,6 +81,7 @@ namespace Tabel.Models
             OnPropertyChanged(nameof(NightSumma));
             OnPropertyChanged(nameof(AddWorksSumma));
             OnPropertyChanged(nameof(Itogo));
+            OnPropertyChanged(nameof(Kvalif_Summa));
         }
 
     }

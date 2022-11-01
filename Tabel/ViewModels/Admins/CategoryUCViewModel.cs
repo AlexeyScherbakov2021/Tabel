@@ -53,7 +53,17 @@ namespace Tabel.ViewModels.Admins
                 Categories.Remove(SelectedCategory);
             }
         }
-    #endregion
+
+        //--------------------------------------------------------------------------------
+        // Команда Сохрнаить
+        //--------------------------------------------------------------------------------
+        public ICommand SaveCommand => new LambdaCommand(OnSaveCommandExecuted, CanSaveCommand);
+        private bool CanSaveCommand(object p) =>true;
+        private void OnSaveCommandExecuted(object p)
+        {
+            repoCategory.Save();
+        }
+        #endregion
 
     }
 }
