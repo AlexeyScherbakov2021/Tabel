@@ -10,17 +10,14 @@ using Tabel.Models;
 
 namespace Tabel.Repository
 {
-    internal class RepositoryOtdel : RepositoryMSSQL<Otdel>
+    public class RepositoryOtdel : RepositoryMSSQL<Otdel>
     {
         public override IQueryable<Otdel> Items => base.Items.Where(it => it.parent == null);//.Include(it => it.subOtdels);
 
+        //public RepositoryOtdel(BaseModel Db = null) : base(Db)
+        //{
 
-        public RepositoryOtdel(BaseModel Db = null) : base(Db)
-        {
-
-        }
-
-
+        //}
 
         public Otdel AddOtdel(Otdel item, Otdel parent = null)
         {

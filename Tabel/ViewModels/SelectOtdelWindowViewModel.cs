@@ -38,7 +38,7 @@ namespace Tabel.ViewModels
 
         public SelectOtdelWindowViewModel()
         {
-            RepositoryOtdel repo = new RepositoryOtdel();
+            RepositoryOtdel repo = AllRepo.GetRepoOtdel();
             ListOtdel = new ObservableCollection<Otdel>(repo.Items);
         }
     }

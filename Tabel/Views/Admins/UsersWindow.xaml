@@ -9,7 +9,7 @@
              xmlns:local="clr-namespace:Tabel.Views.Admins"
              xmlns:vm="clr-namespace:Tabel.ViewModels"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="800" >
     <UserControl.DataContext>
         <vm:UserWindowViewModel/>
     </UserControl.DataContext>
@@ -17,7 +17,7 @@
     <UserControl.Resources>
         <conv:OtdelsUserConverter x:Key="OtdelsUserConverter"/>
     </UserControl.Resources>
-    
+
     
     <!--<UserControl.InputBindings>
         <KeyBinding Key="Esc" Command="{Binding EndEditCommand}"/>
@@ -32,6 +32,12 @@
             <Grid >
                 <DataGrid x:Name="dataGrid" ItemsSource="{Binding ListUserView}" AutoGenerateColumns="False" SelectedItem="{Binding SelectedUser}"
                     Style="{StaticResource DataGridStyle}" Margin="0,0,0,0" >
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="GotFocus">
+                            <i:InvokeCommandAction Command="{Binding GotFocusCommand}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+
                     <!--<i:Interaction.Triggers>
                         <i:EventTrigger EventName="CellEditEnding">
                             <i:InvokeCommandAction Command="{Binding EndEditCommand}"/>
@@ -53,7 +59,7 @@
                         <!--<DataGridTextColumn Header="Права" Binding="{Binding u_role}" Width="130"/>-->
                         <DataGridComboBoxColumn Header="Права" ItemsSource="{Binding Source={infr:UserRolesBinding {x:Type infr:UserRoles}}}"  
                             SelectedItemBinding="{Binding u_role}"   Width="130"/>
-                        <DataGridTemplateColumn Header="Рабочий отдел" Width="190">
+                        <!--<DataGridTemplateColumn Header="Рабочий отдел" Width="190">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <Grid>
@@ -67,25 +73,61 @@
                                     </Grid>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
-                            <!--<DataGridTemplateColumn.CellEditingTemplate>
+                        </DataGridTemplateColumn>-->
+                        <DataGridTemplateColumn Header="Рабочий отдел"  Width="190">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding otdels, Mode=TwoWay, Converter={StaticResource OtdelsUserConverter}}"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                            <DataGridTemplateColumn.CellEditingTemplate>
                                 <DataTemplate>
                                     <Grid>
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition />
-                                            <ColumnDefinition Width="28"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition MinWidth="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}" Width="0"/>
                                         </Grid.ColumnDefinitions>
-                                        <TextBlock Text="{Binding otdel, Mode=TwoWay, Converter={StaticResource OtdelsUserConverter}}"/>
-                                        <Button Content="..." Margin="1" Grid.Column="1" CommandParameter="{Binding SelectedItem, ElementName=dataGrid}"
-                                            Command="{Binding DataContext.OtdelCommand, ElementName=userControl}"/>
+                                        <Popup IsOpen="{Binding IsChecked, ElementName=toggle}" Grid.ColumnSpan="2" >
+                                            <TreeView x:Name="tree" ItemsSource="{Binding DataContext.ListOtdel, ElementName=userControl}" >
+                                                <!--<TreeView.Resources>
+                                                    <Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource TreeItemMultiSelect}"/>
+                                                </TreeView.Resources>-->
+                                                <TreeView.ItemTemplate>
+                                                    <HierarchicalDataTemplate ItemsSource="{Binding subOtdels}" >
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <!--<TextBlock Text="Binding ot_name"/>-->
+                                                            <CheckBox Content="{Binding ot_name}" IsChecked="{Binding IsChecked, Mode=TwoWay}"/>
+                                                        </StackPanel>
+                                                    </HierarchicalDataTemplate>
+                                                </TreeView.ItemTemplate>
+                                            </TreeView>
+
+
+                                            <!--<ListBox ItemsSource="{Binding DataContext.ListOtdel, ElementName=userControl}"  >
+                                                <ListBox.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <CheckBox Content="{Binding ot_name}" IsChecked="{Binding IsChecked, Mode=TwoWay}"/>
+                                                        </StackPanel>
+                                                    </DataTemplate>
+                                                </ListBox.ItemTemplate>
+                                            </ListBox>-->
+                                        </Popup>
+                                        <ToggleButton x:Name="toggle" DockPanel.Dock="Right" Grid.ColumnSpan="2" 
+                                                          IsChecked="{Binding DataContext.IsCheckedButton, ElementName=userControl}"
+                                                          Style="{StaticResource ComboBoxToggleButton}">
+                                        </ToggleButton>
+                                        <TextBlock Text="{Binding otdels, Converter={StaticResource OtdelsUserConverter}}" IsHitTestVisible="False" Foreground="Black"/>
                                     </Grid>
                                 </DataTemplate>
-                            </DataGridTemplateColumn.CellEditingTemplate>-->
+                            </DataGridTemplateColumn.CellEditingTemplate>
                         </DataGridTemplateColumn>
-                       
+
+
                         <DataGridTextColumn Header="ФИО" Binding="{Binding u_fio}" Width="150"/>
                     </DataGrid.Columns>
                 </DataGrid>
-                <Popup IsOpen="{Binding IsOpenPopup}" Placement="MousePoint" Width="240" Height="200" UseLayoutRounding="True" ScrollViewer.CanContentScroll="True" VerticalOffset="8" HorizontalOffset="-200">
+                <!--<Popup IsOpen="{Binding IsOpenPopup}" Placement="MousePoint" Width="240" Height="200" UseLayoutRounding="True" ScrollViewer.CanContentScroll="True" VerticalOffset="8" HorizontalOffset="-200">
                     <TreeView x:Name="tree" ItemsSource="{Binding ListOtdel}" >
                         <TreeView.Resources>
                             <Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource TreeItemMultiSelect}"/>
@@ -101,7 +143,7 @@
                             </HierarchicalDataTemplate>
                         </TreeView.ItemTemplate>
                     </TreeView>
-                </Popup>
+                </Popup>-->
             </Grid>
 
         </DockPanel>

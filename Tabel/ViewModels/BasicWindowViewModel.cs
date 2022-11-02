@@ -26,7 +26,7 @@ namespace Tabel.ViewModels
         //public string Title { get => _Title; set { Set(ref _Title, value); } }
         public string Title { get; set; }
         
-        private readonly RepositoryMSSQL<Otdel> repoOtdel = new RepositoryMSSQL<Otdel>();
+        //private readonly RepositoryMSSQL<Otdel> repoOtdel = AllRepo.GetRepoOtdel();
         public List<Otdel> ListOtdel { get; set; }
 
         public List<Months> ListMonth => App.ListMonth;
@@ -142,12 +142,12 @@ namespace Tabel.ViewModels
             User = App.CurrentUser;
             //User = new User() { u_otdel_id = 44, u_login = "Petrov", id = 10, u_fio = "Петров" };
 
-            RepositoryCalendar repoCal = new RepositoryCalendar();
+            RepositoryCalendar repoCal = AllRepo.GetRepoCalendar();
             ListYears = repoCal.GetYears().ToList();
 
             //ListOtdel = repoOtdel.Items.ToList();
 
-            RepositoryOtdel repo = new RepositoryOtdel();
+            RepositoryOtdel repo = AllRepo.GetRepoOtdel();
 
             ListOtdel = repo.GetTreeOtdels(User.otdels).ToList();
 

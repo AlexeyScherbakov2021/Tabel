@@ -20,14 +20,22 @@ namespace Tabel.ViewModels
 {
     internal class ModUCViewModel : ViewModel, IBaseUCViewModel
     {
-        private RepositoryMSSQL<Personal> repoPersonal = new RepositoryMSSQL<Personal>();
-        private readonly RepositoryMSSQL<WorkTabel> repoTabel = new RepositoryMSSQL<WorkTabel>();
-        private readonly RepositoryMSSQL<Mod> repoModel = new RepositoryMSSQL<Mod>();
-        private readonly RepositoryMSSQL<Smena> repoSmena = new RepositoryMSSQL<Smena>();
-        private readonly RepositoryMSSQL<ModPerson> repoModPerson = new RepositoryMSSQL<ModPerson>();
-        private readonly RepositoryMSSQL<Transport> repoTransport = new RepositoryMSSQL<Transport>();
-        private readonly RepositoryMSSQL<AddWorks> repoAddWorks = new RepositoryMSSQL<AddWorks>();
+        //private RepositoryMSSQL<Personal> repoPersonal = new RepositoryMSSQL<Personal>();
+        //private readonly RepositoryMSSQL<WorkTabel> repoTabel = new RepositoryMSSQL<WorkTabel>();
+        //private readonly RepositoryMSSQL<Mod> repoModel = new RepositoryMSSQL<Mod>();
+        //private readonly RepositoryMSSQL<Smena> repoSmena = new RepositoryMSSQL<Smena>();
+        //private readonly RepositoryMSSQL<ModPerson> repoModPerson = new RepositoryMSSQL<ModPerson>();
+        //private readonly RepositoryMSSQL<Transport> repoTransport = new RepositoryMSSQL<Transport>();
+        //private readonly RepositoryMSSQL<AddWorks> repoAddWorks = new RepositoryMSSQL<AddWorks>();
         //private readonly RepositoryMSSQL<ModOtdelSumFP> repoFP = new RepositoryMSSQL<ModOtdelSumFP>();
+
+        private readonly RepositoryMSSQL<ModPerson> repoModPerson = AllRepo.GetRepoModPerson();
+        private readonly RepositoryMSSQL<AddWorks> repoAddWorks = AllRepo.GetRepoAddWorks();
+        private readonly RepositoryMSSQL<Transport> repoTransport = AllRepo.GetRepoTransport();
+        private RepositoryMSSQL<Personal> repoPersonal = AllRepo.GetRepoPersonal();
+        private readonly RepositoryMSSQL<WorkTabel> repoTabel = AllRepo.GetRepoTabel();
+        private readonly RepositoryMSSQL<Mod> repoModel = AllRepo.GetRepoModel();
+        private readonly RepositoryMSSQL<Smena> repoSmena = AllRepo.GetRepoSmena();
 
         static bool lockPropertyChanged = false;
 
@@ -109,7 +117,7 @@ namespace Tabel.ViewModels
             CurrentMod.ModPersons = new List<ModPerson>();
 
 
-            RepositoryMSSQL<Otdel> repoOtdel = new RepositoryMSSQL<Otdel>();
+            RepositoryMSSQL<Otdel> repoOtdel = AllRepo.GetRepoOtdel();
             List<int> listOtdels = repoOtdel.Items.AsNoTracking().Where(it => it.ot_parent == _SelectedOtdel.id).Select(s => s.id).ToList();
 
             var persons = repoPersonal.Items.AsNoTracking().Where(it => (it.p_otdel_id == _SelectedOtdel.id && it.p_delete == false)
@@ -185,7 +193,8 @@ namespace Tabel.ViewModels
         {
             DateTime _CurrentDate = DateTime.Now;
 
-            repoAddWorks = new RepositoryMSSQL<AddWorks>(repoModPerson.GetDB());
+            //repoAddWorks = new RepositoryMSSQL<AddWorks>(repoModPerson.GetDB());
+            repoAddWorks = AllRepo.GetRepoAddWorks();
 
             ListWorks = repoAddWorks.Items.ToList();
 
@@ -420,7 +429,7 @@ namespace Tabel.ViewModels
             if (ListModPerson is null || tabel is null) return;
 
             // получение количества рабочих дней в указанном месяце
-            RepositoryCalendar repoCal = new RepositoryCalendar();
+            RepositoryCalendar repoCal = AllRepo.GetRepoCalendar();
             var listDays = repoCal.GetListDays(_SelectYear, _SelectMonth);
             int CountWorkDays = listDays.Count(it => it.KindDay != TypeDays.Holyday);
 

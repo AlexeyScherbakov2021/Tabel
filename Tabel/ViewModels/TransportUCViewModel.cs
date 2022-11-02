@@ -25,10 +25,11 @@ namespace Tabel.ViewModels
         private int _SelectMonth;
         private int _SelectYear;
 
-        private readonly RepositoryMSSQL<Personal> repoPersonal = new RepositoryMSSQL<Personal>();
-        private readonly RepositoryMSSQL<Transport> repoTransp = new RepositoryMSSQL<Transport>();
+        //private readonly RepositoryMSSQL<Personal> repoPersonal = new RepositoryMSSQL<Personal>();
+        private readonly RepositoryMSSQL<Personal> repoPersonal = AllRepo.GetRepoPersonal();
+        private readonly RepositoryMSSQL<Transport> repoTransp = AllRepo.GetRepoTransport();
         //private readonly RepositoryMSSQL<TransPerson> repoTrnaspPersonal = new RepositoryMSSQL<TransPerson>();
-        private readonly RepositoryMSSQL<TransPerson> repoTransPerson = new RepositoryMSSQL<TransPerson>();
+        private readonly RepositoryMSSQL<TransPerson> repoTransPerson = AllRepo.GetRepoTransPerson();
 
         public Transport Transp { get; set; }
         public ObservableCollection<TransPerson> ListTransPerson { get; set; }
@@ -49,7 +50,7 @@ namespace Tabel.ViewModels
                 repoTransp.Remove(Transp);
             }
 
-            RepositoryMSSQL<Otdel> repoOtdel = new RepositoryMSSQL<Otdel>();
+            RepositoryMSSQL<Otdel> repoOtdel = AllRepo.GetRepoOtdel();
             List<int> listOtdels = repoOtdel.Items.AsNoTracking().Where(it => it.ot_parent == _SelectedOtdel.id).Select(s => s.id).ToList();
 
             List<Personal> PersonsFromOtdel = repoPersonal.Items.AsNoTracking().Where(it => (it.p_otdel_id == _SelectedOtdel.id && it.p_delete == false)
@@ -68,7 +69,7 @@ namespace Tabel.ViewModels
             //DateTime StartDay = new DateTime(_SelectYear, _SelectMonth, 1);
 
             // получение данных производственного календаря
-            RepositoryCalendar repo = new RepositoryCalendar();
+            RepositoryCalendar repo = AllRepo.GetRepoCalendar();
             var ListDays = repo.GetListDays(_SelectYear, _SelectMonth);
 
             // если есть персонал в отделе, добавляем его и формируем дни
@@ -264,7 +265,7 @@ namespace Tabel.ViewModels
             if (Transp is null) return;
 
             // получение данных производственного календаря
-            RepositoryCalendar repo = new RepositoryCalendar();
+            RepositoryCalendar repo = AllRepo.GetRepoCalendar();
             var ListDays = repo.GetListDays(_SelectYear, _SelectMonth);
 
             //RepositoryMSSQL<WorkCalendar> repoDays = new RepositoryMSSQL<WorkCalendar>();

@@ -44,8 +44,9 @@ namespace Tabel.ViewModels
         private void ListUserView_CurrentChanged(object sender, EventArgs e)
         {
             //if (IsOpenPopup)
+
             //    GetOtdelsFromUser(_SelectedUser, ListOtdel);
-            IsOpenPopup = false;
+            //IsOpenPopup = false;
             repoUser.Save();
         }
 
@@ -66,8 +67,8 @@ namespace Tabel.ViewModels
             }
         }
 
-        private bool _IsOpenPopup = false;
-        public bool IsOpenPopup { get => _IsOpenPopup; set { Set(ref _IsOpenPopup, value); } }
+        //private bool _IsOpenPopup = false;
+        //public bool IsOpenPopup { get => _IsOpenPopup; set { Set(ref _IsOpenPopup, value); } }
 
 
         //--------------------------------------------------------------------------------
@@ -75,7 +76,7 @@ namespace Tabel.ViewModels
         //--------------------------------------------------------------------------------
         private void SetOtdelsToUser(User user,  ICollection<Otdel> ListSiblingOtdel)
         {
-            if (user is null || ListSiblingOtdel?.Count == 0) return;
+            if (user is null || ListSiblingOtdel is null || ListSiblingOtdel?.Count == 0) return;
 
             foreach (Otdel otdel in ListSiblingOtdel)
             {
@@ -143,9 +144,9 @@ namespace Tabel.ViewModels
         private bool CanOtdelCommand(object p) => true;
         private void OnOtdelCommandExecuted(object p)
         {
-            if (IsOpenPopup)
-                GetOtdelsFromUser(_SelectedUser, ListOtdel);
-            IsOpenPopup = !IsOpenPopup;
+            //if (IsOpenPopup)
+            //    GetOtdelsFromUser(_SelectedUser, ListOtdel);
+            //IsOpenPopup = !IsOpenPopup;
         }
 
         //--------------------------------------------------------------------------------
@@ -160,9 +161,20 @@ namespace Tabel.ViewModels
                 //SelectedUser.u_otdel_id = otdel.id;
                 //SelectedUser.otdel = null;
                 repoUser.Update(SelectedUser);
-                IsOpenPopup = false;
+                //IsOpenPopup = false;
                 ListUserView.Refresh();
             }
+        }
+
+        //--------------------------------------------------------------------------------
+        // Событие получения фокуса
+        //-------------------------------------------------------------------------------
+        public ICommand GotFocusCommand => new LambdaCommand(OnGotFocusCommandExecuted, CanGotFocusCommand);
+        private bool CanGotFocusCommand(object p) => true;
+        private void OnGotFocusCommandExecuted(object p)
+        {
+            //ListOtdel = new ObservableCollection<Otdel>(repoOtdel.Items);
+            //OnPropertyChanged(nameof(ListOtdel));
         }
 
         #endregion
@@ -172,9 +184,9 @@ namespace Tabel.ViewModels
         //--------------------------------------------------------------------------------
         public UserWindowViewModel()
         {
-            repoUser = new RepositoryMSSQL<User>();
+            repoUser = AllRepo.GetRepoUser();
             ListUser = new ObservableCollection<User>(repoUser.Items);
-            repoOtdel = new RepositoryOtdel(repoUser.GetDB());
+            repoOtdel = AllRepo.GetRepoOtdel();
             ListOtdel = new ObservableCollection<Otdel>(repoOtdel.Items);
         }
 

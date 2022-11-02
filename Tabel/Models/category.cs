@@ -29,8 +29,8 @@ namespace Tabel.Models
         [Column(TypeName = "numeric")]
         public decimal? cat_max_level { get; set; }
 
-        [Column(TypeName = "numeric")]
-        public decimal? cat_prem_tarif { get; set; }
+        //[Column(TypeName = "numeric")]
+        //public decimal? cat_prem_tarif { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Personal> personals { get; set; }

@@ -14,7 +14,7 @@ using Tabel.Models;
 
 namespace Tabel.Repository
 {
-    internal class RepositoryMSSQL<T> : IRepository<T> where T : class, IEntity, new()
+    public class RepositoryMSSQL<T> : IRepository<T> where T : class, IEntity, new()
     {
         //SqlConnection conn;
         //protected BaseModel db => App.db;
@@ -23,9 +23,9 @@ namespace Tabel.Repository
         public virtual IQueryable<T> Items => _Set;
 
 
-        public RepositoryMSSQL(BaseModel Db = null)
+        public RepositoryMSSQL(/*BaseModel Db = null*/)
         {
-            db = Db ?? BaseModel.CreateDB();
+            db = /*Db ??*/ BaseModel.CreateDB();
 
             //db = new BaseModel();
             _Set = db.Set<T>();

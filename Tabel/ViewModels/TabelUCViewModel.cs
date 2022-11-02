@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data.Entity;
+using System.Data.SqlTypes;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -21,10 +22,10 @@ namespace Tabel.ViewModels
 {
     internal class TabelUCViewModel : ViewModel, IBaseUCViewModel
     {
-        private RepositoryMSSQL<Personal> repoPersonal = new RepositoryMSSQL<Personal>();
-        private readonly RepositoryMSSQL<WorkTabel> repoTabel = new RepositoryMSSQL<WorkTabel>();
-        private readonly RepositoryMSSQL<typeDay> repoTypeDay = new RepositoryMSSQL<typeDay>();
-        private readonly RepositoryMSSQL<TabelPerson> repoTabelPerson = new RepositoryMSSQL<TabelPerson>();
+        private RepositoryMSSQL<Personal> repoPersonal = AllRepo.GetRepoPersonal();
+        private readonly RepositoryMSSQL<WorkTabel> repoTabel = AllRepo.GetRepoTabel();
+        private readonly RepositoryMSSQL<typeDay> repoTypeDay = AllRepo.GetRepoTypeDay();
+        private readonly RepositoryMSSQL<TabelPerson> repoTabelPerson = AllRepo.GetRepoTabelPerson();
 
         public WorkTabel Tabel { get; set; }
         public IEnumerable<typeDay> ListTypeDays { get; set; }
@@ -52,18 +53,18 @@ namespace Tabel.ViewModels
             }
 
             // получение данных производственного календаря
-            RepositoryCalendar repo = new RepositoryCalendar();
+            RepositoryCalendar repo = AllRepo.GetRepoCalendar();
             var ListDays = repo.GetListDays(_SelectYear, _SelectMonth);
 
             //IEnumerable<WorkCalendar> cal = repo.Items.AsNoTracking().Where(it => it.cal_date.Year == _SelectYear
             //        && it.cal_date.Month == _SelectMonth);
 
 
-            RepositoryMSSQL<Otdel> repoOtdel = new RepositoryMSSQL<Otdel>();
+            RepositoryMSSQL<Otdel> repoOtdel = AllRepo.GetRepoOtdel();
             List<int> listOtdels = repoOtdel.Items.AsNoTracking().Where(it => it.ot_parent == SelectedOtdel.id).Select(s => s.id).ToList();
 
             // получение сотрудников отдела
-            repoPersonal = new RepositoryMSSQL<Personal>();
+            repoPersonal = AllRepo.GetRepoPersonal();
 
             List<Personal> PersonsFromOtdel = repoPersonal.Items.AsNoTracking().Where(it => (it.p_otdel_id == SelectedOtdel.id && it.p_delete == false)
                 || listOtdels.Contains(it.p_otdel_id.Value)).ToList();
@@ -345,7 +346,7 @@ namespace Tabel.ViewModels
             if (Tabel is null) return;
 
             // получение данных производственного календаря
-            RepositoryCalendar repo = new RepositoryCalendar();
+            RepositoryCalendar repo = AllRepo.GetRepoCalendar();
             var ListDays = repo.GetListDays(_SelectYear, _SelectMonth);
 
             foreach (var item in ListTabelPerson)

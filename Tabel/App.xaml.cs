@@ -9,6 +9,7 @@ using System.Windows;
 using System.Windows.Markup;
 using Tabel.Infrastructure;
 using Tabel.Models;
+using Tabel.Repository;
 using Tabel.Views;
 
 namespace Tabel
@@ -19,8 +20,6 @@ namespace Tabel
     public partial class App : Application
     {
         public static User CurrentUser;
-        //public static readonly BaseModel db = BaseModel.CreateDB();
-
 
         public static List<Months> ListMonth = new List<Months>()
         {

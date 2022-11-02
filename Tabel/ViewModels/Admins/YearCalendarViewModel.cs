@@ -18,7 +18,7 @@ namespace Tabel.ViewModels
 {
     internal class YearCalendarViewModel : ViewModel
     {
-        private readonly RepositoryCalendar RepoCal = new RepositoryCalendar();
+        private readonly RepositoryCalendar RepoCal = AllRepo.GetRepoCalendar();
 
         public Visibility VisibleAdmin => App.CurrentUser.u_role == Infrastructure.UserRoles.Admin ? Visibility.Visible : Visibility.Hidden;  
 

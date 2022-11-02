@@ -9,9 +9,13 @@ namespace Tabel.Models
 {
     public partial class BaseModel : DbContext
     {
+        public static BaseModel BaseDB = null;
 
         public static BaseModel CreateDB()
         {
+            if(BaseDB != null)
+                return BaseDB;
+
             string ConnectString;
 
 #if DEBUG
@@ -22,10 +26,10 @@ namespace Tabel.Models
             ConnectString = ConfigurationManager.ConnectionStrings["BaseModel"].ConnectionString;
             ConnectString += ";user id=fpLoginName;password=ctcnhjt,s";
 #endif
-            return new BaseModel(ConnectString);
+            BaseDB = new BaseModel(ConnectString);
+            return BaseDB = new BaseModel(ConnectString);
 
         }
-
 
 
         public BaseModel(string cs) : base(cs)   //: base("name=BaseModel")

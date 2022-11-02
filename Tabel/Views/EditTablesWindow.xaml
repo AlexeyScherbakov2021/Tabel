@@ -14,16 +14,14 @@
     <Window.DataContext>
         <vm:EditTablesWindowModel/>
     </Window.DataContext>
-    <i:Interaction.Triggers>
+    <!--<i:Interaction.Triggers>
         <i:EventTrigger EventName="Closing">
             <i:InvokeCommandAction Command="{Binding ClosingCommand}"/>
         </i:EventTrigger>
-    </i:Interaction.Triggers>
+    </i:Interaction.Triggers>-->
 
     <Grid>
         <TabControl Margin="10">
-            
-            
             <TabItem Header="Отделы и группы">
                 <view:OtdelsWindow VerticalAlignment="Stretch" Margin="0,10" />
             </TabItem>
@@ -37,7 +35,7 @@
                 <view:YearCalendar Margin="10,23,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"/>
             </TabItem>
             <TabItem Header="Пользователи" Visibility="{Binding VisibleAdmin}">
-                <view:UsersWindow  />
+                <view:UsersWindow />
             </TabItem>
         </TabControl>
 

@@ -19,19 +19,24 @@ namespace Tabel.ViewModels
 {
     internal class EditTablesWindowModel : ViewModel
     {
-        RepositoryMSSQL<Category> repo = new RepositoryMSSQL<Category>();
+        //RepositoryMSSQL<Category> repo = new RepositoryMSSQL<Category>();
 
         public Visibility VisibleAdmin => App.CurrentUser.u_role == Infrastructure.UserRoles.Admin ? Visibility.Visible : Visibility.Collapsed;
 
+        //public EditTablesWindowModel()
+        //{
+        //    AllRepo.repositoryOtdel = new RepositoryOtdel();
+        //}
+
 
         #region Команды
-        public ICommand ClosingCommand => new LambdaCommand(OnClosingCommandExecuted, CanClosingCommand);
-        private bool CanClosingCommand(object p) => true;
-        private void OnClosingCommandExecuted(object p)
-        {
-            repo.Save();
-            //UserViewModel.SaveUsers();
-        }
+        //public ICommand ClosingCommand => new LambdaCommand(OnClosingCommandExecuted, CanClosingCommand);
+        //private bool CanClosingCommand(object p) => true;
+        //private void OnClosingCommandExecuted(object p)
+        //{
+        //    repo.Save();
+        //    //UserViewModel.SaveUsers();
+        //}
         #endregion
 
 

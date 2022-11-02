@@ -28,7 +28,8 @@ namespace Tabel.Models
         public int id { get; set; }
 
         [StringLength(100)]
-        public string ot_name { get; set; }
+        private string _ot_name;
+        public string ot_name { get => _ot_name; set { Set(ref _ot_name, value); } }
 
         public int? ot_parent { get; set; }
 

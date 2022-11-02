@@ -79,7 +79,7 @@ namespace Tabel.ViewModels
             winLogin = App.Current.Windows.OfType<LoginWindow>().First();
             //winLogin.Closing += Win_Closing;
 
-            repo = new RepositoryMSSQL<User>();
+            repo = AllRepo.GetRepoUser();
             ListUser = repo.Items.ToArray();
 
             string login = "Admin";

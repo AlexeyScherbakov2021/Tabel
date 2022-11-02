@@ -130,6 +130,7 @@
     <Compile Include="Models\Transport.cs" />
     <Compile Include="Models\typeDay.cs" />
     <Compile Include="Models\user.cs" />
+    <Compile Include="Repository\AllRepo.cs" />
     <Compile Include="Repository\RepositoryCalendar.cs" />
     <Compile Include="Repository\RepositoryTabelPerson.cs" />
     <Compile Include="Infrastructure\Extend\ExtendedTreeView.cs" />

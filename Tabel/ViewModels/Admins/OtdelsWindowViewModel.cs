@@ -47,7 +47,7 @@ namespace Tabel.ViewModels.Admins
         }
 
         // Разряды ----------------------------------------------------
-        private readonly RepositoryMSSQL<Category> repoCat = new RepositoryMSSQL<Category>();
+        private readonly RepositoryMSSQL<Category> repoCat = AllRepo.GetRepoCategory();
 
         public List<Category> ListCategory { get; set; } //= repoCat.Items.AsNoTracking().OrderBy(o => o.id).ToList();
 
@@ -81,15 +81,14 @@ namespace Tabel.ViewModels.Admins
         public ICollectionView ListPersonalView => _ListCollectionPerson?.View;
 
 
-
         //--------------------------------------------------------------------------------
         // конструктор
         //--------------------------------------------------------------------------------
         public OtdelsWindowViewModel()
         {
-            repoOtdel = new RepositoryOtdel();
-            //repoOtdel = new RepositoryMSSQL<Otdel>();
-            repoPerson = new RepositoryMSSQL<Personal>();
+            //repoOtdel = new RepositoryOtdel();
+            repoOtdel = AllRepo.GetRepoOtdel();
+            repoPerson = AllRepo.GetRepoPersonal();
 
             if (App.CurrentUser.u_role == UserRoles.Admin)
             {
@@ -220,6 +219,17 @@ namespace Tabel.ViewModels.Admins
                 repoPerson.Delete(SelectedPerson, true);
                 ListPersonal.Remove(SelectedPerson);
             }
+        }
+
+        //--------------------------------------------------------------------------------
+        // Команда Сохранить
+        //--------------------------------------------------------------------------------
+        public ICommand SaveCommand => new LambdaCommand(OnSaveCommandExecuted, CanSaveCommand);
+        private bool CanSaveCommand(object p) => true;
+        private void OnSaveCommandExecuted(object p)
+        {
+            repoOtdel.Save();
+            repoPerson.Save();
         }
 
         #endregion

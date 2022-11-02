@@ -26,9 +26,9 @@ namespace Tabel.ViewModels
         private int _SelectMonth;
         private int _SelectYear;
 
-        private readonly RepositoryMSSQL<Personal> repoPersonal = new RepositoryMSSQL<Personal>();
-        private readonly RepositoryMSSQL<Smena> repoSmena = new RepositoryMSSQL<Smena>();
-        private readonly RepositoryMSSQL<SmenaPerson> repoSmenaPersonal = new RepositoryMSSQL<SmenaPerson>();
+        private readonly RepositoryMSSQL<Personal> repoPersonal = AllRepo.GetRepoPersonal();
+        private readonly RepositoryMSSQL<Smena> repoSmena = AllRepo.GetRepoSmena();
+        private readonly RepositoryMSSQL<SmenaPerson> repoSmenaPersonal = AllRepo.GetRepoSmenaPerson();
 
         public string[] ListKind { get; set; } //= { "1см", "2см", "В", "О" };
 
@@ -59,7 +59,7 @@ namespace Tabel.ViewModels
                 repoSmena.Remove(SmenaShedule);
             }
 
-            RepositoryMSSQL<Otdel> repoOtdel = new RepositoryMSSQL<Otdel>();
+            RepositoryMSSQL<Otdel> repoOtdel = AllRepo.GetRepoOtdel();
             List<int> listOtdels = repoOtdel.Items.AsNoTracking().Where(it => it.ot_parent == _SelectedOtdel.id).Select(s => s.id).ToList();
 
             List<Personal> PersonsFromOtdel = repoPersonal.Items.AsNoTracking().Where(it => (it.p_otdel_id == _SelectedOtdel.id && it.p_delete == false)
@@ -74,7 +74,7 @@ namespace Tabel.ViewModels
             SmenaShedule.SmenaPerson = new ObservableCollection<SmenaPerson>();
 
             // получение данных производственного календаря
-            RepositoryCalendar repo = new RepositoryCalendar();
+            RepositoryCalendar repo = AllRepo.GetRepoCalendar();
             var ListDays = repo.GetListDays(_SelectYear, _SelectMonth);
 
             // количество дней в месяце
@@ -273,7 +273,7 @@ namespace Tabel.ViewModels
             if (SmenaShedule is null) return;
 
             // получение данных производственного календаря
-            RepositoryCalendar repo = new RepositoryCalendar();
+            RepositoryCalendar repo = AllRepo.GetRepoCalendar();
             var ListDays = repo.GetListDays(_SelectYear, _SelectMonth);
 
             //RepositoryMSSQL<WorkCalendar> repoDays = new RepositoryMSSQL<WorkCalendar>();

@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Tabel.Views.Admins"
              xmlns:ext="clr-namespace:Tabel.Infrastructure.Extend"
+             xmlns:fa="http://schemas.fontawesome.com/icons/"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:m="clr-namespace:Tabel.Models"
              xmlns:vm="clr-namespace:Tabel.ViewModels.Admins"
@@ -29,18 +30,33 @@
             <ColumnDefinition Width="47*"/>
             <ColumnDefinition Width="113*"/>
         </Grid.ColumnDefinitions>
-        <Border Padding="3" Margin="10" CornerRadius="4" Background="LightGray" BorderThickness="1" BorderBrush="Gray" >
+        <Border Padding="3" Margin="10" CornerRadius="4" Background="WhiteSmoke" BorderThickness="1" BorderBrush="Gray" >
             <Border.Effect>
-                <DropShadowEffect BlurRadius="15" ShadowDepth="0" Color="#000000" Opacity="0.5"/>
+                <DropShadowEffect BlurRadius="10" ShadowDepth="0" Color="Black" Opacity="0.2"/>
             </Border.Effect>
 
             <DockPanel>
                 <StackPanel DockPanel.Dock="Bottom">
                     <!--<TextBox Text="{Binding SelectedOtdel.ot_name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="2" IsTabStop="False"/>-->
                     <!--<Button Content="Изменить" Margin="2"/>-->
-                    <Button Content="Добавить отдел" Command="{Binding AddOtdelCommand}" Margin="2" Visibility="{Binding VisibleAdmin}"/>
-                    <Button Content="Добавить группу" Command="{Binding AddGroupCommand}" Margin="2" Visibility="{Binding VisibleAdmin}"/>
-                    <Button Content="Удалить" Command="{Binding DeleteOtdelCommand}" Margin="2" Visibility="{Binding VisibleAdmin}"/>
+                    <Button Command="{Binding AddOtdelCommand}" Margin="2" Visibility="{Binding VisibleAdmin}" Style="{StaticResource ButtonStyleShadow}">
+                        <StackPanel Orientation="Horizontal" Width="130">
+                            <fa:ImageAwesome  Width="20" Height="20" Foreground="#FF005AA0" Icon="Solid_Users" Margin="5,0"/>
+                            <TextBlock Text="Добавить отдел"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Command="{Binding AddGroupCommand}" Margin="2" Visibility="{Binding VisibleAdmin}" Style="{StaticResource ButtonStyleShadow}">
+                        <StackPanel Orientation="Horizontal" Width="130">
+                            <fa:ImageAwesome  Width="20" Height="20" Foreground="#FF005AA0" Icon="Solid_UserFriends" Margin="5,0"/>
+                        <TextBlock Text="Добавить группу"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Command="{Binding DeleteOtdelCommand}" Margin="2" Visibility="{Binding VisibleAdmin}" Style="{StaticResource ButtonStyleShadow}">
+                        <StackPanel Orientation="Horizontal" Width="130">
+                            <fa:ImageAwesome  Width="20" Height="20" Foreground="#FF005AA0" Icon="Solid_UsersSlash" Margin="5,0"/>
+                            <TextBlock Text="Удалить"/>
+                        </StackPanel>
+                    </Button>
                 </StackPanel>
                 <TextBlock Text="Отделы и группы" DockPanel.Dock="Top" FontSize="14"/>
                 <ext:ExtendedTreeView ItemsSource="{Binding ListOtdel}" Margin="3" SelectedItem_="{Binding SelectedOtdel, Mode=TwoWay}">
@@ -53,17 +69,33 @@
                 </ext:ExtendedTreeView>
             </DockPanel>
         </Border>
-        <Border Grid.Column="1" Padding="3" Margin="10" CornerRadius="4" Background="LightGray" BorderThickness="1" BorderBrush="Gray" >
+        <Border Grid.Column="1" Padding="3" Margin="10" CornerRadius="4" Background="WhiteSmoke" BorderThickness="1" BorderBrush="Gray" >
             <Border.Effect>
-                <DropShadowEffect BlurRadius="15" ShadowDepth="0" Color="#000000" Opacity="0.5"/>
+                <DropShadowEffect BlurRadius="10" ShadowDepth="0" Color="#000000" Opacity="0.2"/>
             </Border.Effect>
             <DockPanel>
                 <TextBox Text="{Binding SelectedOtdel.ot_name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Top" FontSize="16" Margin="4" HorizontalAlignment="Stretch"
                            TextAlignment="Center" FontWeight="Bold"
                            Background="Khaki"/>
-                <UniformGrid Columns="2" DockPanel.Dock="Bottom" Margin="6">
-                    <Button Content="Добавить сотрудника" Command="{Binding AddPersonCommand}" CommandParameter="{Binding ElementName=dg}" Margin="2"/>
-                    <Button Content="Удалить сотрудника" Command="{Binding DeletePersonCommand}" Margin="2"/>
+                <UniformGrid Columns="3" DockPanel.Dock="Bottom" Margin="6">
+                    <Button Command="{Binding SaveCommand}" Margin="2" Style="{StaticResource ButtonStyleShadow}">
+                        <StackPanel Orientation="Horizontal" Width="160">
+                            <fa:ImageAwesome  Width="20" Height="20" Foreground="#FF005AA0" Icon="Solid_UserPlus" Margin="5,0"/>
+                            <TextBlock Text="Сохранить" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Command="{Binding AddPersonCommand}" CommandParameter="{Binding ElementName=dg}" Margin="2" Style="{StaticResource ButtonStyleShadow}">
+                        <StackPanel Orientation="Horizontal" Width="160">
+                            <fa:ImageAwesome  Width="20" Height="20" Foreground="#FF005AA0" Icon="Solid_UserPlus" Margin="5,0"/>
+                            <TextBlock Text="Добавить сотрудника" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Command="{Binding DeletePersonCommand}" Margin="2" Style="{StaticResource ButtonStyleShadow}">
+                        <StackPanel Orientation="Horizontal" Width="160">
+                            <fa:ImageAwesome  Width="20" Height="20" Foreground="#FF005AA0" Icon="Solid_UserMinus" Margin="5,0"/>
+                            <TextBlock Text="Удалить сотрудника" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
                 </UniformGrid>
 
                 <DataGrid x:Name="dg" ItemsSource="{Binding ListPersonalView}" SelectionMode="Single" Margin="4,0" SnapsToDevicePixels="True" Style="{DynamicResource DataGridStyle}" SelectedItem="{Binding SelectedPerson}" >
