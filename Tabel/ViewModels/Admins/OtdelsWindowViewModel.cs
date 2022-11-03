@@ -29,6 +29,10 @@ namespace Tabel.ViewModels.Admins
         public ObservableCollection<Otdel> ListOtdel { get; set; }
 
         public Visibility VisibleAdmin => App.CurrentUser.u_role == Infrastructure.UserRoles.Admin ? Visibility.Visible : Visibility.Collapsed;
+        public Visibility VisibleMain => 
+            App.CurrentUser.u_role == Infrastructure.UserRoles.Управление || App.CurrentUser.u_role == Infrastructure.UserRoles.Admin
+            ? Visibility.Visible 
+            : Visibility.Collapsed;
 
 
         // выбранный отдел
@@ -142,8 +146,9 @@ namespace Tabel.ViewModels.Admins
             NewOtdel.ot_name = "Новая группа";
             NewOtdel.ot_parent = SelectedOtdel.ot_parent ?? SelectedOtdel.id;
 
-            repoOtdel.Add(NewOtdel, true);
-            //SelectedOtdel.subOtdels.Add(NewOtdel);
+           /* Otdel otdel =*/ repoOtdel.Add(NewOtdel, true);
+            //if(!SelectedOtdel.subOtdels.Contains(otdel))
+            //    SelectedOtdel.subOtdels.Add(NewOtdel);
 
             SelectedOtdel.OnPropertyChanged(nameof(SelectedOtdel.subOtdels));
             OnPropertyChanged(nameof(SelectedOtdel));
@@ -164,20 +169,24 @@ namespace Tabel.ViewModels.Admins
         // Команда Удалить отдел
         //--------------------------------------------------------------------------------
         public ICommand DeleteOtdelCommand => new LambdaCommand(OnDeleteOtdelCommandExecuted, CanDeleteOtdelCommand);
-        private bool CanDeleteOtdelCommand(object p) => SelectedOtdel != null && SelectedOtdel.subOtdels.Count == 0;
+        private bool CanDeleteOtdelCommand(object p) =>
+            SelectedOtdel != null // если выбран отдел
+            && SelectedOtdel.subOtdels.Count == 0
+            && (SelectedOtdel.ot_parent != null || App.CurrentUser.u_role == Infrastructure.UserRoles.Admin); 
         private void OnDeleteOtdelCommandExecuted(object p)
         {
             if(MessageBox.Show($"Удалить «{SelectedOtdel.ot_name}»","Подтверждение", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
             {
-                var parentID = SelectedOtdel.ot_parent;
+                ObservableCollection<Otdel> list = SelectedOtdel.ot_parent is null
+                    ? ListOtdel
+                    : SelectedOtdel.parent.subOtdels;
 
                 try
                 {
-                    repoOtdel.Delete(SelectedOtdel, true);
-                    //repoOtdel.Remove(SelectedOtdel);
-                    //SelectedOtdel.parent.subOtdels.Remove(SelectedOtdel);
-                    if (parentID == null)
-                        ListOtdel.Remove(SelectedOtdel);
+                    int id = SelectedOtdel.id;
+                    list.Remove(SelectedOtdel);
+                    repoOtdel.Delete(id, true);
+                    repoOtdel.Save();
                 }
                 catch
                 {

@@ -45,13 +45,13 @@
                             <TextBlock Text="Добавить отдел"/>
                         </StackPanel>
                     </Button>
-                    <Button Command="{Binding AddGroupCommand}" Margin="2" Visibility="{Binding VisibleAdmin}" Style="{StaticResource ButtonStyleShadow}">
+                    <Button Command="{Binding AddGroupCommand}" Margin="2" Visibility="{Binding VisibleMain}" Style="{StaticResource ButtonStyleShadow}">
                         <StackPanel Orientation="Horizontal" Width="130">
                             <fa:ImageAwesome  Width="20" Height="20" Foreground="#FF005AA0" Icon="Solid_UserFriends" Margin="5,0"/>
                         <TextBlock Text="Добавить группу"/>
                         </StackPanel>
                     </Button>
-                    <Button Command="{Binding DeleteOtdelCommand}" Margin="2" Visibility="{Binding VisibleAdmin}" Style="{StaticResource ButtonStyleShadow}">
+                    <Button Command="{Binding DeleteOtdelCommand}" Margin="2" Visibility="{Binding VisibleMain}" Style="{StaticResource ButtonStyleShadow}">
                         <StackPanel Orientation="Horizontal" Width="130">
                             <fa:ImageAwesome  Width="20" Height="20" Foreground="#FF005AA0" Icon="Solid_UsersSlash" Margin="5,0"/>
                             <TextBlock Text="Удалить"/>

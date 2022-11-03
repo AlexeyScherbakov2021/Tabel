@@ -70,9 +70,9 @@ namespace Tabel.Repository
         {
             //return db.Set<T>().Add(item);
 
-
             if (item is null) throw new ArgumentNullException(nameof(item));
-            db.Entry(item).State = EntityState.Added;
+            //db.Entry(item).State = EntityState.Added;
+            _Set.Add(item);
             if (Autosave)
                 //db.SaveChanges();
                 Save();
@@ -96,8 +96,6 @@ namespace Tabel.Repository
         {
             if (item is null || item.id <= 0)
                 return;
-
-            
 
             db.Entry(item).State = EntityState.Deleted;
             if (Autosave)

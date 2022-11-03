@@ -19,20 +19,32 @@ namespace Tabel.Repository
 
         //}
 
-        public Otdel AddOtdel(Otdel item, Otdel parent = null)
-        {
-            if (item is null) throw new ArgumentNullException(nameof(item));
-            db.Entry(item).State = EntityState.Added;
-            db.SaveChanges();
-            return item;
-        }
+        //public void RemoveSubOtdel(T item, bool Autosave = false)
+        //{
+        //    if (item is null || item.id <= 0)
+        //        return;
+
+        //    db.Entry(item).State = EntityState.Deleted;
+        //    if (Autosave)
+        //        Save();
+
+        //}
+
+
+        //public Otdel AddOtdel(Otdel item, Otdel parent = null)
+        //{
+        //    if (item is null) throw new ArgumentNullException(nameof(item));
+        //    db.Entry(item).State = EntityState.Added;
+        //    db.SaveChanges();
+        //    return item;
+        //}
 
         public ICollection<Otdel> GetTreeOtdels(ICollection<Otdel> ListUserOtdels)
         {
             ICollection<Otdel> ListOtdels = new Collection<Otdel>();
 
             // получение корневых отделов
-            IEnumerable<Otdel> ListRootOtdels = Items.AsNoTracking();
+            IEnumerable<Otdel> ListRootOtdels = Items/*.AsNoTracking()*/;
 
             // удаление ненужных отделов
             foreach(var item in ListRootOtdels)
@@ -42,8 +54,8 @@ namespace Tabel.Repository
             }
 
             // добавлеие подотделов, которых еще не добавлены
-            RepositoryMSSQL<Otdel> repo1 = new RepositoryMSSQL<Otdel>();
-            IEnumerable<Otdel> AllOtdels = repo1.Items.AsNoTracking().Where(it => it.parent != null);
+            RepositoryMSSQL<Otdel> repo1 = AllRepo.GetRepoOtdel();
+            IEnumerable<Otdel> AllOtdels = repo1.Items/*.AsNoTracking()*/.Where(it => it.parent != null);
             foreach(var item in AllOtdels)
             {
 
