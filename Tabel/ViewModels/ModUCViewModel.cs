@@ -117,7 +117,7 @@ namespace Tabel.ViewModels
             CurrentMod.ModPersons = new List<ModPerson>();
 
 
-            RepositoryMSSQL<Otdel> repoOtdel = AllRepo.GetRepoOtdel();
+            RepositoryMSSQL<Otdel> repoOtdel = AllRepo.GetRepoAllOtdels();
             List<int> listOtdels = repoOtdel.Items.AsNoTracking().Where(it => it.ot_parent == _SelectedOtdel.id).Select(s => s.id).ToList();
 
             var persons = repoPersonal.Items.AsNoTracking().Where(it => (it.p_otdel_id == _SelectedOtdel.id && it.p_delete == false)
@@ -127,7 +127,7 @@ namespace Tabel.ViewModels
             {
                 ModPerson newPerson = new ModPerson();
                 newPerson.md_personalId = pers.id;
-                newPerson.md_tarif_offDay = pers.category.cat_tarif * 8;
+                newPerson.md_tarif_offDay = pers.category?.cat_tarif * 8;
                 if (newPerson.md_tarif_offDay < 1500)
                     newPerson.md_tarif_offDay = 1500;
 

@@ -25,44 +25,50 @@ namespace Tabel.Repository
 
         public RepositoryMSSQL(/*BaseModel Db = null*/)
         {
+            App.Log.WriteLineLog("RepositoryMSSQL");
+
             db = /*Db ??*/ BaseModel.CreateDB();
+
+            App.Log.WriteLineLog($"db = {db}");
 
             //db = new BaseModel();
             _Set = db.Set<T>();
 
+            App.Log.WriteLineLog($"_Set = {_Set}");
+
             //db.Configuration.LazyLoadingEnabled = true;
             //db.Configuration.ProxyCreationEnabled = true;
-//            ConnectionStringSettings settings;
+            //            ConnectionStringSettings settings;
 
-//#if !DEBUG
-//            settings = ConfigurationManager.ConnectionStrings["BaseModel"];
-//            conn = new SqlConnection(settings.ConnectionString);
+            //#if !DEBUG
+            //            settings = ConfigurationManager.ConnectionStrings["BaseModel"];
+            //            conn = new SqlConnection(settings.ConnectionString);
 
-//#else
-//                settings = ConfigurationManager.ConnectionStrings["BaseModel"];
-//                SecureString theSecureString = new NetworkCredential("", "ctcnhjt,s").SecurePassword;
-//                theSecureString.MakeReadOnly();
-//                SqlCredential credential = new SqlCredential("fpLoginName", theSecureString);
-//                conn = new SqlConnection(settings.ConnectionString, credential);
-//#endif
+            //#else
+            //                settings = ConfigurationManager.ConnectionStrings["BaseModel"];
+            //                SecureString theSecureString = new NetworkCredential("", "ctcnhjt,s").SecurePassword;
+            //                theSecureString.MakeReadOnly();
+            //                SqlCredential credential = new SqlCredential("fpLoginName", theSecureString);
+            //                conn = new SqlConnection(settings.ConnectionString, credential);
+            //#endif
 
         }
 
-//        private BaseModel CreateDB()
-//        {
-//            string ConnectString;
+        //        private BaseModel CreateDB()
+        //        {
+        //            string ConnectString;
 
-//#if DEBUG
-//            ConnectString = ConfigurationManager.ConnectionStrings["BaseModel"].ConnectionString;
-//            ConnectString += ";user id=fpLoginName;password=ctcnhjt,s";
-//            //ConnectString = ConfigurationManager.ConnectionStrings["ModelLocal"].ConnectionString;
-//#else
-//            ConnectString = ConfigurationManager.ConnectionStrings["BaseModel"].ConnectionString;
-//            ConnectString += ";user id=fpLoginName;password=ctcnhjt,s";
-//#endif
-//            return new BaseModel(ConnectString);
+        //#if DEBUG
+        //            ConnectString = ConfigurationManager.ConnectionStrings["BaseModel"].ConnectionString;
+        //            ConnectString += ";user id=fpLoginName;password=ctcnhjt,s";
+        //            //ConnectString = ConfigurationManager.ConnectionStrings["ModelLocal"].ConnectionString;
+        //#else
+        //            ConnectString = ConfigurationManager.ConnectionStrings["BaseModel"].ConnectionString;
+        //            ConnectString += ";user id=fpLoginName;password=ctcnhjt,s";
+        //#endif
+        //            return new BaseModel(ConnectString);
 
-//        }
+        //        }
 
 
 

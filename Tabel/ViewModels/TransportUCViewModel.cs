@@ -50,12 +50,18 @@ namespace Tabel.ViewModels
                 repoTransp.Remove(Transp);
             }
 
-            RepositoryMSSQL<Otdel> repoOtdel = AllRepo.GetRepoOtdel();
+            RepositoryMSSQL<Otdel> repoOtdel = AllRepo.GetRepoAllOtdels();
             List<int> listOtdels = repoOtdel.Items.AsNoTracking().Where(it => it.ot_parent == _SelectedOtdel.id).Select(s => s.id).ToList();
 
             List<Personal> PersonsFromOtdel = repoPersonal.Items.AsNoTracking().Where(it => (it.p_otdel_id == _SelectedOtdel.id && it.p_delete == false)
                 || listOtdels.Contains(it.p_otdel_id.Value)).ToList();
-    
+
+            if (PersonsFromOtdel?.Count == 0)
+            {
+                MessageBox.Show("В вашем отделе нет сотрудников. Форма не создана.", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
 
             Transp = new Transport();
             Transp.tr_UserId = App.CurrentUser.id;

@@ -59,11 +59,17 @@ namespace Tabel.ViewModels
                 repoSmena.Remove(SmenaShedule);
             }
 
-            RepositoryMSSQL<Otdel> repoOtdel = AllRepo.GetRepoOtdel();
+            RepositoryMSSQL<Otdel> repoOtdel = AllRepo.GetRepoAllOtdels();
             List<int> listOtdels = repoOtdel.Items.AsNoTracking().Where(it => it.ot_parent == _SelectedOtdel.id).Select(s => s.id).ToList();
 
             List<Personal> PersonsFromOtdel = repoPersonal.Items.AsNoTracking().Where(it => (it.p_otdel_id == _SelectedOtdel.id && it.p_delete == false)
                      || listOtdels.Contains(it.p_otdel_id.Value)).ToList();
+
+            if (PersonsFromOtdel?.Count == 0)
+            {
+                MessageBox.Show("В вашем отделе нет сотрудников. Форма не создана.", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
 
             SmenaShedule = new Smena();
             SmenaShedule.sm_UserId = App.CurrentUser.id;
@@ -115,7 +121,8 @@ namespace Tabel.ViewModels
                 .Include(inc => inc.SmenaPerson.Select(s => s.personal))
                 .FirstOrDefault();
 
-            ListSmenaPerson = new ObservableCollection<SmenaPerson>(SmenaShedule.SmenaPerson);
+            if(SmenaShedule != null)
+                ListSmenaPerson = new ObservableCollection<SmenaPerson>(SmenaShedule.SmenaPerson);
 
             OnPropertyChanged(nameof(ListSmenaPerson));
             OnPropertyChanged(nameof(SmenaShedule));

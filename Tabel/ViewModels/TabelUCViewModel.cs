@@ -60,7 +60,7 @@ namespace Tabel.ViewModels
             //        && it.cal_date.Month == _SelectMonth);
 
 
-            RepositoryMSSQL<Otdel> repoOtdel = AllRepo.GetRepoOtdel();
+            RepositoryMSSQL<Otdel> repoOtdel = AllRepo.GetRepoAllOtdels();
             List<int> listOtdels = repoOtdel.Items.AsNoTracking().Where(it => it.ot_parent == SelectedOtdel.id).Select(s => s.id).ToList();
 
             // получение сотрудников отдела
@@ -68,6 +68,12 @@ namespace Tabel.ViewModels
 
             List<Personal> PersonsFromOtdel = repoPersonal.Items.AsNoTracking().Where(it => (it.p_otdel_id == SelectedOtdel.id && it.p_delete == false)
                 || listOtdels.Contains(it.p_otdel_id.Value)).ToList();
+
+            if(PersonsFromOtdel?.Count == 0)
+            {
+                MessageBox.Show("В вашем отделе нет сотрудников. Табель не создан.","Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
 
             Tabel = new WorkTabel();
             Tabel.t_author_id = App.CurrentUser.id;
@@ -112,52 +118,6 @@ namespace Tabel.ViewModels
 
                 }
 
-
-            //    for (DateTime IndexDate = StartDay; IndexDate.Month == _SelectMonth; IndexDate = IndexDate.AddDays(1))
-            //    {
-            //        WorkCalendar ChangeDay = cal.FirstOrDefault(it => it.cal_date == IndexDate);
-
-            //        TabelDay td = new TabelDay();
-            //        td.td_Day = IndexDate.Day;
-
-            //        if (ChangeDay != null)
-            //        {
-            //            td.CalendarTypeDay = ChangeDay.cal_type;
-            //            switch (td.CalendarTypeDay)
-            //            {
-            //                case TypeDays.Holyday:
-            //                    td.td_KindId = 2;
-            //                    td.td_Hours = 0;
-            //                    break;
-            //                case TypeDays.Work:
-            //                    td.td_KindId = 1;
-            //                    td.td_Hours = 8;
-            //                    break;
-            //                case TypeDays.ShortWork:
-            //                    td.td_KindId = 1;
-            //                    td.td_Hours = 7;
-            //                    break;
-            //            }
-            //        }
-            //        else
-            //        {
-            //            if (IndexDate.DayOfWeek == DayOfWeek.Sunday || IndexDate.DayOfWeek == DayOfWeek.Saturday)
-            //            {
-            //                td.td_KindId = 2;
-            //                td.CalendarTypeDay = TypeDays.Holyday;
-            //                td.td_Hours = 0;
-            //            }
-            //            else
-            //            {
-            //                td.td_KindId = 1;
-            //                td.CalendarTypeDay = TypeDays.Work;
-            //                td.td_Hours = 8;
-            //            }
-            //        }
-            //        tp.TabelDays.Add(td);
-            //    }
-
-            //    //tp.SetCalendarTypeDays();
                 Tabel.tabelPersons.Add(tp);
             }
 

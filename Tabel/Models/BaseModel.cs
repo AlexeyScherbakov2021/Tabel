@@ -13,7 +13,11 @@ namespace Tabel.Models
 
         public static BaseModel CreateDB()
         {
-            if(BaseDB != null)
+            App.Log.WriteLineLog("CreateDB");
+
+            App.Log.WriteLineLog($"BaseDB = {BaseDB}");
+
+            if (BaseDB != null)
                 return BaseDB;
 
             string ConnectString;
@@ -22,11 +26,14 @@ namespace Tabel.Models
             //ConnectString = ConfigurationManager.ConnectionStrings["BaseModel"].ConnectionString;
             //ConnectString += ";user id=fpLoginName;password=ctcnhjt,s";
             ConnectString = ConfigurationManager.ConnectionStrings["BaseModelLocal"].ConnectionString;
+            App.Log.WriteLineLog($"ConnectString = {ConnectString}");
 #else
             ConnectString = ConfigurationManager.ConnectionStrings["BaseModel"].ConnectionString;
             ConnectString += ";user id=fpLoginName;password=ctcnhjt,s";
 #endif
             BaseDB = new BaseModel(ConnectString);
+            App.Log.WriteLineLog($"BaseDB = {BaseDB}");
+
             return BaseDB = new BaseModel(ConnectString);
 
         }

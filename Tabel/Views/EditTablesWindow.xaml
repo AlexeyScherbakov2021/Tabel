@@ -21,7 +21,12 @@
     </i:Interaction.Triggers>-->
 
     <Grid>
-        <TabControl Margin="10">
+        <TabControl x:Name="tab" Margin="10">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="SelectionChanged">
+                    <i:InvokeCommandAction Command="{Binding SelectTabCommand}" CommandParameter="{Binding SelectedIndex, ElementName=tab }"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
             <TabItem Header="Отделы и группы">
                 <view:OtdelsWindow VerticalAlignment="Stretch" Margin="0,10" />
             </TabItem>
@@ -35,7 +40,8 @@
                 <view:YearCalendar Margin="10,23,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"/>
             </TabItem>
             <TabItem Header="Пользователи" Visibility="{Binding VisibleAdmin}">
-                <view:UsersWindow />
+                <ContentPresenter Content="{Binding ViewUser}"/>
+                <!--<view:UsersWindow />-->
             </TabItem>
         </TabControl>
 

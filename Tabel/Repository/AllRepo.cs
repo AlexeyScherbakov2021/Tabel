@@ -10,6 +10,7 @@ namespace Tabel.Repository
     internal class AllRepo
     {
         private static RepositoryOtdel repoOtdel = null;
+        private static RepositoryMSSQL<Otdel> repoAllOtdel = null;
         private static RepositoryMSSQL<AddWorks> repoAddWorks = null;
         private static RepositoryMSSQL<ModPerson> repoModPerson = null;
         private static RepositoryMSSQL<Transport> repoTransport = null;
@@ -27,6 +28,7 @@ namespace Tabel.Repository
 
 
         public static RepositoryOtdel GetRepoOtdel() => repoOtdel ?? new RepositoryOtdel();
+        public static RepositoryMSSQL<Otdel> GetRepoAllOtdels() => repoAllOtdel ?? new RepositoryMSSQL<Otdel>();
         public static RepositoryMSSQL<AddWorks> GetRepoAddWorks() => repoAddWorks ?? new RepositoryMSSQL<AddWorks>();
         public static RepositoryMSSQL<ModPerson> GetRepoModPerson() => repoModPerson ?? new RepositoryMSSQL<ModPerson>();
         public static RepositoryMSSQL<Transport> GetRepoTransport() => repoTransport ?? new RepositoryMSSQL<Transport>();

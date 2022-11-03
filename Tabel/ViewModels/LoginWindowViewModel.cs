@@ -76,24 +76,37 @@ namespace Tabel.ViewModels
 
         public LoginWindowViewModel()
         {
+            App.Log.WriteLineLog("Запуск конструктора LoginWindowViewModel");
+
             winLogin = App.Current.Windows.OfType<LoginWindow>().First();
             //winLogin.Closing += Win_Closing;
 
+            App.Log.WriteLineLog($"winLogin = {winLogin}" );
+
             repo = AllRepo.GetRepoUser();
-            ListUser = repo.Items.ToArray();
+            App.Log.WriteLineLog($"repo = {repo}");
+
+            ListUser = repo.Items.OrderBy(o => o.u_login).ToArray();
+            App.Log.WriteLineLog($"ListUser = {ListUser}");
 
             string login = "Admin";
             RegistryKey SoftKey = Registry.CurrentUser.OpenSubKey("SOFTWARE");
+
+            App.Log.WriteLineLog($"SoftKey = {SoftKey}");
+
             RegistryKey ProgKey = SoftKey.OpenSubKey("TabelNGK");
+            App.Log.WriteLineLog($"ProgKey = {ProgKey}");
+
             if (ProgKey != null)
             {
                 login = ProgKey.GetValue("login", "Admin").ToString();
+                App.Log.WriteLineLog($"login = {login}");
                 ProgKey.Close();
             }
             SoftKey.Close();
 
-
             SelectUser = ListUser.FirstOrDefault(it => it.u_login == login);
+            App.Log.WriteLineLog($"SelectUser = {SelectUser}");
 
         }
     }

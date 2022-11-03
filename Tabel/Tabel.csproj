@@ -108,6 +108,7 @@
     <Compile Include="Infrastructure\Converters\OtdelsUserConverter.cs" />
     <Compile Include="Infrastructure\Enums.cs" />
     <Compile Include="Infrastructure\FileOperation.cs" />
+    <Compile Include="Infrastructure\LogFile.cs" />
     <Compile Include="Infrastructure\Months.cs" />
     <Compile Include="Infrastructure\MonthStart1.cs" />
     <Compile Include="Models\AddWorks.cs" />

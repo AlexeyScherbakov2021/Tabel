@@ -20,6 +20,8 @@ namespace Tabel
     public partial class App : Application
     {
         public static User CurrentUser;
+        public static LogFile Log = new LogFile(0);
+
 
         public static List<Months> ListMonth = new List<Months>()
         {
@@ -40,10 +42,14 @@ namespace Tabel
 
         public App()
         {
+            App.Log.WriteLineLog("Запуск конструктора App");
+
             FrameworkElement.LanguageProperty.OverrideMetadata(
                             typeof(FrameworkElement),
                             new FrameworkPropertyMetadata(
                             XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));
+
+            App.Log.WriteLineLog("Выход из конструктора App");
         }
 
     }

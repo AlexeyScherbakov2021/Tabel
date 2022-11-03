@@ -24,7 +24,6 @@ namespace Tabel.ViewModels
 
         public ObservableCollection<Otdel> ListOtdel { get; set; }
 
-
         private ObservableCollection<User> _ListUser;
         public ObservableCollection<User> ListUser {
             get => _ListUser;
@@ -69,7 +68,6 @@ namespace Tabel.ViewModels
 
         //private bool _IsOpenPopup = false;
         //public bool IsOpenPopup { get => _IsOpenPopup; set { Set(ref _IsOpenPopup, value); } }
-
 
         //--------------------------------------------------------------------------------
         // Отметка в списке отделов для пользователя
@@ -188,6 +186,13 @@ namespace Tabel.ViewModels
             ListUser = new ObservableCollection<User>(repoUser.Items);
             repoOtdel = AllRepo.GetRepoOtdel();
             ListOtdel = new ObservableCollection<Otdel>(repoOtdel.Items);
+        }
+
+
+        public void RefreshModel()
+        {
+            ListOtdel = new ObservableCollection<Otdel>(repoOtdel.Items);
+            OnPropertyChanged(nameof(ListOtdel));
         }
 
     }

@@ -14,6 +14,7 @@ using Tabel.Models;
 using Tabel.Repository;
 using Tabel.ViewModels.Base;
 using Tabel.Views;
+using Tabel.Views.Admins;
 
 namespace Tabel.ViewModels
 {
@@ -21,12 +22,14 @@ namespace Tabel.ViewModels
     {
         //RepositoryMSSQL<Category> repo = new RepositoryMSSQL<Category>();
 
+        public UsersWindow ViewUser { get; set; }
+
         public Visibility VisibleAdmin => App.CurrentUser.u_role == Infrastructure.UserRoles.Admin ? Visibility.Visible : Visibility.Collapsed;
 
-        //public EditTablesWindowModel()
-        //{
-        //    AllRepo.repositoryOtdel = new RepositoryOtdel();
-        //}
+        public EditTablesWindowModel()
+        {
+            ViewUser = new UsersWindow();
+        }
 
 
         #region Команды
@@ -37,6 +40,15 @@ namespace Tabel.ViewModels
         //    repo.Save();
         //    //UserViewModel.SaveUsers();
         //}
+        public ICommand SelectTabCommand => new LambdaCommand(OnSelectTabCommandExecuted, CanSelectTabCommand);
+        private bool CanSelectTabCommand(object p) => true;
+        private void OnSelectTabCommandExecuted(object p)
+        {
+            if((int)p == 4)
+            {
+                (ViewUser.DataContext as UserWindowViewModel).RefreshModel();
+            }
+        }
         #endregion
 
 
