@@ -194,7 +194,7 @@
                             <DataGridTextColumn Header="Должность" Binding="{Binding person.p_profession}" />
                             <DataGridTextColumn Header="Число дней" Binding="{Binding TabelWorkOffDay, Mode=TwoWay}" CellStyle="{StaticResource CellRight}"/>
                             <DataGridTextColumn Header="Доплата" Binding="{Binding md_tarif_offDay, StringFormat=N0}" Width="80" CellStyle="{StaticResource CellRight}"/>
-                            <DataGridTextColumn Header="Сумма" Binding="{Binding DayOffSumma, StringFormat=N2}" Width="90"  CellStyle="{StaticResource CellRight}"/>
+                            <DataGridTextColumn Header="Сумма" Binding="{Binding premOffDays.DayOffSumma, StringFormat=N2}" Width="90"  CellStyle="{StaticResource CellRight}"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </DockPanel>

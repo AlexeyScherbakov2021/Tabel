@@ -53,8 +53,12 @@ namespace Tabel.ViewModels
             RepositoryMSSQL<Otdel> repoOtdel = AllRepo.GetRepoAllOtdels();
             List<int> listOtdels = repoOtdel.Items.AsNoTracking().Where(it => it.ot_parent == _SelectedOtdel.id).Select(s => s.id).ToList();
 
-            List<Personal> PersonsFromOtdel = repoPersonal.Items.AsNoTracking().Where(it => (it.p_otdel_id == _SelectedOtdel.id && it.p_delete == false)
-                || listOtdels.Contains(it.p_otdel_id.Value)).ToList();
+            List<Personal> PersonsFromOtdel = repoPersonal.Items
+                .AsNoTracking()
+                .Where(it => (it.p_otdel_id == _SelectedOtdel.id && it.p_delete == false) || listOtdels.Contains(it.p_otdel_id.Value))
+                .OrderBy(o => o.p_lastname)
+                .ThenBy(o => o.p_name)
+                .ToList();
 
             if (PersonsFromOtdel?.Count == 0)
             {

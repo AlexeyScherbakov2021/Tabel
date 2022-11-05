@@ -66,8 +66,12 @@ namespace Tabel.ViewModels
             // получение сотрудников отдела
             repoPersonal = AllRepo.GetRepoPersonal();
 
-            List<Personal> PersonsFromOtdel = repoPersonal.Items.AsNoTracking().Where(it => (it.p_otdel_id == SelectedOtdel.id && it.p_delete == false)
-                || listOtdels.Contains(it.p_otdel_id.Value)).ToList();
+            List<Personal> PersonsFromOtdel = repoPersonal.Items
+                .AsNoTracking()
+                .Where(it => (it.p_otdel_id == SelectedOtdel.id && it.p_delete == false) || listOtdels.Contains(it.p_otdel_id.Value))
+                .OrderBy(o => o.p_lastname)
+                .ThenBy(o => o.p_name)
+                .ToList();
 
             if(PersonsFromOtdel?.Count == 0)
             {
@@ -288,11 +292,6 @@ namespace Tabel.ViewModels
             }
 
             SetTypeDays();
-            //if (ListTabelPerson != null)
-            //{
-            //    foreach (var item in ListTabelPerson)
-            //        item.SetCalendarTypeDays();
-            //}
 
             OnPropertyChanged(nameof(ListTabelPerson));
             OnPropertyChanged(nameof(Tabel));

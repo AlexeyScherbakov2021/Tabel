@@ -24,6 +24,8 @@ namespace Tabel.Models
         [NotMapped]
         public PremiaOtdel premiaOtdel { get; set; }
 
+        [NotMapped]
+        public PremOffDays premOffDays { get; set; }
 
 
         public ModPerson()
@@ -32,6 +34,7 @@ namespace Tabel.Models
             premiaBonus = new PremiaBonus(this);
             premiaKvalif = new PremiaKvalif(this);
             premiaOtdel = new PremiaOtdel(this);
+            premOffDays = new PremOffDays(this);
         }
 
         [NotMapped]
@@ -46,7 +49,7 @@ namespace Tabel.Models
         [NotMapped]
         public decimal? TabelWorkOffDay { get; set; }
         [NotMapped]
-        public decimal? DayOffSumma { get; set; }
+        //public decimal? DayOffSumma { get; set; }
 
         //public decimal? PremOtdel => md_prem_otdel * md_prem_otdel_proc / 100;
 
@@ -75,7 +78,7 @@ namespace Tabel.Models
             + premiaKvalif.GetPremia()
             + premiaOtdel.GetPremia()
             + (NightSumma ?? 0)
-            + (DayOffSumma ?? 0)
+            + premOffDays.GetPremia()
             + (TransportSumma ?? 0)
             + (AddWorksSumma ?? 0);
 

@@ -119,9 +119,12 @@ namespace Tabel.ViewModels
             RepositoryMSSQL<Otdel> repoOtdel = AllRepo.GetRepoAllOtdels();
             List<int> listOtdels = repoOtdel.Items.AsNoTracking().Where(it => it.ot_parent == _SelectedOtdel.id).Select(s => s.id).ToList();
 
-            var persons = repoPersonal.Items.AsNoTracking().Where(it => (it.p_otdel_id == _SelectedOtdel.id && it.p_delete == false)
-                        || listOtdels.Contains(it.p_otdel_id.Value));
-
+            var persons = repoPersonal.Items
+                .AsNoTracking()
+                .Where(it => (it.p_otdel_id == _SelectedOtdel.id && it.p_delete == false) || listOtdels.Contains(it.p_otdel_id.Value))
+                .OrderBy(o => o.p_lastname)
+                .ThenBy(o => o.p_name);
+;
             foreach (var pers in persons)
             {
                 ModPerson newPerson = new ModPerson();
@@ -316,7 +319,7 @@ namespace Tabel.ViewModels
                 item.TabelDays = listDays.Count;
                 item.TabelHours = pers.HoursMonth;
                 item.TabelWorkOffDay = pers.WorkedOffDays;
-                item.DayOffSumma = item.TabelWorkOffDay * item.md_tarif_offDay;
+                //item.DayOffSumma = item.TabelWorkOffDay * item.md_tarif_offDay;
                 item.Oklad = item.person.category is null ? 0 : item.TabelHours * item.person.category.cat_tarif.Value;
 
                 int CountWorkDaysPerson = pers.TabelDays.Count(it => it.td_KindId == 1);

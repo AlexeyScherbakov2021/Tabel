@@ -89,6 +89,7 @@
     <Compile Include="Component\Models\Mod\PremiaBonus.cs" />
     <Compile Include="Component\Models\Mod\PremiaKvalif.cs" />
     <Compile Include="Component\Models\Mod\PremiaOtdel.cs" />
+    <Compile Include="Component\Models\Mod\PremOffDays.cs" />
     <Compile Include="Component\Models\Otdel2.cs" />
     <Compile Include="Component\Models\Mod\PremiaFP.cs" />
     <Compile Include="Component\Models\SmenaDay2.cs" />
