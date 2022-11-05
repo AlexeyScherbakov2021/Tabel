@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Tabel.Views"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:fa="http://schemas.fontawesome.com/icons/"
             xmlns:vm="clr-namespace:Tabel.ViewModels"
              xmlns:conv="clr-namespace:Tabel.Infrastructure.Converters"
@@ -40,7 +41,12 @@
         </ToolBarPanel>
 
 
-        <TabControl>
+        <TabControl x:Name="tab">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="SelectionChanged">
+                    <i:InvokeCommandAction Command="{Binding TabChangedCommand}" CommandParameter="{Binding SelectedIndex, ElementName=tab}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
             <TabItem Header="По табелю">
                 <DockPanel  Background="Gainsboro">
                     <Grid DockPanel.Dock="Top" Margin="8,0" Height="30">
@@ -82,11 +88,11 @@
                             <DataGridTextColumn Header="Должность" Binding="{Binding person.p_profession}" IsReadOnly="True"/>
                             <DataGridTextColumn Header="% премии" Binding="{Binding md_premFP, Mode=TwoWay, StringFormat=N2}" CellStyle="{StaticResource CellRight}"/>
                             <DataGridTextColumn Header="Часы из ФП" Binding="{Binding md_sumFromFP, StringFormat=N2}" CellStyle="{StaticResource CellRight}"/>
-                            <DataGridTextColumn Header="Расчетные часы" Binding="{Binding SummaHoursFP, StringFormat=N2}" IsReadOnly="True" CellStyle="{StaticResource CellRight}"/>
+                            <DataGridTextColumn Header="Расчетные часы" Binding="{Binding premiaFP.SummaHoursFP, StringFormat=N2}" IsReadOnly="True" CellStyle="{StaticResource CellRight}"/>
                             <DataGridTextColumn Header="Премиальный тариф" Binding="{Binding md_cat_prem_tarif, StringFormat=N2}" CellStyle="{StaticResource CellRight}"/>
-                            <DataGridTextColumn Header="Премия" Binding="{Binding SummaPremFP, StringFormat=N2}" Width="90" IsReadOnly="True" CellStyle="{StaticResource CellRight}"/>
+                            <DataGridTextColumn Header="Премия" Binding="{Binding premiaFP.SummaPremFP, StringFormat=N2}" Width="90" IsReadOnly="True" CellStyle="{StaticResource CellRight}"/>
                             <DataGridTextColumn Header="Группа" Binding="{Binding md_group}" CellStyle="{StaticResource CellRight}"/>
-                            <DataGridTextColumn Header="% группы" Binding="{Binding ProcGroup, StringFormat=0.##%}" CellStyle="{StaticResource CellRight}"/>
+                            <DataGridTextColumn Header="% группы" Binding="{Binding premiaFP.ProcGroup, StringFormat=0.##%}" CellStyle="{StaticResource CellRight}"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </DockPanel>
@@ -127,7 +133,7 @@
                             <DataGridCheckBoxColumn x:Name="col3" Header="Выполнено" Binding="{Binding md_bonus_exec, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                             <DataGridTextColumn x:Name="col4" Header="%" MinWidth="80" Binding="{Binding md_bonus_proc, Mode=TwoWay, StringFormat=0.#}"  Width="50" CellStyle="{StaticResource CellRight}"/>
                             <DataGridTextColumn x:Name="col5" MinWidth="100" Header="Макс. бонус" Binding="{Binding md_bonus_max, Mode=TwoWay, StringFormat=N0}"  CellStyle="{StaticResource CellRight}"/>
-                            <DataGridTextColumn Header="Расчет" Binding="{Binding Bonus, StringFormat=N2}" Width="80" IsReadOnly="True" CellStyle="{StaticResource CellRight}"/>
+                            <DataGridTextColumn Header="Расчет" Binding="{Binding premiaBonus.Bonus, StringFormat=N2}" Width="80" IsReadOnly="True" CellStyle="{StaticResource CellRight}"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </DockPanel>

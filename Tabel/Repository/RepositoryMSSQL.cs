@@ -34,7 +34,7 @@ namespace Tabel.Repository
             //db = new BaseModel();
             _Set = db.Set<T>();
 
-            App.Log.WriteLineLog($"_Set = {_Set}");
+            //App.Log.WriteLineLog($"_Set = {_Set}");
 
             //db.Configuration.LazyLoadingEnabled = true;
             //db.Configuration.ProxyCreationEnabled = true;

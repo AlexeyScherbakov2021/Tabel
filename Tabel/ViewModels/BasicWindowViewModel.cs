@@ -140,18 +140,14 @@ namespace Tabel.ViewModels
             CurrentMonth = _CurrentDate.Month;
             CurrentYear = _CurrentDate.Year;
             User = App.CurrentUser;
-            //User = new User() { u_otdel_id = 44, u_login = "Petrov", id = 10, u_fio = "Петров" };
 
             RepositoryCalendar repoCal = AllRepo.GetRepoCalendar();
             ListYears = repoCal.GetYears().ToList();
-
-            //ListOtdel = repoOtdel.Items.ToList();
-
+            
             RepositoryOtdel repo = AllRepo.GetRepoOtdel();
 
-            ListOtdel = repo.GetTreeOtdels(User.otdels).ToList();
+            ListOtdel = repo.GetTreeOtdelsNoTracking(User.otdels).ToList();
 
-            //ListOtdel = repoOtdel.Items.Where(it => it.id == User.u_otdel_id).ToList();
             if (ListOtdel?.Count > 0)
                 SelectedOtdel = ListOtdel[0];
         }

@@ -39,15 +39,15 @@ namespace Tabel.Repository
         //    return item;
         //}
 
-        public ICollection<Otdel> GetTreeOtdels(ICollection<Otdel> ListUserOtdels)
+        public ICollection<Otdel> GetTreeOtdelsNoTracking(ICollection<Otdel> ListUserOtdels)
         {
             ICollection<Otdel> ListOtdels = new Collection<Otdel>();
 
             // получение корневых отделов
-            IEnumerable<Otdel> ListRootOtdels = Items/*.AsNoTracking()*/;
+            IEnumerable<Otdel> ListRootOtdels = Items.AsNoTracking();
 
             // удаление ненужных отделов
-            foreach(var item in ListRootOtdels)
+            foreach (var item in ListRootOtdels)
             {
                 if (ListUserOtdels.Any(it => it.id == item.id))
                     ListOtdels.Add(item);
@@ -55,30 +55,59 @@ namespace Tabel.Repository
 
             // добавлеие подотделов, которых еще не добавлены
             RepositoryMSSQL<Otdel> repo1 = AllRepo.GetRepoOtdel();
-            IEnumerable<Otdel> AllOtdels = repo1.Items/*.AsNoTracking()*/.Where(it => it.parent != null);
-            foreach(var item in AllOtdels)
+            IEnumerable<Otdel> AllOtdels = repo1.Items.AsNoTracking().Where(it => it.parent != null);
+            CombaineOtdels(ListUserOtdels, ListOtdels, AllOtdels);
+            return ListOtdels;
+
+        }
+
+
+
+        public ICollection<Otdel> GetTreeOtdels(ICollection<Otdel> ListUserOtdels)
+        {
+            ICollection<Otdel> ListOtdels = new Collection<Otdel>();
+
+            // получение корневых отделов
+            IEnumerable<Otdel> ListRootOtdels = Items;
+
+            // удаление ненужных отделов
+            foreach (var item in ListRootOtdels)
+            {
+                if (ListUserOtdels.Any(it => it.id == item.id))
+                    ListOtdels.Add(item);
+            }
+
+            // добавлеие подотделов, которых еще не добавлены
+            RepositoryMSSQL<Otdel> repo1 = AllRepo.GetRepoOtdel();
+            IEnumerable<Otdel> AllOtdels = repo1.Items.Where(it => it.parent != null);
+            CombaineOtdels(ListUserOtdels, ListOtdels, AllOtdels);
+
+            return ListOtdels;
+        }
+
+
+        private void CombaineOtdels(ICollection<Otdel> ListUserOtdels, ICollection<Otdel> ListOtdels, IEnumerable<Otdel> AllOtdels)
+        {
+            foreach (var item in AllOtdels)
             {
 
-                if(ListUserOtdels.Any(it => it.id == item.id ))
+                if (ListUserOtdels.Any(it => it.id == item.id))
                 {
                     bool IsExist = false;
 
                     foreach (var sub in ListOtdels)
                     {
-                        if(sub.subOtdels.Any(it => it.id == item.id))
+                        if (sub.subOtdels.Any(it => it.id == item.id))
                         {
                             IsExist = true;
                             break;
                         }
                     }
-                    if(!IsExist)
+                    if (!IsExist)
                         ListOtdels.Add(item);
                 }
             }
-
-            return ListOtdels;
         }
-
     }
 
 }
