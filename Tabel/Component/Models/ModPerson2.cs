@@ -18,10 +18,20 @@ namespace Tabel.Models
         [NotMapped]
         public PremiaBonus premiaBonus { get; set; }
 
+        [NotMapped]
+        public PremiaKvalif premiaKvalif { get; set; }
+
+        [NotMapped]
+        public PremiaOtdel premiaOtdel { get; set; }
+
+
+
         public ModPerson()
         {
             premiaFP = new PremiaFP(this);
             premiaBonus = new PremiaBonus(this);
+            premiaKvalif = new PremiaKvalif(this);
+            premiaOtdel = new PremiaOtdel(this);
         }
 
         [NotMapped]
@@ -38,9 +48,7 @@ namespace Tabel.Models
         [NotMapped]
         public decimal? DayOffSumma { get; set; }
 
-        //public decimal? Bonus => (TabelDays == 0 || !_md_bonus_exec) ? null : md_bonus_max * md_bonus_proc / 100 * (TabelDays - TabelAbsent) / TabelDays;
-
-        public decimal? PremOtdel => md_prem_otdel * md_prem_otdel_proc / 100;
+        //public decimal? PremOtdel => md_prem_otdel * md_prem_otdel_proc / 100;
 
         // ночные часы
         public decimal? NightOklad => person?.category?.cat_tarif * 0.2m;
@@ -61,9 +69,15 @@ namespace Tabel.Models
         public decimal? NightSumma => NightOklad * NightHours;
 
 
-        public decimal? Itogo => Oklad + premiaFP.GetPremia() + premiaBonus.GetPremia() + (PremOtdel ?? 0) 
-            + (NightSumma ?? 0) + (DayOffSumma ?? 0) + (TransportSumma ?? 0) + (AddWorksSumma ?? 0)
-            + (Kvalif_Summa ?? 0);
+        public decimal? Itogo => Oklad
+            + premiaFP.GetPremia()
+            + premiaBonus.GetPremia()
+            + premiaKvalif.GetPremia()
+            + premiaOtdel.GetPremia()
+            + (NightSumma ?? 0)
+            + (DayOffSumma ?? 0)
+            + (TransportSumma ?? 0)
+            + (AddWorksSumma ?? 0);
 
         [NotMapped]
         public decimal? TransportSumma { get; set; }
@@ -71,17 +85,17 @@ namespace Tabel.Models
         [NotMapped]
         public decimal? AddWorksSumma => ListAddWorks is null ? 0 : ListAddWorks.Sum(it => it.aw_Tarif);
 
-        [NotMapped]
-        public decimal? Kvalif_Summa => md_kvalif_prem;
+        //[NotMapped]
+        //public decimal? Kvalif_Summa => md_kvalif_prem;
 
         public void UpdateUI()
         {
             //OnPropertyChanged(nameof(Bonus));
-            OnPropertyChanged(nameof(PremOtdel));
+            //OnPropertyChanged(nameof(PremOtdel));
             OnPropertyChanged(nameof(NightSumma));
             OnPropertyChanged(nameof(AddWorksSumma));
             OnPropertyChanged(nameof(Itogo));
-            OnPropertyChanged(nameof(Kvalif_Summa));
+            //OnPropertyChanged(nameof(Kvalif_Summa));
         }
 
     }

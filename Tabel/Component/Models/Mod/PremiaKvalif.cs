@@ -7,17 +7,19 @@ using Tabel.Models;
 
 namespace Tabel.Component.Models.Mod
 {
-    public class PremiaBonus : BasePremia, IDisposable
+    public class PremiaKvalif : BasePremia, IDisposable
     {
-        private decimal? _Bonus;
-        public decimal? Bonus { get => _Bonus; set { Set(ref _Bonus, value); } }
+        private decimal? _Kvalif_Summa;
+        public decimal? Kvalif_Summa { get => _Kvalif_Summa; set { Set(ref _Kvalif_Summa, value); } }
+
 
         //-------------------------------------------------------------------------------------------------------
         // Конструктор
         //-------------------------------------------------------------------------------------------------------
-        public PremiaBonus(ModPerson person) : base(person)
+        public PremiaKvalif(ModPerson person) : base(person)
         {
             model.PropertyChanged += Model_PropertyChanged;
+
         }
 
         //-------------------------------------------------------------------------------------------------------
@@ -28,7 +30,6 @@ namespace Tabel.Component.Models.Mod
             model.PropertyChanged -= Model_PropertyChanged;
         }
 
-
         //-------------------------------------------------------------------------------------------------------
         // Событие изменения полей
         //-------------------------------------------------------------------------------------------------------
@@ -36,13 +37,10 @@ namespace Tabel.Component.Models.Mod
         {
             switch (e.PropertyName)
             {
-                case "md_bonus_exec":
-                case "md_bonus_proc":
-                case "md_bonus_max":
+                case "md_kvalif_prem":
                     Calculation();
                     break;
             }
-
         }
 
         //-------------------------------------------------------------------------------------------------------
@@ -50,18 +48,16 @@ namespace Tabel.Component.Models.Mod
         //-------------------------------------------------------------------------------------------------------
         public override void Calculation()
         {
-            Bonus = (model.TabelDays == 0 || !model.md_bonus_exec) 
-                ? null 
-                : model.md_bonus_max * model.md_bonus_proc / 100 * (model.TabelDays - model.TabelAbsent) / model.TabelDays;
+            Kvalif_Summa = model.md_kvalif_prem;
         }
+
 
         //-------------------------------------------------------------------------------------------------------
         // Получение итоговой премии
         //-------------------------------------------------------------------------------------------------------
         public override decimal? GetPremia()
         {
-            return Bonus ?? 0;
+            return Kvalif_Summa ?? 0;
         }
-
     }
 }

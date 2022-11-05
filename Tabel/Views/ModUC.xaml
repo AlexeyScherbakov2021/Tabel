@@ -153,7 +153,7 @@
                             <DataGridTextColumn Header="ФИО" Binding="{Binding person.FIO}" IsReadOnly="True"/>
                             <DataGridTextColumn Header="Должность" Binding="{Binding person.p_profession}" IsReadOnly="True"/>
                             <DataGridTextColumn Header="Работа с ОР" Binding="{Binding md_kvalif_prem, StringFormat=N2}" CellStyle="{StaticResource CellRight}"/>
-                            <DataGridTextColumn Header="Премия" Binding="{Binding Kvalif_Summa, StringFormat=N2}" Width="90" IsReadOnly="True" CellStyle="{StaticResource CellRight}"/>
+                            <DataGridTextColumn Header="Премия" Binding="{Binding premiaKvalif.Kvalif_Summa, StringFormat=N2}" Width="90" IsReadOnly="True" CellStyle="{StaticResource CellRight}"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </DockPanel>
@@ -174,7 +174,7 @@
                             <DataGridTextColumn Header="Должность" Binding="{Binding person.p_profession}" IsReadOnly="True"/>
                             <DataGridTextColumn Header="Макс. премия" Binding="{Binding md_prem_otdel, Mode=TwoWay, StringFormat=N0}" CellStyle="{StaticResource CellRight}"/>
                             <DataGridTextColumn Header="% выполнения" Binding="{Binding md_prem_otdel_proc, Mode=TwoWay, StringFormat=0.#}"  CellStyle="{StaticResource CellRight}"/>
-                            <DataGridTextColumn Header="Премия" Binding="{Binding PremOtdel, StringFormat=N2}" Width="90" IsReadOnly="True" CellStyle="{StaticResource CellRight}"/>
+                            <DataGridTextColumn Header="Премия" Binding="{Binding premiaOtdel.PremOtdel, StringFormat=N2}" Width="90" IsReadOnly="True" CellStyle="{StaticResource CellRight}"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </DockPanel>
