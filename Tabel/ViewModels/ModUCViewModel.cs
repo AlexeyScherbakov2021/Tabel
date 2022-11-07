@@ -41,7 +41,6 @@ namespace Tabel.ViewModels
 
         public Mod CurrentMod { get; set; }
 
-
         private bool _IsCheckedButton;
         public bool IsCheckedButton
         {
@@ -287,8 +286,9 @@ namespace Tabel.ViewModels
 
             foreach (var item in ListModPerson)
             {
-                var pers = Transp.TransportPerson.FirstOrDefault(it => it.tp_PersonId == item.md_personalId);
-                item.TransportSumma = pers?.Summa;
+                //var pers = Transp.TransportPerson.FirstOrDefault(it => it.tp_PersonId == item.md_personalId);
+                //item.premiaTrnasport.Summa = pers?.Summa;
+                item.premiaTrnasport.Initialize(Transp.id);
             }
 
         }
@@ -346,8 +346,9 @@ namespace Tabel.ViewModels
 
             foreach (var item in ListModPerson)
             {
-                var pers = smena.SmenaPerson.FirstOrDefault(it => it.sp_PersonId == item.md_personalId);
-                item.NightHours = pers.SmenaDays.Count(s => s.sd_Kind == SmenaKind.Second) * 4.5m;
+                //var pers = smena.SmenaPerson.FirstOrDefault(it => it.sp_PersonId == item.md_personalId);
+                //item.premiaNight.NightHours = pers.SmenaDays.Count(s => s.sd_Kind == SmenaKind.Second) * 4.5m;
+                item.premiaNight.Initialize(smena.id);
             }
 
         }
@@ -384,7 +385,7 @@ namespace Tabel.ViewModels
             }
 
             person.OnPropertyChanged(nameof(person.ListAddWorks));
-            person.UpdateUI();
+            //person.UpdateUI();
 
         }
 

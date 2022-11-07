@@ -27,6 +27,15 @@ namespace Tabel.Models
         [NotMapped]
         public PremOffDays premOffDays { get; set; }
 
+        [NotMapped]
+        public PremiaAddWorks premiaAddWorks { get; set; }
+
+        [NotMapped]
+        public PremiaTransport premiaTrnasport { get; set; }
+
+        [NotMapped]
+        public premiaNight premiaNight { get; set; }
+
 
         public ModPerson()
         {
@@ -35,7 +44,11 @@ namespace Tabel.Models
             premiaKvalif = new PremiaKvalif(this);
             premiaOtdel = new PremiaOtdel(this);
             premOffDays = new PremOffDays(this);
+            premiaAddWorks = new PremiaAddWorks(this);
+            premiaTrnasport = new PremiaTransport(this);
+            premiaNight = new premiaNight(this);
         }
+
 
         [NotMapped]
         public decimal TabelHours { get; set; }
@@ -48,28 +61,6 @@ namespace Tabel.Models
 
         [NotMapped]
         public decimal? TabelWorkOffDay { get; set; }
-        [NotMapped]
-        //public decimal? DayOffSumma { get; set; }
-
-        //public decimal? PremOtdel => md_prem_otdel * md_prem_otdel_proc / 100;
-
-        // ночные часы
-        public decimal? NightOklad => person?.category?.cat_tarif * 0.2m;
-        
-        private decimal? _NightHours;
-        [NotMapped]
-        public decimal? NightHours 
-        { 
-            get => _NightHours; 
-            set
-            {
-                if(_NightHours == value) return;
-                _NightHours = value;
-                UpdateUI();
-            }
-        }
-
-        public decimal? NightSumma => NightOklad * NightHours;
 
 
         public decimal? Itogo => Oklad
@@ -77,29 +68,15 @@ namespace Tabel.Models
             + premiaBonus.GetPremia()
             + premiaKvalif.GetPremia()
             + premiaOtdel.GetPremia()
-            + (NightSumma ?? 0)
+            + premiaNight.GetPremia()
             + premOffDays.GetPremia()
-            + (TransportSumma ?? 0)
-            + (AddWorksSumma ?? 0);
+            + premiaTrnasport.GetPremia()
+            + premiaAddWorks.GetPremia();
 
-        [NotMapped]
-        public decimal? TransportSumma { get; set; }
-
-        [NotMapped]
-        public decimal? AddWorksSumma => ListAddWorks is null ? 0 : ListAddWorks.Sum(it => it.aw_Tarif);
-
-        //[NotMapped]
-        //public decimal? Kvalif_Summa => md_kvalif_prem;
-
-        public void UpdateUI()
-        {
-            //OnPropertyChanged(nameof(Bonus));
-            //OnPropertyChanged(nameof(PremOtdel));
-            OnPropertyChanged(nameof(NightSumma));
-            OnPropertyChanged(nameof(AddWorksSumma));
-            OnPropertyChanged(nameof(Itogo));
-            //OnPropertyChanged(nameof(Kvalif_Summa));
-        }
+        //public void UpdateUI()
+        //{
+        //    OnPropertyChanged(nameof(Itogo));
+        //}
 
     }
 }

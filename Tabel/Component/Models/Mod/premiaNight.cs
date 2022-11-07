@@ -1,63 +1,72 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Tabel.Infrastructure;
 using Tabel.Models;
+using Tabel.Repository;
 
 namespace Tabel.Component.Models.Mod
 {
-    public class PremiaKvalif : BasePremia, IDisposable
+    public class premiaNight : BasePremia
     {
-        //private decimal? _Kvalif_Summa;
-        //public decimal? Kvalif_Summa { get => _Kvalif_Summa; set { Set(ref _Kvalif_Summa, value); } }
+        //public decimal? NightOklad => person?.category?.cat_tarif * 0.2m;
+
+        //private decimal? _NightHours;
+        //public decimal? NightHours
+        //{
+        //    get => _NightHours;
+        //    set
+        //    {
+        //        if (_NightHours == value) return;
+        //        _NightHours = value;
+        //    }
+        //}
+
+        public decimal? NightOklad { get; set; }
+        public decimal? NightHours { get; set; }
 
 
         //-------------------------------------------------------------------------------------------------------
         // Конструктор
         //-------------------------------------------------------------------------------------------------------
-        public PremiaKvalif(ModPerson person) : base(person)
+        public premiaNight(ModPerson person) : base(person)
         {
-            model.PropertyChanged += Model_PropertyChanged;
-
         }
 
         //-------------------------------------------------------------------------------------------------------
-        // Деструктор
+        // Инициализация
         //-------------------------------------------------------------------------------------------------------
-        public void Dispose()
+        public override void Initialize(int SmenaId)
         {
-            model.PropertyChanged -= Model_PropertyChanged;
+            RepositoryMSSQL<SmenaPerson> repoSmena = AllRepo.GetRepoSmenaPerson();
+            var pers = repoSmena.Items.FirstOrDefault(it => it.sp_SmenaId == SmenaId && it.sp_PersonId == model.md_personalId);
+            NightHours = pers.SmenaDays.Count(s => s.sd_Kind == SmenaKind.Second) * 4.5m;
+            NightOklad = model.person?.category?.cat_tarif * 0.2m;
+            Summa = NightOklad * NightHours;
         }
 
-        //-------------------------------------------------------------------------------------------------------
-        // Событие изменения полей
-        //-------------------------------------------------------------------------------------------------------
-        private void Model_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            switch (e.PropertyName)
-            {
-                case "md_kvalif_prem":
-                    Calculation();
-                    break;
-            }
-        }
+
 
         //-------------------------------------------------------------------------------------------------------
         // расчет премии
         //-------------------------------------------------------------------------------------------------------
         public override void Calculation()
         {
-            Summa = model.md_kvalif_prem;
+            //NightOklad = model.person?.category?.cat_tarif * 0.2m;
+            //Summa = NightOklad * NightHours;
         }
-
 
         //-------------------------------------------------------------------------------------------------------
         // Получение итоговой премии
         //-------------------------------------------------------------------------------------------------------
         //public override decimal? GetPremia()
         //{
-        //    return Kvalif_Summa ?? 0;
+        //    Calculation();
+        //    return Summa ?? 0;
         //}
+
     }
 }

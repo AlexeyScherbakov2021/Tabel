@@ -17,8 +17,8 @@ namespace Tabel.Component.Models
         public decimal? SummaHoursFP { get => _SummaHoursFP; set { Set(ref _SummaHoursFP, value); } }
         
         // рассчетная сумма
-        private decimal? _SummaPremFP;
-        public decimal? SummaPremFP { get => _SummaPremFP; set { Set(ref _SummaPremFP, value); } }
+        //private decimal? _SummaPremFP;
+        //public decimal? SummaPremFP { get => _SummaPremFP; set { Set(ref _SummaPremFP, value); } }
 
         // суммарный процент группы
         private decimal? _ProcGroup;
@@ -45,7 +45,7 @@ namespace Tabel.Component.Models
         public override void Calculation()
         {
             SummaHoursFP = model.md_sumFromFP * model.md_premFP / 100;
-            SummaPremFP = model.TabelDays == 0
+            Summa = model.TabelDays == 0
                 ? 0
                 : SummaHoursFP * model.md_cat_prem_tarif * (model.TabelDays - model.TabelAbsent)
                         / model.TabelDays;
@@ -56,10 +56,10 @@ namespace Tabel.Component.Models
         //-------------------------------------------------------------------------------------------------------
         // Получение итоговой премии
         //-------------------------------------------------------------------------------------------------------
-        public override decimal? GetPremia()
-        {
-            return SummaPremFP ?? 0;
-        }
+        //public override decimal? GetPremia()
+        //{
+        //    return SummaPremFP ?? 0;
+        //}
 
         //-------------------------------------------------------------------------------------------------------
         // установка суммарного процента по группе

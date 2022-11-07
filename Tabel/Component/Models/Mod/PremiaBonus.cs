@@ -9,9 +9,6 @@ namespace Tabel.Component.Models.Mod
 {
     public class PremiaBonus : BasePremia, IDisposable
     {
-        private decimal? _Bonus;
-        public decimal? Bonus { get => _Bonus; set { Set(ref _Bonus, value); } }
-
         //-------------------------------------------------------------------------------------------------------
         // Конструктор
         //-------------------------------------------------------------------------------------------------------
@@ -50,17 +47,9 @@ namespace Tabel.Component.Models.Mod
         //-------------------------------------------------------------------------------------------------------
         public override void Calculation()
         {
-            Bonus = (model.TabelDays == 0 || !model.md_bonus_exec) 
+            Summa = (model.TabelDays == 0 || !model.md_bonus_exec) 
                 ? null 
                 : model.md_bonus_max * model.md_bonus_proc / 100 * (model.TabelDays - model.TabelAbsent) / model.TabelDays;
-        }
-
-        //-------------------------------------------------------------------------------------------------------
-        // Получение итоговой премии
-        //-------------------------------------------------------------------------------------------------------
-        public override decimal? GetPremia()
-        {
-            return Bonus ?? 0;
         }
 
     }

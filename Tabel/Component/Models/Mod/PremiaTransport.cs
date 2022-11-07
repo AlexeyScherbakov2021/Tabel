@@ -3,61 +3,49 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Tabel.Infrastructure;
 using Tabel.Models;
+using Tabel.Repository;
 
 namespace Tabel.Component.Models.Mod
 {
-    public class PremiaKvalif : BasePremia, IDisposable
+    public class PremiaTransport : BasePremia
     {
-        //private decimal? _Kvalif_Summa;
-        //public decimal? Kvalif_Summa { get => _Kvalif_Summa; set { Set(ref _Kvalif_Summa, value); } }
-
-
         //-------------------------------------------------------------------------------------------------------
         // Конструктор
         //-------------------------------------------------------------------------------------------------------
-        public PremiaKvalif(ModPerson person) : base(person)
+        public PremiaTransport(ModPerson person) : base(person)
         {
-            model.PropertyChanged += Model_PropertyChanged;
 
         }
 
         //-------------------------------------------------------------------------------------------------------
-        // Деструктор
+        // Инициализация
         //-------------------------------------------------------------------------------------------------------
-        public void Dispose()
+        public override void Initialize(int TransportId)
         {
-            model.PropertyChanged -= Model_PropertyChanged;
+            RepositoryMSSQL<TransPerson> repoTransPerson = AllRepo.GetRepoTransPerson();
+            var pers = repoTransPerson.Items.FirstOrDefault(it => it.tp_TranspId == TransportId && it.tp_PersonId == model.md_personalId);
+            Summa = pers?.Summa;
         }
 
-        //-------------------------------------------------------------------------------------------------------
-        // Событие изменения полей
-        //-------------------------------------------------------------------------------------------------------
-        private void Model_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            switch (e.PropertyName)
-            {
-                case "md_kvalif_prem":
-                    Calculation();
-                    break;
-            }
-        }
+
 
         //-------------------------------------------------------------------------------------------------------
         // расчет премии
         //-------------------------------------------------------------------------------------------------------
         public override void Calculation()
         {
-            Summa = model.md_kvalif_prem;
         }
-
 
         //-------------------------------------------------------------------------------------------------------
         // Получение итоговой премии
         //-------------------------------------------------------------------------------------------------------
         //public override decimal? GetPremia()
         //{
-        //    return Kvalif_Summa ?? 0;
+        //    //Calculation();
+        //    return Summa ?? 0;
         //}
+
     }
 }

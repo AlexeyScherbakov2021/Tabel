@@ -10,9 +10,6 @@ namespace Tabel.Component.Models.Mod
     public class PremOffDays : BasePremia
     {
 
-        private decimal? _DayOffSumma;
-        public decimal? DayOffSumma { get => _DayOffSumma; set { Set(ref _DayOffSumma, value); } }
-
         //-------------------------------------------------------------------------------------------------------
         // Конструктор
         //-------------------------------------------------------------------------------------------------------
@@ -25,9 +22,8 @@ namespace Tabel.Component.Models.Mod
         //-------------------------------------------------------------------------------------------------------
         public override void Calculation()
         {
-            DayOffSumma = model.TabelWorkOffDay* model.md_tarif_offDay;
+            Summa = model.TabelWorkOffDay * model.md_tarif_offDay;
         }
-
 
         //-------------------------------------------------------------------------------------------------------
         // Получение итоговой премии
@@ -35,7 +31,7 @@ namespace Tabel.Component.Models.Mod
         public override decimal? GetPremia()
         {
             Calculation();
-            return DayOffSumma ?? 0;
+            return Summa ?? 0;
         }
     }
 }

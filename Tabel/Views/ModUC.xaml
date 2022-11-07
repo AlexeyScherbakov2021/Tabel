@@ -90,7 +90,7 @@
                             <DataGridTextColumn Header="Часы из ФП" Binding="{Binding md_sumFromFP, StringFormat=N2}" CellStyle="{StaticResource CellRight}"/>
                             <DataGridTextColumn Header="Расчетные часы" Binding="{Binding premiaFP.SummaHoursFP, StringFormat=N2}" IsReadOnly="True" CellStyle="{StaticResource CellRight}"/>
                             <DataGridTextColumn Header="Премиальный тариф" Binding="{Binding md_cat_prem_tarif, StringFormat=N2}" CellStyle="{StaticResource CellRight}"/>
-                            <DataGridTextColumn Header="Премия" Binding="{Binding premiaFP.SummaPremFP, StringFormat=N2}" Width="90" IsReadOnly="True" CellStyle="{StaticResource CellRight}"/>
+                            <DataGridTextColumn Header="Премия" Binding="{Binding premiaFP.Summa, StringFormat=N2}" Width="90" IsReadOnly="True" CellStyle="{StaticResource CellRight}"/>
                             <DataGridTextColumn Header="Группа" Binding="{Binding md_group}" CellStyle="{StaticResource CellRight}"/>
                             <DataGridTextColumn Header="% группы" Binding="{Binding premiaFP.ProcGroup, StringFormat=0.##%}" CellStyle="{StaticResource CellRight}"/>
                         </DataGrid.Columns>
@@ -133,7 +133,7 @@
                             <DataGridCheckBoxColumn x:Name="col3" Header="Выполнено" Binding="{Binding md_bonus_exec, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                             <DataGridTextColumn x:Name="col4" Header="%" MinWidth="80" Binding="{Binding md_bonus_proc, Mode=TwoWay, StringFormat=0.#}"  Width="50" CellStyle="{StaticResource CellRight}"/>
                             <DataGridTextColumn x:Name="col5" MinWidth="100" Header="Макс. бонус" Binding="{Binding md_bonus_max, Mode=TwoWay, StringFormat=N0}"  CellStyle="{StaticResource CellRight}"/>
-                            <DataGridTextColumn Header="Расчет" Binding="{Binding premiaBonus.Bonus, StringFormat=N2}" Width="80" IsReadOnly="True" CellStyle="{StaticResource CellRight}"/>
+                            <DataGridTextColumn Header="Расчет" Binding="{Binding premiaBonus.Summa, StringFormat=N2}" Width="80" IsReadOnly="True" CellStyle="{StaticResource CellRight}"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </DockPanel>
@@ -153,7 +153,7 @@
                             <DataGridTextColumn Header="ФИО" Binding="{Binding person.FIO}" IsReadOnly="True"/>
                             <DataGridTextColumn Header="Должность" Binding="{Binding person.p_profession}" IsReadOnly="True"/>
                             <DataGridTextColumn Header="Работа с ОР" Binding="{Binding md_kvalif_prem, StringFormat=N2}" CellStyle="{StaticResource CellRight}"/>
-                            <DataGridTextColumn Header="Премия" Binding="{Binding premiaKvalif.Kvalif_Summa, StringFormat=N2}" Width="90" IsReadOnly="True" CellStyle="{StaticResource CellRight}"/>
+                            <DataGridTextColumn Header="Премия" Binding="{Binding premiaKvalif.Summa, StringFormat=N2}" Width="90" IsReadOnly="True" CellStyle="{StaticResource CellRight}"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </DockPanel>
@@ -174,7 +174,7 @@
                             <DataGridTextColumn Header="Должность" Binding="{Binding person.p_profession}" IsReadOnly="True"/>
                             <DataGridTextColumn Header="Макс. премия" Binding="{Binding md_prem_otdel, Mode=TwoWay, StringFormat=N0}" CellStyle="{StaticResource CellRight}"/>
                             <DataGridTextColumn Header="% выполнения" Binding="{Binding md_prem_otdel_proc, Mode=TwoWay, StringFormat=0.#}"  CellStyle="{StaticResource CellRight}"/>
-                            <DataGridTextColumn Header="Премия" Binding="{Binding premiaOtdel.PremOtdel, StringFormat=N2}" Width="90" IsReadOnly="True" CellStyle="{StaticResource CellRight}"/>
+                            <DataGridTextColumn Header="Премия" Binding="{Binding premiaOtdel.Summa, StringFormat=N2}" Width="90" IsReadOnly="True" CellStyle="{StaticResource CellRight}"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </DockPanel>
@@ -194,7 +194,7 @@
                             <DataGridTextColumn Header="Должность" Binding="{Binding person.p_profession}" />
                             <DataGridTextColumn Header="Число дней" Binding="{Binding TabelWorkOffDay, Mode=TwoWay}" CellStyle="{StaticResource CellRight}"/>
                             <DataGridTextColumn Header="Доплата" Binding="{Binding md_tarif_offDay, StringFormat=N0}" Width="80" CellStyle="{StaticResource CellRight}"/>
-                            <DataGridTextColumn Header="Сумма" Binding="{Binding premOffDays.DayOffSumma, StringFormat=N2}" Width="90"  CellStyle="{StaticResource CellRight}"/>
+                            <DataGridTextColumn Header="Сумма" Binding="{Binding premOffDays.Summa, StringFormat=N2}" Width="90"  CellStyle="{StaticResource CellRight}"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </DockPanel>
@@ -250,15 +250,10 @@
                                             </ToggleButton>
                                             <TextBlock Text="{Binding ListAddWorks, Converter={StaticResource AddWorksConverter}}" IsHitTestVisible="False" Foreground="Black"/>
                                         </Grid>
-                                        <!--<ComboBox ItemsSource="{Binding ListWorks, Source={StaticResource context}}"
-                                                  DisplayMemberPath="aw_Name"
-                                                  Text="7777"
-                                                  />-->
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellEditingTemplate>
                             </DataGridTemplateColumn>
-                            <DataGridTextColumn Header="Тариф" Binding="{Binding AddWorksSumma, StringFormat=N2}" Width="90"  CellStyle="{StaticResource CellRight}" IsReadOnly="True"/>
-
+                            <DataGridTextColumn Header="Тариф" Binding="{Binding premiaAddWorks.Summa, StringFormat=N2}" Width="90"  CellStyle="{StaticResource CellRight}" IsReadOnly="True"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </DockPanel>
@@ -276,7 +271,7 @@
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="ФИО" Binding="{Binding person.FIO}" IsReadOnly="True"/>
                             <DataGridTextColumn Header="Должность" Binding="{Binding person.p_profession}" IsReadOnly="True"/>
-                            <DataGridTextColumn Header="Стоимость доставки" Binding="{Binding TransportSumma, StringFormat=N2}" IsReadOnly="True" CellStyle="{StaticResource CellRight}"/>
+                            <DataGridTextColumn Header="Стоимость доставки" Binding="{Binding premiaTrnasport.Summa, StringFormat=N2}" IsReadOnly="True" CellStyle="{StaticResource CellRight}"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </DockPanel>
@@ -295,9 +290,9 @@
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="ФИО" Binding="{Binding person.FIO}" IsReadOnly="True"/>
                             <DataGridTextColumn Header="Должность" Binding="{Binding person.p_profession}" IsReadOnly="True"/>
-                            <DataGridTextColumn Header="Доплата 20%" Binding="{Binding NightOklad, StringFormat=0.#}" IsReadOnly="True" CellStyle="{StaticResource CellRight}"/>
-                            <DataGridTextColumn Header="Часы" Binding="{Binding NightHours, Mode=TwoWay, StringFormat=0.#}"  CellStyle="{StaticResource CellRight}"  IsReadOnly="True"/>
-                            <DataGridTextColumn Header="Сумма" Binding="{Binding NightSumma, StringFormat=N2}" Width="90" IsReadOnly="True" CellStyle="{StaticResource CellRight}"/>
+                            <DataGridTextColumn Header="Доплата 20%" Binding="{Binding premiaNight.NightOklad, StringFormat=0.#}" IsReadOnly="True" CellStyle="{StaticResource CellRight}"/>
+                            <DataGridTextColumn Header="Часы" Binding="{Binding premiaNight.NightHours, Mode=TwoWay, StringFormat=0.#}"  CellStyle="{StaticResource CellRight}"  IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Сумма" Binding="{Binding premiaNight.Summa, StringFormat=N2}" Width="90" IsReadOnly="True" CellStyle="{StaticResource CellRight}"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </DockPanel>
