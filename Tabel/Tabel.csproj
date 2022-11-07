@@ -91,6 +91,7 @@
     <Compile Include="Component\Models\Mod\PremiaKvalif.cs" />
     <Compile Include="Component\Models\Mod\premiaNight.cs" />
     <Compile Include="Component\Models\Mod\PremiaOtdel.cs" />
+    <Compile Include="Component\Models\Mod\PremiaPrize.cs" />
     <Compile Include="Component\Models\Mod\PremiaTransport.cs" />
     <Compile Include="Component\Models\Mod\PremOffDays.cs" />
     <Compile Include="Component\Models\Otdel2.cs" />
@@ -142,6 +143,7 @@
     <Compile Include="Models\user.cs" />
     <Compile Include="Repository\AllRepo.cs" />
     <Compile Include="Repository\RepositoryCalendar.cs" />
+    <Compile Include="Repository\RepositoryCSV.cs" />
     <Compile Include="Repository\RepositoryTabelPerson.cs" />
     <Compile Include="Infrastructure\Extend\ExtendedTreeView.cs" />
     <Compile Include="Infrastructure\Extend\ListBoxExt.cs" />

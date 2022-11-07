@@ -71,7 +71,6 @@ namespace Tabel.ViewModels
             BasicWindowViewModel vm = new BasicWindowViewModel(new ModUC(), "Модель расчета");
             win.DataContext = vm;
             win.ShowDialog();
-
         }
 
         //--------------------------------------------------------------------------------

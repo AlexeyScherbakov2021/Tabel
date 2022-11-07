@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DocumentFormat.OpenXml.Bibliography;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data.Entity;
@@ -183,6 +184,44 @@ namespace Tabel.ViewModels
             }
 
         }
+
+        //--------------------------------------------------------------------------------
+        // Команда Экспорт в 1С
+        //--------------------------------------------------------------------------------
+        public ICommand ExportCSVCommand => new LambdaCommand(OnExportCSVCommandExecuted, CanExportCSVCommand);
+        private bool CanExportCSVCommand(object p) => App.CurrentUser.u_role == UserRoles.Admin;
+        private void OnExportCSVCommandExecuted(object p)
+        {
+
+            IEnumerable<WorkTabel> ListTabel = repoTabel.Items.Where(it => it.t_year == _SelectYear
+                    && it.t_month == _SelectMonth);
+
+
+            if (ListTabel != null)
+            {
+                RepositoryMSSQL<TabelPerson> repoTabelPerson = AllRepo.GetRepoTabelPerson();
+                List<TabelPerson> ListTabelPerson = new List<TabelPerson>();
+
+                foreach (var tabel in ListTabel)
+                {
+                    List<TabelPerson> listPerson = repoTabelPerson.Items
+                        .Where(it => it.tp_tabel_id == tabel.id)
+                        .OrderBy(o => o.person.p_lastname)
+                        .ThenBy(o => o.person.p_name).ToList();
+
+                    ListTabelPerson.AddRange(listPerson);
+                }
+
+                ListTabelPerson.Sort((item1, item2) =>
+                {
+                    return item1.person.p_lastname.CompareTo(item2.person.p_lastname);
+                });
+
+                RepositoryCSV repoFile = new RepositoryCSV(ListTabelPerson);
+                repoFile.SaveFile(@"d:\expot.csv", _SelectYear, _SelectMonth);
+            }
+        }
+
 
         #endregion
 

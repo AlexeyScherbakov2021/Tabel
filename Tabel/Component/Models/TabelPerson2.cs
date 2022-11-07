@@ -70,6 +70,10 @@ namespace Tabel.Models
         public decimal? WorkedOffDays => ((IEnumerable<TabelDay>) TabelDays).Count(it => it.td_KindId == 5);
         public decimal? WorkedOffHours => ((IEnumerable<TabelDay>) TabelDays).Where(it => it.td_KindId == 5).Sum(s => s.td_Hours.Value);
 
+        [NotMapped]
+        public decimal? OverWork { get; set; }
+
+
 
         public void UpdateUI()
         {
@@ -90,31 +94,6 @@ namespace Tabel.Models
 
         //public void CheckOvertime
 
-        //public void SetCalendarTypeDays()
-        //{
-        //    RepositoryCalendar repo = new RepositoryCalendar();
-        //    IEnumerable<WorkCalendar> cal = repo.Items.AsNoTracking().Where(it => it.cal_date.Year == tabel.t_year 
-        //            && it.cal_date.Month == tabel.t_month);
-
-        //    // выставление выходных дней для списка
-        //    List<TabelDay> days = TabelDays.ToList();
-        //    DateTime dt = new DateTime(tabel.t_year, tabel.t_month, 1);
-        //    while(dt.Month == tabel.t_month)
-        //    {
-        //        if (dt.DayOfWeek == DayOfWeek.Saturday || dt.DayOfWeek == DayOfWeek.Sunday)
-        //            days[dt.Day - 1].CalendarTypeDay = TypeDays.Holyday;
-        //        else
-        //            days[dt.Day - 1].CalendarTypeDay = TypeDays.Work;
-        //        dt = dt.AddDays(1);
-        //    }
-
-        //    // корректировка измененных дней
-        //    foreach(var item in cal)
-        //    {
-        //        days[item.cal_date.Day - 1].CalendarTypeDay = item.cal_type;
-        //    }
-
-        //}
 
 
     }

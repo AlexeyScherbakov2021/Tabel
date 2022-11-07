@@ -36,6 +36,10 @@ namespace Tabel.Models
         [NotMapped]
         public premiaNight premiaNight { get; set; }
 
+        [NotMapped]
+        public PremiaPrize premiaPrize { get; set; }
+
+
 
         public ModPerson()
         {

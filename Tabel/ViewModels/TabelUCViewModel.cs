@@ -241,9 +241,8 @@ namespace Tabel.ViewModels
             repoTabel.Save();
         }
 
+
         #endregion
-
-
 
         //--------------------------------------------------------------------------------------------------
         // Конструктор
@@ -265,6 +264,16 @@ namespace Tabel.ViewModels
             ListTabelPerson = null;
 
             if (otdel is null)  return;
+
+
+            if (ListTabelPerson != null)
+            {
+                foreach (var item in ListTabelPerson)
+                {
+                    foreach (var day in item.TabelDays)
+                        day.PropertyChanged -= ListPerson_PropertyChanged;
+                }
+            }
 
             if (SelectedOtdel.ot_parent is null)
             {
@@ -293,12 +302,45 @@ namespace Tabel.ViewModels
 
             SetTypeDays();
 
+            foreach(var item in ListTabelPerson)
+            {
+                foreach(var day in item.TabelDays)
+                    day.PropertyChanged += ListPerson_PropertyChanged;
+
+            }
+
+
             OnPropertyChanged(nameof(ListTabelPerson));
             OnPropertyChanged(nameof(Tabel));
         }
 
         //--------------------------------------------------------------------------------------
-        // расстановка топв дней по производственному календарю
+        // Событие изменения параметров дня
+        //--------------------------------------------------------------------------------------
+        private void ListPerson_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if(e.PropertyName == "td_Hours")
+            {
+                TabelPerson person = (sender as TabelDay).TabelPerson;
+
+                List<TabelDay> ListDays = person.TabelDays.ToList();
+
+                person.OverWork = 0;
+                for (int i = 0; i < ListDays.Count - 1; i++)
+                {
+                    if(ListDays[i].td_Hours - ListDays[i].OverHours + ListDays[i + 1].td_Hours > 20)
+                    {
+                        ListDays[i + 1].OverHours = (ListDays[i].td_Hours + ListDays[i + 1].td_Hours) - 20;
+                        person.OverWork += ListDays[i + 1].OverHours;
+                    }
+                }
+
+                person.OnPropertyChanged(nameof(person.OverWork));
+            }
+        }
+
+        //--------------------------------------------------------------------------------------
+        // расстановка типов дней по производственному календарю
         //--------------------------------------------------------------------------------------
         private void SetTypeDays()
         {

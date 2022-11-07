@@ -18,5 +18,8 @@ namespace Tabel.Models
         [NotMapped]
         public TypeDays CalendarTypeDay { get; set; }
 
+        [NotMapped]
+        public decimal? OverHours { get; set; } = 0;
+
     }
 }
