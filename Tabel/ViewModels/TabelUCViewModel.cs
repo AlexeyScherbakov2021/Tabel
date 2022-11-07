@@ -56,9 +56,6 @@ namespace Tabel.ViewModels
             RepositoryCalendar repo = AllRepo.GetRepoCalendar();
             var ListDays = repo.GetListDays(_SelectYear, _SelectMonth);
 
-            //IEnumerable<WorkCalendar> cal = repo.Items.AsNoTracking().Where(it => it.cal_date.Year == _SelectYear
-            //        && it.cal_date.Month == _SelectMonth);
-
 
             RepositoryMSSQL<Otdel> repoOtdel = AllRepo.GetRepoAllOtdels();
             List<int> listOtdels = repoOtdel.Items.AsNoTracking().Where(it => it.ot_parent == SelectedOtdel.id).Select(s => s.id).ToList();
@@ -87,14 +84,13 @@ namespace Tabel.ViewModels
             Tabel.t_date_create = DateTime.Now;
             Tabel.tabelPersons = new ObservableCollection<TabelPerson>();
 
-            //DateTime StartDay = new DateTime(_SelectYear, _SelectMonth, 1);
 
             // если есть персонал в отделе, добавляем его и формируем дни
             foreach (var item in PersonsFromOtdel)
             {
                 TabelPerson tp = new TabelPerson();
                 tp.tp_person_id = item.id;
-                //tp.person = item;
+                //tp.person = repoPersonal.Items.FirstOrDefault(it => it.id == item.id); 
                 tp.TabelDays = new ObservableCollection<TabelDay>();
 
                 foreach(var listItem in ListDays)
@@ -241,6 +237,77 @@ namespace Tabel.ViewModels
             repoTabel.Save();
         }
 
+        //--------------------------------------------------------------------------------
+        // Команда Добавить сотрудников
+        //--------------------------------------------------------------------------------
+        public ICommand AddPersonCommand => new LambdaCommand(OnAddPersonCommandExecuted, CanAddPersonCommand);
+        private bool CanAddPersonCommand(object p) => SelectedOtdel != null && Tabel != null;
+        private void OnAddPersonCommandExecuted(object p)
+        {
+            List<Personal> ListPersonal = repoPersonal.Items
+                .AsNoTracking()
+                .Where(it => it.p_otdel_id == SelectedOtdel.id)
+                .ToList();
+
+            // составляем список добавленных людей
+            foreach(var item in ListTabelPerson)
+            {
+                var pers = ListPersonal.FirstOrDefault(it => it.id == item.person.id);
+                if (pers != null)
+                    ListPersonal.Remove(pers);
+            }
+
+            if (ListPersonal.Count == 0)
+            {
+                MessageBox.Show("Новых людей для отдела не обнаружено.", "Сообщение", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else if (MessageBox.Show($"Найдено людей: {ListPersonal.Count}. Добавлять?", "Предупреждение", MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
+            {
+
+                RepositoryCalendar repo = AllRepo.GetRepoCalendar();
+                var ListDays = repo.GetListDays(_SelectYear, _SelectMonth);
+
+                foreach (var item in ListPersonal)
+                {
+                    TabelPerson tp = new TabelPerson();
+                    //tp.tp_person_id = item.id;
+                    tp.person = repoPersonal.Items.FirstOrDefault(it => it.id == item.id);
+                    tp.TabelDays = new ObservableCollection<TabelDay>();
+
+                    foreach (var listItem in ListDays)
+                    {
+                        TabelDay td = new TabelDay();
+                        tp.tp_tabel_id = Tabel.id;
+                        td.td_Day = listItem.Day;
+                        td.CalendarTypeDay = listItem.KindDay;
+                        switch (td.CalendarTypeDay)
+                        {
+                            case TypeDays.Holyday:
+                                td.td_KindId = 2;
+                                td.td_Hours = 0;
+                                break;
+                            case TypeDays.Work:
+                                td.td_KindId = 1;
+                                td.td_Hours = 8;
+                                break;
+                            case TypeDays.ShortWork:
+                                td.td_KindId = 1;
+                                td.td_Hours = 7;
+                                break;
+                        }
+
+                        tp.TabelDays.Add(td);
+
+                    }
+
+                    repoTabelPerson.Add(tp);
+                    ListTabelPerson.Add(tp);
+                }
+
+                OnPropertyChanged(nameof(ListTabelPerson));
+            }
+
+        }
 
         #endregion
 
@@ -302,13 +369,15 @@ namespace Tabel.ViewModels
 
             SetTypeDays();
 
-            foreach(var item in ListTabelPerson)
+            if (ListTabelPerson != null)
             {
-                foreach(var day in item.TabelDays)
-                    day.PropertyChanged += ListPerson_PropertyChanged;
+                foreach (var item in ListTabelPerson)
+                {
+                    foreach (var day in item.TabelDays)
+                        day.PropertyChanged += ListPerson_PropertyChanged;
 
+                }
             }
-
 
             OnPropertyChanged(nameof(ListTabelPerson));
             OnPropertyChanged(nameof(Tabel));
@@ -328,10 +397,19 @@ namespace Tabel.ViewModels
                 person.OverWork = 0;
                 for (int i = 0; i < ListDays.Count - 1; i++)
                 {
-                    if(ListDays[i].td_Hours - ListDays[i].OverHours + ListDays[i + 1].td_Hours > 20)
+                    if(ListDays[i].td_Hours - ListDays[i].td_Hours2 + ListDays[i + 1].td_Hours > 20)
                     {
-                        ListDays[i + 1].OverHours = (ListDays[i].td_Hours + ListDays[i + 1].td_Hours) - 20;
-                        person.OverWork += ListDays[i + 1].OverHours;
+                        ListDays[i + 1].td_Hours2 = (ListDays[i].td_Hours + ListDays[i + 1].td_Hours) - 20;
+                        //ListDays[i + 1].td_Hours2 = ListDays[i + 1].OverHours;
+                        person.OverWork += ListDays[i + 1].td_Hours2;
+                        ListDays[i + 1].VisibilityHours = Visibility.Visible;
+                            
+                    }
+                    else
+                    {
+                        ListDays[i + 1].VisibilityHours = Visibility.Collapsed;
+                        ListDays[i + 1].td_Hours2 = 0;
+
                     }
                 }
 

@@ -48,8 +48,6 @@ namespace Tabel.Models
 
         public virtual typeDay typeDay { get; set; }
 
-        [NotMapped]
-        public int td_Hours2 { get; set; }
 
     }
 }

@@ -25,6 +25,7 @@
             <Button Content="Создать табель" Command="{Binding CreateCommand}" Margin="3" Style="{StaticResource ButtonStyleShadow}"/>
             <Button Content="Сохранить" Command="{Binding SaveCommand}" Margin="3" Style="{StaticResource ButtonStyleShadow}"/>
             <Button Content="Распечатать" Command="{Binding PrintCommand}" Margin="3" Style="{StaticResource ButtonStyleShadow}"/>
+            <Button Content="Добавить сотрудников" Command="{Binding AddPersonCommand}" Margin="3" Style="{StaticResource ButtonStyleShadow}"/>
         </StackPanel>
 
         <DataGrid x:Name="dg" ItemsSource="{Binding ListTabelPerson}" AutoGenerateColumns="False" IsReadOnly="True" 

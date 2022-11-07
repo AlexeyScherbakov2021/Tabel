@@ -12,14 +12,21 @@ namespace Tabel.Models
 {
     public partial class TabelDay : Observable
     {
+        private Visibility _VisibilityHours = Visibility.Collapsed;
         [NotMapped]
-        public Visibility VisibilityHours { get; set; } = Visibility.Collapsed;
+        public Visibility VisibilityHours { get => _VisibilityHours; set { Set(ref _VisibilityHours, value); } }
 
         [NotMapped]
         public TypeDays CalendarTypeDay { get; set; }
 
+        //private decimal? OverHours { get; set; } = 0;
+        //[NotMapped]
+        //public decimal? OverHours { get; set; } = 0;
+
+        public decimal? _td_Hours2 = 0;
         [NotMapped]
-        public decimal? OverHours { get; set; } = 0;
+        public decimal? td_Hours2 { get => _td_Hours2; set { Set(ref _td_Hours2, value); } }
+
 
     }
 }
