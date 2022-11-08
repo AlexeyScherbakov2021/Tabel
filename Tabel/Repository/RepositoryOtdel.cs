@@ -54,7 +54,7 @@ namespace Tabel.Repository
             }
 
             // добавлеие подотделов, которых еще не добавлены
-            RepositoryMSSQL<Otdel> repo1 = AllRepo.GetRepoOtdel();
+            RepositoryMSSQL<Otdel> repo1 = AllRepo.GetRepoAllOtdels();
             IEnumerable<Otdel> AllOtdels = repo1.Items.AsNoTracking().Where(it => it.parent != null);
             CombaineOtdels(ListUserOtdels, ListOtdels, AllOtdels);
             return ListOtdels;
@@ -78,7 +78,7 @@ namespace Tabel.Repository
             }
 
             // добавлеие подотделов, которых еще не добавлены
-            RepositoryMSSQL<Otdel> repo1 = AllRepo.GetRepoOtdel();
+            RepositoryMSSQL<Otdel> repo1 = AllRepo.GetRepoAllOtdels();
             IEnumerable<Otdel> AllOtdels = repo1.Items.Where(it => it.parent != null);
             CombaineOtdels(ListUserOtdels, ListOtdels, AllOtdels);
 

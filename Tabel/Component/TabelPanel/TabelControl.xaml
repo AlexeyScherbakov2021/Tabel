@@ -179,12 +179,12 @@
                                                      Padding="2,0" MinWidth="24" 
                                                      HorizontalContentAlignment="Center" VerticalContentAlignment="Center" 
                                                      GotFocus="TextBox_GotFocus" KeyDown="TextBox_KeyDown">
-                                            </TextBox>  
-                                                    
-                                        </StackPanel>
-                                        <TextBox Text="{Binding td_Hours2, Mode=TwoWay}" Visibility="{Binding VisibilityHours}" Padding="2,0" 
+                                            </TextBox>
+                                            <TextBox Text="{Binding td_Hours2, Mode=TwoWay}" Visibility="{Binding VisibilityHours}" Padding="2,0" 
                                                      MinWidth="24" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" 
                                                      GotFocus="TextBox_GotFocus"  />
+
+                                        </StackPanel>
                                     </StackPanel>
                                 </Border>
                                 <ControlTemplate.Triggers>
