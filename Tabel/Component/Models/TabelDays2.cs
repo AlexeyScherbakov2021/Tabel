@@ -23,10 +23,6 @@ namespace Tabel.Models
         //[NotMapped]
         //public decimal? OverHours { get; set; } = 0;
 
-        public decimal? _td_Hours2 = 0;
-        [NotMapped]
-        public decimal? td_Hours2 { get => _td_Hours2; set { Set(ref _td_Hours2, value); } }
-
 
     }
 }

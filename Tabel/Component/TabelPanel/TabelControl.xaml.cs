@@ -93,6 +93,9 @@ namespace Tabel.Component.TabelPanel
         private void TextBox_GotFocus(object sender, RoutedEventArgs e)
         {
             TextBox tbox = sender as TextBox;
+            if (tbox.Name != "TBHours")
+                return;
+
             var Parent = (tbox.Parent as StackPanel).Parent as StackPanel;
             TextBlock tb = Parent.Children[0] as TextBlock;
             
@@ -216,6 +219,11 @@ namespace Tabel.Component.TabelPanel
             return elem;
         }
 
+        private void TextBox_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            ListBoxDays.InvalidateMeasure();
+            ListBoxDays.InvalidateArrange();
 
+        }
     }
 }

@@ -12,6 +12,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using Tabel.Commands;
 using Tabel.Component.Models;
+using Tabel.Component.Models.Mod;
 using Tabel.Component.MonthPanel;
 using Tabel.Infrastructure;
 using Tabel.Models;
@@ -217,7 +218,12 @@ namespace Tabel.ViewModels
                     return item1.person.p_lastname.CompareTo(item2.person.p_lastname);
                 });
 
-                RepositoryCSV repoFile = new RepositoryCSV(ListTabelPerson);
+                // берем часы переработки
+                FormExport fomExport = new FormExport();
+
+                fomExport.ListPersonToListExport(ListTabelPerson, ListModPerson);
+
+                RepositoryCSV repoFile = new RepositoryCSV(fomExport);
                 repoFile.SaveFile(@"d:\expot.csv", _SelectYear, _SelectMonth);
             }
         }
@@ -358,12 +364,14 @@ namespace Tabel.ViewModels
                 item.TabelDays = listDays.Count;
                 item.TabelHours = pers.HoursMonth;
                 item.TabelWorkOffDay = pers.WorkedOffDays;
+                item.OverHours = pers.OverWork ?? 0;
                 //item.DayOffSumma = item.TabelWorkOffDay * item.md_tarif_offDay;
                 item.Oklad = item.person.category is null ? 0 : item.TabelHours * item.person.category.cat_tarif.Value;
 
                 int CountWorkDaysPerson = pers.TabelDays.Count(it => it.td_KindId == 1);
                 item.TabelAbsent = CountWorkDays - CountWorkDaysPerson ;
                 if (item.TabelAbsent < 0) item.TabelAbsent = 0;
+                item.premiaPrize.Calculation();
 
             }
 

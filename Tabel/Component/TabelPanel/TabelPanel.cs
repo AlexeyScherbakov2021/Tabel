@@ -5,11 +5,16 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media.Media3D;
 
 namespace Tabel.Component.TabelPanel
 {
     internal class TabelPanel : Panel
     {
+        double heightT = 0;
+        double heightB = 0;
+
+
         // Количество дней на панели
         public static readonly DependencyProperty CountDaysProperty =
                 DependencyProperty.Register("CountDays", typeof(int), typeof(TabelPanel),
@@ -27,6 +32,9 @@ namespace Tabel.Component.TabelPanel
         protected override Size MeasureOverride(Size availableSize)
         {
             Size childSize = new Size();
+            double widthT = 0;
+            double widthB = 0;
+            int nCount = 0;
             Size size = new Size(double.PositiveInfinity, double.PositiveInfinity);
             foreach (UIElement child in Children)
             {
@@ -34,13 +42,24 @@ namespace Tabel.Component.TabelPanel
                 {
                     child.Measure(size);
                     childSize = child.DesiredSize;
-
+                    if (nCount < 15)
+                    {
+                        widthT += childSize.Width;
+                        heightT = Math.Max(heightT, childSize.Height);
+                    }
+                    else
+                    {
+                        widthB += childSize.Width;
+                        heightB = Math.Max(heightB, childSize.Height);
+                    }
+                    nCount++;
                 }
             }
 
-            Size PanelSize = new Size(childSize.Width * 15, childSize.Height * 2);
-            if (Children.Count > 30)
-                PanelSize.Width += childSize.Width;
+            //Size PanelSize = new Size(childSize.Width * 15, childSize.Height * 2);
+            Size PanelSize = new Size(Math.Max(widthT, widthB), heightT + heightB);
+            //if (Children.Count > 30)
+            //    PanelSize.Width += childSize.Width;
 
             return PanelSize;
         }
@@ -58,7 +77,7 @@ namespace Tabel.Component.TabelPanel
                 location.X += child.DesiredSize.Width;
                 if (CurrentIndex++ == 14)
                 {
-                    location.Y += child.DesiredSize.Height;
+                    location.Y += heightT;
                     location.X = 0;
                 }
             }

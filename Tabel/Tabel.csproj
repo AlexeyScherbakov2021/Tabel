@@ -152,6 +152,7 @@
     <Compile Include="ViewModels\Admins\OtdelsWindowViewModel.cs" />
     <Compile Include="ViewModels\Base\IBaseUCViewModel.cs" />
     <Compile Include="ViewModels\BasicWindowViewModel.cs" />
+    <Compile Include="ViewModels\ExportPerson.cs" />
     <Compile Include="ViewModels\ModUCViewModel.cs" />
     <Compile Include="ViewModels\SelectOtdelWindowViewModel.cs" />
     <Compile Include="ViewModels\Admins\UserWindowViewModel.cs" />

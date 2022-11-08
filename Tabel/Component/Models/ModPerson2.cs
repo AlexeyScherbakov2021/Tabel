@@ -51,6 +51,7 @@ namespace Tabel.Models
             premiaAddWorks = new PremiaAddWorks(this);
             premiaTrnasport = new PremiaTransport(this);
             premiaNight = new premiaNight(this);
+            premiaPrize = new PremiaPrize(this);
         }
 
 
@@ -62,6 +63,9 @@ namespace Tabel.Models
         public int TabelAbsent { get; set; } = 0;
         [NotMapped]
         public decimal Oklad { get; set; }
+        [NotMapped]
+        public decimal OverHours;
+
 
         [NotMapped]
         public decimal? TabelWorkOffDay { get; set; }
@@ -75,7 +79,8 @@ namespace Tabel.Models
             + premiaNight.GetPremia()
             + premOffDays.GetPremia()
             + premiaTrnasport.GetPremia()
-            + premiaAddWorks.GetPremia();
+            + premiaAddWorks.GetPremia()
+            /*+ premiaPrize.GetPremia()*/;
 
         //public void UpdateUI()
         //{

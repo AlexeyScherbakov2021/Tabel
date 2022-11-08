@@ -43,6 +43,8 @@ namespace Tabel.Models
             }
         }
 
+        public decimal? _td_Hours2 = 0;
+        public decimal? td_Hours2 { get => _td_Hours2; set { Set(ref _td_Hours2, value); } }
 
         public virtual TabelPerson TabelPerson { get; set; }
 

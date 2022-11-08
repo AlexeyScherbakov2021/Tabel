@@ -1,36 +1,35 @@
 ﻿using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Tabel.Models;
+using Tabel.ViewModels;
 
 namespace Tabel.Repository
 {
     internal class RepositoryCSV
     {
-        private IEnumerable<TabelPerson> TabelPersons;
+        private FormExport ListPersons;
 
-        public RepositoryCSV(IEnumerable<TabelPerson> tabel) => TabelPersons = tabel;
+        public RepositoryCSV(FormExport form) => ListPersons = form;
 
         public void SaveFile(string FileName, int Year, int Month)
         {
+            var cult = new CultureInfo("ru-RU");
+            cult.NumberFormat.NumberDecimalSeparator = ".";
+
             string line;
             var file = File.CreateText(FileName);
 
             file.WriteLine($"{Month},{Year}");
 
-            foreach(var item in TabelPersons)
+            foreach(var item in ListPersons.ListExportPerson)
             {
-                line = $"{item.person.p_tab_number}," +
-                    $"{item.person.p_lastname}," +
-                    $"{item.person.p_name}," +
-                    $"{item.person.p_midname}," +
-                    $"ПремияДТ," +
-                    $"{item.OverWork}";
-
+                line = item.GetLine(cult);
                 file.WriteLine(line);
             }
             file.Close();

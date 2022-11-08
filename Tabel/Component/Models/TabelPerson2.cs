@@ -71,8 +71,7 @@ namespace Tabel.Models
         public decimal? WorkedOffHours => ((IEnumerable<TabelDay>) TabelDays).Where(it => it.td_KindId == 5).Sum(s => s.td_Hours.Value);
 
         [NotMapped]
-        public decimal? OverWork { get; set; }
-
+        public decimal? OverWork => TabelDays?.Sum(it => it.td_Hours2);
 
 
         public void UpdateUI()

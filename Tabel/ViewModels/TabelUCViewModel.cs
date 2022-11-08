@@ -394,14 +394,13 @@ namespace Tabel.ViewModels
 
                 List<TabelDay> ListDays = person.TabelDays.ToList();
 
-                person.OverWork = 0;
+                //person.OverWork = 0;
                 for (int i = 0; i < ListDays.Count - 1; i++)
                 {
-                    if(ListDays[i].td_Hours - ListDays[i].td_Hours2 + ListDays[i + 1].td_Hours > 20)
+                    if(ListDays[i].td_Hours - (ListDays[i].td_Hours2 ?? 0) + ListDays[i + 1].td_Hours > 20)
                     {
-                        ListDays[i + 1].td_Hours2 = (ListDays[i].td_Hours + ListDays[i + 1].td_Hours) - 20;
-                        //ListDays[i + 1].td_Hours2 = ListDays[i + 1].OverHours;
-                        person.OverWork += ListDays[i + 1].td_Hours2;
+                        ListDays[i + 1].td_Hours2 = (ListDays[i].td_Hours + ListDays[i + 1].td_Hours - (ListDays[i].td_Hours2 ?? 0)) - 20;
+                        //person.OverWork += ListDays[i + 1].td_Hours2;
                         ListDays[i + 1].VisibilityHours = Visibility.Visible;
                             
                     }
@@ -435,6 +434,8 @@ namespace Tabel.ViewModels
                 foreach (var day in item.TabelDays)
                 {
                     day.CalendarTypeDay = ListDays[i].KindDay;
+                    if(day.td_Hours2 > 0)
+                        day.VisibilityHours = Visibility.Visible;
                     i++;
                 }
 
