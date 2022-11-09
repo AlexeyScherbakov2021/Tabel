@@ -18,7 +18,7 @@ namespace Tabel.Component.Models.Mod
         //-------------------------------------------------------------------------------------------------------
         public override void Calculation()
         {
-            Summa = (model.Itogo ?? 0) / model.TabelHours * model.OverHours;
+            Summa = model.Oklad / model.TabelHours * model.OverHours * 2;
         }
 
         //-------------------------------------------------------------------------------------------------------
@@ -26,7 +26,7 @@ namespace Tabel.Component.Models.Mod
         //-------------------------------------------------------------------------------------------------------
         public override decimal? GetPremia()
         {
-            //Calculation();
+            Calculation();
             return Summa ?? 0;
         }
 

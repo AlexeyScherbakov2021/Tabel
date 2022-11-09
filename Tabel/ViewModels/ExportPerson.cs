@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Tabel.Component.Models.Mod;
 using Tabel.Models;
 
 namespace Tabel.ViewModels
@@ -20,21 +21,21 @@ namespace Tabel.ViewModels
 
         public ExportPerson(TabelPerson tabPerson, decimal summa)
         {
-            tab_number = tabPerson.person.p_tab_number;
-            lastname = tabPerson.person.p_lastname;
-            name = tabPerson.person.p_name;
-            midname = tabPerson.person.p_midname;
+            tab_number = tabPerson.person.p_tab_number?.Trim();
+            lastname = tabPerson.person.p_lastname?.Trim();
+            name = tabPerson.person.p_name?.Trim();
+            midname = tabPerson.person.p_midname?.Trim();
             NamePremia = "ПремияДТ";
             Summa = summa;
         }
 
-        public string GetLine(CultureInfo ci)
+        public string GetLine(CultureInfo ci, string Delim)
         {
-             return $"{tab_number}," +
-                    $"{lastname}," +
-                    $"{name}," +
-                    $"{midname}," +
-                    $"{NamePremia}," +
+             return $"{tab_number}" + Delim +
+                    $"{lastname}" + Delim +
+                    $"{name}" + Delim +
+                    $"{midname}" + Delim +
+                    $"{NamePremia}" + Delim +
                     Summa.ToString("0.00",ci);
         }
 
@@ -58,7 +59,9 @@ namespace Tabel.ViewModels
                 ModPerson mPerson = ListModPerson.FirstOrDefault(it => it.person.id == item.person.id);
                 if (mPerson != null)
                 {
-                    summa = (mPerson.Itogo ?? 0) / item.HoursMonth * (item.OverWork ?? 0);
+                    PremiaPrize prem = new PremiaPrize(mPerson);
+                    summa = prem.GetPremia().Value;
+                    //summa = mPerson.Oklad / item.HoursMonth * (item.OverWork ?? 0) * 2;
                 }
 
                 ExportPerson p = new ExportPerson(item, summa);

@@ -80,7 +80,7 @@
                 <UniformGrid Columns="3" DockPanel.Dock="Bottom" Margin="6">
                     <Button Command="{Binding SaveCommand}" Margin="2" Style="{StaticResource ButtonStyleShadow}">
                         <StackPanel Orientation="Horizontal" Width="160">
-                            <fa:ImageAwesome  Width="20" Height="20" Foreground="#FF005AA0" Icon="Solid_UserPlus" Margin="5,0"/>
+                            <fa:ImageAwesome  Width="20" Height="20" Foreground="#FF005AA0" Icon="Solid_Save" Margin="5,0"/>
                             <TextBlock Text="Сохранить" VerticalAlignment="Center"/>
                         </StackPanel>
                     </Button>
@@ -92,7 +92,7 @@
                     </Button>
                     <Button Command="{Binding DeletePersonCommand}" Margin="2" Style="{StaticResource ButtonStyleShadow}">
                         <StackPanel Orientation="Horizontal" Width="160">
-                            <fa:ImageAwesome  Width="20" Height="20" Foreground="#FF005AA0" Icon="Solid_UserMinus" Margin="5,0"/>
+                            <fa:ImageAwesome  Width="20" Height="20" Foreground="#FF005AA0" Icon="Solid_UserSlash" Margin="5,0"/>
                             <TextBlock Text="Удалить сотрудника" VerticalAlignment="Center"/>
                         </StackPanel>
                     </Button>

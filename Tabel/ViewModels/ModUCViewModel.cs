@@ -36,6 +36,8 @@ namespace Tabel.ViewModels
         private int _SelectYear;
 
         public bool IsCheckBonus { get; set; }
+        public decimal SetProcPrem { get; set; }
+        public decimal SetMaxPrem { get; set; }
 
         public ObservableCollection<ModPerson> ListModPerson { get; set; }
 
@@ -77,7 +79,7 @@ namespace Tabel.ViewModels
         #region Команды
 
         //--------------------------------------------------------------------------------
-        // Событие выбора закзадки
+        // Событие выбора закладки
         //--------------------------------------------------------------------------------
         public ICommand TabChangedCommand => new LambdaCommand(OnTabChangedCommandExecuted, CanTabChangedCommand);
         private bool CanTabChangedCommand(object p) => true;
@@ -129,6 +131,7 @@ namespace Tabel.ViewModels
             foreach (var pers in persons)
             {
                 ModPerson newPerson = new ModPerson();
+                newPerson.md_group = pers.p_otdel_id.ToString();
                 newPerson.md_personalId = pers.id;
                 newPerson.md_tarif_offDay = pers.category?.cat_tarif * 8;
                 if (newPerson.md_tarif_offDay < 1500)
@@ -187,6 +190,42 @@ namespace Tabel.ViewModels
         }
 
         //--------------------------------------------------------------------------------
+        // Команда Применить сумму к выбранным
+        //--------------------------------------------------------------------------------
+        public ICommand SetSummaCommand => new LambdaCommand(OnSetSummaCommandExecuted, CanSetSummaCommand);
+        private bool CanSetSummaCommand(object p) => true;
+        private void OnSetSummaCommandExecuted(object p)
+        {
+            if( p is DataGrid dg)
+            {
+                foreach (ModPerson item in dg.SelectedItems)
+                {
+                    item.md_bonus_proc = SetProcPrem;
+                    item.OnPropertyChanged(nameof(item.md_bonus_proc));
+                }
+            }
+
+        }
+
+        //--------------------------------------------------------------------------------
+        // Команда Применить сумму к выбранным
+        //--------------------------------------------------------------------------------
+        public ICommand SetMaxSummaCommand => new LambdaCommand(OnSetMaxSummaCommandExecuted, CanSetMaxSummaCommand);
+        private bool CanSetMaxSummaCommand(object p) => true;
+        private void OnSetMaxSummaCommandExecuted(object p)
+        {
+            if( p is DataGrid dg)
+            {
+                foreach (ModPerson item in dg.SelectedItems)
+                {
+                    item.md_bonus_max = SetMaxPrem;
+                    item.OnPropertyChanged(nameof(item.md_bonus_max));
+                }
+            }
+
+        }
+
+        //--------------------------------------------------------------------------------
         // Команда Экспорт в 1С
         //--------------------------------------------------------------------------------
         public ICommand ExportCSVCommand => new LambdaCommand(OnExportCSVCommandExecuted, CanExportCSVCommand);
@@ -224,7 +263,7 @@ namespace Tabel.ViewModels
                 fomExport.ListPersonToListExport(ListTabelPerson, ListModPerson);
 
                 RepositoryCSV repoFile = new RepositoryCSV(fomExport);
-                repoFile.SaveFile(@"d:\expot.csv", _SelectYear, _SelectMonth);
+                repoFile.SaveFile(_SelectYear, _SelectMonth);
             }
         }
 

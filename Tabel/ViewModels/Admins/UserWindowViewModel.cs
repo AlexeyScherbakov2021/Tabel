@@ -42,10 +42,6 @@ namespace Tabel.ViewModels
 
         private void ListUserView_CurrentChanged(object sender, EventArgs e)
         {
-            //if (IsOpenPopup)
-
-            //    GetOtdelsFromUser(_SelectedUser, ListOtdel);
-            //IsOpenPopup = false;
             repoUser.Save();
         }
 
@@ -66,8 +62,6 @@ namespace Tabel.ViewModels
             }
         }
 
-        //private bool _IsOpenPopup = false;
-        //public bool IsOpenPopup { get => _IsOpenPopup; set { Set(ref _IsOpenPopup, value); } }
 
         //--------------------------------------------------------------------------------
         // Отметка в списке отделов для пользователя
@@ -138,14 +132,14 @@ namespace Tabel.ViewModels
         //--------------------------------------------------------------------------------
         // Команда Привязать отдел 
         //--------------------------------------------------------------------------------
-        public ICommand OtdelCommand => new LambdaCommand(OnOtdelCommandExecuted, CanOtdelCommand);
-        private bool CanOtdelCommand(object p) => true;
-        private void OnOtdelCommandExecuted(object p)
-        {
-            //if (IsOpenPopup)
-            //    GetOtdelsFromUser(_SelectedUser, ListOtdel);
-            //IsOpenPopup = !IsOpenPopup;
-        }
+        //public ICommand OtdelCommand => new LambdaCommand(OnOtdelCommandExecuted, CanOtdelCommand);
+        //private bool CanOtdelCommand(object p) => true;
+        //private void OnOtdelCommandExecuted(object p)
+        //{
+        //    //if (IsOpenPopup)
+        //    //    GetOtdelsFromUser(_SelectedUser, ListOtdel);
+        //    //IsOpenPopup = !IsOpenPopup;
+        //}
 
         //--------------------------------------------------------------------------------
         // Событие окончания редактирования ячейки
@@ -167,13 +161,24 @@ namespace Tabel.ViewModels
         //--------------------------------------------------------------------------------
         // Событие получения фокуса
         //-------------------------------------------------------------------------------
-        public ICommand GotFocusCommand => new LambdaCommand(OnGotFocusCommandExecuted, CanGotFocusCommand);
-        private bool CanGotFocusCommand(object p) => true;
-        private void OnGotFocusCommandExecuted(object p)
+        //public ICommand GotFocusCommand => new LambdaCommand(OnGotFocusCommandExecuted, CanGotFocusCommand);
+        //private bool CanGotFocusCommand(object p) => true;
+        //private void OnGotFocusCommandExecuted(object p)
+        //{
+        //    //ListOtdel = new ObservableCollection<Otdel>(repoOtdel.Items);
+        //    //OnPropertyChanged(nameof(ListOtdel));
+        //}
+
+        //--------------------------------------------------------------------------------
+        // Команда Сохранить
+        //--------------------------------------------------------------------------------
+        public ICommand SaveCommand => new LambdaCommand(OnSaveCommandExecuted, CanSaveCommand);
+        private bool CanSaveCommand(object p) => true;
+        private void OnSaveCommandExecuted(object p)
         {
-            //ListOtdel = new ObservableCollection<Otdel>(repoOtdel.Items);
-            //OnPropertyChanged(nameof(ListOtdel));
+            repoUser.Save();
         }
+
 
         #endregion
 

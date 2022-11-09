@@ -43,9 +43,12 @@ namespace Tabel.Component.Models.Mod
         {
             RepositoryMSSQL<SmenaPerson> repoSmena = AllRepo.GetRepoSmenaPerson();
             var pers = repoSmena.Items.FirstOrDefault(it => it.sp_SmenaId == SmenaId && it.sp_PersonId == model.md_personalId);
-            NightHours = pers.SmenaDays.Count(s => s.sd_Kind == SmenaKind.Second) * 4.5m;
-            NightOklad = model.person?.category?.cat_tarif * 0.2m;
-            Summa = NightOklad * NightHours;
+            if (pers != null)
+            {
+                NightHours = pers.SmenaDays.Count(s => s.sd_Kind == SmenaKind.Second) * 4.5m;
+                NightOklad = model.person?.category?.cat_tarif * 0.2m;
+                Summa = NightOklad * NightHours;
+            }
         }
 
 

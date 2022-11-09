@@ -53,6 +53,17 @@ namespace Tabel.ViewModels.Admins
                 ListAddWorks.Remove(SelectedWork);
             }
         }
+
+        //--------------------------------------------------------------------------------
+        // Команда Сохранить
+        //--------------------------------------------------------------------------------
+        public ICommand SaveCommand => new LambdaCommand(OnSaveCommandExecuted, CanSaveCommand);
+        private bool CanSaveCommand(object p) => true;
+        private void OnSaveCommandExecuted(object p)
+        {
+            repoAddWorks.Save();
+        }
+
         #endregion
 
     }

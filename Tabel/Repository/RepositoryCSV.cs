@@ -14,22 +14,30 @@ namespace Tabel.Repository
     internal class RepositoryCSV
     {
         private FormExport ListPersons;
+        private string Delimiter = ";";
 
         public RepositoryCSV(FormExport form) => ListPersons = form;
 
-        public void SaveFile(string FileName, int Year, int Month)
+        public void SaveFile(int Year, int Month)
         {
+            SaveFileDialog sd = new SaveFileDialog();
+            sd.Filter = "Файл CSV (*.csv)|*.csv";
+            sd.DefaultExt = "Файл CSV (*.csv)|*.csv";
+
+            if (sd.ShowDialog() != true)
+                return;
+
             var cult = new CultureInfo("ru-RU");
             cult.NumberFormat.NumberDecimalSeparator = ".";
 
             string line;
-            var file = File.CreateText(FileName);
+            var file = File.CreateText(sd.FileName);
 
-            file.WriteLine($"{Month},{Year}");
+            file.WriteLine($"{Month}" + Delimiter + $"{Year}");
 
             foreach(var item in ListPersons.ListExportPerson)
             {
-                line = item.GetLine(cult);
+                line = item.GetLine(cult, Delimiter);
                 file.WriteLine(line);
             }
             file.Close();

@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:fa="http://schemas.fontawesome.com/icons/"
              xmlns:vm="clr-namespace:Tabel.ViewModels"
              xmlns:local="clr-namespace:Tabel.Views.Admins"
              xmlns:mcal="clr-namespace:Tabel.Component.MonthPanel"
@@ -97,12 +98,27 @@
                 <TextBlock Text="Текущий год"/>
                 <ComboBox Margin="0,2,0,11" ItemsSource="{Binding ListYears}" SelectedItem="{Binding CurrentYear, Mode=TwoWay}" FontSize="18" 
                           FontWeight="Bold"/>
-                <Button Content="Добавить год" Margin="0,5" Height="30" Command="{Binding NewYearCommand}" 
-                        Style="{StaticResource ButtonStyleShadow}" Visibility="{Binding VisibleAdmin}"/>
-                <Button Content="По календарю" Margin="0,5" Height="30" Command="{Binding SetAsCalendarCommand}" 
-                        Style="{StaticResource ButtonStyleShadow}" Visibility="{Binding VisibleAdmin}"/>
-                <Button Content="Сохранить" Margin="0,5" Height="30" Command="{Binding SaveCommand}"
-                        Style="{StaticResource ButtonStyleShadow}" Visibility="{Binding VisibleAdmin}"/>
+                    <Button Margin="0,5" Height="34" Command="{Binding NewYearCommand}" Padding="5,0" 
+                        Style="{StaticResource ButtonStyleShadow}" Visibility="{Binding VisibleAdmin}">
+                        <StackPanel Orientation="Horizontal">
+                            <fa:ImageAwesome Icon="Solid_CalendarPlus" Width="20" Height="20" Foreground="#FF005AA0"  Margin="5,0"/>
+                            <TextBlock Text="Добавить год" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Margin="0,5" Height="34" Command="{Binding SetAsCalendarCommand}" 
+                        Style="{StaticResource ButtonStyleShadow}" Visibility="{Binding VisibleAdmin}">
+                        <StackPanel Orientation="Horizontal">
+                            <fa:ImageAwesome Icon="Solid_CalendarAlt" Width="20" Height="20" Foreground="#FF005AA0"  Margin="5,0"/>
+                            <TextBlock Text="По календарю" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Margin="0,5" Height="34" Command="{Binding SaveCommand}"
+                        Style="{StaticResource ButtonStyleShadow}" Visibility="{Binding VisibleAdmin}">
+                        <StackPanel Orientation="Horizontal">
+                            <fa:ImageAwesome Icon="Solid_Save" Width="20" Height="20" Foreground="#FF005AA0"  Margin="5,0"/>
+                            <TextBlock Text="Сохранить" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
                 <!--<Button Content="Выходной" Margin="0,5" Command="{Binding SetExDayCommand}" CommandParameter="{x:Static local:MonthControl+TypeDays.Holyday}" Style="{StaticResource ButtonStyleShadow}"/>
             <Button Content="Короткий" Margin="0,5" Command="{Binding SetExDayCommand}" CommandParameter="{x:Static local:MonthControl+TypeDays.Short}" Style="{StaticResource ButtonStyleShadow}"/>
             <Button Content="Рабочий" Margin="0,5" Command="{Binding SetExDayCommand}" CommandParameter="{x:Static local:MonthControl+TypeDays.Work}" Style="{StaticResource ButtonStyleShadow}"/>
