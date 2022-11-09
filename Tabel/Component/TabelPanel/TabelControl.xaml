@@ -118,7 +118,7 @@
             </Label>
 
             <Label Grid.Row="0"  Grid.Column="6" Background="White" BorderThickness="0.5" BorderBrush="Black" Padding="3" VerticalContentAlignment="Center" HorizontalContentAlignment="Center">
-                <TextBlock Text="{Binding OverWork, Mode=OneWay, StringFormat=0.#}" FontWeight="Bold" />
+                <TextBlock Text="{Binding OverWork, Mode=OneWay, StringFormat=0.#}" FontWeight="Bold" Foreground="Red"/>
             </Label>
 
 
@@ -244,14 +244,20 @@
                                             <TextBox x:Name="TBHours" Text="{Binding td_Hours, Mode=TwoWay, StringFormat=0.#, Converter={StaticResource Convert0ToNull}}" 
                                                      Padding="2,0" MinWidth="24" 
                                                      HorizontalContentAlignment="Center" VerticalContentAlignment="Center" 
-                                                     GotFocus="TextBox_GotFocus" KeyDown="TextBox_KeyDown">
+                                                     GotFocus="TextBox_GotFocus" KeyDown="TextBox_KeyDown" PreviewMouseLeftButtonUp="TBHours_PreviewMouseLeftButtonUp"  >
                                             </TextBox>
 
                                         </StackPanel>
-                                        <TextBox Text="{Binding td_Hours2, Mode=TwoWay,StringFormat=0.#}" Visibility="{Binding VisibilityHours}" Padding="2,0" 
-                                                     MinWidth="24" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" 
-                                                 IsReadOnly="True"
-                                                     Foreground="Red" GotFocus="TextBox_GotFocus" IsVisibleChanged="TextBox_IsVisibleChanged" />
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBox Text="{Binding td_Hours2, Mode=TwoWay,StringFormat=0.#}" Visibility="{Binding VisibilityHours}" Padding="2,0" 
+                                                 MinWidth="28" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" 
+                                                 IsReadOnly="True" ToolTip="Лишняя переработка"
+                                                 Foreground="Red" GotFocus="TextBox_GotFocus" IsVisibleChanged="TextBox_IsVisibleChanged" />
+                                            <TextBox Text="{Binding WhiteHours, Mode=TwoWay,StringFormat=0.#}" Visibility="{Binding VisibilityHours}" Padding="2,0" 
+                                                 MinWidth="24" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" 
+                                                 ToolTip="Должно быть так"
+                                                 IsReadOnly="True" GotFocus="TextBox_GotFocus" IsVisibleChanged="TextBox_IsVisibleChanged" />
+                                        </StackPanel>
                                     </StackPanel>
                                 </Border>
                                 <ControlTemplate.Triggers>
@@ -264,13 +270,13 @@
                                         <Setter Property="BorderBrush" Value="Blue" TargetName="border"/>
                                     </Trigger>
                                     <DataTrigger Binding="{Binding CalendarTypeDay}" Value="Holyday">
-                                        <!--<Setter Property="Background" Value="#E0C4DE" TargetName="NumberDay"/>-->
-                                        <Setter Property="Foreground" Value="#cc0000" TargetName="NumberDay"/>
+                                        <Setter Property="Background" Value="#E0C4DE" TargetName="NumberDay"/>
+                                        <!--<Setter Property="Foreground" Value="#cc0000" TargetName="NumberDay"/>-->
                                         <Setter Property="ToolTip" Value="Выходной день" TargetName="NumberDay"/>
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding CalendarTypeDay}" Value="ShortWork">
-                                        <!--<Setter Property="Background" Value="#D0F0DE" TargetName="NumberDay"/>-->
-                                        <Setter Property="Foreground" Value="DarkGreen" TargetName="NumberDay"/>
+                                        <Setter Property="Background" Value="#D0F0DE" TargetName="NumberDay"/>
+                                        <!--<Setter Property="Foreground" Value="DarkGreen" TargetName="NumberDay"/>-->
                                         <Setter Property="ToolTip" Value="Короткий день" TargetName="NumberDay"/>
                                     </DataTrigger>
                                 </ControlTemplate.Triggers>

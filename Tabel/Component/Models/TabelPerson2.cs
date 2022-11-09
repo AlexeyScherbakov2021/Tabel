@@ -41,7 +41,9 @@ namespace Tabel.Models
             get
             {
                 int summa = 0;
-                List<decimal> HoursBig = ((IEnumerable<TabelDay>)TabelDays).Where(it => it.td_Hours.Value > 8).Select(s => s.td_Hours.Value - 8).ToList();
+                List<decimal> HoursBig = ((IEnumerable<TabelDay>)TabelDays)
+                    .Where(it => (it.WhiteHours.Value /*- it.td_Hours2.Value*/) > 8 && it.CalendarTypeDay != TypeDays.Holyday)
+                    .Select(s => s.WhiteHours.Value - 8).ToList();
                 foreach(int i in HoursBig)
                 {
                     summa += i > 2 ? 2 : i;
@@ -54,13 +56,17 @@ namespace Tabel.Models
         {
             get
             {
-                int summa = 0;
-                List<decimal> HoursBig = ((IEnumerable<TabelDay>)TabelDays).Where(it => it.td_Hours.Value > 10).Select(s => s.td_Hours.Value - 10).ToList();
-                foreach (int i in HoursBig)
-                {
-                    summa += i;
-                }
-                return summa;
+                decimal? summa = 0;
+                summa = TabelDays?.Sum(it => it.td_Hours2);
+
+                //List<decimal> HoursBig = ((IEnumerable<TabelDay>)TabelDays)
+                //    .Where(it => it.td_Hours.Value > 10)
+                //    .Select(s => s.td_Hours.Value - 10).ToList();
+                //foreach (int i in HoursBig)
+                //{
+                //    summa += i;
+                //}
+                return summa ?? 0;
 
             }
         }
@@ -72,6 +78,13 @@ namespace Tabel.Models
 
         [NotMapped]
         public decimal? OverWork => TabelDays?.Sum(it => it.td_Hours2);
+
+        [NotMapped]
+        public decimal? PrevDayHour;        // количество часов в последний день предыдущего месяца
+        [NotMapped]
+        public int PrevPermWorkCount;       // количество дней непрерывной работы в последние дни месяца
+        [NotMapped]
+        public decimal? CalcHours { get; set; } // рассчитанные часы для 1С
 
 
         public void UpdateUI()
@@ -89,10 +102,6 @@ namespace Tabel.Models
             OnPropertyChanged("WorkedOffDays");
             OnPropertyChanged("WorkedOffHours");
         }
-
-
-        //public void CheckOvertime
-
 
 
     }

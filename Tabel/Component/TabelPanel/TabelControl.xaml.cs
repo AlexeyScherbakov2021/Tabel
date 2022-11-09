@@ -225,5 +225,11 @@ namespace Tabel.Component.TabelPanel
             ListBoxDays.InvalidateArrange();
 
         }
+
+
+        private void TBHours_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+
+        }
     }
 }

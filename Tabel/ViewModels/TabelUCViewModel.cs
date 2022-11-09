@@ -143,10 +143,6 @@ namespace Tabel.ViewModels
         private bool CanPrintCommand(object p) => Tabel != null && SelectedOtdel != null;
         private void OnPrintCommandExecuted(object p)
         {
-            //TabelPrint print = new TabelPrint();
-            //print.DataContext = this;
-            //print.ShowDialog();
-
 
             using (XLWorkbook wb = new XLWorkbook(@"Отчеты\Табель.xlsx"))
             {
@@ -388,21 +384,30 @@ namespace Tabel.ViewModels
         //--------------------------------------------------------------------------------------
         private void ListPerson_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
+            // отслеживаем изменение часов
             if(e.PropertyName == "td_Hours")
             {
                 TabelPerson person = (sender as TabelDay).TabelPerson;
 
                 List<TabelDay> ListDays = person.TabelDays.ToList();
+                int nCntPermDays = person.PrevPermWorkCount;
 
-                //person.OverWork = 0;
                 for (int i = 0; i < ListDays.Count - 1; i++)
                 {
-                    if(ListDays[i].td_Hours - (ListDays[i].td_Hours2 ?? 0) + ListDays[i + 1].td_Hours > 20)
+                    if(ListDays[i].td_Hours == 0)
+                        nCntPermDays = 0;
+
+                    if(nCntPermDays >= 7)
+                    {
+                        ListDays[i].td_Hours2 = ListDays[i].td_Hours;
+                        ListDays[i].VisibilityHours = Visibility.Visible;
+                        nCntPermDays = 0;
+                    }
+
+                    else if (ListDays[i].td_Hours - (ListDays[i].td_Hours2 ?? 0) + ListDays[i + 1].td_Hours > 20)
                     {
                         ListDays[i + 1].td_Hours2 = (ListDays[i].td_Hours + ListDays[i + 1].td_Hours - (ListDays[i].td_Hours2 ?? 0)) - 20;
-                        //person.OverWork += ListDays[i + 1].td_Hours2;
                         ListDays[i + 1].VisibilityHours = Visibility.Visible;
-                            
                     }
                     else
                     {
@@ -410,8 +415,9 @@ namespace Tabel.ViewModels
                         ListDays[i + 1].td_Hours2 = 0;
 
                     }
+                    ListDays[i].WhiteHours = ListDays[i].td_Hours - ListDays[i].td_Hours2;
+                    nCntPermDays++;
                 }
-
                 person.OnPropertyChanged(nameof(person.OverWork));
             }
         }
@@ -436,8 +442,14 @@ namespace Tabel.ViewModels
                     day.CalendarTypeDay = ListDays[i].KindDay;
                     if(day.td_Hours2 > 0)
                         day.VisibilityHours = Visibility.Visible;
+
+                    day.WhiteHours = day.td_Hours - day.td_Hours2;
                     i++;
                 }
+
+                item.CalcHours = 0;
+                item.PrevDayHour = 0;
+                item.PrevPermWorkCount = 0;
 
             }
 

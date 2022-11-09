@@ -20,8 +20,8 @@ namespace Tabel.Models
         public TypeDays CalendarTypeDay { get; set; }
 
         //private decimal? OverHours { get; set; } = 0;
-        //[NotMapped]
-        //public decimal? OverHours { get; set; } = 0;
+        [NotMapped]
+        public decimal? WhiteHours { get; set; }
 
 
     }

@@ -104,7 +104,7 @@
                 </DockPanel>
             </TabItem>
             
-            <TabItem Header="Пермия 1">
+            <TabItem Header="Премия 1">
                 <DockPanel  Background="Gainsboro">
                     <Grid DockPanel.Dock="Top" Margin="8,0" Height="30">
                         <Grid.ColumnDefinitions>
