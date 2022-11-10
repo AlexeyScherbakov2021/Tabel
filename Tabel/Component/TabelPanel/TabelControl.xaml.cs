@@ -65,7 +65,7 @@ namespace Tabel.Component.TabelPanel
         {
             var Parent = ((sender as ComboBox).Parent as StackPanel).Parent as StackPanel;
             TextBlock tb = Parent.Children[0] as TextBlock;
-            int index = int.Parse(tb.Text);
+            int index = int.Parse(tb.Text.Substring(0,2));
 
             if (!IsSelectInRange(index))
                 ListBoxDays.SelectedIndex = index - 1;
@@ -99,7 +99,7 @@ namespace Tabel.Component.TabelPanel
             var Parent = (tbox.Parent as StackPanel).Parent as StackPanel;
             TextBlock tb = Parent.Children[0] as TextBlock;
             
-            int index = int.Parse(tb.Text);
+            int index = int.Parse(tb.Text.Substring(0,2));
             if (!IsSelectInRange(index))
                 ListBoxDays.SelectedIndex = index - 1;
 

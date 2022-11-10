@@ -117,7 +117,9 @@
                 <TextBlock Text="{Binding WorkedOffHours, Mode=OneWay, StringFormat=0.#}" FontWeight="Bold"/>
             </Label>
 
-            <Label Grid.Row="0"  Grid.Column="6" Background="White" BorderThickness="0.5" BorderBrush="Black" Padding="3" VerticalContentAlignment="Center" HorizontalContentAlignment="Center">
+            <Label Grid.Row="0"  Grid.Column="6" Background="White" BorderThickness="0.5" BorderBrush="Black" 
+                   ToolTip="Сумма превышения часов"
+                   Padding="3" VerticalContentAlignment="Center" HorizontalContentAlignment="Center">
                 <TextBlock Text="{Binding OverWork, Mode=OneWay, StringFormat=0.#}" FontWeight="Bold" Foreground="Red"/>
             </Label>
 
@@ -219,7 +221,7 @@
                                         <DropShadowEffect BlurRadius="3" Opacity="0.4" ShadowDepth="0"/>
                                     </Border.Effect>
                                     <StackPanel>
-                                        <TextBlock x:Name="NumberDay" Text="{Binding td_Day}" TextAlignment="Center" Background="LightSteelBlue" 
+                                        <TextBlock x:Name="NumberDay" Text="{Binding DayString}" TextAlignment="Center" Background="LightSteelBlue" 
                                                    Foreground="Black" 
                                                    FontWeight="Bold" SnapsToDevicePixels="True" Focusable="False"
                                                   ToolTip="Рабочий день"

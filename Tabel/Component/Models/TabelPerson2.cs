@@ -19,9 +19,9 @@ namespace Tabel.Models
 
         public int DaysWeek2 => ((IEnumerable<TabelDay>)TabelDays).Count(s => s.td_KindId == 1  && s.td_Day > 15);
 
-        public decimal HoursWeek1 => ((IEnumerable<TabelDay>)TabelDays).Where(it => it.td_Day <= 15).Sum(s => s.td_Hours.Value);
+        public decimal HoursWeek1 => ((IEnumerable<TabelDay>)TabelDays).Where(it => it.td_Day <= 15).Sum(s => s.WhiteHours);
 
-        public decimal HoursWeek2 => ((IEnumerable<TabelDay>)TabelDays).Where(it => it.td_Day > 15 ).Sum(s => s.td_Hours.Value);
+        public decimal HoursWeek2 => ((IEnumerable<TabelDay>)TabelDays).Where(it => it.td_Day > 15 ).Sum(s => s.WhiteHours);
 
         public int DaysMonth => DaysWeek1 + DaysWeek2;
 
@@ -57,15 +57,16 @@ namespace Tabel.Models
             get
             {
                 decimal? summa = 0;
-                summa = TabelDays?.Sum(it => it.td_Hours2);
+                //summa = TabelDays?.Sum(it => it.td_Hours2);
 
-                //List<decimal> HoursBig = ((IEnumerable<TabelDay>)TabelDays)
-                //    .Where(it => it.td_Hours.Value > 10)
-                //    .Select(s => s.td_Hours.Value - 10).ToList();
-                //foreach (int i in HoursBig)
-                //{
-                //    summa += i;
-                //}
+                List<decimal> HoursBig = ((IEnumerable<TabelDay>)TabelDays)
+                    .Where(it => it.WhiteHours > 10 && it.CalendarTypeDay != TypeDays.Holyday)
+                    .Select(s => s.WhiteHours - 10).ToList();
+
+                foreach (int i in HoursBig)
+                {
+                    summa += i;
+                }
                 return summa ?? 0;
 
             }
@@ -74,7 +75,9 @@ namespace Tabel.Models
 
         [NotMapped]
         public decimal? WorkedOffDays => ((IEnumerable<TabelDay>) TabelDays).Count(it => it.td_KindId == 5);
-        public decimal? WorkedOffHours => ((IEnumerable<TabelDay>) TabelDays).Where(it => it.td_KindId == 5).Sum(s => s.td_Hours.Value);
+        public decimal? WorkedOffHours => ((IEnumerable<TabelDay>) TabelDays)
+            .Where(it => it.td_KindId == 5)
+            .Sum(s => s.WhiteHours);
 
         [NotMapped]
         public decimal? OverWork => TabelDays?.Sum(it => it.td_Hours2);

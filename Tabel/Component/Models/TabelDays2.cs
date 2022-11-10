@@ -23,6 +23,16 @@ namespace Tabel.Models
         [NotMapped]
         public decimal WhiteHours { get => _WhiteHours; set { Set(ref _WhiteHours, value); } }
 
+        public string DayString
+        {
+            get
+            {
+                DateTime dt = new DateTime(TabelPerson.tabel.t_year, TabelPerson.tabel.t_month, td_Day);
+                return dt.ToString("d ddd").ToLower();
+            }
+        }
+
+
 
     }
 }

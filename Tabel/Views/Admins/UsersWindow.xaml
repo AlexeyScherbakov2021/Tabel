@@ -62,8 +62,8 @@
                         </ContextMenu>
                     </DataGrid.ContextMenu>
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Пользователь" Binding="{Binding u_login}" Width="80"/>
-                        <DataGridTextColumn Header="Пароль" Binding="{Binding u_pass}" Width="130"/>
+                        <DataGridTextColumn Header="Пользователь" Binding="{Binding u_login}" />
+                        <DataGridTextColumn Header="Пароль" Binding="{Binding u_pass}" Width="100"/>
                         <DataGridComboBoxColumn Header="Права" ItemsSource="{Binding Source={infr:UserRolesBinding {x:Type infr:UserRoles}}}"  
                             SelectedItemBinding="{Binding u_role}"   Width="130"/>
                         <DataGridTemplateColumn Header="Рабочий отдел"  Width="190">

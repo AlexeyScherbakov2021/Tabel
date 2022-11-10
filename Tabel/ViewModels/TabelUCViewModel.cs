@@ -1,4 +1,5 @@
 ﻿using ClosedXML.Excel;
+using DocumentFormat.OpenXml;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -199,8 +200,8 @@ namespace Tabel.ViewModels
                     foreach(var day in item.TabelDays)
                     {
                         ws.Cell(RowNum, ColNum).Value = day.typeDay.t_name;
-                        if(day.td_Hours.Value != 0)
-                            ws.Cell(RowNum + 1, ColNum).Value =  day.td_Hours;
+                        if(day.WhiteHours != 0)
+                            ws.Cell(RowNum + 1, ColNum).Value =  day.WhiteHours;
 
                         ColNum++;
                         if(ColNum > 29)
@@ -304,6 +305,18 @@ namespace Tabel.ViewModels
             }
 
         }
+
+
+        //--------------------------------------------------------------------------------
+        // Команда СЗ для выходного
+        //--------------------------------------------------------------------------------
+        public ICommand SZOffDayCommand => new LambdaCommand(OnSZOffDayCommandExecuted, CanSZOffDayCommand);
+        private bool CanSZOffDayCommand(object p) => SelectedOtdel != null && Tabel != null;
+        private void OnSZOffDayCommandExecuted(object p)
+        {
+
+        }
+
 
         #endregion
 
@@ -424,65 +437,25 @@ namespace Tabel.ViewModels
                 {
                     // если проработано более 6 дней подряд
                     OverHours = ListDays[i].td_Hours;
-                    //ListDays[i].VisibilityHours = Visibility.Visible;
                     nCntPermDays = 0;
                 }
-                else
+                else if(ListDays[i].CalendarTypeDay != TypeDays.Holyday)
                 {
                     if (ListDays[i].td_Hours > 12)
                     {
                         OverHours = ListDays[i].td_Hours - 12;
-                        //ListDays[i].VisibilityHours = Visibility.Visible;
                         ListDays[i].WhiteHours = 12;
                     }
 
                     if (PrevHours + ListDays[i].td_Hours > 20)
-                    {
                         OverHours = PrevHours + ListDays[i].td_Hours - 20;
-                        //ListDays[i].VisibilityHours = Visibility.Visible;
-                    }
 
-                    //if (OverHours == 0)
-                    //{
-                    //    ListDays[i].VisibilityHours = Visibility.Collapsed;
-                    //    ListDays[i].td_Hours2 = 0;
-                    //}
                 }
 
                 ListDays[i].td_Hours2 = OverHours;
                 ListDays[i].WhiteHours = (ListDays[i].td_Hours - OverHours) ?? 0;
                 ListDays[i].VisibilityHours = OverHours > 0 ? Visibility.Visible : Visibility.Collapsed;
                 nCntPermDays++;
-
-
-                //if (ListDays[i].td_Hours == 0)
-                //    nCntPermDays = 0;
-
-                //if (nCntPermDays >= 7)
-                //{
-                //    // если проработано более 6 дней подряд
-                //    ListDays[i].td_Hours2 = ListDays[i].td_Hours;
-                //    ListDays[i].VisibilityHours = Visibility.Visible;
-                //    nCntPermDays = 0;
-                //}
-                //else if(ListDays[i].td_Hours > 12)
-                //{
-                //    ListDays[i].td_Hours2 = ListDays[i].td_Hours - 12;
-                //    ListDays[i].VisibilityHours = Visibility.Visible;
-                //}
-
-                //if (ListDays[i].td_Hours - (ListDays[i].td_Hours2 ?? 0) + ListDays[i + 1].td_Hours > 20)
-                //{
-                //    ListDays[i + 1].td_Hours2 = (ListDays[i].td_Hours + ListDays[i + 1].td_Hours - (ListDays[i].td_Hours2 ?? 0)) - 20;
-                //    ListDays[i + 1].VisibilityHours = Visibility.Visible;
-                //}
-                //else
-                //{
-                //    ListDays[i + 1].VisibilityHours = Visibility.Collapsed;
-                //    ListDays[i + 1].td_Hours2 = 0;
-
-                //}
-
             }
             person.OnPropertyChanged(nameof(person.OverWork));
         }

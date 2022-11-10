@@ -8,7 +8,7 @@
             xmlns:conv="clr-namespace:Tabel.Infrastructure.Converters"
             xmlns:comp="clr-namespace:Tabel.Component.TabelPanel"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="1000">
     <UserControl.DataContext>
         <vm:TabelUCViewModel/>
     </UserControl.DataContext>
@@ -25,6 +25,7 @@
             <Button Content="Создать табель" Command="{Binding CreateCommand}" Margin="3" Style="{StaticResource ButtonStyleShadow}"/>
             <Button Content="Сохранить" Command="{Binding SaveCommand}" Margin="3" Style="{StaticResource ButtonStyleShadow}"/>
             <Button Content="Распечатать" Command="{Binding PrintCommand}" Margin="3" Style="{StaticResource ButtonStyleShadow}"/>
+            <Button Content="СЗ на выходной" Command="{Binding SZOffDayCommand}" Margin="3" Style="{StaticResource ButtonStyleShadow}"/>
             <Button Content="Добавить сотрудников" Command="{Binding AddPersonCommand}" Margin="3" Style="{StaticResource ButtonStyleShadow}"/>
         </StackPanel>
 
