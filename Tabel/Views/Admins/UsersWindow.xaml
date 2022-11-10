@@ -49,11 +49,11 @@
             <Grid >
                 <DataGrid x:Name="dataGrid" ItemsSource="{Binding ListUserView}" AutoGenerateColumns="False" SelectedItem="{Binding SelectedUser}"
                     Style="{StaticResource DataGridStyle}"  >
-                    <i:Interaction.Triggers>
+                    <!--<i:Interaction.Triggers>
                         <i:EventTrigger EventName="GotFocus">
                             <i:InvokeCommandAction Command="{Binding GotFocusCommand}"/>
                         </i:EventTrigger>
-                    </i:Interaction.Triggers>
+                    </i:Interaction.Triggers>-->
 
                     <DataGrid.ContextMenu>
                         <ContextMenu>

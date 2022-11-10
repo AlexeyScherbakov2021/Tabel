@@ -61,10 +61,11 @@
                             <ColumnDefinition Width="100"/>
                         </Grid.ColumnDefinitions>
                     </Grid>
-                    <DataGrid ItemsSource="{Binding ListModPerson}" Style="{DynamicResource DataGridStyle}" IsReadOnly="True">
+                    <DataGrid ItemsSource="{Binding ListModPerson}" Style="{StaticResource DataGridStyle}" IsReadOnly="True">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="ФИО" Binding="{Binding person.FIO}"/>
                             <DataGridTextColumn Header="Дложность" Binding="{Binding person.p_profession}"/>
+                            <DataGridTextColumn Header="ставка" Binding="{Binding person.p_stavka}" CellStyle="{StaticResource CellRight}"/>
                             <DataGridTextColumn Header="Разряд" Binding="{Binding person.category.id}" CellStyle="{StaticResource CellRight}"/>
                             <DataGridTextColumn Header="Тариф" Binding="{Binding person.category.cat_tarif, StringFormat=0.#}" CellStyle="{StaticResource CellRight}"/>
                             <DataGridTextColumn Header="Часы" Binding="{Binding TabelHours, StringFormat=0.#}" CellStyle="{StaticResource CellRight}"/>

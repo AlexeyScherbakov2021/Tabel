@@ -206,6 +206,7 @@ namespace Tabel.ViewModels.Admins
             NewPerson.p_lastname = "Новый сотрудник";
             NewPerson.p_otdel_id = SelectedOtdel.id;
             NewPerson.p_delete = false;
+            NewPerson.p_stavka = 1;
 
             repoPerson.Add(NewPerson, true);
             ListPersonal.Add(NewPerson);

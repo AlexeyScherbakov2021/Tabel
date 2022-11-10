@@ -43,6 +43,8 @@ namespace Tabel.Models
 
         public bool p_delete { get; set; }
 
+        public decimal p_stavka { get; set; }
+
         public virtual Category category { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

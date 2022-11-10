@@ -417,6 +417,9 @@ namespace Tabel.ViewModels
 
                 OverHours = 0;
 
+                if(ListDays[i].td_Hours == 0)
+                    nCntPermDays = 0;
+
                 if (nCntPermDays >= 7)
                 {
                     // если проработано более 6 дней подряд
