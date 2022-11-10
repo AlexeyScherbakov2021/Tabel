@@ -42,8 +42,8 @@ namespace Tabel.Models
             {
                 int summa = 0;
                 List<decimal> HoursBig = ((IEnumerable<TabelDay>)TabelDays)
-                    .Where(it => (it.WhiteHours.Value /*- it.td_Hours2.Value*/) > 8 && it.CalendarTypeDay != TypeDays.Holyday)
-                    .Select(s => s.WhiteHours.Value - 8).ToList();
+                    .Where(it => (it.WhiteHours /*- it.td_Hours2.Value*/) > 8 && it.CalendarTypeDay != TypeDays.Holyday)
+                    .Select(s => s.WhiteHours - 8).ToList();
                 foreach(int i in HoursBig)
                 {
                     summa += i > 2 ? 2 : i;
@@ -80,7 +80,7 @@ namespace Tabel.Models
         public decimal? OverWork => TabelDays?.Sum(it => it.td_Hours2);
 
         [NotMapped]
-        public decimal? PrevDayHour;        // количество часов в последний день предыдущего месяца
+        public TabelDay PrevDay;        // количество часов в последний день предыдущего месяца
         [NotMapped]
         public int PrevPermWorkCount;       // количество дней непрерывной работы в последние дни месяца
         [NotMapped]

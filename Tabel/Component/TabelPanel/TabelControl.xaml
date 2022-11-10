@@ -145,7 +145,7 @@
 
             <ListBox.ItemContainerStyle>
                 <Style TargetType="{x:Type ListBoxItem}">
-                    <Setter Property="Validation.ErrorTemplate">
+                    <!--<Setter Property="Validation.ErrorTemplate">
                         <Setter.Value>
                             <ControlTemplate>
                                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
@@ -158,7 +158,7 @@
                                 </StackPanel>
                             </ControlTemplate>
                         </Setter.Value>
-                    </Setter>
+                    </Setter>-->
                   
                   
                     <Setter Property="Template">
@@ -244,14 +244,14 @@
                                             <TextBox x:Name="TBHours" Text="{Binding td_Hours, Mode=TwoWay, StringFormat=0.#, Converter={StaticResource Convert0ToNull}}" 
                                                      Padding="2,0" MinWidth="24" 
                                                      HorizontalContentAlignment="Center" VerticalContentAlignment="Center" 
-                                                     GotFocus="TextBox_GotFocus" KeyDown="TextBox_KeyDown" PreviewMouseLeftButtonUp="TBHours_PreviewMouseLeftButtonUp"  >
+                                                     GotFocus="TextBox_GotFocus" KeyDown="TextBox_KeyDown" >
                                             </TextBox>
 
                                         </StackPanel>
                                         <StackPanel Orientation="Horizontal">
                                             <TextBox Text="{Binding td_Hours2, Mode=TwoWay,StringFormat=0.#}" Visibility="{Binding VisibilityHours}" Padding="2,0" 
                                                  MinWidth="28" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" 
-                                                 IsReadOnly="True" ToolTip="Лишняя переработка"
+                                                 IsReadOnly="True" ToolTip="Превышение часов"
                                                  Foreground="Red" GotFocus="TextBox_GotFocus" IsVisibleChanged="TextBox_IsVisibleChanged" />
                                             <TextBox Text="{Binding WhiteHours, Mode=TwoWay,StringFormat=0.#}" Visibility="{Binding VisibilityHours}" Padding="2,0" 
                                                  MinWidth="24" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" 

@@ -226,10 +226,5 @@ namespace Tabel.Component.TabelPanel
 
         }
 
-
-        private void TBHours_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-
-        }
     }
 }
