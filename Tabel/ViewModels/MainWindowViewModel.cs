@@ -78,6 +78,17 @@ namespace Tabel.ViewModels
         }
 
         //--------------------------------------------------------------------------------
+        // Команда Загрузить Общие начисления
+        //--------------------------------------------------------------------------------
+        public ICommand DataSummaryCommand => new LambdaCommand(OnDataSummaryCommandExecuted, CanDataSummaryCommand);
+        private bool CanDataSummaryCommand(object p) => true;
+        private void OnDataSummaryCommandExecuted(object p)
+        {
+            DataSummaryView win = new DataSummaryView();
+            win.ShowDialog();
+        }
+
+        //--------------------------------------------------------------------------------
         // Команда Загрузить Транспорт
         //--------------------------------------------------------------------------------
         public ICommand ExecTranspCommand => new LambdaCommand(OnExecTranspCommandExecuted, CanTranspTabelCommand);

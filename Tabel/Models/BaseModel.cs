@@ -61,7 +61,8 @@ namespace Tabel.Models
         public virtual DbSet<typeDay> typeDays { get; set; }
         public virtual DbSet<User> users { get; set; }
         public virtual DbSet<AddWorks> addWorks { get; set; }
-        //public virtual DbSet<ModOtdelSumFP> ModOtdelSumFPs { get; set; }
+        public virtual DbSet<GeneralCharges> GeneralCharges { get; set; }
+        public virtual DbSet<GenChargMonth> GenChargMonth { get; set; }
 
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -69,6 +70,12 @@ namespace Tabel.Models
             modelBuilder.Entity<AddWorks>()
                 .Property(e => e.aw_Name)
                 .IsUnicode(false);
+
+
+            modelBuilder.Entity<GeneralCharges>()
+                .HasMany(e => e.ListGenMonth)
+                .WithRequired(e => e.GenCarhge)
+                .HasForeignKey(e => e.gm_GenId);
 
             //modelBuilder.Entity<Otdel>()
             //    .HasMany(e => e.ModOtdelSumFPs)

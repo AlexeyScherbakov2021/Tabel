@@ -35,6 +35,9 @@ namespace Tabel.ViewModels
         private int _SelectMonth;
         private int _SelectYear;
 
+        public Visibility IsVisibleITR { get; private set; }
+        public Visibility IsVisibleNoITR { get; private set; }
+
         public bool IsCheckBonus { get; set; }
         public decimal SetProcPrem { get; set; }
         public decimal SetMaxPrem { get; set; }
@@ -291,6 +294,20 @@ namespace Tabel.ViewModels
             _SelectMonth = Month;
             _SelectYear = Year;
             _SelectedOtdel = SelectOtdel;
+
+             if(_SelectedOtdel?.ot_itr == 1)
+             {
+                IsVisibleITR = Visibility.Visible;
+                IsVisibleNoITR = Visibility.Collapsed;
+             }
+             else
+             {
+                IsVisibleNoITR = Visibility.Visible;
+                IsVisibleITR = Visibility.Collapsed;
+             }
+
+            OnPropertyChanged(nameof(IsVisibleITR));
+            OnPropertyChanged(nameof(IsVisibleNoITR));
 
             if (SelectOtdel is null) return;
 

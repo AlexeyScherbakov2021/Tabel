@@ -33,6 +33,8 @@ namespace Tabel.Models
 
         public int? ot_parent { get; set; }
 
+        public int ot_itr { get; set; }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Mod> mods { get; set; }
 

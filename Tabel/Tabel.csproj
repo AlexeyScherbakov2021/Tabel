@@ -122,6 +122,8 @@
     <Compile Include="Infrastructure\Months.cs" />
     <Compile Include="Infrastructure\MonthStart1.cs" />
     <Compile Include="Models\AddWorks.cs" />
+    <Compile Include="Models\GenChargMonth.cs" />
+    <Compile Include="Models\GeneralCharges.cs" />
     <Compile Include="Models\IEntity.cs" />
     <Compile Include="Models\calendar.cs" />
     <Compile Include="Models\category.cs" />
@@ -152,6 +154,7 @@
     <Compile Include="ViewModels\Admins\OtdelsWindowViewModel.cs" />
     <Compile Include="ViewModels\Base\IBaseUCViewModel.cs" />
     <Compile Include="ViewModels\BasicWindowViewModel.cs" />
+    <Compile Include="ViewModels\DataSummaryViewModel.cs" />
     <Compile Include="ViewModels\ExportPerson.cs" />
     <Compile Include="ViewModels\ModUCViewModel.cs" />
     <Compile Include="ViewModels\SelectOtdelWindowViewModel.cs" />
@@ -177,6 +180,9 @@
     </Compile>
     <Compile Include="Views\BasicWindow.xaml.cs">
       <DependentUpon>BasicWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\DataSummaryView.xaml.cs">
+      <DependentUpon>DataSummaryView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ModUC.xaml.cs">
       <DependentUpon>ModUC.xaml</DependentUpon>
@@ -260,6 +266,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\BasicWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\DataSummaryView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

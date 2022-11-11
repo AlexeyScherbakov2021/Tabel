@@ -61,6 +61,10 @@ namespace Tabel.Models
         [Column(TypeName = "numeric")]
         public decimal? md_kvalif_prem { get => _md_kvalif_prem; set { Set(ref _md_kvalif_prem, value); } }
 
+        private string _md_kvalif_name;
+        [StringLength(250)]
+        public string md_kvalif_name { get => _md_kvalif_name; set { Set(ref _md_kvalif_name, value); } }
+
         private decimal? _md_cat_prem_tarif;
         [Column(TypeName = "numeric")]
         public decimal? md_cat_prem_tarif { get => _md_cat_prem_tarif; set { Set(ref _md_cat_prem_tarif, value); } }

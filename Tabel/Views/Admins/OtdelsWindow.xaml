@@ -48,7 +48,7 @@
                     <Button Command="{Binding AddGroupCommand}" Margin="2" Visibility="{Binding VisibleMain}" Style="{StaticResource ButtonStyleShadow}">
                         <StackPanel Orientation="Horizontal" Width="130">
                             <fa:ImageAwesome  Width="20" Height="20" Foreground="#FF005AA0" Icon="Solid_UserFriends" Margin="5,0"/>
-                        <TextBlock Text="Добавить группу"/>
+                            <TextBlock Text="Добавить группу"/>
                         </StackPanel>
                     </Button>
                     <Button Command="{Binding DeleteOtdelCommand}" Margin="2" Visibility="{Binding VisibleMain}" Style="{StaticResource ButtonStyleShadow}">
@@ -74,9 +74,11 @@
                 <DropShadowEffect BlurRadius="10" ShadowDepth="0" Color="#000000" Opacity="0.2"/>
             </Border.Effect>
             <DockPanel>
-                <TextBox Text="{Binding SelectedOtdel.ot_name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Top" FontSize="16" Margin="4" HorizontalAlignment="Stretch"
-                           TextAlignment="Center" FontWeight="Bold"
-                           Background="Khaki"/>
+                <DockPanel DockPanel.Dock="Top" >
+                    <CheckBox Content="ИТР" IsChecked="{Binding SelectedOtdel.ot_itr}" DockPanel.Dock="Left" Margin="10,0" VerticalAlignment="Center"/>
+                    <TextBox Text="{Binding SelectedOtdel.ot_name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FontSize="16"
+                        TextAlignment="Center" FontWeight="Bold" Background="Khaki"/>
+                </DockPanel>
                 <UniformGrid Columns="3" DockPanel.Dock="Bottom" Margin="6">
                     <Button Command="{Binding SaveCommand}" Margin="2" Style="{StaticResource ButtonStyleShadow}">
                         <StackPanel Orientation="Horizontal" Width="160">
@@ -110,11 +112,11 @@
                         </DataGridComboBoxColumn>-->
 
                         <DataGridTemplateColumn Header="Разряд">
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
                                     <TextBlock Text="{Binding p_cat_id, StringFormat=0.#}" TextAlignment="Right" Margin="5,0"/>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
                             <DataGridTemplateColumn.CellEditingTemplate>
                                 <DataTemplate>
                                     <ComboBox ItemsSource="{Binding ListCategory, Source={StaticResource context}}" SelectedValuePath="id" 
@@ -127,11 +129,11 @@
                                                 </StackPanel>
                                             </DataTemplate>
                                         </ComboBox.ItemTemplate>-->
-                                        
+
                                     </ComboBox>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellEditingTemplate>
-                            </DataGridTemplateColumn>
+                        </DataGridTemplateColumn>
                         <DataGridTextColumn Header="Ставка" Binding="{Binding p_stavka}"  CellStyle="{StaticResource CellRight}"/>
                         <DataGridCheckBoxColumn Header="Удален" Binding="{Binding p_delete}"/>
 

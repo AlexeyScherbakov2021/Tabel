@@ -25,6 +25,8 @@ namespace Tabel.Repository
         private static RepositoryMSSQL<typeDay> repoTypeDay = null;
         private static RepositoryMSSQL<User> repoUser = null;
         private static RepositoryMSSQL<Category> repoCategory = null;
+        private static RepositoryMSSQL<GeneralCharges> repoGenCharges = null;
+        private static RepositoryMSSQL<GenChargMonth> repoGenChargesMonth = null;
 
 
         public static RepositoryOtdel GetRepoOtdel() => repoOtdel ?? new RepositoryOtdel();
@@ -43,9 +45,8 @@ namespace Tabel.Repository
         public static RepositoryMSSQL<typeDay> GetRepoTypeDay() => repoTypeDay ?? new RepositoryMSSQL<typeDay>();
         public static RepositoryMSSQL<User> GetRepoUser() => repoUser ?? new RepositoryMSSQL<User>();
         public static RepositoryMSSQL<Category> GetRepoCategory() => repoCategory ?? new RepositoryMSSQL<Category>();
-
-
-
+        public static RepositoryMSSQL<GeneralCharges> GetRepoGenCharges() => repoGenCharges ?? new RepositoryMSSQL<GeneralCharges>();
+        public static RepositoryMSSQL<GenChargMonth> GetRepoGenChargesMonth() => repoGenChargesMonth ?? new RepositoryMSSQL<GenChargMonth>();
 
     }
 }

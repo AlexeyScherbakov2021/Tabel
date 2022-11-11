@@ -1,0 +1,44 @@
+﻿<Window x:Class="Tabel.Views.DataSummaryView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Tabel.Views"
+        xmlns:vm="clr-namespace:Tabel.ViewModels"
+        mc:Ignorable="d"
+        Title="Параметры начислений" Height="500" Width="900" WindowStartupLocation="CenterScreen">
+    <Window.DataContext>
+        <vm:DataSummaryViewModel/>
+    </Window.DataContext>
+    
+    <DockPanel>
+        <ToolBarPanel DockPanel.Dock="Top" Orientation="Horizontal" Height="30" Margin="0,0,0,8">
+            <TextBlock Text="Год" Margin="10,0,8,0" VerticalAlignment="Center"/>
+            <ComboBox ItemsSource="{Binding ListYears}"  VerticalAlignment="Center" Width="100" SelectedItem="{Binding CurrentYear}"/>
+            <TextBlock Text="Месяц"  VerticalAlignment="Center" Margin="8,0"/>
+            <ComboBox  ItemsSource="{Binding ListMonth}"  VerticalAlignment="Center" Width="150"
+                      DisplayMemberPath="Name" SelectedValuePath="Number" SelectedValue="{Binding CurrentMonth, Mode=TwoWay}"
+                      />
+            <Button Content="Сохранить" Command="{Binding SaveCommand}" Margin="13,3" Style="{DynamicResource ButtonStyleShadow}"/>
+        </ToolBarPanel>
+
+        <StatusBar DockPanel.Dock="Bottom">
+            <StatusBarItem Content="Пользователь:"/>
+            <StatusBarItem Content="{Binding User.u_fio}"/>
+        </StatusBar>
+        <Grid>
+            <Border Margin="10" Padding="5" CornerRadius="5" Background="#FFEFEFEF">
+                <Border.Effect>
+                    <DropShadowEffect ShadowDepth="0" BlurRadius="10" Opacity="0.3"/>
+                </Border.Effect>
+                <GroupBox Header="Параметры для всей организации" >
+                    <ListBox ItemsSource="{Binding ListGenChargMonths}">
+                        
+                    </ListBox>
+                </GroupBox>
+            </Border>
+        </Grid>
+        
+
+    </DockPanel>
+</Window>

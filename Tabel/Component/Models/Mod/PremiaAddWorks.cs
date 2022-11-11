@@ -31,10 +31,10 @@ namespace Tabel.Component.Models.Mod
         }
 
 
-    //-------------------------------------------------------------------------------------------------------
-    // Событие изменения полей
-    //-------------------------------------------------------------------------------------------------------
-    private void Model_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        //-------------------------------------------------------------------------------------------------------
+        // Событие изменения полей
+        //-------------------------------------------------------------------------------------------------------
+        private void Model_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             switch (e.PropertyName)
             {
@@ -44,5 +44,10 @@ namespace Tabel.Component.Models.Mod
             }
         }
 
+        public override decimal? GetPremia()
+        {
+            Calculation(); 
+            return base.GetPremia();
+        }
     }
 }

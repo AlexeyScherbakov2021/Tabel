@@ -75,13 +75,15 @@
                             <DataGridTextColumn Header="Веч. 20%" Binding="{Binding premiaNight.NightOklad, StringFormat=0.#}" IsReadOnly="True" CellStyle="{StaticResource CellRight}"/>
                             <DataGridTextColumn Header="Веч. часы" Binding="{Binding premiaNight.NightHours, Mode=TwoWay, StringFormat=0.#}"  CellStyle="{StaticResource CellRight}"  IsReadOnly="True"/>
                             <DataGridTextColumn Header="Веч. премия" Binding="{Binding premiaNight.Summa, StringFormat=N2}" IsReadOnly="True" CellStyle="{StaticResource CellRight}"/>
+                            <DataGridTextColumn Header="Вых. дней" Binding="{Binding TabelWorkOffDay, Mode=TwoWay}" CellStyle="{StaticResource CellRight}"/>
+                            <DataGridTextColumn Header="Вых. доплата" Binding="{Binding md_tarif_offDay, StringFormat=N0}" Width="80" CellStyle="{StaticResource CellRight}"/>
                             <DataGridTextColumn Header="Итого" Binding="{Binding Itogo, StringFormat=N2}" Width="80" FontWeight="Bold" CellStyle="{StaticResource CellRight}"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </DockPanel>
             </TabItem>
             
-            <TabItem Header="Премия по выработке">
+            <TabItem Header="Премия по выработке" Visibility="{Binding IsVisibleNoITR}">
                 <DockPanel  Background="Gainsboro">
                     <Grid DockPanel.Dock="Top" Margin="8,0" Height="30">
                         <Grid.ColumnDefinitions>
@@ -107,7 +109,29 @@
                     </DataGrid>
                 </DockPanel>
             </TabItem>
-            
+
+
+            <TabItem Header="Квалификационная премия"  Visibility="{Binding IsVisibleITR}">
+                <DockPanel  Background="Gainsboro">
+                    <Grid DockPanel.Dock="Top" Margin="8,0" Height="30">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="100"/>
+                        </Grid.ColumnDefinitions>
+                    </Grid>
+                    <DataGrid ItemsSource="{Binding ListModPerson}" Style="{StaticResource DataGridStyle}" >
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="ФИО" Binding="{Binding person.FIO}" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Должность" Binding="{Binding person.p_profession}" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Работа с ОР" Binding="{Binding md_kvalif_name}" Width="200"/>
+                            <DataGridTextColumn Header="Перм. тариф" CellStyle="{StaticResource CellRight}"/>
+                            <DataGridTextColumn Header="% выполн." Binding="{Binding md_kvalif_prem, StringFormat=N2}" CellStyle="{StaticResource CellRight}"/>
+                            <DataGridTextColumn Header="Премия" Binding="{Binding premiaKvalif.Summa, StringFormat=N2}" FontWeight="Bold" Width="90" IsReadOnly="True" CellStyle="{StaticResource CellRight}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </DockPanel>
+            </TabItem>
+
             <TabItem Header="Премия 1">
                 <DockPanel  Background="Gainsboro">
                     <Grid DockPanel.Dock="Top" Margin="8,0" Height="30">
@@ -152,26 +176,6 @@
             </TabItem>
 
 
-            <TabItem Header="Квалификационная премия">
-                <DockPanel  Background="Gainsboro">
-                    <Grid DockPanel.Dock="Top" Margin="8,0" Height="30">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="100"/>
-                            <ColumnDefinition Width="100"/>
-                        </Grid.ColumnDefinitions>
-                    </Grid>
-                    <DataGrid ItemsSource="{Binding ListModPerson}" Style="{StaticResource DataGridStyle}" >
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="ФИО" Binding="{Binding person.FIO}" IsReadOnly="True"/>
-                            <DataGridTextColumn Header="Должность" Binding="{Binding person.p_profession}" IsReadOnly="True"/>
-                            <DataGridTextColumn Header="Работа с ОР" Binding="{Binding md_kvalif_prem, StringFormat=N2}" CellStyle="{StaticResource CellRight}"/>
-                            <DataGridTextColumn Header="Премия" Binding="{Binding premiaKvalif.Summa, StringFormat=N2}" FontWeight="Bold" Width="90" IsReadOnly="True" CellStyle="{StaticResource CellRight}"/>
-                        </DataGrid.Columns>
-                    </DataGrid>
-                </DockPanel>
-            </TabItem>
-
-
             <TabItem Header="Премия 2 (по отделу/участку)">
                 <DockPanel  Background="Gainsboro">
                     <Grid DockPanel.Dock="Top" Margin="8,0" Height="30">
@@ -192,7 +196,7 @@
                 </DockPanel>
             </TabItem>
 
-            <TabItem Header="Работа в выходной день">
+            <!--<TabItem Header="Работа в выходной день">
                 <DockPanel  Background="Gainsboro">
                     <Grid DockPanel.Dock="Top" Margin="8,0" Height="30">
                         <Grid.ColumnDefinitions>
@@ -211,9 +215,9 @@
                     </DataGrid>
                 </DockPanel>
 
-            </TabItem>
+            </TabItem>-->
 
-            <TabItem Header="Доп. работы">
+            <TabItem Header="Доп. работы" Visibility="{Binding IsVisibleNoITR}">
                 <DockPanel  Background="Gainsboro">
                     <Grid DockPanel.Dock="Top" Margin="8,0" Height="30">
                         <Grid.ColumnDefinitions>
@@ -290,7 +294,7 @@
 
             </TabItem>
 
-            <TabItem Header="Вечерние">
+            <!--<TabItem Header="Вечерние">
                 <DockPanel  Background="Gainsboro">
                     <Grid DockPanel.Dock="Top" Margin="8,0" Height="30">
                         <Grid.ColumnDefinitions>
@@ -309,7 +313,7 @@
                     </DataGrid>
                 </DockPanel>
 
-            </TabItem>
+            </TabItem>-->
 
             <TabItem Header="За добросовестный труд">
                 <DockPanel  Background="Gainsboro">
