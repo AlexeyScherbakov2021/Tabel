@@ -443,16 +443,18 @@ namespace Tabel.ViewModels
                     if (ListDays[i].td_Hours > 12)
                     {
                         OverHours = ListDays[i].td_Hours - 12;
-                        ListDays[i].WhiteHours = 12;
+                        //ListDays[i].td_Hours2 = ListDays[i].td_Hours - OverHours;
+                        //ListDays[i].WhiteHours = 12;
                     }
 
-                    if (PrevHours + ListDays[i].td_Hours > 20)
+                    if (PrevHours + ListDays[i].WhiteHours > 20)
                         OverHours = PrevHours + ListDays[i].td_Hours - 20;
 
                 }
 
                 ListDays[i].td_Hours2 = OverHours;
-                ListDays[i].WhiteHours = (ListDays[i].td_Hours - OverHours) ?? 0;
+                ListDays[i].OnPropertyChanged("WhiteHours");
+                //ListDays[i].WhiteHours = (ListDays[i].td_Hours - OverHours) ?? 0;
                 ListDays[i].VisibilityHours = OverHours > 0 ? Visibility.Visible : Visibility.Collapsed;
                 nCntPermDays++;
             }
@@ -502,7 +504,7 @@ namespace Tabel.ViewModels
                     if(day.td_Hours2 > 0)
                         day.VisibilityHours = Visibility.Visible;
 
-                    day.WhiteHours = (day.td_Hours - day.td_Hours2) ?? 0;
+                    //day.WhiteHours = (day.td_Hours - day.td_Hours2) ?? 0;
                     i++;
                 }
 

@@ -255,7 +255,7 @@
                                                  MinWidth="28" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" 
                                                  IsReadOnly="True" ToolTip="Превышение часов"
                                                  Foreground="Red" GotFocus="TextBox_GotFocus" IsVisibleChanged="TextBox_IsVisibleChanged" />
-                                            <TextBox Text="{Binding WhiteHours, Mode=TwoWay,StringFormat=0.#}" Visibility="{Binding VisibilityHours}" Padding="2,0" 
+                                            <TextBox Text="{Binding WhiteHours ,Mode=OneWay, StringFormat=0.#}" Visibility="{Binding VisibilityHours}" Padding="2,0" 
                                                  MinWidth="24" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" 
                                                  ToolTip="Должно быть так"
                                                  IsReadOnly="True" GotFocus="TextBox_GotFocus" IsVisibleChanged="TextBox_IsVisibleChanged" />

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DocumentFormat.OpenXml.Bibliography;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -21,7 +22,8 @@ namespace Tabel.Models
 
         private decimal _WhiteHours;
         [NotMapped]
-        public decimal WhiteHours { get => _WhiteHours; set { Set(ref _WhiteHours, value); } }
+        //public decimal WhiteHours { get => _WhiteHours; set { Set(ref _WhiteHours, value); } }
+        public decimal WhiteHours => (td_Hours - td_Hours2) ?? 0;
 
         public string DayString
         {

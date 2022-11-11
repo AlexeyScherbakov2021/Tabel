@@ -72,6 +72,9 @@
                             <DataGridTextColumn Header="Отсут." Binding="{Binding TabelAbsent}" CellStyle="{StaticResource CellRight}"/>
                             <DataGridTextColumn Header="Дни" Binding="{Binding TabelDays}" CellStyle="{StaticResource CellRight}"/>
                             <DataGridTextColumn Header="Оклад" Binding="{Binding Oklad, StringFormat=N2}" Width="70" CellStyle="{StaticResource CellRight}"/>
+                            <DataGridTextColumn Header="Веч. 20%" Binding="{Binding premiaNight.NightOklad, StringFormat=0.#}" IsReadOnly="True" CellStyle="{StaticResource CellRight}"/>
+                            <DataGridTextColumn Header="Веч. часы" Binding="{Binding premiaNight.NightHours, Mode=TwoWay, StringFormat=0.#}"  CellStyle="{StaticResource CellRight}"  IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Веч. премия" Binding="{Binding premiaNight.Summa, StringFormat=N2}" IsReadOnly="True" CellStyle="{StaticResource CellRight}"/>
                             <DataGridTextColumn Header="Итого" Binding="{Binding Itogo, StringFormat=N2}" Width="80" FontWeight="Bold" CellStyle="{StaticResource CellRight}"/>
                         </DataGrid.Columns>
                     </DataGrid>

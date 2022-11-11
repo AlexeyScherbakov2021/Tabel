@@ -27,8 +27,6 @@ namespace Tabel.Component.TabelPanel
         }
 
 
-
-
         protected override Size MeasureOverride(Size availableSize)
         {
             Size childSize = new Size();
