@@ -17,11 +17,15 @@ namespace Tabel.ViewModels
 {
     internal class MainWindowViewModel : ViewModel
     {
-
+#if DEBUG
+        public string Title { get; set; } = "Учет рабочего времени (Отладочная версия)";
+#else
+        public string Title { get; set; } = "Учет рабочего времени";
+#endif
         public string LoginUser => App.CurrentUser.u_fio;
 
 
-        #region Команды
+#region Команды
         //--------------------------------------------------------------------------------
         // Команда Загрузить график смен
         //--------------------------------------------------------------------------------
@@ -87,7 +91,7 @@ namespace Tabel.ViewModels
 
         }
 
-        #endregion
+#endregion
 
 
 

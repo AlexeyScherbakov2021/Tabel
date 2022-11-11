@@ -317,7 +317,6 @@ namespace Tabel.ViewModels
 
         }
 
-
         #endregion
 
         //--------------------------------------------------------------------------------------------------
@@ -467,6 +466,8 @@ namespace Tabel.ViewModels
         {
             if (Tabel is null) return;
 
+            List<(int Day, TypeDays KindDay, decimal Hours)> ListDaysMonth = null;
+
             // получение данных производственного календаря
             RepositoryCalendar repo = AllRepo.GetRepoCalendar();
             var ListDays = repo.GetListDays(_SelectYear, _SelectMonth);
@@ -477,6 +478,18 @@ namespace Tabel.ViewModels
             {
                 PrevMonth = 1;
                 PrevYear--;
+            }
+
+            var PrevTabel = repoTabel.Items
+                .AsNoTracking()
+                .FirstOrDefault(it => it.t_month == PrevMonth
+                    && it.t_year == PrevYear
+                    && it.t_otdel_id == Tabel.t_otdel_id);
+
+            if(PrevTabel == null)
+            {
+                RepositoryCalendar repoCal = AllRepo.GetRepoCalendar();
+                ListDaysMonth = repoCal.GetListDays(PrevYear, PrevMonth);
             }
 
             foreach (var item in ListTabelPerson)
@@ -495,40 +508,50 @@ namespace Tabel.ViewModels
 
                 // инициализация расчетных часов
                 item.CalcHours = 0;
-
-                // получение данных предыдущего табеля
-                var PrevTabel = repoTabelPerson.Items
-                    .AsNoTracking()
-                    .FirstOrDefault(it => it.person.id == item.person.id 
-                        && it.tabel.t_month == PrevMonth
-                        && it.tabel.t_year == PrevYear
-                        && it.tabel.t_otdel_id == Tabel.t_otdel_id);
-
                 // получение часов последнего дня предыдущего месяца
                 item.PrevDay = null;
-
                 // получение количестве непрерывно отработанных дней в конце предыдущего месяца
                 item.PrevPermWorkCount = 0;
 
-                if(PrevTabel != null)
+                if (PrevTabel != null)
                 {
-                    item.PrevDay = PrevTabel.TabelDays.Last();
+                    // получение данных предыдущего табеля
+                    var PrevTabelPerson = PrevTabel.tabelPersons
+                        .FirstOrDefault(it => it.person.id == item.person.id);
 
-                    var PrevListDays = PrevTabel.TabelDays.ToArray();
-                    int nCntDays = PrevListDays.Count() - 1;
+                    if (PrevTabelPerson != null)
+                    {
+                        item.PrevDay = PrevTabelPerson.TabelDays.Last();
+                        var PrevListDays = PrevTabelPerson.TabelDays.ToArray();
+                        int nCntDays = PrevListDays.Count() - 1;
+                        for (int n = nCntDays; n > nCntDays - 6; n--)
+                        {
+                            if (PrevListDays[n].td_Hours /*- PrevListDays[n].td_Hours2*/ == 0)
+                                break;
+
+                            item.PrevPermWorkCount++;
+                        }
+                    }
+                }
+                else
+                {
+                    // расчет при отсутствии предыдущего табеля
+                    item.PrevDay = new TabelDay();
+                    var LastDay = ListDaysMonth.Last();
+                    item.PrevDay.td_Day = LastDay.Day;
+                    item.PrevDay.CalendarTypeDay = LastDay.KindDay;
+                    item.PrevDay.td_Hours = LastDay.Hours;
+
+                    int nCntDays = ListDaysMonth.Count() - 1;
                     for (int n = nCntDays; n > nCntDays - 6; n--)
                     {
-                        if (PrevListDays[n].td_Hours /*- PrevListDays[n].td_Hours2*/ == 0)
+                        if (ListDaysMonth[n].Hours == 0)
                             break;
 
                         item.PrevPermWorkCount++;
                     }
-
                 }
-
             }
-
-
         }
 
 

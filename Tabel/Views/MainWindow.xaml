@@ -7,7 +7,7 @@
         xmlns:vm="clr-namespace:Tabel.ViewModels"
         xmlns:theme="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2"
         mc:Ignorable="d"
-        Title="Программа" Height="500" Width="820" WindowStartupLocation="CenterScreen" Background="#FF537F82">
+        Title="{Binding Title}" Height="500" Width="820" WindowStartupLocation="CenterScreen" Background="#FF537F82">
     <Window.DataContext>
         <vm:MainWindowViewModel/>
     </Window.DataContext>
