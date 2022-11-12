@@ -38,6 +38,7 @@ namespace Tabel.Component.Models.Mod
             switch (e.PropertyName)
             {
                 case "md_kvalif_prem":
+                case "md_kvalif_tarif":
                     Calculation();
                     break;
             }
@@ -48,7 +49,7 @@ namespace Tabel.Component.Models.Mod
         //-------------------------------------------------------------------------------------------------------
         public override void Calculation()
         {
-            Summa = model.md_kvalif_prem;
+            Summa = model.md_kvalif_prem * model.md_kvalif_tarif / 100;
         }
 
 

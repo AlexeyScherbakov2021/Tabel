@@ -34,7 +34,7 @@ namespace Tabel.Component.Models.Mod
             switch (e.PropertyName)
             {
                 case "md_bonus_exec":
-                case "md_bonus_proc":
+                case "BonusForAll":
                 case "md_bonus_max":
                     Calculation();
                     break;
@@ -49,7 +49,7 @@ namespace Tabel.Component.Models.Mod
         {
             Summa = (model.TabelDays == 0 || !model.md_bonus_exec) 
                 ? null 
-                : model.md_bonus_max * model.md_bonus_proc / 100 * (model.TabelDays - model.TabelAbsent) / model.TabelDays;
+                : model.md_bonus_max * model.BonusForAll / 100 * (model.TabelDays - model.TabelAbsent) / model.TabelDays;
         }
 
     }

@@ -22,7 +22,6 @@
         <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource StyleCheckComboBox }">
         </Style>
 
-
     </UserControl.Resources>
     <DockPanel>
         <ToolBarPanel DockPanel.Dock="Top" Orientation="Horizontal" Height="30" Margin="10,8,0,4">
@@ -124,7 +123,7 @@
                             <DataGridTextColumn Header="ФИО" Binding="{Binding person.FIO}" IsReadOnly="True"/>
                             <DataGridTextColumn Header="Должность" Binding="{Binding person.p_profession}" IsReadOnly="True"/>
                             <DataGridTextColumn Header="Работа с ОР" Binding="{Binding md_kvalif_name}" Width="200"/>
-                            <DataGridTextColumn Header="Перм. тариф" CellStyle="{StaticResource CellRight}"/>
+                            <DataGridTextColumn Header="Перм. тариф" Binding="{Binding md_kvalif_tarif, Mode=TwoWay, StringFormat=N2}" CellStyle="{StaticResource CellRight}"/>
                             <DataGridTextColumn Header="% выполн." Binding="{Binding md_kvalif_prem, StringFormat=N2}" CellStyle="{StaticResource CellRight}"/>
                             <DataGridTextColumn Header="Премия" Binding="{Binding premiaKvalif.Summa, StringFormat=N2}" FontWeight="Bold" Width="90" IsReadOnly="True" CellStyle="{StaticResource CellRight}"/>
                         </DataGrid.Columns>
@@ -149,12 +148,12 @@
                                 Style="{StaticResource ButtonStyleShadow}">
                             <CheckBox IsChecked="{Binding IsCheckBonus}"/>
                         </Button>
-                        <Button  Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" Width="60" 
+                        <!--<Button  Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" Width="60" 
                                  HorizontalContentAlignment="Left" 
                                 Command="{Binding SetSummaCommand}" CommandParameter="{Binding ElementName=dgBonus}"
                                  Style="{StaticResource ButtonStyleShadow}">
                             <TextBox Text="{Binding SetProcPrem, Mode=OneWayToSource}" Width="35"/>
-                        </Button>
+                        </Button>-->
                         <Button  Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Center" Width="80" 
                                  HorizontalContentAlignment="Left"
                                  Command="{Binding SetMaxSummaCommand}" CommandParameter="{Binding ElementName=dgBonus}"
@@ -167,7 +166,7 @@
                             <DataGridTextColumn x:Name="col1" Header="ФИО" Binding="{Binding person.FIO}" IsReadOnly="True"/>
                             <DataGridTextColumn x:Name="col2" Header="Должность" Binding="{Binding person.p_profession}" IsReadOnly="True"/>
                             <DataGridCheckBoxColumn x:Name="col3" Header="Выполнено" Binding="{Binding md_bonus_exec, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                            <DataGridTextColumn x:Name="col4" Header="%" MinWidth="80" Binding="{Binding md_bonus_proc, Mode=TwoWay, StringFormat=0.#}"  Width="50" CellStyle="{StaticResource CellRight}"/>
+                            <DataGridTextColumn x:Name="col4" Header="%" MinWidth="80" Binding="{Binding BonusForAll, StringFormat=0.#}" IsReadOnly="True"  Width="50" CellStyle="{StaticResource CellRight}"/>
                             <DataGridTextColumn x:Name="col5" MinWidth="100" Header="Макс. бонус" Binding="{Binding md_bonus_max, Mode=TwoWay, StringFormat=N0}"  CellStyle="{StaticResource CellRight}"/>
                             <DataGridTextColumn Header="Премия" Binding="{Binding premiaBonus.Summa, StringFormat=N2}" FontWeight="Bold" Width="80" IsReadOnly="True" CellStyle="{StaticResource CellRight}"/>
                         </DataGrid.Columns>

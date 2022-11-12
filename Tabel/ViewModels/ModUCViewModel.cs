@@ -195,20 +195,20 @@ namespace Tabel.ViewModels
         //--------------------------------------------------------------------------------
         // Команда Применить сумму к выбранным
         //--------------------------------------------------------------------------------
-        public ICommand SetSummaCommand => new LambdaCommand(OnSetSummaCommandExecuted, CanSetSummaCommand);
-        private bool CanSetSummaCommand(object p) => true;
-        private void OnSetSummaCommandExecuted(object p)
-        {
-            if( p is DataGrid dg)
-            {
-                foreach (ModPerson item in dg.SelectedItems)
-                {
-                    item.md_bonus_proc = SetProcPrem;
-                    item.OnPropertyChanged(nameof(item.md_bonus_proc));
-                }
-            }
+        //public ICommand SetSummaCommand => new LambdaCommand(OnSetSummaCommandExecuted, CanSetSummaCommand);
+        //private bool CanSetSummaCommand(object p) => true;
+        //private void OnSetSummaCommandExecuted(object p)
+        //{
+        //    if( p is DataGrid dg)
+        //    {
+        //        foreach (ModPerson item in dg.SelectedItems)
+        //        {
+        //            item.md_bonus_proc = SetProcPrem;
+        //            item.OnPropertyChanged(nameof(item.md_bonus_proc));
+        //        }
+        //    }
 
-        }
+        //}
 
         //--------------------------------------------------------------------------------
         // Команда Применить сумму к выбранным
@@ -344,14 +344,21 @@ namespace Tabel.ViewModels
                 LoadFromSmena();
                 LoadFromTransprot();
 
+                RepositoryMSSQL<GenChargMonth> repoGetAll = new RepositoryMSSQL<GenChargMonth>();
+                decimal? BonusProc = repoGetAll.Items
+                    .FirstOrDefault(it => it.gm_Year == Year && it.gm_Month == Month && it.gm_GenId == (int)EnumKind.BonusProc)?.gm_Value;
+
+
                 // Подписка на изменение элеменов списка сотрудников
                 foreach (var modPerson in ListModPerson)
                 {
                     // расчет премии из ФП
                     modPerson.premiaFP.Calculation();
-
                     //рассчет суммарных процентов в премии ФП
                     modPerson.premiaFP.CalcChangeProcent();
+
+                    modPerson.BonusForAll = BonusProc;
+                    modPerson.premiaBonus.Calculation();
                 }
             }
             OnPropertyChanged(nameof(ListModPerson));

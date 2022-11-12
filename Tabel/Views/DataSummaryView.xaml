@@ -31,11 +31,29 @@
                 <Border.Effect>
                     <DropShadowEffect ShadowDepth="0" BlurRadius="10" Opacity="0.3"/>
                 </Border.Effect>
-                <GroupBox Header="Параметры для всей организации" >
-                    <ListBox ItemsSource="{Binding ListGenChargMonths}">
-                        
-                    </ListBox>
-                </GroupBox>
+                <!--<GroupBox Header="Параметры для всей организации" BorderBrush="Gray" >-->
+                    <DataGrid Margin="5" ItemsSource="{Binding ListGenChargMonths}" Style="{StaticResource DataGridStyle}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Код" Binding="{Binding GenCarhge.id}" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Наименование" Binding="{Binding GenCarhge.gen_Name}" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="% выполения" Binding="{Binding gm_Value}" CellStyle="{StaticResource CellRight}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <!--<ListBox ItemsSource="{Binding ListGenChargMonths}">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="250"/>
+                                        <ColumnDefinition Width="60"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="Выполнение плана"/>
+                                    <TextBox Text="70.0" Grid.Column="1" HorizontalContentAlignment="Right"/>
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>-->
+                <!--</GroupBox>-->
             </Border>
         </Grid>
         

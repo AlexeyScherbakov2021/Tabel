@@ -39,7 +39,8 @@ namespace Tabel.Models
         [NotMapped]
         public PremiaPrize premiaPrize { get; set; }
 
-
+        [NotMapped]
+        public decimal? BonusForAll { get; set; }
 
         public ModPerson()
         {

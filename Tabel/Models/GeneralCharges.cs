@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 
 namespace Tabel.Models
 {
+    public enum EnumKind: int  { BonusProc = 1 };
+
     public partial class GeneralCharges : IEntity
     {
         public GeneralCharges()
