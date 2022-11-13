@@ -409,9 +409,9 @@ namespace Tabel.ViewModels
             if (CurrentMod is null)
                 return;
 
-            var tabel = repoTabel.Items.AsNoTracking().FirstOrDefault(it => it.t_year == _SelectYear
+            WorkTabel tabel = repoTabel.Items.AsNoTracking().FirstOrDefault(it => it.t_year == _SelectYear
                 && it.t_month == _SelectMonth
-                && it.t_otdel_id == _SelectedOtdel.id);
+                && it.t_otdel_id == (_SelectedOtdel.ot_parent ?? _SelectedOtdel.id));
 
             if (ListModPerson is null || tabel is null) return;
 

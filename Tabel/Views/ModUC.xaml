@@ -10,7 +10,7 @@
              xmlns:conv="clr-namespace:Tabel.Infrastructure.Converters"
             xmlns:ext="clr-namespace:Tabel.Infrastructure.Extend"
              mc:Ignorable="d" 
-             d:DesignHeight="600" d:DesignWidth="1000">
+             d:DesignHeight="600" d:DesignWidth="1200">
     <UserControl.DataContext>
         <vm:ModUCViewModel/>
     </UserControl.DataContext>
@@ -81,57 +81,8 @@
                     </DataGrid>
                 </DockPanel>
             </TabItem>
-            
-            <TabItem Header="Премия по выработке" Visibility="{Binding IsVisibleNoITR}">
-                <DockPanel  Background="Gainsboro">
-                    <Grid DockPanel.Dock="Top" Margin="8,0" Height="30">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="100"/>
-                            <ColumnDefinition Width="100"/>
-                        </Grid.ColumnDefinitions>
-                        <!--<CheckBox Grid.Column=""/>-->
-                        <!--<TextBlock Text="Часы из ФП" Grid.Column="0"/>-->
-                        <!--<TextBox Text="{Binding SumFP.mo_sumFP, Mode=TwoWay}" Grid.Column="1" VerticalAlignment="Center"/>-->
-                    </Grid>
-                    <DataGrid ItemsSource="{Binding ListModPerson}" Style="{StaticResource DataGridStyle}" >
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="ФИО" Binding="{Binding person.FIO}" IsReadOnly="True"/>
-                            <DataGridTextColumn Header="Должность" Binding="{Binding person.p_profession}" IsReadOnly="True"/>
-                            <DataGridTextColumn Header="% премии" Binding="{Binding md_premFP, Mode=TwoWay, StringFormat=N2}" CellStyle="{StaticResource CellRight}"/>
-                            <DataGridTextColumn Header="Часы из ФП" Binding="{Binding md_sumFromFP, StringFormat=N2}" CellStyle="{StaticResource CellRight}"/>
-                            <DataGridTextColumn Header="Расчетные часы" Binding="{Binding premiaFP.SummaHoursFP, StringFormat=N2}" IsReadOnly="True" CellStyle="{StaticResource CellRight}"/>
-                            <DataGridTextColumn Header="Премиальный тариф" Binding="{Binding md_cat_prem_tarif, StringFormat=N2}" CellStyle="{StaticResource CellRight}"/>
-                            <DataGridTextColumn Header="Премия" Binding="{Binding premiaFP.Summa, StringFormat=N2}" FontWeight="Bold" Width="90" IsReadOnly="True" CellStyle="{StaticResource CellRight}"/>
-                            <DataGridTextColumn Header="Группа" Binding="{Binding md_group}" CellStyle="{StaticResource CellRight}"/>
-                            <DataGridTextColumn Header="% группы" Binding="{Binding premiaFP.ProcGroup, StringFormat=0.##%}" CellStyle="{StaticResource CellRight}"/>
-                        </DataGrid.Columns>
-                    </DataGrid>
-                </DockPanel>
-            </TabItem>
 
-
-            <TabItem Header="Квалификационная премия"  Visibility="{Binding IsVisibleITR}">
-                <DockPanel  Background="Gainsboro">
-                    <Grid DockPanel.Dock="Top" Margin="8,0" Height="30">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="100"/>
-                            <ColumnDefinition Width="100"/>
-                        </Grid.ColumnDefinitions>
-                    </Grid>
-                    <DataGrid ItemsSource="{Binding ListModPerson}" Style="{StaticResource DataGridStyle}" >
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="ФИО" Binding="{Binding person.FIO}" IsReadOnly="True"/>
-                            <DataGridTextColumn Header="Должность" Binding="{Binding person.p_profession}" IsReadOnly="True"/>
-                            <DataGridTextColumn Header="Работа с ОР" Binding="{Binding md_kvalif_name}" Width="200"/>
-                            <DataGridTextColumn Header="Перм. тариф" Binding="{Binding md_kvalif_tarif, Mode=TwoWay, StringFormat=N2}" CellStyle="{StaticResource CellRight}"/>
-                            <DataGridTextColumn Header="% выполн." Binding="{Binding md_kvalif_prem, StringFormat=N2}" CellStyle="{StaticResource CellRight}"/>
-                            <DataGridTextColumn Header="Премия" Binding="{Binding premiaKvalif.Summa, StringFormat=N2}" FontWeight="Bold" Width="90" IsReadOnly="True" CellStyle="{StaticResource CellRight}"/>
-                        </DataGrid.Columns>
-                    </DataGrid>
-                </DockPanel>
-            </TabItem>
-
-            <TabItem Header="Премия 1">
+            <TabItem Header="Премия 1 (бонус)">
                 <DockPanel  Background="Gainsboro">
                     <Grid DockPanel.Dock="Top" Margin="8,0" Height="30">
                         <Grid.ColumnDefinitions>
@@ -175,7 +126,54 @@
             </TabItem>
 
 
-            <TabItem Header="Премия 2 (по отделу/участку)">
+            <TabItem Header="Премия 2 (по выработке)" Visibility="{Binding IsVisibleNoITR}">
+                <DockPanel  Background="Gainsboro">
+                    <Grid DockPanel.Dock="Top" Margin="8,0" Height="30">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="100"/>
+                        </Grid.ColumnDefinitions>
+                    </Grid>
+                    <DataGrid ItemsSource="{Binding ListModPerson}" Style="{StaticResource DataGridStyle}" >
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="ФИО" Binding="{Binding person.FIO}" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Должность" Binding="{Binding person.p_profession}" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="% премии" Binding="{Binding md_premFP, Mode=TwoWay, StringFormat=N2}" CellStyle="{StaticResource CellRight}"/>
+                            <DataGridTextColumn Header="Часы из ФП" Binding="{Binding md_sumFromFP, StringFormat=N2}" CellStyle="{StaticResource CellRight}"/>
+                            <DataGridTextColumn Header="Расчетные часы" Binding="{Binding premiaFP.SummaHoursFP, StringFormat=N2}" IsReadOnly="True" CellStyle="{StaticResource CellRight}"/>
+                            <DataGridTextColumn Header="Премиальный тариф" Binding="{Binding md_cat_prem_tarif, StringFormat=N2}" CellStyle="{StaticResource CellRight}"/>
+                            <DataGridTextColumn Header="Премия" Binding="{Binding premiaFP.Summa, StringFormat=N2}" FontWeight="Bold" Width="90" IsReadOnly="True" CellStyle="{StaticResource CellRight}"/>
+                            <DataGridTextColumn Header="Группа" Binding="{Binding md_group}" CellStyle="{StaticResource CellRight}"/>
+                            <DataGridTextColumn Header="% группы" Binding="{Binding premiaFP.ProcGroup, StringFormat=0.##%}" CellStyle="{StaticResource CellRight}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </DockPanel>
+            </TabItem>
+
+
+            <TabItem Header="Премия 2 (по отделу)"  Visibility="{Binding IsVisibleITR}">
+                <DockPanel  Background="Gainsboro">
+                    <Grid DockPanel.Dock="Top" Margin="8,0" Height="30">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="100"/>
+                        </Grid.ColumnDefinitions>
+                    </Grid>
+                    <DataGrid ItemsSource="{Binding ListModPerson}" Style="{StaticResource DataGridStyle}" >
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="ФИО" Binding="{Binding person.FIO}" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Должность" Binding="{Binding person.p_profession}" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Работа с ОР" Binding="{Binding md_kvalif_name}" Width="200"/>
+                            <DataGridTextColumn Header="Перм. тариф" Binding="{Binding md_kvalif_tarif, Mode=TwoWay, StringFormat=N2}" CellStyle="{StaticResource CellRight}"/>
+                            <DataGridTextColumn Header="% выполн." Binding="{Binding md_kvalif_prem, StringFormat=N2}" CellStyle="{StaticResource CellRight}"/>
+                            <DataGridTextColumn Header="Премия" Binding="{Binding premiaKvalif.Summa, StringFormat=N2}" FontWeight="Bold" Width="90" IsReadOnly="True" CellStyle="{StaticResource CellRight}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </DockPanel>
+            </TabItem>
+
+
+            <TabItem Header="Премия 3 (стимуляция)">
                 <DockPanel  Background="Gainsboro">
                     <Grid DockPanel.Dock="Top" Margin="8,0" Height="30">
                         <Grid.ColumnDefinitions>
@@ -195,7 +193,7 @@
                 </DockPanel>
             </TabItem>
 
-            <!--<TabItem Header="Работа в выходной день">
+            <TabItem Header="Премия 4 (кач. труд)">
                 <DockPanel  Background="Gainsboro">
                     <Grid DockPanel.Dock="Top" Margin="8,0" Height="30">
                         <Grid.ColumnDefinitions>
@@ -214,7 +212,7 @@
                     </DataGrid>
                 </DockPanel>
 
-            </TabItem>-->
+            </TabItem>
 
             <TabItem Header="Доп. работы" Visibility="{Binding IsVisibleNoITR}">
                 <DockPanel  Background="Gainsboro">

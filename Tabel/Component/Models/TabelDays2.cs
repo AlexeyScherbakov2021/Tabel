@@ -20,7 +20,7 @@ namespace Tabel.Models
         [NotMapped]
         public TypeDays CalendarTypeDay { get; set; }
 
-        private decimal _WhiteHours;
+        //private decimal _WhiteHours;
         [NotMapped]
         //public decimal WhiteHours { get => _WhiteHours; set { Set(ref _WhiteHours, value); } }
         public decimal WhiteHours => (td_Hours - td_Hours2) ?? 0;
