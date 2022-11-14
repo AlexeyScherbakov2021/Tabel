@@ -214,9 +214,7 @@ namespace Tabel.ViewModels
                             RowNum += 2;
                         }
                     }
-
                     RowNum += 2;
-
                 }
 
                 string TempFile = FileOperation.GenerateTempFileNameWithDelete("TempTabel.xlsx");
@@ -318,99 +316,13 @@ namespace Tabel.ViewModels
         private bool CanSZOffDayCommand(object p) => SelectedOtdel != null && Tabel != null;
         private void OnSZOffDayCommandExecuted(object p)
         {
-            try
-            {
-                using (var word = WordprocessingDocument.Open(@"D:\Work\C#\Tabel\сз работа в вд.docx", true))
-                {
-                    word.SaveAs(@"D:\Work\C#\Tabel\сз работа в вд2.docx");
-                    Body body = word.MainDocumentPart.Document.Body;
-                    //var mainDocument = word.MainDocumentPart.Document;
+            RepositoryWord repoWord = new RepositoryWord(@"Отчеты\СЗ выходные дни.docx");
+            repoWord.CreateWorkOffSZ(null, DateTime.Now);
 
-                    foreach (var docElement in body.Elements())
-                    {
-                        if (docElement is DocumentFormat.OpenXml.Wordprocessing.Paragraph para)
-                        {
-                            foreach (var run in para.Elements<Run>())
-                            {
-                                foreach (var text in run.Elements<Text>())
-                                {
-                                    if (text.Text.Contains("ДЕНЬ"))
-                                    {
-                                        text.Text = text.Text.Replace("ДЕНЬ", "12");
-                                    }
-                                }
-                            }
-                        }
-
-                    }
-                    //var bookMarks = FindBookmarks(word.MainDocumentPart.Document);
-
-                    //foreach (var end in bookMarks)
-                    //{
-                    //    if (end.Key == "День")
-                    //    {
-                    //        var textElement = new Text("12");
-                    //        var runElement = new Run(textElement);
-                    //        end.Value.InsertAfterSelf(runElement);
-                    //    }
-                    //    if (end.Key == "Год")
-                    //    {
-                    //        var textElement = new Text("2022");
-                    //        var runElement = new Run(textElement);
-                    //        end.Value.InsertAfterSelf(runElement);
-                    //    }
-                    //}
-
-
-
-                    word.Close();
-                }
-            }
-            catch(Exception ex)
-            {
-                MessageBox.Show("Не найден шаблон СЗ","Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
         }
 
         #endregion
 
-        private static Dictionary<string, BookmarkEnd> FindBookmarks(OpenXmlElement documentPart, Dictionary<string, BookmarkEnd> outs = null, Dictionary<string, string> bStartWithNoEnds = null)
-        {
-            if (outs == null) { outs = new Dictionary<string, BookmarkEnd>(); }
-            if (bStartWithNoEnds == null) { bStartWithNoEnds = new Dictionary<string, string>(); }
-
-            // Проходимся по всем элементам на странице Word-документа
-            foreach (var docElement in documentPart.Elements())
-            {
-                // BookmarkStart определяет начало закладки в рамках документа
-                // маркер начала связан с маркером конца закладки
-                if (docElement is BookmarkStart)
-                {
-                    var bookmarkStart = docElement as BookmarkStart;
-                    // Записываем id и имя закладки
-                    bStartWithNoEnds.Add(bookmarkStart.Id, bookmarkStart.Name);
-                }
-
-                // BookmarkEnd определяет конец закладки в рамках документа
-                if (docElement is BookmarkEnd)
-                {
-                    var bookmarkEnd = docElement as BookmarkEnd;
-                    foreach (var startName in bStartWithNoEnds)
-                    {
-                        // startName.Key как раз и содержит id закладки
-                        // здесь проверяем, что есть связь между началом и концом закладки
-                        if (bookmarkEnd.Id == startName.Key)
-                            // В конечный массив добавляем то, что нам и нужно получить
-                            outs.Add(startName.Value, bookmarkEnd);
-                    }
-                }
-                // Рекурсивно вызываем данный метод, чтобы пройтись по всем элементам
-                // word-документа
-                FindBookmarks(docElement, outs, bStartWithNoEnds);
-            }
-
-            return outs;
-        }
 
         //--------------------------------------------------------------------------------------------------
         // Конструктор
@@ -596,8 +508,6 @@ namespace Tabel.ViewModels
                     day.CalendarTypeDay = ListDays[i].KindDay;
                     if(day.td_Hours2 > 0)
                         day.VisibilityHours = Visibility.Visible;
-
-                    //day.WhiteHours = (day.td_Hours - day.td_Hours2) ?? 0;
                     i++;
                 }
 

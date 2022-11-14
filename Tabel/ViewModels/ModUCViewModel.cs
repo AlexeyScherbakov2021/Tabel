@@ -147,6 +147,7 @@ namespace Tabel.ViewModels
                 if (newPerson.md_tarif_offDay < 1500)
                     newPerson.md_tarif_offDay = 1500;
 
+                // получение этого сотрудника из предыдущей существующей модели
                 ModPerson PrevModPerson = repoModPerson.Items
                     .AsNoTracking()
                     .Where(it => it.md_personalId == newPerson.md_personalId 
@@ -160,11 +161,10 @@ namespace Tabel.ViewModels
 
                 if(PrevModPerson != null)
                 {
+                    // копирование тарифа бонусов
                     newPerson.md_bonus_max = PrevModPerson.md_bonus_max;
-
+                    newPerson.md_cat_prem_tarif = PrevModPerson.md_cat_prem_tarif;
                 }
-
-                //newPerson.person = pers;
 
                 CurrentMod.ModPersons.Add(newPerson);
             }
@@ -232,7 +232,6 @@ namespace Tabel.ViewModels
                     item.OnPropertyChanged(nameof(item.md_quality_check));
                 }
             }
-
         }
 
         //--------------------------------------------------------------------------------
@@ -388,11 +387,6 @@ namespace Tabel.ViewModels
                 LoadFromTransport();
                 LoadFromGeneral();
 
-                //RepositoryMSSQL<GenChargMonth> repoGetAll = new RepositoryMSSQL<GenChargMonth>();
-                //decimal? BonusProc = repoGetAll.Items
-                //    .FirstOrDefault(it => it.gm_Year == Year && it.gm_Month == Month && it.gm_GenId == (int)EnumKind.BonusProc)?.gm_Value;
-
-
                 // Подписка на изменение элеменов списка сотрудников
                 foreach (var modPerson in ListModPerson)
                 {
@@ -400,8 +394,7 @@ namespace Tabel.ViewModels
                     modPerson.premiaFP.Calculation();
                     //рассчет суммарных процентов в премии ФП
                     modPerson.premiaFP.CalcChangeProcent();
-
-                    //modPerson.BonusForAll = BonusProc;
+                    // расчет премии бонусов
                     modPerson.premiaBonus.Calculation();
                 }
             }
@@ -427,7 +420,6 @@ namespace Tabel.ViewModels
         }
 
 
-
         //-------------------------------------------------------------------------------------------------------
         // подгрузка данных из данных по транспорту
         //-------------------------------------------------------------------------------------------------------
@@ -442,27 +434,10 @@ namespace Tabel.ViewModels
                 && it.tr_Month == _SelectMonth
                 && it.tr_OtdelId == (_SelectedOtdel.ot_parent ?? _SelectedOtdel.id));
 
-
-            //if (_SelectedOtdel.ot_parent is null)
-            //{
-            //    Transp = repoTransport.Items.AsNoTracking().FirstOrDefault(it => it.tr_Year == _SelectYear
-            //            && it.tr_Month == _SelectMonth
-            //            && it.tr_OtdelId == _SelectedOtdel.id);
-            //}
-            //else
-            //{
-            //    Transp = repoTransport.Items.AsNoTracking().FirstOrDefault(it => it.tr_Year == _SelectYear
-            //        && it.tr_Month == _SelectMonth
-            //        && it.tr_OtdelId == _SelectedOtdel.ot_parent);
-            //}
-
-
             if (ListModPerson is null || Transp is null) return;
 
             foreach (var item in ListModPerson)
             {
-                //var pers = Transp.TransportPerson.FirstOrDefault(it => it.tp_PersonId == item.md_personalId);
-                //item.premiaTrnasport.Summa = pers?.Summa;
                 item.premiaTrnasport.Initialize(Transp.id);
             }
 
@@ -523,8 +498,6 @@ namespace Tabel.ViewModels
 
             foreach (var item in ListModPerson)
             {
-                //var pers = smena.SmenaPerson.FirstOrDefault(it => it.sp_PersonId == item.md_personalId);
-                //item.premiaNight.NightHours = pers.SmenaDays.Count(s => s.sd_Kind == SmenaKind.Second) * 4.5m;
                 item.premiaNight.Initialize(smena.id);
             }
 

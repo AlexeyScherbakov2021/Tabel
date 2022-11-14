@@ -150,6 +150,7 @@
     <Compile Include="Repository\RepositoryTabelPerson.cs" />
     <Compile Include="Infrastructure\Extend\ExtendedTreeView.cs" />
     <Compile Include="Infrastructure\Extend\ListBoxExt.cs" />
+    <Compile Include="Repository\RepositoryWord.cs" />
     <Compile Include="ViewModels\Admins\AddWorksUCViewModel.cs" />
     <Compile Include="ViewModels\Admins\CategoryUCViewModel.cs" />
     <Compile Include="ViewModels\Admins\OtdelsWindowViewModel.cs" />
