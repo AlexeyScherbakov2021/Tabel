@@ -39,6 +39,7 @@ namespace Tabel.ViewModels
         public Visibility IsVisibleNoITR { get; private set; }
 
         public bool IsCheckBonus { get; set; }
+        public bool IsCheckQuality { get; set; }
         public decimal SetProcPrem { get; set; }
         public decimal SetMaxPrem { get; set; }
 
@@ -125,11 +126,17 @@ namespace Tabel.ViewModels
             RepositoryMSSQL<Otdel> repoOtdel = AllRepo.GetRepoAllOtdels();
             List<int> listOtdels = repoOtdel.Items.AsNoTracking().Where(it => it.ot_parent == _SelectedOtdel.id).Select(s => s.id).ToList();
 
+            // получение списка людей для отделов и групп
             var persons = repoPersonal.Items
                 .AsNoTracking()
                 .Where(it => (it.p_otdel_id == _SelectedOtdel.id && it.p_delete == false) || listOtdels.Contains(it.p_otdel_id.Value))
                 .OrderBy(o => o.p_lastname)
                 .ThenBy(o => o.p_name);
+
+
+            // получение сриска сотрудников прошлого периода
+            //List<ModPerson> ListPrevModPerson = 
+
 ;
             foreach (var pers in persons)
             {
@@ -139,6 +146,23 @@ namespace Tabel.ViewModels
                 newPerson.md_tarif_offDay = pers.category?.cat_tarif * 8;
                 if (newPerson.md_tarif_offDay < 1500)
                     newPerson.md_tarif_offDay = 1500;
+
+                ModPerson PrevModPerson = repoModPerson.Items
+                    .AsNoTracking()
+                    .Where(it => it.md_personalId == newPerson.md_personalId 
+                            && (
+                                ( it.Mod.m_year == _SelectYear && it.Mod.m_month < _SelectMonth)
+                                || it.Mod.m_year < _SelectYear 
+                               ))
+                    .OrderByDescending(o => o.Mod.m_year)
+                    .ThenByDescending(o => o.Mod.m_month)
+                    .FirstOrDefault();
+
+                if(PrevModPerson != null)
+                {
+                    newPerson.md_bonus_max = PrevModPerson.md_bonus_max;
+
+                }
 
                 //newPerson.person = pers;
 
@@ -155,7 +179,8 @@ namespace Tabel.ViewModels
             ListModPerson = new ObservableCollection<ModPerson>(CurrentMod.ModPersons);
             LoadFromTabel();
             LoadFromSmena();
-            LoadFromTransprot();
+            LoadFromTransport();
+            LoadFromGeneral();
 
             OnPropertyChanged(nameof(ListModPerson));
             OnPropertyChanged(nameof(CurrentMod));
@@ -187,6 +212,24 @@ namespace Tabel.ViewModels
                 {
                     item.md_bonus_exec = IsCheckBonus;
                     item.OnPropertyChanged(nameof(item.md_bonus_exec));
+                }
+            }
+
+        }
+
+        //--------------------------------------------------------------------------------
+        // Команда Отметить выбранные за качество
+        //--------------------------------------------------------------------------------
+        public ICommand CheckQualCommand => new LambdaCommand(OnCheckQualCommandExecuted, CanCheckQualCommand);
+        private bool CanCheckQualCommand(object p) => true;
+        private void OnCheckQualCommandExecuted(object p)
+        {
+            if( p is DataGrid dg)
+            {
+                foreach (ModPerson item in dg.SelectedItems)
+                {
+                    item.md_quality_check = IsCheckQuality;
+                    item.OnPropertyChanged(nameof(item.md_quality_check));
                 }
             }
 
@@ -342,11 +385,12 @@ namespace Tabel.ViewModels
             {
                 LoadFromTabel();
                 LoadFromSmena();
-                LoadFromTransprot();
+                LoadFromTransport();
+                LoadFromGeneral();
 
-                RepositoryMSSQL<GenChargMonth> repoGetAll = new RepositoryMSSQL<GenChargMonth>();
-                decimal? BonusProc = repoGetAll.Items
-                    .FirstOrDefault(it => it.gm_Year == Year && it.gm_Month == Month && it.gm_GenId == (int)EnumKind.BonusProc)?.gm_Value;
+                //RepositoryMSSQL<GenChargMonth> repoGetAll = new RepositoryMSSQL<GenChargMonth>();
+                //decimal? BonusProc = repoGetAll.Items
+                //    .FirstOrDefault(it => it.gm_Year == Year && it.gm_Month == Month && it.gm_GenId == (int)EnumKind.BonusProc)?.gm_Value;
 
 
                 // Подписка на изменение элеменов списка сотрудников
@@ -357,7 +401,7 @@ namespace Tabel.ViewModels
                     //рассчет суммарных процентов в премии ФП
                     modPerson.premiaFP.CalcChangeProcent();
 
-                    modPerson.BonusForAll = BonusProc;
+                    //modPerson.BonusForAll = BonusProc;
                     modPerson.premiaBonus.Calculation();
                 }
             }
@@ -367,27 +411,50 @@ namespace Tabel.ViewModels
         }
 
         //-------------------------------------------------------------------------------------------------------
+        // подгрузка данных общего расчета 
+        //-------------------------------------------------------------------------------------------------------
+        private void LoadFromGeneral()
+        {
+            RepositoryMSSQL<GenChargMonth> repoGetAll = new RepositoryMSSQL<GenChargMonth>();
+            decimal? BonusProc = repoGetAll.Items
+                .FirstOrDefault(it => it.gm_Year == _SelectYear && it.gm_Month == _SelectMonth && it.gm_GenId == (int)EnumKind.BonusProc)?.gm_Value;
+
+            foreach (var modPerson in ListModPerson)
+            {
+                modPerson.BonusForAll = BonusProc;
+            }
+
+        }
+
+
+
+        //-------------------------------------------------------------------------------------------------------
         // подгрузка данных из данных по транспорту
         //-------------------------------------------------------------------------------------------------------
-        private void LoadFromTransprot()
+        private void LoadFromTransport()
         {
             if (CurrentMod is null)
                 return;
 
             Transport Transp;
 
-            if (_SelectedOtdel.ot_parent is null)
-            {
-                Transp = repoTransport.Items.AsNoTracking().FirstOrDefault(it => it.tr_Year == _SelectYear
-                        && it.tr_Month == _SelectMonth
-                        && it.tr_OtdelId == _SelectedOtdel.id);
-            }
-            else
-            {
-                Transp = repoTransport.Items.AsNoTracking().FirstOrDefault(it => it.tr_Year == _SelectYear
-                    && it.tr_Month == _SelectMonth
-                    && it.tr_OtdelId == _SelectedOtdel.ot_parent);
-            }
+            Transp = repoTransport.Items.AsNoTracking().FirstOrDefault(it => it.tr_Year == _SelectYear
+                && it.tr_Month == _SelectMonth
+                && it.tr_OtdelId == (_SelectedOtdel.ot_parent ?? _SelectedOtdel.id));
+
+
+            //if (_SelectedOtdel.ot_parent is null)
+            //{
+            //    Transp = repoTransport.Items.AsNoTracking().FirstOrDefault(it => it.tr_Year == _SelectYear
+            //            && it.tr_Month == _SelectMonth
+            //            && it.tr_OtdelId == _SelectedOtdel.id);
+            //}
+            //else
+            //{
+            //    Transp = repoTransport.Items.AsNoTracking().FirstOrDefault(it => it.tr_Year == _SelectYear
+            //        && it.tr_Month == _SelectMonth
+            //        && it.tr_OtdelId == _SelectedOtdel.ot_parent);
+            //}
 
 
             if (ListModPerson is null || Transp is null) return;
@@ -450,7 +517,7 @@ namespace Tabel.ViewModels
 
             var smena = repoSmena.Items.AsNoTracking().FirstOrDefault(it => it.sm_Year == _SelectYear
                 && it.sm_Month == _SelectMonth
-                && it.sm_OtdelId == _SelectedOtdel.id);
+                && it.sm_OtdelId == (_SelectedOtdel.ot_parent ?? _SelectedOtdel.id));
 
             if (ListModPerson is null || smena is null) return;
 

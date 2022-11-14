@@ -197,17 +197,33 @@
                 <DockPanel  Background="Gainsboro">
                     <Grid DockPanel.Dock="Top" Margin="8,0" Height="30">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="100"/>
-                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="{Binding ActualWidth, ElementName=col4_1}"/>
+                            <ColumnDefinition Width="{Binding ActualWidth, ElementName=col4_2}"/>
+                            <ColumnDefinition Width="{Binding ActualWidth, ElementName=col4_3}"/>
+                            <!--<ColumnDefinition Width="{Binding ActualWidth, ElementName=col4}"/>-->
+                            <!--<ColumnDefinition Width="{Binding ActualWidth, ElementName=col5}"/>-->
                         </Grid.ColumnDefinitions>
+                        <Button Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" Width="40"
+                                Command="{Binding CheckQualCommand}" CommandParameter="{Binding ElementName=dgQuality}"
+                                HorizontalContentAlignment="Left"
+                                Style="{StaticResource ButtonStyleShadow}">
+                            <CheckBox IsChecked="{Binding IsCheckQuality}"/>
+                        </Button>
+                        <!--<Button  Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Center" Width="80" 
+                                 HorizontalContentAlignment="Left"
+                                 Command="{Binding SetMaxSummaCommand}" CommandParameter="{Binding ElementName=dgQuality}"
+                                 Style="{StaticResource ButtonStyleShadow}">
+                            <TextBox Text="{Binding SetMaxPrem, Mode=OneWayToSource}" Width="50"/>
+                        </Button>-->
                     </Grid>
-                    <DataGrid ItemsSource="{Binding ListModPerson}" Style="{StaticResource DataGridStyle}" IsReadOnly="True">
+                    <DataGrid x:Name="dgQuality" ItemsSource="{Binding ListModPerson}" Style="{StaticResource DataGridStyle}" >
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="ФИО" Binding="{Binding person.FIO}" />
-                            <DataGridTextColumn Header="Должность" Binding="{Binding person.p_profession}" />
-                            <DataGridTextColumn Header="Число дней" Binding="{Binding TabelWorkOffDay, Mode=TwoWay}" CellStyle="{StaticResource CellRight}"/>
-                            <DataGridTextColumn Header="Доплата" Binding="{Binding md_tarif_offDay, StringFormat=N0}" Width="80" CellStyle="{StaticResource CellRight}"/>
-                            <DataGridTextColumn Header="Премия" Binding="{Binding premOffDays.Summa, StringFormat=N2}" FontWeight="Bold" Width="90"  CellStyle="{StaticResource CellRight}"/>
+                            <DataGridTextColumn x:Name="col4_1" Header="ФИО" Binding="{Binding person.FIO}" IsReadOnly="True"/>
+                            <DataGridTextColumn x:Name="col4_2" Header="Должность" Binding="{Binding person.p_profession}" IsReadOnly="True"/>
+                            <DataGridCheckBoxColumn x:Name="col4_3" Header="Выполнено" Binding="{Binding md_quality_check, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            <!--<DataGridTextColumn x:Name="col4_4" Header="%" MinWidth="80" Binding="{Binding BonusForAll, StringFormat=0.#}" IsReadOnly="True"  Width="50" CellStyle="{StaticResource CellRight}"/>-->
+                            <!--<DataGridTextColumn x:Name="col4_5" MinWidth="100" Header="Макс. бонус" Binding="{Binding md_bonus_max, Mode=TwoWay, StringFormat=N0}"  CellStyle="{StaticResource CellRight}"/>-->
+                            <DataGridTextColumn Header="Премия" Binding="{Binding premiaQuality.Summa, StringFormat=N2}" FontWeight="Bold" Width="80" IsReadOnly="True" CellStyle="{StaticResource CellRight}"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </DockPanel>

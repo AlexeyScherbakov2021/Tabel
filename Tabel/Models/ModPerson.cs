@@ -73,6 +73,9 @@ namespace Tabel.Models
         [Column(TypeName = "numeric")]
         public decimal? md_cat_prem_tarif { get => _md_cat_prem_tarif; set { Set(ref _md_cat_prem_tarif, value); } }
 
+        private bool _md_quality_check;
+        public bool md_quality_check { get => _md_quality_check; set { Set(ref _md_quality_check, value); } }
+
 
         public virtual Mod Mod { get; set; }
         public virtual Personal person { get; set; }

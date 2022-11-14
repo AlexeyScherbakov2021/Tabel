@@ -92,6 +92,7 @@
     <Compile Include="Component\Models\Mod\premiaNight.cs" />
     <Compile Include="Component\Models\Mod\PremiaOtdel.cs" />
     <Compile Include="Component\Models\Mod\PremiaPrize.cs" />
+    <Compile Include="Component\Models\Mod\PremiaQuality.cs" />
     <Compile Include="Component\Models\Mod\PremiaTransport.cs" />
     <Compile Include="Component\Models\Mod\PremOffDays.cs" />
     <Compile Include="Component\Models\Otdel2.cs" />

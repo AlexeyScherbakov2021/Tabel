@@ -43,7 +43,7 @@ namespace Tabel.ViewModels
 
         #region Команды
         //--------------------------------------------------------------------------------
-        // Команда Создать график
+        // Команда Создать табель
         //--------------------------------------------------------------------------------
         public ICommand CreateCommand => new LambdaCommand(OnCreateCommandExecuted, CanCreateCommand);
         private bool CanCreateCommand(object p) => SelectedOtdel != null && SelectedOtdel.ot_parent is null;
@@ -61,7 +61,6 @@ namespace Tabel.ViewModels
             // получение данных производственного календаря
             RepositoryCalendar repo = AllRepo.GetRepoCalendar();
             var ListDays = repo.GetListDays(_SelectYear, _SelectMonth);
-
 
             RepositoryMSSQL<Otdel> repoOtdel = AllRepo.GetRepoAllOtdels();
             List<int> listOtdels = repoOtdel.Items.AsNoTracking().Where(it => it.ot_parent == SelectedOtdel.id).Select(s => s.id).ToList();
@@ -90,12 +89,12 @@ namespace Tabel.ViewModels
             Tabel.t_date_create = DateTime.Now;
             Tabel.tabelPersons = new ObservableCollection<TabelPerson>();
 
-
             // если есть персонал в отделе, добавляем его и формируем дни
             foreach (var item in PersonsFromOtdel)
             {
                 TabelPerson tp = new TabelPerson();
                 tp.tp_person_id = item.id;
+
                 //tp.person = repoPersonal.Items.FirstOrDefault(it => it.id == item.id); 
                 tp.TabelDays = new ObservableCollection<TabelDay>();
 
@@ -319,50 +318,57 @@ namespace Tabel.ViewModels
         private bool CanSZOffDayCommand(object p) => SelectedOtdel != null && Tabel != null;
         private void OnSZOffDayCommandExecuted(object p)
         {
-            using (var word = WordprocessingDocument.Open(@"D:\Work\C#\Tabel\сз работа в вд.docx", true))
+            try
             {
-                word.SaveAs(@"D:\Work\C#\Tabel\сз работа в вд2.docx");
-                Body body = word.MainDocumentPart.Document.Body;
-                //var mainDocument = word.MainDocumentPart.Document;
-
-                foreach (var docElement in body.Elements())
+                using (var word = WordprocessingDocument.Open(@"D:\Work\C#\Tabel\сз работа в вд.docx", true))
                 {
-                    if (docElement is DocumentFormat.OpenXml.Wordprocessing.Paragraph para)
+                    word.SaveAs(@"D:\Work\C#\Tabel\сз работа в вд2.docx");
+                    Body body = word.MainDocumentPart.Document.Body;
+                    //var mainDocument = word.MainDocumentPart.Document;
+
+                    foreach (var docElement in body.Elements())
                     {
-                        foreach (var run in para.Elements<Run>())
+                        if (docElement is DocumentFormat.OpenXml.Wordprocessing.Paragraph para)
                         {
-                            foreach (var text in run.Elements<Text>())
+                            foreach (var run in para.Elements<Run>())
                             {
-                                if (text.Text.Contains("ДЕНЬ"))
+                                foreach (var text in run.Elements<Text>())
                                 {
-                                    text.Text = text.Text.Replace("ДЕНЬ", "12");
+                                    if (text.Text.Contains("ДЕНЬ"))
+                                    {
+                                        text.Text = text.Text.Replace("ДЕНЬ", "12");
+                                    }
                                 }
                             }
                         }
+
                     }
+                    //var bookMarks = FindBookmarks(word.MainDocumentPart.Document);
 
+                    //foreach (var end in bookMarks)
+                    //{
+                    //    if (end.Key == "День")
+                    //    {
+                    //        var textElement = new Text("12");
+                    //        var runElement = new Run(textElement);
+                    //        end.Value.InsertAfterSelf(runElement);
+                    //    }
+                    //    if (end.Key == "Год")
+                    //    {
+                    //        var textElement = new Text("2022");
+                    //        var runElement = new Run(textElement);
+                    //        end.Value.InsertAfterSelf(runElement);
+                    //    }
+                    //}
+
+
+
+                    word.Close();
                 }
-                //var bookMarks = FindBookmarks(word.MainDocumentPart.Document);
-
-                //foreach (var end in bookMarks)
-                //{
-                //    if (end.Key == "День")
-                //    {
-                //        var textElement = new Text("12");
-                //        var runElement = new Run(textElement);
-                //        end.Value.InsertAfterSelf(runElement);
-                //    }
-                //    if (end.Key == "Год")
-                //    {
-                //        var textElement = new Text("2022");
-                //        var runElement = new Run(textElement);
-                //        end.Value.InsertAfterSelf(runElement);
-                //    }
-                //}
-
-
-
-                word.Close();
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show("Не найден шаблон СЗ","Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 

@@ -40,7 +40,13 @@ namespace Tabel.Models
         public PremiaPrize premiaPrize { get; set; }
 
         [NotMapped]
+        public PremiaQuality premiaQuality { get; set; }
+
+        [NotMapped]
         public decimal? BonusForAll { get; set; }
+
+        [NotMapped]
+        public decimal? QualityTarif { get; set; } = 1000;
 
         public ModPerson()
         {
@@ -53,6 +59,7 @@ namespace Tabel.Models
             premiaTrnasport = new PremiaTransport(this);
             premiaNight = new premiaNight(this);
             premiaPrize = new PremiaPrize(this);
+            premiaQuality = new PremiaQuality(this);
         }
 
 
@@ -81,7 +88,7 @@ namespace Tabel.Models
             + premOffDays.GetPremia()
             + premiaTrnasport.GetPremia()
             + premiaAddWorks.GetPremia()
-            /*+ premiaPrize.GetPremia()*/;
+            + premiaQuality.GetPremia();
 
         //public void UpdateUI()
         //{
