@@ -14,6 +14,7 @@ using Tabel.Infrastructure;
 using Tabel.Models;
 using Tabel.Repository;
 using Tabel.ViewModels.Base;
+using Tabel.Views;
 
 namespace Tabel.ViewModels
 {
@@ -78,37 +79,6 @@ namespace Tabel.ViewModels
 
 
         #region Команды
-        //--------------------------------------------------------------------------------
-        // Команда Создать график
-        //--------------------------------------------------------------------------------
-        //public ICommand CreateCommand => new LambdaCommand(OnCreateCommandExecuted, CanCreateCommand);
-        //private bool CanCreateCommand(object p) => true;
-        //private void OnCreateCommandExecuted(object p)
-        //{
-
-
-        //}
-
-
-
-        //--------------------------------------------------------------------------------
-        // Команда Выбрать тип дня
-        //--------------------------------------------------------------------------------
-        //public ICommand SelectTypeCommand => new LambdaCommand(OnSelectTypeCommandExecuted, CanSelectTypeCommand);
-        //private bool CanSelectTypeCommand(object p) => true;
-        //private void OnSelectTypeCommandExecuted(object p)
-        //{
-        //}
-
-        //--------------------------------------------------------------------------------
-        // Команда Загрузить из производственного календаря
-        //--------------------------------------------------------------------------------
-        //public ICommand LoadDefCommand => new LambdaCommand(OnLoadDefCommandExecuted, CanLoadDefCommand);
-        //private bool CanLoadDefCommand(object p) => true;
-        //private void OnLoadDefCommandExecuted(object p)
-        //{
-
-        //}
 
         //--------------------------------------------------------------------------------
         // Команда Сохранить
@@ -119,6 +89,28 @@ namespace Tabel.ViewModels
         //{
         //    //repoTabel.Save();
         //}
+        //--------------------------------------------------------------------------------
+        // событие закрытия программы
+        //--------------------------------------------------------------------------------
+        public void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            bool isModify = _UCViewModel.ClosingFrom();
+
+            if (isModify == true)
+            {
+                MessageBoxResult res;
+                res = MessageBox.Show("Сохранить измененные данные?", "Предупреждение",
+                    MessageBoxButton.YesNoCancel, MessageBoxImage.Warning);
+
+                if (res == MessageBoxResult.Yes)
+                    _UCViewModel.SaveForm();
+                else if (res == MessageBoxResult.Cancel)
+                {
+                    e.Cancel = true;
+                    return;
+                }
+            }
+        }
 
 
         #endregion
@@ -130,8 +122,10 @@ namespace Tabel.ViewModels
         //--------------------------------------------------------------------------------
         public BasicWindowViewModel() { }
 
-        public BasicWindowViewModel(UserControl control, string title)
+        public BasicWindowViewModel(BasicWindow win,  UserControl control, string title)
         {
+            win.Closing += MainWindow_Closing;
+
             Title = title;
             SourceContent = control;
             _UCViewModel = control.DataContext as IBaseUCViewModel;

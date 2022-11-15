@@ -23,7 +23,7 @@ namespace Tabel.Models
         //private decimal _WhiteHours;
         [NotMapped]
         //public decimal WhiteHours { get => _WhiteHours; set { Set(ref _WhiteHours, value); } }
-        public decimal WhiteHours => (td_Hours - td_Hours2) ?? 0;
+        public decimal WhiteHours => ((td_Hours ?? 0) - (td_Hours2 ?? 0));
 
         public string DayString
         {

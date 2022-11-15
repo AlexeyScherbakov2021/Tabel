@@ -44,6 +44,18 @@ namespace Tabel.ViewModels
         }
 
 
+        public bool ClosingFrom()
+        {
+            return false;
+        }
+
+        public void SaveForm()
+        {
+            repoSmenaPersonal.Save();
+            repoSmena.Save();
+        }
+
+
         #region Команды
         //--------------------------------------------------------------------------------
         // Команда Создать график
@@ -140,8 +152,7 @@ namespace Tabel.ViewModels
         private bool CanSaveCommand(object p) => _SelectedOtdel != null && SmenaShedule != null ;
         private void OnSaveCommandExecuted(object p)
         {
-            repoSmenaPersonal.Save();
-            repoSmena.Save();
+            SaveForm();
         }
 
         //--------------------------------------------------------------------------------

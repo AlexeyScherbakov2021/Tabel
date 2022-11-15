@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using Tabel.Commands;
 using Tabel.Infrastructure;
@@ -34,7 +35,7 @@ namespace Tabel.ViewModels
         private void OnExecSmenaCommandExecuted(object p)
         {
             BasicWindow win = new BasicWindow();
-            BasicWindowViewModel vm = new BasicWindowViewModel(new SmenaUC(), "График смен");
+            BasicWindowViewModel vm = new BasicWindowViewModel(win, new SmenaUC(), "График смен");
             win.DataContext = vm;
             win.ShowDialog();
         }
@@ -58,7 +59,7 @@ namespace Tabel.ViewModels
         private void OnExecTabelCommandExecuted(object p)
         {
             BasicWindow win = new BasicWindow();
-            BasicWindowViewModel vm = new BasicWindowViewModel(new TabelUC(), "Табель");
+            BasicWindowViewModel vm = new BasicWindowViewModel(win, new TabelUC(), "Табель");
             win.DataContext = vm;
             win.ShowDialog();
 
@@ -72,7 +73,7 @@ namespace Tabel.ViewModels
         private void OnExecModCommandExecuted(object p)
         {
             BasicWindow win = new BasicWindow();
-            BasicWindowViewModel vm = new BasicWindowViewModel(new ModUC(), "Модель расчета");
+            BasicWindowViewModel vm = new BasicWindowViewModel(win, new ModUC(), "Модель расчета");
             win.DataContext = vm;
             win.ShowDialog();
         }
@@ -96,7 +97,7 @@ namespace Tabel.ViewModels
         private void OnExecTranspCommandExecuted(object p)
         {
             BasicWindow win = new BasicWindow();
-            BasicWindowViewModel vm = new BasicWindowViewModel(new TransportUC(), "Использование транспорта");
+            BasicWindowViewModel vm = new BasicWindowViewModel(win, new TransportUC(), "Использование транспорта");
             win.DataContext = vm;
             win.ShowDialog();
 

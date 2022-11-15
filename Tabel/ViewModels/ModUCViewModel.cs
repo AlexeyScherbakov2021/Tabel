@@ -191,8 +191,7 @@ namespace Tabel.ViewModels
         private bool CanSaveCommand(object p) => CurrentMod != null && _SelectedOtdel != null;
         private void OnSaveCommandExecuted(object p)
         {
-            repoModPerson.Save();
-            repoModel.Save();
+            SaveForm();
         }
 
 
@@ -333,5 +332,15 @@ namespace Tabel.ViewModels
 
         }
 
+        public bool ClosingFrom()
+        {
+            return false;
+        }
+
+        public void SaveForm()
+        {
+            repoModPerson.Save();
+            repoModel.Save();
+        }
     }
 }

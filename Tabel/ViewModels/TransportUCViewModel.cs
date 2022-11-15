@@ -128,8 +128,7 @@ namespace Tabel.ViewModels
         private bool CanSaveCommand(object p) => _SelectedOtdel != null && Transp != null;
         private void OnSaveCommandExecuted(object p)
         {
-            repoTransPerson.Save();
-            repoTransp.Save();
+            SaveForm();
         }
 
 
@@ -311,6 +310,15 @@ namespace Tabel.ViewModels
 
         }
 
+        public bool ClosingFrom()
+        {
+            return false;
+        }
 
+        public void SaveForm()
+        {
+            repoTransPerson.Save();
+            repoTransp.Save();
+        }
     }
 }

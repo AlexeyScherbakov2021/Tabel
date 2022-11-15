@@ -40,6 +40,7 @@ namespace Tabel.ViewModels
         public Otdel SelectedOtdel { get; set; }
         private int _SelectMonth;
         private int _SelectYear;
+        private bool IsModify = false;
 
         #region Команды
         //--------------------------------------------------------------------------------
@@ -136,6 +137,15 @@ namespace Tabel.ViewModels
 
             ListTabelPerson = new ObservableCollection<TabelPerson>(Tabel.tabelPersons);
 
+            if (ListTabelPerson != null)
+            {
+                foreach (var item in ListTabelPerson)
+                {
+                    foreach (var day in item.TabelDays)
+                        day.PropertyChanged += ListPerson_PropertyChanged;
+                }
+            }
+
             OnPropertyChanged(nameof(ListTabelPerson));
             OnPropertyChanged(nameof(Tabel));
 
@@ -229,11 +239,10 @@ namespace Tabel.ViewModels
         // Команда Сохранить
         //--------------------------------------------------------------------------------
         public ICommand SaveCommand => new LambdaCommand(OnSaveCommandExecuted, CanSaveCommand);
-        private bool CanSaveCommand(object p) => SelectedOtdel != null && Tabel != null;
+        private bool CanSaveCommand(object p) => SelectedOtdel != null && Tabel != null && IsModify;
         private void OnSaveCommandExecuted(object p)
         {
-            repoTabelPerson.Save();
-            repoTabel.Save();
+            SaveForm();
         }
 
         //--------------------------------------------------------------------------------
@@ -405,11 +414,16 @@ namespace Tabel.ViewModels
             if(e.PropertyName == "td_Hours")
             {
                 TabelPerson person = (sender as TabelDay).TabelPerson;
-
                 AnalizeOverWork(person);
+                IsModify = true;
             }
-        }
+            if (e.PropertyName == "td_KindId")
+            {
+                IsModify = true;
+            }
 
+
+        }
 
 
         //--------------------------------------------------------------------------------------
@@ -556,9 +570,28 @@ namespace Tabel.ViewModels
                         item.PrevPermWorkCount++;
                     }
                 }
+                //item.OnPropertyChanged("WhiteHours");
+
             }
         }
 
+        //--------------------------------------------------------------------------------------
+        // Событие закрытия формы
+        //--------------------------------------------------------------------------------------
+        public bool ClosingFrom()
+        {
+            return IsModify;
+        }
 
+
+        //--------------------------------------------------------------------------------------
+        // Запись в базу данных
+        //--------------------------------------------------------------------------------------
+        public void SaveForm()
+        {
+            repoTabelPerson.Save();
+            repoTabel.Save();
+            IsModify = false;
+        }
     }
 }

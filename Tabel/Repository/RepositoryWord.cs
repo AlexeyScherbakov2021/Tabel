@@ -19,8 +19,7 @@ namespace Tabel.Repository
     internal class RepositoryWord
     {
         private string _FileName;
-        private Dictionary<string, string> _Words;
-
+        //private Dictionary<string, string> _Words;
 
         public RepositoryWord(string fileName)
         {
