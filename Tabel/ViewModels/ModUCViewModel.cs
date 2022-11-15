@@ -85,7 +85,7 @@ namespace Tabel.ViewModels
         {
             if(p is int index)
             {
-                if(index == 0)
+                if(index == 0 && ListModPerson != null)
                 {
                     foreach(var item in ListModPerson)
                         item.OnPropertyChanged(nameof(item.Itogo));
@@ -148,6 +148,8 @@ namespace Tabel.ViewModels
                     .ThenByDescending(o => o.Mod.m_month)
                     .FirstOrDefault();
 
+
+                // если был предыдущий месяц, то копируем нужные тарифы
                 if(PrevModPerson != null)
                 {
                     // копирование тарифа бонусов
@@ -177,8 +179,8 @@ namespace Tabel.ViewModels
             premiaTransportViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
             premiaPrizeViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
 
-            OnPropertyChanged(nameof(ListModPerson));
-            OnPropertyChanged(nameof(CurrentMod));
+            //OnPropertyChanged(nameof(ListModPerson));
+            //OnPropertyChanged(nameof(CurrentMod));
 
         }
 
@@ -320,34 +322,10 @@ namespace Tabel.ViewModels
             premiaTransportViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
             premiaPrizeViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
 
-            OnPropertyChanged(nameof(ListModPerson));
-            OnPropertyChanged(nameof(CurrentMod));
+            //OnPropertyChanged(nameof(ListModPerson));
+            //OnPropertyChanged(nameof(CurrentMod));
 
         }
-
-
-        ////-------------------------------------------------------------------------------------------------------
-        //// подгрузка данных из данных по транспорту
-        ////-------------------------------------------------------------------------------------------------------
-        //private void LoadFromTransport()
-        //{
-        //    if (CurrentMod is null)
-        //        return;
-
-        //    Transport Transp;
-
-        //    Transp = repoTransport.Items.AsNoTracking().FirstOrDefault(it => it.tr_Year == _SelectYear
-        //        && it.tr_Month == _SelectMonth
-        //        && it.tr_OtdelId == (_SelectedOtdel.ot_parent ?? _SelectedOtdel.id));
-
-        //    if (ListModPerson is null || Transp is null) return;
-
-        //    foreach (var item in ListModPerson)
-        //    {
-        //        item.premiaTrnasport.Initialize(Transp.id);
-        //    }
-
-        //}
 
     }
 }

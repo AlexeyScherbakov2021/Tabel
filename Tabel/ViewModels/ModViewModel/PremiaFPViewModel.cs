@@ -22,17 +22,21 @@ namespace Tabel.ViewModels.ModViewModel
 
         public void ChangeListPerson(ObservableCollection<ModPerson> listPerson, int Year, int Month, Otdel Otdel)
         {
+
             //_SelectedOtdel = Otdel;
             _SelectMonth = Month;
             _SelectYear = Year;
             ListModPerson = listPerson;
 
-            foreach (var modPerson in ListModPerson)
+            if (ListModPerson != null)
             {
-                // расчет премии из ФП
-                modPerson.premiaFP.Calculation();
-                //рассчет суммарных процентов в премии ФП
-                modPerson.premiaFP.CalcChangeProcent();
+                foreach (var modPerson in ListModPerson)
+                {
+                    // расчет премии из ФП
+                    modPerson.premiaFP.Calculation();
+                    //рассчет суммарных процентов в премии ФП
+                    modPerson.premiaFP.CalcChangeProcent();
+                }
             }
 
             OnPropertyChanged(nameof(ListModPerson));

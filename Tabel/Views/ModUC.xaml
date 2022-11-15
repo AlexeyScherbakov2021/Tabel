@@ -148,7 +148,7 @@
             </TabItem>
 
 
-            <TabItem Visibility="Visible" Background="LightBlue">
+            <TabItem Visibility="Visible" Background="LightBlue" DataContext="{Binding premiaOtdelViewModel}">
                 <TabItem.Header>
                     <TextBlock Text="Премия 2 (по отделу)" Background="LightBlue" Padding="2"/>
                 </TabItem.Header>

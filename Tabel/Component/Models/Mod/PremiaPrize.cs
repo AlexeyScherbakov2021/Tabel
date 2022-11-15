@@ -24,14 +24,5 @@ namespace Tabel.Component.Models.Mod
             Summa = model.Oklad / model.TabelHours * model.OverHours * 2;
         }
 
-        //-------------------------------------------------------------------------------------------------------
-        // Получение итоговой премии
-        //-------------------------------------------------------------------------------------------------------
-        public override decimal? GetPremia()
-        {
-            Calculation();
-            return Summa ?? 0;
-        }
-
     }
 }

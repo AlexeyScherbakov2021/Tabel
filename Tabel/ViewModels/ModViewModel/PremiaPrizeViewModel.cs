@@ -18,14 +18,19 @@ namespace Tabel.ViewModels.ModViewModel
 
         public void ChangeListPerson(ObservableCollection<ModPerson> listPerson, int Year, int Month, Otdel Otdel)
         {
+
             _SelectMonth = Month;
             _SelectYear = Year;
             _SelectedOtdel = Otdel;
             ListModPerson = listPerson;
 
+            if (ListModPerson != null)
+            {
+                foreach (var item in ListModPerson)
+                    item.premiaPrize.Calculation();
+            }
 
             OnPropertyChanged(nameof(ListModPerson));
         }
-
     }
 }

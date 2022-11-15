@@ -56,7 +56,6 @@ namespace Tabel.ViewModels.ModViewModel
 
             foreach (var item in ListModPerson)
             {
-
                 var pers = tabel.tabelPersons.FirstOrDefault(it => it.tp_person_id == item.md_personalId);
                 item.TabelDays = listDays.Count;
                 item.TabelHours = pers.HoursMonth;
@@ -68,7 +67,7 @@ namespace Tabel.ViewModels.ModViewModel
                 int CountWorkDaysPerson = pers.TabelDays.Count(it => it.td_KindId == 1);
                 item.TabelAbsent = CountWorkDays - CountWorkDaysPerson;
                 if (item.TabelAbsent < 0) item.TabelAbsent = 0;
-                item.premiaPrize.Calculation();
+                //item.premiaPrize.Calculation();
 
             }
 

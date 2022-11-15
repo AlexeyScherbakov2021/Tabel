@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Tabel.Infrastructure;
 using Tabel.Models;
 using Tabel.Repository;
+using Tabel.Views;
 
 namespace Tabel.Component.Models.Mod
 {

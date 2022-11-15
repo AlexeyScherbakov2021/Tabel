@@ -43,6 +43,8 @@ namespace Tabel.ViewModels.ModViewModel
         //-------------------------------------------------------------------------------------------------------
         private void LoadFromGeneral()
         {
+            if (ListModPerson is null) return;
+
             RepositoryMSSQL<GenChargMonth> repoGetAll = new RepositoryMSSQL<GenChargMonth>();
             decimal? BonusProc = repoGetAll.Items
                 .FirstOrDefault(it => it.gm_Year == _SelectYear && it.gm_Month == _SelectMonth && it.gm_GenId == (int)EnumKind.BonusProc)?.gm_Value;
