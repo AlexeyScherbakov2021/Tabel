@@ -120,7 +120,8 @@
             </TabItem>
 
 
-            <TabItem Visibility="Visible" Background="LightGreen" DataContext="{Binding premiaFPViewModel}">
+            <TabItem Visibility="Visible" Background="LightGreen" DataContext="{Binding premiaFPViewModel}"
+                     ToolTip="Для рабочего персонала">
                 <TabItem.Header>
                     <TextBlock Text="Премия 2 (по выработке)"  Background="LightGreen" Padding="2"/>
                 </TabItem.Header>
@@ -148,7 +149,8 @@
             </TabItem>
 
 
-            <TabItem Visibility="Visible" Background="LightBlue" DataContext="{Binding premiaOtdelViewModel}">
+            <TabItem Visibility="Visible" Background="LightBlue" DataContext="{Binding premiaOtdelViewModel}"
+                     ToolTip="Для ИТР">
                 <TabItem.Header>
                     <TextBlock Text="Премия 2 (по отделу)" Background="LightBlue" Padding="2"/>
                 </TabItem.Header>
@@ -230,7 +232,7 @@
 
             </TabItem>
 
-            <TabItem Visibility="Visible" Background="LightGreen" DataContext="{Binding premiaAddWorksViewModel}" >
+            <TabItem Visibility="Visible" Background="LightGreen" DataContext="{Binding premiaAddWorksViewModel}" ToolTip="Для рабочего персонала">
                 <TabItem.Header>
                     <TextBlock Text="Доп. работы" Background="LightGreen" Padding="2"/>
                 </TabItem.Header>

@@ -234,6 +234,7 @@ namespace Tabel.ViewModels
                 foreach (var tabel in ListTabel)
                 {
                     List<TabelPerson> listPerson = repoTabelPerson.Items
+                        .AsNoTracking()
                         .Where(it => it.tp_tabel_id == tabel.id)
                         .OrderBy(o => o.person.p_lastname)
                         .ThenBy(o => o.person.p_name).ToList();
@@ -246,10 +247,15 @@ namespace Tabel.ViewModels
                     return item1.person.p_lastname.CompareTo(item2.person.p_lastname);
                 });
 
+                List<ModPerson> ListModAllPerson = repoModPerson.Items
+                    .AsNoTracking()
+                    .Where(it => it.Mod.m_year == _SelectYear && it.Mod.m_month == _SelectMonth)
+                    .ToList();
+
                 // берем часы переработки
                 FormExport fomExport = new FormExport();
 
-                fomExport.ListPersonToListExport(ListTabelPerson, ListModPerson);
+                fomExport.ListPersonToListExport(ListTabelPerson, ListModAllPerson);
 
                 RepositoryCSV repoFile = new RepositoryCSV(fomExport);
                 repoFile.SaveFile(_SelectYear, _SelectMonth);

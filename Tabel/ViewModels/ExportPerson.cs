@@ -59,13 +59,23 @@ namespace Tabel.ViewModels
                 ModPerson mPerson = ListModPerson.FirstOrDefault(it => it.person.id == item.person.id);
                 if (mPerson != null)
                 {
+                    mPerson.TabelHours = item.HoursMonth;
+                    mPerson.OverHours = item.OverWork.Value;
+                    mPerson.Oklad = mPerson.person.category is null 
+                        ? 0 
+                        : mPerson.TabelHours * item.person.category.cat_tarif.Value * mPerson.person.p_stavka;
                     PremiaPrize prem = new PremiaPrize(mPerson);
+                    prem.Calculation();
                     summa = prem.GetPremia().Value;
                     //summa = mPerson.Oklad / item.HoursMonth * (item.OverWork ?? 0) * 2;
+
+                    if (summa > 0)
+                    {
+                        ExportPerson p = new ExportPerson(item, summa);
+                        ListExportPerson.Add(p);
+                    }
                 }
 
-                ExportPerson p = new ExportPerson(item, summa);
-                ListExportPerson.Add(p);
             }
 
         }
