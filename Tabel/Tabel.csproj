@@ -159,6 +159,16 @@
     <Compile Include="ViewModels\DataSummaryViewModel.cs" />
     <Compile Include="ViewModels\ExportPerson.cs" />
     <Compile Include="ViewModels\ModUCViewModel.cs" />
+    <Compile Include="ViewModels\ModViewModel\IModViewModel.cs" />
+    <Compile Include="ViewModels\ModViewModel\ModMainViewModel.cs" />
+    <Compile Include="ViewModels\ModViewModel\PremiaAddWorksViewModel.cs" />
+    <Compile Include="ViewModels\ModViewModel\PremiaBonusViewModel.cs" />
+    <Compile Include="ViewModels\ModViewModel\PremiaFPViewModel.cs" />
+    <Compile Include="ViewModels\ModViewModel\PremiaKvalifViewModel.cs" />
+    <Compile Include="ViewModels\ModViewModel\PremiaOtdelViewModel.cs" />
+    <Compile Include="ViewModels\ModViewModel\PremiaPrizeViewModel.cs" />
+    <Compile Include="ViewModels\ModViewModel\PremiaQualityViewModel.cs" />
+    <Compile Include="ViewModels\ModViewModel\PremiaTransportViewModel.cs" />
     <Compile Include="ViewModels\SelectOtdelWindowViewModel.cs" />
     <Compile Include="ViewModels\Admins\UserWindowViewModel.cs" />
     <Compile Include="ViewModels\Admins\YearCalendarViewModel.cs" />

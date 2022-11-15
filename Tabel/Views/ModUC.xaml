@@ -1,4 +1,4 @@
-﻿<UserControl x:Name="userControl" x:Class="Tabel.Views.ModUC"
+﻿<UserControl
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -9,20 +9,20 @@
             xmlns:vm="clr-namespace:Tabel.ViewModels"
              xmlns:conv="clr-namespace:Tabel.Infrastructure.Converters"
             xmlns:ext="clr-namespace:Tabel.Infrastructure.Extend"
+             xmlns:ModViewModel="clr-namespace:Tabel.ViewModels.ModViewModel" x:Name="userControl" x:Class="Tabel.Views.ModUC"
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="1200">
-    <UserControl.DataContext>
-        <vm:ModUCViewModel/>
-    </UserControl.DataContext>
     <UserControl.Resources>
 
         <conv:AddWorksConverter x:Key="AddWorksConverter"/>
         <vm:ModUCViewModel x:Key="context"/>
 
-        <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource StyleCheckComboBox }">
-        </Style>
+        <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource StyleCheckComboBox}"/>
 
     </UserControl.Resources>
+    <UserControl.DataContext>
+        <vm:ModUCViewModel/>
+    </UserControl.DataContext>
     <DockPanel>
         <ToolBarPanel DockPanel.Dock="Top" Orientation="Horizontal" Height="30" Margin="10,8,0,4">
             <Button  Command="{Binding CreateCommand}" Margin="3" Style="{StaticResource ButtonStyleShadow}" ToolTip="Создать">
@@ -46,13 +46,14 @@
         </ToolBarPanel>
 
 
-        <TabControl x:Name="tab">
+        <TabControl x:Name="tab" >
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="SelectionChanged">
                     <i:InvokeCommandAction Command="{Binding TabChangedCommand}" CommandParameter="{Binding SelectedIndex, ElementName=tab}"/>
                 </i:EventTrigger>
             </i:Interaction.Triggers>
-            <TabItem Header="По табелю">
+            
+            <TabItem Header="По табелю" DataContext="{Binding modMainViewModel}">
                 <DockPanel  Background="Gainsboro">
                     <Grid DockPanel.Dock="Top" Margin="8,0" Height="30">
                         <Grid.ColumnDefinitions>
@@ -82,7 +83,7 @@
                 </DockPanel>
             </TabItem>
 
-            <TabItem Header="Премия 1 (бонус)">
+            <TabItem Header="Премия 1 (бонус)" DataContext="{Binding premiaBonusViewModel}">
                 <DockPanel  Background="Gainsboro">
                     <Grid DockPanel.Dock="Top" Margin="8,0" Height="30">
                         <Grid.ColumnDefinitions>
@@ -91,7 +92,6 @@
                             <ColumnDefinition Width="{Binding ActualWidth, ElementName=col3}"/>
                             <ColumnDefinition Width="{Binding ActualWidth, ElementName=col4}"/>
                             <ColumnDefinition Width="{Binding ActualWidth, ElementName=col5}"/>
-                            <!--<ColumnDefinition Width="*"/>-->
                         </Grid.ColumnDefinitions>
                         <Button Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" Width="40"
                                 Command="{Binding CheckCommand}" CommandParameter="{Binding ElementName=dgBonus}"
@@ -99,12 +99,6 @@
                                 Style="{StaticResource ButtonStyleShadow}">
                             <CheckBox IsChecked="{Binding IsCheckBonus}"/>
                         </Button>
-                        <!--<Button  Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" Width="60" 
-                                 HorizontalContentAlignment="Left" 
-                                Command="{Binding SetSummaCommand}" CommandParameter="{Binding ElementName=dgBonus}"
-                                 Style="{StaticResource ButtonStyleShadow}">
-                            <TextBox Text="{Binding SetProcPrem, Mode=OneWayToSource}" Width="35"/>
-                        </Button>-->
                         <Button  Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Center" Width="80" 
                                  HorizontalContentAlignment="Left"
                                  Command="{Binding SetMaxSummaCommand}" CommandParameter="{Binding ElementName=dgBonus}"
@@ -117,7 +111,7 @@
                             <DataGridTextColumn x:Name="col1" Header="ФИО" Binding="{Binding person.FIO}" IsReadOnly="True"/>
                             <DataGridTextColumn x:Name="col2" Header="Должность" Binding="{Binding person.p_profession}" IsReadOnly="True"/>
                             <DataGridCheckBoxColumn x:Name="col3" Header="Выполнено" Binding="{Binding md_bonus_exec, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                            <DataGridTextColumn x:Name="col4" Header="%" MinWidth="80" Binding="{Binding BonusForAll, StringFormat=0.#}" IsReadOnly="True"  Width="50" CellStyle="{StaticResource CellRight}"/>
+                            <DataGridTextColumn x:Name="col4" Header="%" MinWidth="80" Binding="{Binding premiaBonus.BonusForAll, StringFormat=0.#}" IsReadOnly="True"  Width="50" CellStyle="{StaticResource CellRight}"/>
                             <DataGridTextColumn x:Name="col5" MinWidth="100" Header="Макс. бонус" Binding="{Binding md_bonus_max, Mode=TwoWay, StringFormat=N0}"  CellStyle="{StaticResource CellRight}"/>
                             <DataGridTextColumn Header="Премия" Binding="{Binding premiaBonus.Summa, StringFormat=N2}" FontWeight="Bold" Width="80" IsReadOnly="True" CellStyle="{StaticResource CellRight}"/>
                         </DataGrid.Columns>
@@ -126,7 +120,7 @@
             </TabItem>
 
 
-            <TabItem Visibility="Visible" Background="LightGreen">
+            <TabItem Visibility="Visible" Background="LightGreen" DataContext="{Binding premiaFPViewModel}">
                 <TabItem.Header>
                     <TextBlock Text="Премия 2 (по выработке)"  Background="LightGreen" Padding="2"/>
                 </TabItem.Header>
@@ -179,7 +173,7 @@
             </TabItem>
 
 
-            <TabItem Header="Премия 3 (стимуляция)">
+            <TabItem Header="Премия 3 (стимуляция)" DataContext="{Binding premiaOtdelViewModel}">
                 <DockPanel  Background="Gainsboro">
                     <Grid DockPanel.Dock="Top" Margin="8,0" Height="30">
                         <Grid.ColumnDefinitions>
@@ -199,7 +193,7 @@
                 </DockPanel>
             </TabItem>
 
-            <TabItem Header="Премия 4 (кач. труд)">
+            <TabItem Header="Премия 4 (кач. труд)" DataContext="{Binding premiaQualityViewModel}">
                 <DockPanel  Background="Gainsboro">
                     <Grid DockPanel.Dock="Top" Margin="8,0" Height="30">
                         <Grid.ColumnDefinitions>
@@ -236,7 +230,7 @@
 
             </TabItem>
 
-            <TabItem Visibility="Visible" Background="LightGreen" >
+            <TabItem Visibility="Visible" Background="LightGreen" DataContext="{Binding premiaAddWorksViewModel}" >
                 <TabItem.Header>
                     <TextBlock Text="Доп. работы" Background="LightGreen" Padding="2"/>
                 </TabItem.Header>
@@ -273,7 +267,7 @@
                                                 <ColumnDefinition MinWidth="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}" Width="0"/>
                                             </Grid.ColumnDefinitions>
                                             <Popup IsOpen="{Binding IsChecked, ElementName=toggle}" Grid.ColumnSpan="2" >
-                                                <ListBox ItemsSource="{Binding DataContext.ListWorks, ElementName=userControl}"  >
+                                                <ListBox ItemsSource="{Binding DataContext.premiaAddWorksViewModel.ListWorks, ElementName=userControl}"  >
                                                     <ListBox.ItemTemplate>
                                                         <DataTemplate>
                                                             <StackPanel Orientation="Horizontal">
@@ -284,9 +278,8 @@
                                                 </ListBox>
                                             </Popup>
                                             <ToggleButton x:Name="toggle" DockPanel.Dock="Right" Grid.ColumnSpan="2" 
-                                                          IsChecked="{Binding DataContext.IsCheckedButton, ElementName=userControl}"
-                                                          Style="{StaticResource ComboBoxToggleButton}">
-                                            </ToggleButton>
+                                                          IsChecked="{Binding DataContext.premiaAddWorksViewModel.IsCheckedButton, ElementName=userControl}"
+                                                          Style="{StaticResource ComboBoxToggleButton}"/>
                                             <TextBlock Text="{Binding ListAddWorks, Converter={StaticResource AddWorksConverter}}" IsHitTestVisible="False" Foreground="Black"/>
                                         </Grid>
                                     </DataTemplate>
@@ -298,7 +291,7 @@
                 </DockPanel>
             </TabItem>
 
-            <TabItem Header="Доставка">
+            <TabItem Header="Доставка" DataContext="{Binding premiaTransportViewModel}">
                 <DockPanel  Background="Gainsboro">
                     <Grid DockPanel.Dock="Top" Margin="8,0" Height="30">
                         <Grid.ColumnDefinitions>
@@ -338,7 +331,7 @@
 
             </TabItem>-->
 
-            <TabItem Header="За добросовестный труд">
+            <TabItem Header="За добросовестный труд" DataContext="{Binding premiaPrizeViewModel}">
                 <DockPanel  Background="Gainsboro">
                     <Grid DockPanel.Dock="Top" Margin="8,0" Height="30">
                         <Grid.ColumnDefinitions>

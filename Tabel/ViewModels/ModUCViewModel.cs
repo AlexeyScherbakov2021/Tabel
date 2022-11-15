@@ -18,18 +18,28 @@ using Tabel.Infrastructure;
 using Tabel.Models;
 using Tabel.Repository;
 using Tabel.ViewModels.Base;
+using Tabel.ViewModels.ModViewModel;
 
 namespace Tabel.ViewModels
 {
     internal class ModUCViewModel : ViewModel, IBaseUCViewModel
     {
         private readonly RepositoryMSSQL<ModPerson> repoModPerson = AllRepo.GetRepoModPerson();
-        private readonly RepositoryMSSQL<AddWorks> repoAddWorks = AllRepo.GetRepoAddWorks();
-        private readonly RepositoryMSSQL<Transport> repoTransport = AllRepo.GetRepoTransport();
+        //private readonly RepositoryMSSQL<Transport> repoTransport = AllRepo.GetRepoTransport();
         private RepositoryMSSQL<Personal> repoPersonal = AllRepo.GetRepoPersonal();
         private readonly RepositoryMSSQL<WorkTabel> repoTabel = AllRepo.GetRepoTabel();
         private readonly RepositoryMSSQL<Mod> repoModel = AllRepo.GetRepoModel();
-        private readonly RepositoryMSSQL<Smena> repoSmena = AllRepo.GetRepoSmena();
+
+        public PremiaBonusViewModel premiaBonusViewModel { get; set; }
+        public ModMainViewModel modMainViewModel { get; set; }
+        public PremiaFPViewModel premiaFPViewModel { get; set; }
+        public PremiaKvalifViewModel premiaKvalifViewModel { get; set; }
+        public PremiaOtdelViewModel premiaOtdelViewModel { get; set; }
+        public PremiaQualityViewModel premiaQualityViewModel { get; set; }
+        public PremiaAddWorksViewModel premiaAddWorksViewModel { get; set; }
+        public PremiaTransportViewModel premiaTransportViewModel { get; set; }
+        public PremiaPrizeViewModel premiaPrizeViewModel { get; set; }
+
 
         private Otdel _SelectedOtdel;
         private int _SelectMonth;
@@ -38,47 +48,31 @@ namespace Tabel.ViewModels
         public Visibility IsVisibleITR { get; private set; }
         public Visibility IsVisibleNoITR { get; private set; }
 
-        public bool IsCheckBonus { get; set; }
-        public bool IsCheckQuality { get; set; }
         public decimal SetProcPrem { get; set; }
-        public decimal SetMaxPrem { get; set; }
 
         public ObservableCollection<ModPerson> ListModPerson { get; set; }
 
-        public List<AddWorks> ListWorks { get; set; }
 
         public Mod CurrentMod { get; set; }
 
-        private bool _IsCheckedButton;
-        public bool IsCheckedButton
+        //-------------------------------------------------------------------------------------------------------
+        // конструктор
+        //-------------------------------------------------------------------------------------------------------
+        public ModUCViewModel()
         {
-            get => _IsCheckedButton;
-            set
-            {
-                _IsCheckedButton = value;
-                if(!value)
-                {
-                    GetWorksFromPerson(_SelectedPerson, ListWorks);
-                }
-            }
+            modMainViewModel = new ModMainViewModel();
+            premiaBonusViewModel = new PremiaBonusViewModel();
+            premiaFPViewModel = new PremiaFPViewModel();
+            premiaKvalifViewModel = new PremiaKvalifViewModel();
+            premiaOtdelViewModel = new PremiaOtdelViewModel();
+            premiaQualityViewModel = new PremiaQualityViewModel();
+            premiaAddWorksViewModel = new PremiaAddWorksViewModel();
+            premiaTransportViewModel = new PremiaTransportViewModel();
+            premiaPrizeViewModel = new PremiaPrizeViewModel();
+
+            DateTime _CurrentDate = DateTime.Now;
+
         }
-
-
-        private ModPerson _SelectedPerson;
-        public ModPerson SelectedPerson
-        {
-            get => _SelectedPerson;
-            set
-            {
-                if (_SelectedPerson == value) return;
-
-                GetWorksFromPerson(_SelectedPerson, ListWorks);
-                _SelectedPerson = value;
-                SetWorksToPerson(_SelectedPerson, ListWorks);
-
-            }
-        }
-
 
         #region Команды
 
@@ -133,11 +127,6 @@ namespace Tabel.ViewModels
                 .OrderBy(o => o.p_lastname)
                 .ThenBy(o => o.p_name);
 
-
-            // получение сриска сотрудников прошлого периода
-            //List<ModPerson> ListPrevModPerson = 
-
-;
             foreach (var pers in persons)
             {
                 ModPerson newPerson = new ModPerson();
@@ -177,10 +166,16 @@ namespace Tabel.ViewModels
                 .FirstOrDefault();
 
             ListModPerson = new ObservableCollection<ModPerson>(CurrentMod.ModPersons);
-            LoadFromTabel();
-            LoadFromSmena();
-            LoadFromTransport();
-            LoadFromGeneral();
+
+            modMainViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
+            premiaBonusViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
+            premiaFPViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
+            premiaKvalifViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
+            premiaOtdelViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
+            premiaQualityViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
+            premiaAddWorksViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
+            premiaTransportViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
+            premiaPrizeViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
 
             OnPropertyChanged(nameof(ListModPerson));
             OnPropertyChanged(nameof(CurrentMod));
@@ -196,79 +191,26 @@ namespace Tabel.ViewModels
         {
             repoModPerson.Save();
             repoModel.Save();
-            //repoFP.Save();
         }
 
-        //--------------------------------------------------------------------------------
-        // Команда Отметить выбранные
-        //--------------------------------------------------------------------------------
-        public ICommand CheckCommand => new LambdaCommand(OnCheckCommandExecuted, CanCheckCommand);
-        private bool CanCheckCommand(object p) => true;
-        private void OnCheckCommandExecuted(object p)
-        {
-            if( p is DataGrid dg)
-            {
-                foreach (ModPerson item in dg.SelectedItems)
-                {
-                    item.md_bonus_exec = IsCheckBonus;
-                    item.OnPropertyChanged(nameof(item.md_bonus_exec));
-                }
-            }
 
-        }
-
-        //--------------------------------------------------------------------------------
-        // Команда Отметить выбранные за качество
-        //--------------------------------------------------------------------------------
-        public ICommand CheckQualCommand => new LambdaCommand(OnCheckQualCommandExecuted, CanCheckQualCommand);
-        private bool CanCheckQualCommand(object p) => true;
-        private void OnCheckQualCommandExecuted(object p)
-        {
-            if( p is DataGrid dg)
-            {
-                foreach (ModPerson item in dg.SelectedItems)
-                {
-                    item.md_quality_check = IsCheckQuality;
-                    item.OnPropertyChanged(nameof(item.md_quality_check));
-                }
-            }
-        }
-
-        //--------------------------------------------------------------------------------
-        // Команда Применить сумму к выбранным
-        //--------------------------------------------------------------------------------
-        //public ICommand SetSummaCommand => new LambdaCommand(OnSetSummaCommandExecuted, CanSetSummaCommand);
-        //private bool CanSetSummaCommand(object p) => true;
-        //private void OnSetSummaCommandExecuted(object p)
+        ////--------------------------------------------------------------------------------
+        //// Команда Отметить выбранные за качество
+        ////--------------------------------------------------------------------------------
+        //public ICommand CheckQualCommand => new LambdaCommand(OnCheckQualCommandExecuted, CanCheckQualCommand);
+        //private bool CanCheckQualCommand(object p) => true;
+        //private void OnCheckQualCommandExecuted(object p)
         //{
         //    if( p is DataGrid dg)
         //    {
         //        foreach (ModPerson item in dg.SelectedItems)
         //        {
-        //            item.md_bonus_proc = SetProcPrem;
-        //            item.OnPropertyChanged(nameof(item.md_bonus_proc));
+        //            item.md_quality_check = IsCheckQuality;
+        //            item.OnPropertyChanged(nameof(item.md_quality_check));
         //        }
         //    }
-
         //}
 
-        //--------------------------------------------------------------------------------
-        // Команда Применить сумму к выбранным
-        //--------------------------------------------------------------------------------
-        public ICommand SetMaxSummaCommand => new LambdaCommand(OnSetMaxSummaCommandExecuted, CanSetMaxSummaCommand);
-        private bool CanSetMaxSummaCommand(object p) => true;
-        private void OnSetMaxSummaCommandExecuted(object p)
-        {
-            if( p is DataGrid dg)
-            {
-                foreach (ModPerson item in dg.SelectedItems)
-                {
-                    item.md_bonus_max = SetMaxPrem;
-                    item.OnPropertyChanged(nameof(item.md_bonus_max));
-                }
-            }
-
-        }
 
         //--------------------------------------------------------------------------------
         // Команда Экспорт в 1С
@@ -317,18 +259,6 @@ namespace Tabel.ViewModels
 
 
         //-------------------------------------------------------------------------------------------------------
-        // конструктор
-        //-------------------------------------------------------------------------------------------------------
-        public ModUCViewModel()
-        {
-            DateTime _CurrentDate = DateTime.Now;
-            repoAddWorks = AllRepo.GetRepoAddWorks();
-            ListWorks = repoAddWorks.Items.ToList();
-
-        }
-
-
-        //-------------------------------------------------------------------------------------------------------
         // загрузка выбранных данных
         //-------------------------------------------------------------------------------------------------------
         public void OtdelChanged(Otdel SelectOtdel, int Year, int Month)
@@ -337,19 +267,19 @@ namespace Tabel.ViewModels
             _SelectYear = Year;
             _SelectedOtdel = SelectOtdel;
 
-             if(_SelectedOtdel?.ot_itr == 1)
-             {
-                IsVisibleITR = Visibility.Visible;
-                IsVisibleNoITR = Visibility.Collapsed;
-             }
-             else
-             {
-                IsVisibleNoITR = Visibility.Visible;
-                IsVisibleITR = Visibility.Collapsed;
-             }
+             //if(_SelectedOtdel?.ot_itr == 1)
+             //{
+             //   IsVisibleITR = Visibility.Visible;
+             //   IsVisibleNoITR = Visibility.Collapsed;
+             //}
+             //else
+             //{
+             //   IsVisibleNoITR = Visibility.Visible;
+             //   IsVisibleITR = Visibility.Collapsed;
+             //}
 
-            OnPropertyChanged(nameof(IsVisibleITR));
-            OnPropertyChanged(nameof(IsVisibleNoITR));
+            //OnPropertyChanged(nameof(IsVisibleITR));
+            //OnPropertyChanged(nameof(IsVisibleNoITR));
 
             if (SelectOtdel is null) return;
 
@@ -380,165 +310,44 @@ namespace Tabel.ViewModels
                         );
             }
 
-            if (CurrentMod != null)
-            {
-                LoadFromTabel();
-                LoadFromSmena();
-                LoadFromTransport();
-                LoadFromGeneral();
+            modMainViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
+            premiaBonusViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
+            premiaFPViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
+            premiaKvalifViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
+            premiaOtdelViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
+            premiaQualityViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
+            premiaAddWorksViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
+            premiaTransportViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
+            premiaPrizeViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
 
-                // Подписка на изменение элеменов списка сотрудников
-                foreach (var modPerson in ListModPerson)
-                {
-                    // расчет премии из ФП
-                    modPerson.premiaFP.Calculation();
-                    //рассчет суммарных процентов в премии ФП
-                    modPerson.premiaFP.CalcChangeProcent();
-                    // расчет премии бонусов
-                    modPerson.premiaBonus.Calculation();
-                }
-            }
             OnPropertyChanged(nameof(ListModPerson));
             OnPropertyChanged(nameof(CurrentMod));
 
         }
 
-        //-------------------------------------------------------------------------------------------------------
-        // подгрузка данных общего расчета 
-        //-------------------------------------------------------------------------------------------------------
-        private void LoadFromGeneral()
-        {
-            RepositoryMSSQL<GenChargMonth> repoGetAll = new RepositoryMSSQL<GenChargMonth>();
-            decimal? BonusProc = repoGetAll.Items
-                .FirstOrDefault(it => it.gm_Year == _SelectYear && it.gm_Month == _SelectMonth && it.gm_GenId == (int)EnumKind.BonusProc)?.gm_Value;
 
-            foreach (var modPerson in ListModPerson)
-            {
-                modPerson.BonusForAll = BonusProc;
-            }
+        ////-------------------------------------------------------------------------------------------------------
+        //// подгрузка данных из данных по транспорту
+        ////-------------------------------------------------------------------------------------------------------
+        //private void LoadFromTransport()
+        //{
+        //    if (CurrentMod is null)
+        //        return;
 
-        }
+        //    Transport Transp;
 
+        //    Transp = repoTransport.Items.AsNoTracking().FirstOrDefault(it => it.tr_Year == _SelectYear
+        //        && it.tr_Month == _SelectMonth
+        //        && it.tr_OtdelId == (_SelectedOtdel.ot_parent ?? _SelectedOtdel.id));
 
-        //-------------------------------------------------------------------------------------------------------
-        // подгрузка данных из данных по транспорту
-        //-------------------------------------------------------------------------------------------------------
-        private void LoadFromTransport()
-        {
-            if (CurrentMod is null)
-                return;
+        //    if (ListModPerson is null || Transp is null) return;
 
-            Transport Transp;
+        //    foreach (var item in ListModPerson)
+        //    {
+        //        item.premiaTrnasport.Initialize(Transp.id);
+        //    }
 
-            Transp = repoTransport.Items.AsNoTracking().FirstOrDefault(it => it.tr_Year == _SelectYear
-                && it.tr_Month == _SelectMonth
-                && it.tr_OtdelId == (_SelectedOtdel.ot_parent ?? _SelectedOtdel.id));
-
-            if (ListModPerson is null || Transp is null) return;
-
-            foreach (var item in ListModPerson)
-            {
-                item.premiaTrnasport.Initialize(Transp.id);
-            }
-
-        }
-
-        //-------------------------------------------------------------------------------------------------------
-        // подгрузка данных из табеля
-        //-------------------------------------------------------------------------------------------------------
-        private void LoadFromTabel()
-        {
-            if (CurrentMod is null)
-                return;
-
-            WorkTabel tabel = repoTabel.Items.AsNoTracking().FirstOrDefault(it => it.t_year == _SelectYear
-                && it.t_month == _SelectMonth
-                && it.t_otdel_id == (_SelectedOtdel.ot_parent ?? _SelectedOtdel.id));
-
-            if (ListModPerson is null || tabel is null) return;
-
-            // получение количества рабочих дней в указанном месяце
-            RepositoryCalendar repoCal = AllRepo.GetRepoCalendar();
-            var listDays = repoCal.GetListDays(_SelectYear, _SelectMonth);
-            int CountWorkDays = listDays.Count(it => it.KindDay != TypeDays.Holyday);
-
-            foreach (var item in ListModPerson)
-            {
-
-                var pers = tabel.tabelPersons.FirstOrDefault(it => it.tp_person_id == item.md_personalId);
-                item.TabelDays = listDays.Count;
-                item.TabelHours = pers.HoursMonth;
-                item.TabelWorkOffDay = pers.WorkedOffDays;
-                item.OverHours = pers.OverWork ?? 0;
-                //item.DayOffSumma = item.TabelWorkOffDay * item.md_tarif_offDay;
-                item.Oklad = item.person.category is null ? 0 : item.TabelHours * item.person.category.cat_tarif.Value * item.person.p_stavka;
-
-                int CountWorkDaysPerson = pers.TabelDays.Count(it => it.td_KindId == 1);
-                item.TabelAbsent = CountWorkDays - CountWorkDaysPerson ;
-                if (item.TabelAbsent < 0) item.TabelAbsent = 0;
-                item.premiaPrize.Calculation();
-
-            }
-
-        }
-
-        //-------------------------------------------------------------------------------------------------------
-        // подгрузка данных из графика смен
-        //-------------------------------------------------------------------------------------------------------
-        private void LoadFromSmena()
-        {
-            if (CurrentMod is null)
-                return;
-
-            var smena = repoSmena.Items.AsNoTracking().FirstOrDefault(it => it.sm_Year == _SelectYear
-                && it.sm_Month == _SelectMonth
-                && it.sm_OtdelId == (_SelectedOtdel.ot_parent ?? _SelectedOtdel.id));
-
-            if (ListModPerson is null || smena is null) return;
-
-            foreach (var item in ListModPerson)
-            {
-                item.premiaNight.Initialize(smena.id);
-            }
-
-        }
-
-
-        //--------------------------------------------------------------------------------
-        // Отметка в списке работ для сотрудника
-        //--------------------------------------------------------------------------------
-        private void SetWorksToPerson(ModPerson person, ICollection<AddWorks> ListWorks)
-        {
-            if (person is null || ListWorks is null) return;
-
-            foreach (AddWorks work in ListWorks)
-            {
-                work.IsChecked = person.ListAddWorks.Any(it => it.id == work.id);
-                work.OnPropertyChanged(nameof(work.IsChecked));
-            }
-
-        }
-
-        //--------------------------------------------------------------------------------
-        // Получение работ для сотрудника
-        //--------------------------------------------------------------------------------
-        private void GetWorksFromPerson(ModPerson person, ICollection<AddWorks> ListWorks)
-        {
-            if (person is null || ListWorks is null) return;
-
-            foreach (AddWorks work in ListWorks)
-            {
-                if (work.IsChecked)
-                    person.ListAddWorks.Add(work);
-                else
-                    person.ListAddWorks.Remove(work);
-            }
-
-            person.OnPropertyChanged(nameof(person.ListAddWorks));
-            //person.UpdateUI();
-
-        }
-
+        //}
 
     }
 }

@@ -16,10 +16,6 @@ namespace Tabel.Component.Models
         private decimal? _SummaHoursFP;
         public decimal? SummaHoursFP { get => _SummaHoursFP; set { Set(ref _SummaHoursFP, value); } }
         
-        // рассчетная сумма
-        //private decimal? _SummaPremFP;
-        //public decimal? SummaPremFP { get => _SummaPremFP; set { Set(ref _SummaPremFP, value); } }
-
         // суммарный процент группы
         private decimal? _ProcGroup;
         public decimal? ProcGroup { get => _ProcGroup; set { Set(ref _ProcGroup, value); } }

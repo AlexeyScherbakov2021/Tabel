@@ -9,6 +9,19 @@ namespace Tabel.Component.Models.Mod
 {
     public class PremiaBonus : BasePremia, IDisposable
     {
+        private decimal? _BonusForAll;
+        public decimal? BonusForAll
+        { 
+            get => _BonusForAll; 
+            set
+            {
+                if (_BonusForAll == value) return;
+                _BonusForAll = value;
+                Calculation();
+            }
+        }
+
+
         //-------------------------------------------------------------------------------------------------------
         // Конструктор
         //-------------------------------------------------------------------------------------------------------
@@ -34,7 +47,7 @@ namespace Tabel.Component.Models.Mod
             switch (e.PropertyName)
             {
                 case "md_bonus_exec":
-                case "BonusForAll":
+                //case "BonusForAll":
                 case "md_bonus_max":
                     Calculation();
                     break;
@@ -49,8 +62,8 @@ namespace Tabel.Component.Models.Mod
         {
             Summa = (model.TabelDays == 0 || !model.md_bonus_exec) 
                 ? null 
-                : model.md_bonus_max * model.BonusForAll / 100 * (model.TabelDays - model.TabelAbsent) / model.TabelDays;
-        }
+                : model.md_bonus_max * BonusForAll / 100 * (model.TabelDays - model.TabelAbsent) / model.TabelDays;
 
+        }
     }
 }

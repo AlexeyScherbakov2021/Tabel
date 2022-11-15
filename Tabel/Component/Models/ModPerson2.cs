@@ -42,8 +42,8 @@ namespace Tabel.Models
         [NotMapped]
         public PremiaQuality premiaQuality { get; set; }
 
-        [NotMapped]
-        public decimal? BonusForAll { get; set; }
+        //[NotMapped]
+        //public decimal? BonusForAll { get; set; }
 
         [NotMapped]
         public decimal? QualityTarif { get; set; } = 1000;
