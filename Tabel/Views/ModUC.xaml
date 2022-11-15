@@ -126,7 +126,10 @@
             </TabItem>
 
 
-            <TabItem Header="Премия 2 (по выработке)" Visibility="{Binding IsVisibleNoITR}">
+            <TabItem Visibility="Visible" Background="LightGreen">
+                <TabItem.Header>
+                    <TextBlock Text="Премия 2 (по выработке)"  Background="LightGreen" Padding="2"/>
+                </TabItem.Header>
                 <DockPanel  Background="Gainsboro">
                     <Grid DockPanel.Dock="Top" Margin="8,0" Height="30">
                         <Grid.ColumnDefinitions>
@@ -151,7 +154,10 @@
             </TabItem>
 
 
-            <TabItem Header="Премия 2 (по отделу)"  Visibility="{Binding IsVisibleITR}">
+            <TabItem Visibility="Visible" Background="LightBlue">
+                <TabItem.Header>
+                    <TextBlock Text="Премия 2 (по отделу)" Background="LightBlue" Padding="2"/>
+                </TabItem.Header>
                 <DockPanel  Background="Gainsboro">
                     <Grid DockPanel.Dock="Top" Margin="8,0" Height="30">
                         <Grid.ColumnDefinitions>
@@ -230,7 +236,11 @@
 
             </TabItem>
 
-            <TabItem Header="Доп. работы" Visibility="{Binding IsVisibleNoITR}">
+            <TabItem Visibility="Visible" Background="LightGreen" >
+                <TabItem.Header>
+                    <TextBlock Text="Доп. работы" Background="LightGreen" Padding="2"/>
+                </TabItem.Header>
+
                 <DockPanel  Background="Gainsboro">
                     <Grid DockPanel.Dock="Top" Margin="8,0" Height="30">
                         <Grid.ColumnDefinitions>
