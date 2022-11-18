@@ -18,6 +18,7 @@ namespace Tabel.Component.Models.Mod
         //-------------------------------------------------------------------------------------------------------
         public override void Calculation()
         {
+            Summa = null;
             if (model.TabelHours == 0 || model.OverHours == 0)
                 return;
 

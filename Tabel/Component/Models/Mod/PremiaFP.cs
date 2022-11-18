@@ -42,7 +42,7 @@ namespace Tabel.Component.Models
         {
             SummaHoursFP = model.md_sumFromFP * model.md_premFP / 100;
             Summa = model.TabelDays == 0
-                ? 0
+                ? null
                 : SummaHoursFP * model.md_cat_prem_tarif * (model.TabelDays - model.TabelAbsent)
                         / model.TabelDays;
         }

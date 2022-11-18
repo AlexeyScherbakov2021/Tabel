@@ -158,11 +158,9 @@ namespace Tabel.ViewModels
         private bool CanPrintCommand(object p) => Tabel != null && SelectedOtdel != null;
         private void OnPrintCommandExecuted(object p)
         {
-
             using (XLWorkbook wb = new XLWorkbook(@"Отчеты\Табель.xlsx"))
             {
                 int NumPP = 1;
-
                 var ws = wb.Worksheets.Worksheet(2);
 
                 // Заполение шапки
@@ -175,7 +173,6 @@ namespace Tabel.ViewModels
                 DateTime endDate = startDate.AddMonths(1).AddDays(-1);
                 ws.Cell("BB12").Value = endDate.ToString("dd.MM.yyyy");
                 //ws.Cell("AA15").Value = "Составил: " + App.CurrentUser.u_fio;
-
 
                 int RowNum = 24;
                 ws.Row(27).InsertRowsBelow((ListTabelPerson.Count() - 1) * 4);
@@ -230,9 +227,7 @@ namespace Tabel.ViewModels
                 string TempFile = FileOperation.GenerateTempFileNameWithDelete("TempTabel.xlsx");
                 wb.SaveAs(TempFile);
                 Process.Start(TempFile);
-
             }
-
         }
 
         //--------------------------------------------------------------------------------
@@ -271,7 +266,6 @@ namespace Tabel.ViewModels
             }
             else if (MessageBox.Show($"Найдено людей: {ListPersonal.Count}. Добавлять?", "Предупреждение", MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
             {
-
                 RepositoryCalendar repo = AllRepo.GetRepoCalendar();
                 var ListDays = repo.GetListDays(_SelectYear, _SelectMonth);
 

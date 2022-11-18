@@ -25,7 +25,7 @@ namespace Tabel.ViewModels
             lastname = tabPerson.person.p_lastname?.Trim();
             name = tabPerson.person.p_name?.Trim();
             midname = tabPerson.person.p_midname?.Trim();
-            NamePremia = "ПремияДТ";
+            NamePremia = "ПрмДТ";
             Summa = summa;
         }
 

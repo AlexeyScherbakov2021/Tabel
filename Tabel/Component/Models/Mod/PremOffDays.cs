@@ -28,10 +28,10 @@ namespace Tabel.Component.Models.Mod
         //-------------------------------------------------------------------------------------------------------
         // Получение итоговой премии
         //-------------------------------------------------------------------------------------------------------
-        public override decimal? GetPremia()
-        {
-            Calculation();
-            return Summa ?? 0;
-        }
+        //public override decimal? GetPremia()
+        //{
+        //    Calculation();
+        //    return Summa ?? 0;
+        //}
     }
 }
