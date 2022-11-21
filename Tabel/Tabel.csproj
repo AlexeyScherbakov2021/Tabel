@@ -84,6 +84,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Component\ListBoxEasySelect\ListBoxEasySelect.cs" />
     <Compile Include="Component\Models\Mod\BasePremia.cs" />
     <Compile Include="Component\Models\ModPerson2.cs" />
     <Compile Include="Component\Models\Mod\PremiaAddWorks.cs" />
@@ -240,6 +241,10 @@
     <Page Include="Styles\DataGrid.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\ListBoxItemSelectStyle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Styles\ToolTipStyle.xaml">
       <SubType>Designer</SubType>

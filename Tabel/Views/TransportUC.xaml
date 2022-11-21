@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
             xmlns:vm="clr-namespace:Tabel.ViewModels"
             xmlns:ext="clr-namespace:Tabel.Infrastructure.Extend"
+             xmlns:comp="clr-namespace:Tabel.Component.ListBoxEasySelect"
              xmlns:local="clr-namespace:Tabel.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
@@ -23,7 +24,7 @@
             <Button Content="Распечатать" Command="{Binding PrintCommand}" Margin="3" Style="{DynamicResource ButtonStyleShadow}"/>
         </ToolBarPanel>
 
-        <DataGrid x:Name="dg" ItemsSource="{Binding ListTransPerson}" Style="{StaticResource DataGridStyle}" 
+        <DataGrid x:Name="dg" ItemsSource="{Binding ListTransPerson, IsAsync=True}" Style="{StaticResource DataGridStyle}" 
                   VerticalGridLinesBrush="LightGray" HorizontalGridLinesBrush="LightGray"
                   FrozenColumnCount="1" >
             <DataGrid.Columns>
@@ -37,9 +38,13 @@
                 <DataGridTemplateColumn Header="Дни">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <ext:ListBoxExt ItemsSource="{Binding TransDays}" SelectionMode="Extended" BorderBrush="Transparent"
+                            <!--<ListBoxEasySelect ItemsSource="{Binding TransDays}" SelectionMode="Extended" BorderBrush="Transparent"
                                     SelectedIndex="{Binding SelectIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinHeight="46"
-                                    SelectedItems2="{Binding SelectedDays, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                    SelectedItems2="{Binding SelectedDays, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">-->
+                            <comp:ListBoxEasySelect ItemsSource="{Binding TransDays}" SelectionMode="Extended" BorderBrush="Transparent"
+                                    SelectedIndex="{Binding SelectIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinHeight="46"
+                                                    ItemContainerStyle="{StaticResource ListBoxItemSelectStyle}"
+                                    >
 
                                 <ListBox.ItemsPanel>
                                     <ItemsPanelTemplate>
@@ -49,9 +54,9 @@
                                 </ListBox.ItemsPanel>
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
-                                        <Border x:Name="border" Background="Gainsboro" Margin="-2,0" CornerRadius="3" BorderThickness="1" BorderBrush="Black" Padding="5,1">
+                                        <Border x:Name="border" Background="Gainsboro" Opacity="0.9" Margin="-2,0" CornerRadius="3" BorderThickness="1" BorderBrush="Black" Padding="5,1">
                                             <UniformGrid Rows="2" Margin="-2,0" >
-                                                <TextBlock Text="{Binding td_Day}" HorizontalAlignment="Center"/>
+                                                <TextBlock Text="{Binding td_Day}" HorizontalAlignment="Center" MinWidth="20"/>
                                                 <CheckBox IsChecked="{Binding td_Kind, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                             </UniformGrid>
                                         </Border>
@@ -62,7 +67,8 @@
                                         </DataTemplate.Triggers>
                                     </DataTemplate>
                                 </ListBox.ItemTemplate>
-                            </ext:ListBoxExt>
+                            <!--</comp:ListBoxEasySelect>-->
+                            </comp:ListBoxEasySelect>
 
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>

@@ -69,7 +69,7 @@ namespace Tabel.ViewModels
                     summa = prem.GetPremia().Value;
                     //summa = mPerson.Oklad / item.HoursMonth * (item.OverWork ?? 0) * 2;
 
-                    if (summa > 0)
+                    if (summa > 0 && !String.IsNullOrEmpty( mPerson.person.p_tab_number))
                     {
                         ExportPerson p = new ExportPerson(item, summa);
                         ListExportPerson.Add(p);
