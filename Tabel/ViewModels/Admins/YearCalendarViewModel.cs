@@ -18,7 +18,7 @@ namespace Tabel.ViewModels
 {
     internal class YearCalendarViewModel : ViewModel
     {
-        private readonly RepositoryCalendar RepoCal = AllRepo.GetRepoCalendar();
+        private readonly RepositoryCalendar RepoCal;
 
         public Visibility VisibleAdmin => App.CurrentUser.u_role == Infrastructure.UserRoles.Admin ? Visibility.Visible : Visibility.Hidden;  
 
@@ -43,6 +43,7 @@ namespace Tabel.ViewModels
         //--------------------------------------------------------------------------------------------------
         public YearCalendarViewModel()
         {
+            RepoCal = new RepositoryCalendar();
             list12Month = new ObservableCollection<MonthDays>[12];
             
             for (int i = 0; i < 12; i++)

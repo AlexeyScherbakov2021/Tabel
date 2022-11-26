@@ -13,22 +13,19 @@ using Tabel.ViewModels.Base;
 
 namespace Tabel.ViewModels.ModViewModel
 {
-    internal class PremiaBonusViewModel : ViewModel, IModViewModel
+    internal class PremiaBonusViewModel : ModViewModel
     {
         public ObservableCollection<ModPerson> ListModPerson { get; set; }
         public bool IsCheckBonus { get; set; }
         public decimal SetMaxPrem { get; set; }
 
-        //private Otdel _SelectedOtdel;
-        private int _SelectMonth;
-        private int _SelectYear;
 
-        public PremiaBonusViewModel()
+        public PremiaBonusViewModel(BaseModel db) : base(db)
         {
 
         }
 
-        public void ChangeListPerson(ObservableCollection<ModPerson> listPerson, int Year, int Month, Otdel Otdel)
+        public override void ChangeListPerson(ObservableCollection<ModPerson> listPerson, int Year, int Month, Otdel Otdel)
         {
             //_SelectedOtdel = Otdel;
             _SelectMonth= Month;
@@ -45,7 +42,7 @@ namespace Tabel.ViewModels.ModViewModel
         {
             if (ListModPerson is null) return;
 
-            RepositoryMSSQL<GenChargMonth> repoGetAll = new RepositoryMSSQL<GenChargMonth>();
+            RepositoryMSSQL<GenChargMonth> repoGetAll = new RepositoryMSSQL<GenChargMonth>(db);
             decimal? BonusProc = repoGetAll.Items
                 .FirstOrDefault(it => it.gm_Year == _SelectYear && it.gm_Month == _SelectMonth && it.gm_GenId == (int)EnumKind.BonusProc)?.gm_Value;
 

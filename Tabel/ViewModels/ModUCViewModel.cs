@@ -24,11 +24,11 @@ namespace Tabel.ViewModels
 {
     internal class ModUCViewModel : ViewModel, IBaseUCViewModel
     {
-        private readonly RepositoryMSSQL<ModPerson> repoModPerson = AllRepo.GetRepoModPerson();
-        //private readonly RepositoryMSSQL<Transport> repoTransport = AllRepo.GetRepoTransport();
-        private RepositoryMSSQL<Personal> repoPersonal = AllRepo.GetRepoPersonal();
-        private readonly RepositoryMSSQL<WorkTabel> repoTabel = AllRepo.GetRepoTabel();
-        private readonly RepositoryMSSQL<Mod> repoModel = AllRepo.GetRepoModel();
+        private readonly BaseModel db;
+        private readonly RepositoryMSSQL<ModPerson> repoModPerson;
+        private RepositoryMSSQL<Personal> repoPersonal;
+        private readonly RepositoryMSSQL<WorkTabel> repoTabel;
+        private readonly RepositoryMSSQL<Mod> repoModel;
 
         public PremiaBonusViewModel premiaBonusViewModel { get; set; }
         public ModMainViewModel modMainViewModel { get; set; }
@@ -60,15 +60,21 @@ namespace Tabel.ViewModels
         //-------------------------------------------------------------------------------------------------------
         public ModUCViewModel()
         {
-            modMainViewModel = new ModMainViewModel();
-            premiaBonusViewModel = new PremiaBonusViewModel();
-            premiaFPViewModel = new PremiaFPViewModel();
-            premiaKvalifViewModel = new PremiaKvalifViewModel();
-            premiaOtdelViewModel = new PremiaOtdelViewModel();
-            premiaQualityViewModel = new PremiaQualityViewModel();
-            premiaAddWorksViewModel = new PremiaAddWorksViewModel();
-            premiaTransportViewModel = new PremiaTransportViewModel();
-            premiaPrizeViewModel = new PremiaPrizeViewModel();
+            repoModPerson = new RepositoryMSSQL<ModPerson>();
+            db = repoModPerson.GetDB();
+            repoPersonal = new RepositoryMSSQL<Personal>(db);
+            repoTabel = new RepositoryMSSQL<WorkTabel>(db);
+            repoModel = new RepositoryMSSQL<Mod>(db);
+
+            modMainViewModel = new ModMainViewModel(db);
+            premiaBonusViewModel = new PremiaBonusViewModel(db);
+            premiaFPViewModel = new PremiaFPViewModel(db);
+            premiaKvalifViewModel = new PremiaKvalifViewModel(db);
+            premiaOtdelViewModel = new PremiaOtdelViewModel(db);
+            premiaQualityViewModel = new PremiaQualityViewModel(db);
+            premiaAddWorksViewModel = new PremiaAddWorksViewModel(db);
+            premiaTransportViewModel = new PremiaTransportViewModel(db);
+            premiaPrizeViewModel = new PremiaPrizeViewModel(db);
 
             DateTime _CurrentDate = DateTime.Now;
 
@@ -117,7 +123,7 @@ namespace Tabel.ViewModels
             CurrentMod.ModPersons = new List<ModPerson>();
 
 
-            RepositoryMSSQL<Otdel> repoOtdel = AllRepo.GetRepoAllOtdels();
+            RepositoryMSSQL<Otdel> repoOtdel = new RepositoryMSSQL<Otdel>(db);// AllRepo.GetRepoAllOtdels();
             List<int> listOtdels = repoOtdel.Items.AsNoTracking().Where(it => it.ot_parent == _SelectedOtdel.id).Select(s => s.id).ToList();
 
             // получение списка людей для отделов и групп
@@ -227,7 +233,7 @@ namespace Tabel.ViewModels
 
             if (ListTabel != null)
             {
-                RepositoryMSSQL<TabelPerson> repoTabelPerson = AllRepo.GetRepoTabelPerson();
+                RepositoryMSSQL<TabelPerson> repoTabelPerson = new RepositoryMSSQL<TabelPerson>(db);// AllRepo.GetRepoTabelPerson();
                 List<TabelPerson> ListTabelPerson = new List<TabelPerson>();
 
                 foreach (var tabel in ListTabel)

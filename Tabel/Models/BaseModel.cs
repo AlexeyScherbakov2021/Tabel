@@ -9,35 +9,32 @@ namespace Tabel.Models
 {
     public partial class BaseModel : DbContext
     {
-        public static BaseModel BaseDB = null;
+        //private BaseModel BaseDB = null;
+
+        //public BaseModel GetDB()
+        //{
+        //    if (BaseDB is null)
+        //        CreateDB();
+
+        //    return BaseDB;
+        //}
+
 
         public static BaseModel CreateDB()
         {
-            App.Log.WriteLineLog("CreateDB");
-
-            App.Log.WriteLineLog($"BaseDB = {BaseDB}");
-
-            if (BaseDB != null)
-                return BaseDB;
-
             string ConnectString;
 
 #if DEBUG
-            //ConnectString = ConfigurationManager.ConnectionStrings["BaseModel"].ConnectionString;
-            //ConnectString += ";user id=fpLoginName;password=ctcnhjt,s";
             ConnectString = ConfigurationManager.ConnectionStrings["BaseModelLocal"].ConnectionString;
-            App.Log.WriteLineLog($"ConnectString = {ConnectString}");
 #else
             ConnectString = ConfigurationManager.ConnectionStrings["BaseModel"].ConnectionString;
             ConnectString += ";user id=fpLoginName;password=ctcnhjt,s";
 #endif
-            BaseDB = new BaseModel(ConnectString);
-            App.Log.WriteLineLog($"BaseDB = {BaseDB}");
+            BaseModel db = new BaseModel(ConnectString);
 
-            return BaseDB = new BaseModel(ConnectString);
+            return db;
 
         }
-
 
         public BaseModel(string cs) : base(cs)   //: base("name=BaseModel")
         {

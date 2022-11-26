@@ -9,16 +9,17 @@ using Tabel.ViewModels.Base;
 
 namespace Tabel.ViewModels.ModViewModel
 {
-    internal class PremiaKvalifViewModel : ViewModel, IModViewModel
+    internal class PremiaKvalifViewModel : ModViewModel
     {
-        private int _SelectMonth;
-        private int _SelectYear;
         public ObservableCollection<ModPerson> ListModPerson { get; set; }
 
-
-        public void ChangeListPerson(ObservableCollection<ModPerson> listPerson, int Year, int Month, Otdel Otdel)
+        public PremiaKvalifViewModel(BaseModel db) : base(db)
         {
-            //_SelectedOtdel = Otdel;
+
+        }
+
+        public override void ChangeListPerson(ObservableCollection<ModPerson> listPerson, int Year, int Month, Otdel Otdel)
+        {
             _SelectMonth = Month;
             _SelectYear = Year;
             ListModPerson = listPerson;

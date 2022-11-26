@@ -14,6 +14,12 @@ namespace Tabel.Repository
     {
         public override IQueryable<Otdel> Items => base.Items.Where(it => it.parent == null);//.Include(it => it.subOtdels);
 
+        public RepositoryOtdel(BaseModel db = null) : base(db)
+        {
+
+        }
+
+
         //public RepositoryOtdel(BaseModel Db = null) : base(Db)
         //{
 
@@ -54,7 +60,7 @@ namespace Tabel.Repository
             }
 
             // добавлеие подотделов, которых еще не добавлены
-            RepositoryMSSQL<Otdel> repo1 = AllRepo.GetRepoAllOtdels();
+            RepositoryMSSQL<Otdel> repo1 = new RepositoryMSSQL<Otdel>(db); // AllRepo.GetRepoAllOtdels();
             IEnumerable<Otdel> AllOtdels = repo1.Items.AsNoTracking().Where(it => it.parent != null);
             CombaineOtdels(ListUserOtdels, ListOtdels, AllOtdels);
             return ListOtdels;
@@ -78,7 +84,7 @@ namespace Tabel.Repository
             }
 
             // добавлеие подотделов, которых еще не добавлены
-            RepositoryMSSQL<Otdel> repo1 = AllRepo.GetRepoAllOtdels();
+            RepositoryMSSQL<Otdel> repo1 = new RepositoryMSSQL<Otdel>(db);
             IEnumerable<Otdel> AllOtdels = repo1.Items.Where(it => it.parent != null);
             CombaineOtdels(ListUserOtdels, ListOtdels, AllOtdels);
 

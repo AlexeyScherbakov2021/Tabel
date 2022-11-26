@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DocumentFormat.OpenXml.Drawing;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -12,15 +13,18 @@ using Tabel.ViewModels.Base;
 
 namespace Tabel.ViewModels.ModViewModel
 {
-    internal class PremiaQualityViewModel : ViewModel, IModViewModel
+    internal class PremiaQualityViewModel : ModViewModel
     {
-        private int _SelectMonth;
-        private int _SelectYear;
         public ObservableCollection<ModPerson> ListModPerson { get; set; }
         public bool IsCheckQuality { get; set; }
 
+        public PremiaQualityViewModel(BaseModel db) : base(db)
+        {
 
-        public void ChangeListPerson(ObservableCollection<ModPerson> listPerson, int Year, int Month, Otdel Otdel)
+        }
+
+
+        public override void ChangeListPerson(ObservableCollection<ModPerson> listPerson, int Year, int Month, Otdel Otdel)
         {
             //_SelectedOtdel = Otdel;
             _SelectMonth = Month;

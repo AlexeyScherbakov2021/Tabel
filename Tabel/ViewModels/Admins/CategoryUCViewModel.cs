@@ -21,7 +21,7 @@ namespace Tabel.ViewModels.Admins
 
         public CategoryUCViewModel()
         {
-            repoCategory = AllRepo.GetRepoCategory();
+            repoCategory = new RepositoryMSSQL<Category>();
 
             Categories = new ObservableCollection<Category>( repoCategory.Items );
         }

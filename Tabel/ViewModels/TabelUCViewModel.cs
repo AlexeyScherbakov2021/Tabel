@@ -26,12 +26,13 @@ using Run = DocumentFormat.OpenXml.Wordprocessing.Run;
 
 namespace Tabel.ViewModels
 {
-    internal class TabelUCViewModel : ViewModel, IBaseUCViewModel
+    internal class TabelUCViewModel : ViewModel, IBaseUCViewModel, IDisposable
     {
-        private RepositoryMSSQL<Models.Personal> repoPersonal = AllRepo.GetRepoPersonal();
-        private readonly RepositoryMSSQL<WorkTabel> repoTabel = AllRepo.GetRepoTabel();
-        private readonly RepositoryMSSQL<typeDay> repoTypeDay = AllRepo.GetRepoTypeDay();
-        private readonly RepositoryMSSQL<TabelPerson> repoTabelPerson = AllRepo.GetRepoTabelPerson();
+        private readonly BaseModel db;
+        private RepositoryMSSQL<Models.Personal> repoPersonal;
+        private readonly RepositoryMSSQL<WorkTabel> repoTabel;
+        private readonly RepositoryMSSQL<typeDay> repoTypeDay;
+        private readonly RepositoryMSSQL<TabelPerson> repoTabelPerson;
 
         public WorkTabel Tabel { get; set; }
         public IEnumerable<typeDay> ListTypeDays { get; set; }
@@ -60,14 +61,14 @@ namespace Tabel.ViewModels
             }
 
             // получение данных производственного календаря
-            RepositoryCalendar repo = AllRepo.GetRepoCalendar();
+            RepositoryCalendar repo = new RepositoryCalendar(db); // AllRepo.GetRepoCalendar();
             var ListDays = repo.GetListDays(_SelectYear, _SelectMonth);
 
-            RepositoryMSSQL<Otdel> repoOtdel = AllRepo.GetRepoAllOtdels();
+            RepositoryMSSQL<Otdel> repoOtdel = new RepositoryMSSQL<Otdel>(db);// AllRepo.GetRepoAllOtdels();
             List<int> listOtdels = repoOtdel.Items.AsNoTracking().Where(it => it.ot_parent == SelectedOtdel.id).Select(s => s.id).ToList();
 
             // получение сотрудников отдела
-            repoPersonal = AllRepo.GetRepoPersonal();
+            repoPersonal = new RepositoryMSSQL<Models.Personal>(db);// AllRepo.GetRepoPersonal();
 
             List<Models.Personal> PersonsFromOtdel = repoPersonal.Items
                 .AsNoTracking()
@@ -266,7 +267,7 @@ namespace Tabel.ViewModels
             }
             else if (MessageBox.Show($"Найдено людей: {ListPersonal.Count}. Добавлять?", "Предупреждение", MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
             {
-                RepositoryCalendar repo = AllRepo.GetRepoCalendar();
+                RepositoryCalendar repo = new RepositoryCalendar(db);// AllRepo.GetRepoCalendar();
                 var ListDays = repo.GetListDays(_SelectYear, _SelectMonth);
 
                 foreach (var item in ListPersonal)
@@ -332,6 +333,17 @@ namespace Tabel.ViewModels
         //--------------------------------------------------------------------------------------------------
         public TabelUCViewModel()
         {
+            repoPersonal = new RepositoryMSSQL<Models.Personal>();
+            db = repoPersonal.GetDB();
+            repoTabel = new RepositoryMSSQL<WorkTabel>(db);
+            repoTypeDay = new RepositoryMSSQL<typeDay>(db);
+            repoTabelPerson = new RepositoryMSSQL<TabelPerson>(db);
+
+            //repoPersonal = AllRepo.GetRepoPersonal();
+            //repoTabel = AllRepo.GetRepoTabel();
+            //repoTypeDay = AllRepo.GetRepoTypeDay();
+            //repoTabelPerson = AllRepo.GetRepoTabelPerson();
+
             ListTypeDays = repoTypeDay.Items.ToList();
             OnPropertyChanged(nameof(ListTypeDays));
         }
@@ -484,7 +496,7 @@ namespace Tabel.ViewModels
             List<(int Day, TypeDays KindDay, decimal Hours)> ListDaysMonth = null;
 
             // получение данных производственного календаря
-            RepositoryCalendar repo = AllRepo.GetRepoCalendar();
+            RepositoryCalendar repo = new RepositoryCalendar(db);
             var ListDays = repo.GetListDays(_SelectYear, _SelectMonth);
 
             int PrevYear = _SelectYear;
@@ -503,7 +515,7 @@ namespace Tabel.ViewModels
 
             if(PrevTabel == null)
             {
-                RepositoryCalendar repoCal = AllRepo.GetRepoCalendar();
+                RepositoryCalendar repoCal = new RepositoryCalendar(db);
                 ListDaysMonth = repoCal.GetListDays(PrevYear, PrevMonth);
             }
 
@@ -586,6 +598,11 @@ namespace Tabel.ViewModels
             repoTabelPerson.Save();
             repoTabel.Save();
             IsModify = false;
+        }
+
+        public void Dispose()
+        {
+            db.Dispose();
         }
     }
 }

@@ -12,17 +12,22 @@ using Tabel.ViewModels.Base;
 
 namespace Tabel.ViewModels.ModViewModel
 {
-    internal class ModMainViewModel : ViewModel, IModViewModel
+    internal class ModMainViewModel : ModViewModel
     {
-        private readonly RepositoryMSSQL<WorkTabel> repoTabel = AllRepo.GetRepoTabel();
-        private readonly RepositoryMSSQL<Smena> repoSmena = AllRepo.GetRepoSmena();
 
-        private Otdel _SelectedOtdel;
-        private int _SelectMonth;
-        private int _SelectYear;
+        private readonly RepositoryMSSQL<WorkTabel> repoTabel;
+        private readonly RepositoryMSSQL<Smena> repoSmena;
+
         public ObservableCollection<ModPerson> ListModPerson { get; set; }
 
-        public void ChangeListPerson(ObservableCollection<ModPerson> listPerson, int Year, int Month, Otdel Otdel)
+        public ModMainViewModel(BaseModel ctx) : base(ctx)
+        {
+            repoTabel = new RepositoryMSSQL<WorkTabel>(db);
+            repoSmena = new RepositoryMSSQL<Smena>(db);
+        }
+
+
+        public override void ChangeListPerson(ObservableCollection<ModPerson> listPerson, int Year, int Month, Otdel Otdel)
         {
             ListModPerson = listPerson;
             _SelectYear= Year;
@@ -50,7 +55,7 @@ namespace Tabel.ViewModels.ModViewModel
             if (ListModPerson is null || tabel is null) return;
 
             // получение количества рабочих дней в указанном месяце
-            RepositoryCalendar repoCal = AllRepo.GetRepoCalendar();
+            RepositoryCalendar repoCal = new RepositoryCalendar(db);// AllRepo.GetRepoCalendar();
             var listDays = repoCal.GetListDays(_SelectYear, _SelectMonth);
             int CountWorkDays = listDays.Count(it => it.KindDay != TypeDays.Holyday);
 

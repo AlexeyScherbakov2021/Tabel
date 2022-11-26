@@ -41,7 +41,7 @@ namespace Tabel.Component.Models.Mod
         //-------------------------------------------------------------------------------------------------------
         public override void Initialize(int SmenaId)
         {
-            RepositoryMSSQL<SmenaPerson> repoSmena = AllRepo.GetRepoSmenaPerson();
+            RepositoryMSSQL<SmenaPerson> repoSmena = new RepositoryMSSQL<SmenaPerson>();// AllRepo.GetRepoSmenaPerson();
             var pers = repoSmena.Items.FirstOrDefault(it => it.sp_SmenaId == SmenaId && it.sp_PersonId == model.md_personalId);
             if (pers != null)
             {

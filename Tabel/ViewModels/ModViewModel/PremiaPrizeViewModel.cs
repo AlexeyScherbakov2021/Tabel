@@ -9,14 +9,17 @@ using Tabel.ViewModels.Base;
 
 namespace Tabel.ViewModels.ModViewModel
 {
-    internal class PremiaPrizeViewModel : ViewModel, IModViewModel
+    internal class PremiaPrizeViewModel : ModViewModel
     {
-        private int _SelectMonth;
-        private int _SelectYear;
-        private Otdel _SelectedOtdel;
         public ObservableCollection<ModPerson> ListModPerson { get; set; }
 
-        public void ChangeListPerson(ObservableCollection<ModPerson> listPerson, int Year, int Month, Otdel Otdel)
+
+        public PremiaPrizeViewModel(BaseModel db) : base(db)
+        {
+
+        }
+
+        public override void ChangeListPerson(ObservableCollection<ModPerson> listPerson, int Year, int Month, Otdel Otdel)
         {
 
             _SelectMonth = Month;

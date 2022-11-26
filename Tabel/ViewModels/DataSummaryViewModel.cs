@@ -36,11 +36,13 @@ namespace Tabel.ViewModels
         //------------------------------------------------------------------------------------------------ 
         public DataSummaryViewModel()
         {
-            RepositoryCalendar repoCal = AllRepo.GetRepoCalendar();
+            RepositoryCalendar repoCal = new RepositoryCalendar();//  AllRepo.GetRepoCalendar();
+            BaseModel db = repoCal.GetDB();
+
             ListYears = repoCal.GetYears().ToList();
 
-            repoGeneral = AllRepo.GetRepoGenCharges();
-            repoGen = AllRepo.GetRepoGenChargesMonth();
+            repoGeneral = new RepositoryMSSQL<GeneralCharges>(db); // AllRepo.GetRepoGenCharges();
+            repoGen = new RepositoryMSSQL<GenChargMonth>(db);// AllRepo.GetRepoGenChargesMonth();
 
             DateTime _CurrentDate = DateTime.Now;
             CurrentMonth = _CurrentDate.Month;

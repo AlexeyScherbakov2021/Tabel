@@ -16,60 +16,23 @@ namespace Tabel.Repository
 {
     public class RepositoryMSSQL<T> : IRepository<T> where T : class, IEntity, new()
     {
-        //SqlConnection conn;
-        //protected BaseModel db => App.db;
-        protected BaseModel db;// = new BaseModel();
+        protected BaseModel db;
         protected readonly DbSet<T> _Set;
         public virtual IQueryable<T> Items => _Set;
 
+        public BaseModel GetDB() => db;
 
-        public RepositoryMSSQL(/*BaseModel Db = null*/)
+        //public BaseModel CreateContext()
+        //{
+        //    db = BaseModel.CreateDB();
+        //    return db;
+        //}
+
+        public RepositoryMSSQL(BaseModel ctx = null)
         {
-            App.Log.WriteLineLog("RepositoryMSSQL");
-
-            db = /*Db ??*/ BaseModel.CreateDB();
-
-            App.Log.WriteLineLog($"db = {db}");
-
-            //db = new BaseModel();
+            db = ctx is null ? BaseModel.CreateDB(): ctx;
             _Set = db.Set<T>();
-
-            //App.Log.WriteLineLog($"_Set = {_Set}");
-
-            //db.Configuration.LazyLoadingEnabled = true;
-            //db.Configuration.ProxyCreationEnabled = true;
-            //            ConnectionStringSettings settings;
-
-            //#if !DEBUG
-            //            settings = ConfigurationManager.ConnectionStrings["BaseModel"];
-            //            conn = new SqlConnection(settings.ConnectionString);
-
-            //#else
-            //                settings = ConfigurationManager.ConnectionStrings["BaseModel"];
-            //                SecureString theSecureString = new NetworkCredential("", "ctcnhjt,s").SecurePassword;
-            //                theSecureString.MakeReadOnly();
-            //                SqlCredential credential = new SqlCredential("fpLoginName", theSecureString);
-            //                conn = new SqlConnection(settings.ConnectionString, credential);
-            //#endif
-
         }
-
-        //        private BaseModel CreateDB()
-        //        {
-        //            string ConnectString;
-
-        //#if DEBUG
-        //            ConnectString = ConfigurationManager.ConnectionStrings["BaseModel"].ConnectionString;
-        //            ConnectString += ";user id=fpLoginName;password=ctcnhjt,s";
-        //            //ConnectString = ConfigurationManager.ConnectionStrings["ModelLocal"].ConnectionString;
-        //#else
-        //            ConnectString = ConfigurationManager.ConnectionStrings["BaseModel"].ConnectionString;
-        //            ConnectString += ";user id=fpLoginName;password=ctcnhjt,s";
-        //#endif
-        //            return new BaseModel(ConnectString);
-
-        //        }
-
 
 
         public T Add(T item, bool Autosave = false)
@@ -143,7 +106,6 @@ namespace Tabel.Repository
             Save();
         }
 
-        public BaseModel GetDB() => db;
 
 
 

@@ -21,6 +21,7 @@ namespace Tabel.ViewModels.Admins
 {
     internal class OtdelsWindowViewModel : ViewModel
     {
+        private readonly BaseModel db;
         // Отделы -----------------------------------------------------
 
         private readonly RepositoryOtdel repoOtdel;
@@ -51,7 +52,7 @@ namespace Tabel.ViewModels.Admins
         }
 
         // Разряды ----------------------------------------------------
-        private readonly RepositoryMSSQL<Category> repoCat = AllRepo.GetRepoCategory();
+        private readonly RepositoryMSSQL<Category> repoCat;
 
         public List<Category> ListCategory { get; set; } //= repoCat.Items.AsNoTracking().OrderBy(o => o.id).ToList();
 
@@ -90,9 +91,12 @@ namespace Tabel.ViewModels.Admins
         //--------------------------------------------------------------------------------
         public OtdelsWindowViewModel()
         {
-            //repoOtdel = new RepositoryOtdel();
-            repoOtdel = AllRepo.GetRepoOtdel();
-            repoPerson = AllRepo.GetRepoPersonal();
+            repoOtdel = new RepositoryOtdel();
+            db = repoOtdel.GetDB();
+
+            //repoOtdel = AllRepo.GetRepoOtdel();
+            repoPerson = new RepositoryMSSQL<Personal>(db);
+            repoCat = new RepositoryMSSQL<Category>(db);
 
             if (App.CurrentUser.u_role == UserRoles.Admin)
             {

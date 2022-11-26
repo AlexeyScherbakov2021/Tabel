@@ -10,6 +10,7 @@ namespace Tabel.Component.Models.Mod
 {
     public abstract class BasePremia : Observable
     {
+        //protected readonly BaseModel db;
         private decimal? _Summa;
         public decimal? Summa { get => _Summa; set { Set(ref _Summa, value); } }
 
@@ -18,7 +19,11 @@ namespace Tabel.Component.Models.Mod
         //-------------------------------------------------------------------------------------------------------
         // Конструктор
         //-------------------------------------------------------------------------------------------------------
-        public BasePremia(ModPerson person ) => model = person;
+        public BasePremia(ModPerson person)
+        {
+            model = person;
+            //this.db = db;
+        }
 
         //-------------------------------------------------------------------------------------------------------
         // Инициализация

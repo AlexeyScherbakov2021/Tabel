@@ -19,7 +19,8 @@ namespace Tabel.ViewModels
 {
     internal class UserWindowViewModel : ViewModel
     {
-        readonly IRepository<User> repoUser;
+        private readonly BaseModel db;
+        readonly RepositoryMSSQL<User> repoUser;
         private readonly RepositoryOtdel repoOtdel;
 
         public ObservableCollection<Otdel> ListOtdel { get; set; }
@@ -38,6 +39,19 @@ namespace Tabel.ViewModels
                 }
             }
         }
+
+        //--------------------------------------------------------------------------------
+        // Конструктор 
+        //--------------------------------------------------------------------------------
+        public UserWindowViewModel()
+        {
+            repoUser = new RepositoryMSSQL<User>();
+            db = repoUser.GetDB();
+            ListUser = new ObservableCollection<User>(repoUser.Items);
+            repoOtdel = new RepositoryOtdel(db);
+            ListOtdel = new ObservableCollection<Otdel>(repoOtdel.Items);
+        }
+
 
 
         private void ListUserView_CurrentChanged(object sender, EventArgs e)
@@ -182,16 +196,6 @@ namespace Tabel.ViewModels
 
         #endregion
 
-        //--------------------------------------------------------------------------------
-        // Конструктор 
-        //--------------------------------------------------------------------------------
-        public UserWindowViewModel()
-        {
-            repoUser = AllRepo.GetRepoUser();
-            ListUser = new ObservableCollection<User>(repoUser.Items);
-            repoOtdel = AllRepo.GetRepoOtdel();
-            ListOtdel = new ObservableCollection<Otdel>(repoOtdel.Items);
-        }
 
 
         public void RefreshModel()

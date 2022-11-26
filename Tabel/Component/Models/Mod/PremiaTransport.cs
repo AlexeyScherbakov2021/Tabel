@@ -25,7 +25,7 @@ namespace Tabel.Component.Models.Mod
         //-------------------------------------------------------------------------------------------------------
         public override void Initialize(int TransportId)
         {
-            RepositoryMSSQL<TransPerson> repoTransPerson = AllRepo.GetRepoTransPerson();
+            RepositoryMSSQL<TransPerson> repoTransPerson = new RepositoryMSSQL<TransPerson>();// AllRepo.GetRepoTransPerson();
             var pers = repoTransPerson.Items.FirstOrDefault(it => it.tp_TranspId == TransportId && it.tp_PersonId == model.md_personalId);
             Summa = pers?.Summa;
         }

@@ -19,6 +19,8 @@ namespace Tabel.Repository
 
         void Save();
 
-        BaseModel GetDB();
+        //BaseModel CreateContext();
+
+        //BaseModel GetDB();
     }
 }

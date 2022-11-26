@@ -10,11 +10,9 @@ using Tabel.ViewModels.Base;
 
 namespace Tabel.ViewModels.ModViewModel
 {
-    internal class PremiaAddWorksViewModel : ViewModel, IModViewModel
+    internal class PremiaAddWorksViewModel : ModViewModel
     {
-        private readonly RepositoryMSSQL<AddWorks> repoAddWorks = AllRepo.GetRepoAddWorks();
-        private int _SelectMonth;
-        private int _SelectYear;
+        private readonly RepositoryMSSQL<AddWorks> repoAddWorks;
         public ObservableCollection<ModPerson> ListModPerson { get; set; }
 
         public List<AddWorks> ListWorks { get; set; }
@@ -49,15 +47,14 @@ namespace Tabel.ViewModels.ModViewModel
         }
 
 
-        public PremiaAddWorksViewModel()
+        public PremiaAddWorksViewModel(BaseModel db) : base(db)
         {
-            repoAddWorks = AllRepo.GetRepoAddWorks();
+            repoAddWorks = new RepositoryMSSQL<AddWorks>(db);
             ListWorks = repoAddWorks.Items.ToList();
-
         }
 
 
-        public void ChangeListPerson(ObservableCollection<ModPerson> listPerson, int Year, int Month, Otdel Otdel)
+        public override void ChangeListPerson(ObservableCollection<ModPerson> listPerson, int Year, int Month, Otdel Otdel)
         {
             //_SelectedOtdel = Otdel;
             _SelectMonth = Month;

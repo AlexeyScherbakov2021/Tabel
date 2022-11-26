@@ -13,6 +13,13 @@ namespace Tabel.Repository
 {
     internal class RepositoryCalendar : RepositoryMSSQL<WorkCalendar>
     {
+
+        public RepositoryCalendar(BaseModel db = null) : base(db)
+        {
+
+        }
+
+
         //---------------------------------------------------------------------------------------------
         // получение списка использованных годов
         //---------------------------------------------------------------------------------------------

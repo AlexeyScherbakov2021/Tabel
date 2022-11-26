@@ -133,12 +133,15 @@ namespace Tabel.ViewModels
             _CurrentDate = DateTime.Now;
             CurrentMonth = _CurrentDate.Month;
             CurrentYear = _CurrentDate.Year;
-            User = App.CurrentUser;
+            //User = App.CurrentUser;
 
-            RepositoryCalendar repoCal = AllRepo.GetRepoCalendar();
+            RepositoryCalendar repoCal = new RepositoryCalendar();// AllRepo.GetRepoCalendar();
             ListYears = repoCal.GetYears().ToList();
-            
-            RepositoryOtdel repo = AllRepo.GetRepoOtdel();
+
+            RepositoryOtdel repo = new RepositoryOtdel(repoCal.GetDB());// AllRepo.GetRepoOtdel();
+            RepositoryMSSQL<User> repoUser = new RepositoryMSSQL<User>(repoCal.GetDB());
+
+            User = repoUser.Items.FirstOrDefault(it => it.id == App.CurrentUser.id);
 
             ListOtdel = repo.GetTreeOtdelsNoTracking(User.otdels).ToList();
 

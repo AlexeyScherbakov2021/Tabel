@@ -16,7 +16,7 @@ namespace Tabel.ViewModels
 {
     internal class LoginWindowViewModel : ViewModel
     {
-        private readonly IRepository<User> repo;
+        private readonly RepositoryMSSQL<User> repo;
         private readonly LoginWindow winLogin;
 
 
@@ -42,15 +42,6 @@ namespace Tabel.ViewModels
                 App.CurrentUser = SelectUser;
 
 
-                //if(App.CurrentUser.u_role == Infrastructure.UserRoles.Admin)
-                //{
-                //    // если это администратор, то запускаем настройки
-                //    EditTablesWindow win = new EditTablesWindow();
-                //    win.Show();
-                //    App.Current.MainWindow = win;
-                //}
-                //else
-                //{
                     // записываем в реестр
                     RegistryKey SoftKey = Registry.CurrentUser.OpenSubKey("SOFTWARE", true);
                     RegistryKey ProgKey = SoftKey.CreateSubKey("TabelNGK");
@@ -63,7 +54,6 @@ namespace Tabel.ViewModels
                     MainWindow win = new MainWindow();
                     win.Show();
                     App.Current.MainWindow = win;
-                //}
 
 
             }
@@ -76,38 +66,27 @@ namespace Tabel.ViewModels
 
         public LoginWindowViewModel()
         {
-            App.Log.WriteLineLog("Запуск конструктора LoginWindowViewModel");
 
             winLogin = App.Current.Windows.OfType<LoginWindow>().First();
-            //winLogin.Closing += Win_Closing;
 
-            App.Log.WriteLineLog($"winLogin = {winLogin}" );
-
-            repo = AllRepo.GetRepoUser();
-            App.Log.WriteLineLog($"repo = {repo}");
+            //repo = AllRepo.GetRepoUser();
+            repo = new RepositoryMSSQL<User>();
 
             ListUser = repo.Items.OrderBy(o => o.u_login).ToArray();
-            App.Log.WriteLineLog($"ListUser = {ListUser}");
 
             string login = "Admin";
             RegistryKey SoftKey = Registry.CurrentUser.OpenSubKey("SOFTWARE");
 
-            App.Log.WriteLineLog($"SoftKey = {SoftKey}");
-
             RegistryKey ProgKey = SoftKey.OpenSubKey("TabelNGK");
-            App.Log.WriteLineLog($"ProgKey = {ProgKey}");
 
             if (ProgKey != null)
             {
                 login = ProgKey.GetValue("login", "Admin").ToString();
-                App.Log.WriteLineLog($"login = {login}");
                 ProgKey.Close();
             }
             SoftKey.Close();
 
             SelectUser = ListUser.FirstOrDefault(it => it.u_login == login);
-            App.Log.WriteLineLog($"SelectUser = {SelectUser}");
-
         }
     }
 }

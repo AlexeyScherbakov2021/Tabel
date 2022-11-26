@@ -26,9 +26,10 @@ namespace Tabel.ViewModels
         private int _SelectMonth;
         private int _SelectYear;
 
-        private readonly RepositoryMSSQL<Personal> repoPersonal = AllRepo.GetRepoPersonal();
-        private readonly RepositoryMSSQL<Smena> repoSmena = AllRepo.GetRepoSmena();
-        private readonly RepositoryMSSQL<SmenaPerson> repoSmenaPersonal = AllRepo.GetRepoSmenaPerson();
+        private readonly BaseModel db;
+        private readonly RepositoryMSSQL<Personal> repoPersonal;
+        private readonly RepositoryMSSQL<Smena> repoSmena;
+        private readonly RepositoryMSSQL<SmenaPerson> repoSmenaPersonal;
 
         public string[] ListKind { get; set; } //= { "1см", "2см", "В", "О" };
 
@@ -40,6 +41,10 @@ namespace Tabel.ViewModels
 
         public SmenaUCViewModel()
         {
+            repoPersonal = new RepositoryMSSQL<Personal>();
+            db = repoPersonal.GetDB();
+            repoSmena = new RepositoryMSSQL<Smena>(db);
+            repoSmenaPersonal = new RepositoryMSSQL<SmenaPerson>(db);
             ListKind = EnumToString.ListSmenaKind.ToArray();
         }
 
@@ -71,7 +76,7 @@ namespace Tabel.ViewModels
                 repoSmena.Remove(SmenaShedule);
             }
 
-            RepositoryMSSQL<Otdel> repoOtdel = AllRepo.GetRepoAllOtdels();
+            RepositoryMSSQL<Otdel> repoOtdel = new RepositoryMSSQL<Otdel>(db);// AllRepo.GetRepoAllOtdels();
             List<int> listOtdels = repoOtdel.Items.AsNoTracking().Where(it => it.ot_parent == _SelectedOtdel.id).Select(s => s.id).ToList();
 
             List<Personal> PersonsFromOtdel = repoPersonal.Items
@@ -96,7 +101,7 @@ namespace Tabel.ViewModels
             SmenaShedule.SmenaPerson = new ObservableCollection<SmenaPerson>();
 
             // получение данных производственного календаря
-            RepositoryCalendar repo = AllRepo.GetRepoCalendar();
+            RepositoryCalendar repo = new RepositoryCalendar(db);// AllRepo.GetRepoCalendar();
             var ListDays = repo.GetListDays(_SelectYear, _SelectMonth);
 
             // количество дней в месяце
@@ -295,7 +300,7 @@ namespace Tabel.ViewModels
             if (SmenaShedule is null) return;
 
             // получение данных производственного календаря
-            RepositoryCalendar repo = AllRepo.GetRepoCalendar();
+            RepositoryCalendar repo = new RepositoryCalendar(db);// AllRepo.GetRepoCalendar();
             var ListDays = repo.GetListDays(_SelectYear, _SelectMonth);
 
             //RepositoryMSSQL<WorkCalendar> repoDays = new RepositoryMSSQL<WorkCalendar>();

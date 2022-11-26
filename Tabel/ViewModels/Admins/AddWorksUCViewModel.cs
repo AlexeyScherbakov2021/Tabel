@@ -21,7 +21,7 @@ namespace Tabel.ViewModels.Admins
 
         public AddWorksUCViewModel()
         {
-            repoAddWorks = AllRepo.GetRepoAddWorks();
+            repoAddWorks = new RepositoryMSSQL<AddWorks>();
 
             ListAddWorks = new ObservableCollection<AddWorks>(repoAddWorks.Items);
 
