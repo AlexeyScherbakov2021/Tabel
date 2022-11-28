@@ -250,7 +250,7 @@ namespace Tabel.ViewModels
         {
             List<Models.Personal> ListPersonal = repoPersonal.Items
                 .AsNoTracking()
-                .Where(it => it.p_otdel_id == SelectedOtdel.id)
+                .Where(it => it.p_otdel_id == SelectedOtdel.id && it.p_delete == false)
                 .ToList();
 
             // составляем список добавленных людей
@@ -308,6 +308,7 @@ namespace Tabel.ViewModels
                 }
 
                 OnPropertyChanged(nameof(ListTabelPerson));
+                IsModify = true;
             }
 
         }
