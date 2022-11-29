@@ -473,7 +473,7 @@ namespace Tabel.ViewModels
                         //ListDays[i].WhiteHours = 12;
                     }
 
-                    if (PrevHours + ListDays[i].WhiteHours > 20)
+                    if (PrevHours + ListDays[i].td_Hours > 20)
                         OverHours = PrevHours + ListDays[i].td_Hours - 20;
 
                 }

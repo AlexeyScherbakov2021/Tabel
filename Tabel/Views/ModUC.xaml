@@ -63,6 +63,7 @@
                     </Grid>
                     <DataGrid ItemsSource="{Binding ListModPerson}" Style="{StaticResource DataGridStyle}" IsReadOnly="True">
                         <DataGrid.Columns>
+                            <DataGridTextColumn Header="Таб.№" Binding="{Binding person.p_tab_number}"/>
                             <DataGridTextColumn Header="ФИО" Binding="{Binding person.FIO}"/>
                             <DataGridTextColumn Header="Дложность" Binding="{Binding person.p_profession}"/>
                             <DataGridTextColumn Header="ставка" Binding="{Binding person.p_stavka}" CellStyle="{StaticResource CellRight}"/>

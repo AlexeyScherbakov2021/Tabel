@@ -33,6 +33,7 @@
                   VerticalGridLinesBrush="LightGray" HorizontalGridLinesBrush="DarkGray"
                   FrozenColumnCount="1" VirtualizingPanel.ScrollUnit="Pixel" CanUserAddRows="False" CanUserDeleteRows="False" Focusable="False"  >
             <DataGrid.Columns>
+                <DataGridTextColumn Header="Таб.№" Binding="{Binding person.p_tab_number}"/>
                 <DataGridTemplateColumn Header="Сотрудник" IsReadOnly="True" Width="120">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>

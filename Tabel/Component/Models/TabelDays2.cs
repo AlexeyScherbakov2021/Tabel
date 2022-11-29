@@ -13,7 +13,7 @@ namespace Tabel.Models
 {
     public partial class TabelDay : Observable
     {
-        private Visibility _VisibilityHours = Visibility.Collapsed;
+        private Visibility _VisibilityHours = Visibility.Visible;
         [NotMapped]
         public Visibility VisibilityHours { get => _VisibilityHours; set { Set(ref _VisibilityHours, value); } }
 
