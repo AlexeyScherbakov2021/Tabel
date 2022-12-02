@@ -9,6 +9,7 @@ namespace Tabel.Models
     [Table("ModPerson")]
     public partial class ModPerson : IEntity
     {
+
         [Key]
         [Column("md_Id")]
         public int id { get; set; }

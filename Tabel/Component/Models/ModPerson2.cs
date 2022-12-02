@@ -50,6 +50,8 @@ namespace Tabel.Models
 
         public ModPerson()
         {
+            ListAddWorks = new HashSet<AddWorks>();
+
             premiaFP = new PremiaFP(this);
             premiaBonus = new PremiaBonus(this);
             premiaKvalif = new PremiaKvalif(this);

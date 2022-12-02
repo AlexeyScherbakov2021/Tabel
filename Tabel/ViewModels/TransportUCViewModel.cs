@@ -64,7 +64,7 @@ namespace Tabel.ViewModels
 
             List<Personal> PersonsFromOtdel = repoPersonal.Items
                 .AsNoTracking()
-                .Where(it => (it.p_otdel_id == _SelectedOtdel.id && it.p_delete == false) || listOtdels.Contains(it.p_otdel_id.Value))
+                .Where(it => (it.p_otdel_id == _SelectedOtdel.id || listOtdels.Contains(it.p_otdel_id.Value)) && it.p_delete == false)
                 .OrderBy(o => o.p_lastname)
                 .ThenBy(o => o.p_name)
                 .ToList();

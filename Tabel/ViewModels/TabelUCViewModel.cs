@@ -72,7 +72,7 @@ namespace Tabel.ViewModels
 
             List<Models.Personal> PersonsFromOtdel = repoPersonal.Items
                 .AsNoTracking()
-                .Where(it => (it.p_otdel_id == SelectedOtdel.id && it.p_delete == false) || listOtdels.Contains(it.p_otdel_id.Value))
+                .Where(it => (it.p_otdel_id == SelectedOtdel.id || listOtdels.Contains(it.p_otdel_id.Value)) && it.p_delete == false)
                 .OrderBy(o => o.p_lastname)
                 .ThenBy(o => o.p_name)
                 .ToList();
@@ -216,13 +216,13 @@ namespace Tabel.ViewModels
                             ws.Cell(RowNum + 1, ColNum).Value =  day.WhiteHours;
 
                         ColNum++;
-                        if(ColNum > 29)
+                        if(ColNum >= 29)
                         {
                             ColNum = 14;
                             RowNum += 2;
                         }
                     }
-                    RowNum += 2;
+                    //RowNum += 2;
                 }
 
                 string TempFile = FileOperation.GenerateTempFileNameWithDelete("TempTabel.xlsx");
