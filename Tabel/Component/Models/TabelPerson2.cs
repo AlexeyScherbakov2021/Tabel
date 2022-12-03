@@ -32,7 +32,7 @@ namespace Tabel.Models
         {
             get
             {
-                return ((IEnumerable<TabelDay>)TabelDays).Select(it => it.td_Hours.Value).Sum() - WorkedOffHours;
+                return ((IEnumerable<TabelDay>)TabelDays).Select(it => it.WhiteHours).Sum() - WorkedOffHours;
 
             }
         }
@@ -40,11 +40,11 @@ namespace Tabel.Models
         {
             get
             {
-                int summa = 0;
+                decimal? summa = 0;
                 List<decimal> HoursBig = ((IEnumerable<TabelDay>)TabelDays)
-                    .Where(it => (it.WhiteHours /*- it.td_Hours2.Value*/) > 8 && it.CalendarTypeDay != TypeDays.Holyday)
+                    .Where(it => it.WhiteHours > 8 && it.CalendarTypeDay != TypeDays.Holyday)
                     .Select(s => s.WhiteHours - 8).ToList();
-                foreach(int i in HoursBig)
+                foreach(decimal i in HoursBig)
                 {
                     summa += i > 2 ? 2 : i;
                 }
@@ -63,7 +63,7 @@ namespace Tabel.Models
                     .Where(it => it.WhiteHours > 10 && it.CalendarTypeDay != TypeDays.Holyday)
                     .Select(s => s.WhiteHours - 10).ToList();
 
-                foreach (int i in HoursBig)
+                foreach (decimal i in HoursBig)
                 {
                     summa += i;
                 }

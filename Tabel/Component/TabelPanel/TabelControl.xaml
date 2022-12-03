@@ -27,11 +27,11 @@
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
-                <ColumnDefinition Width="32"/>
+                <ColumnDefinition Width="38"/>
                 <ColumnDefinition/>
-                <ColumnDefinition Width="32"/>
+                <ColumnDefinition Width="38"/>
                 <ColumnDefinition/>
-                <ColumnDefinition Width="32"/>
+                <ColumnDefinition Width="38"/>
                 <ColumnDefinition Width="32"/>
                 <!--<ColumnDefinition/>-->
             </Grid.ColumnDefinitions>

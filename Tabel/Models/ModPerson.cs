@@ -54,6 +54,8 @@ namespace Tabel.Models
         [Column(TypeName = "numeric")]
         public decimal? md_prem_otdel_proc { get => _md_prem_otdel_proc; set { Set(ref _md_prem_otdel_proc, value); } }
 
+        public string md_prem_stimul_name { get; set; }
+
         [Column(TypeName = "numeric")]
         public decimal? md_tarif_offDay { get; set; }
 

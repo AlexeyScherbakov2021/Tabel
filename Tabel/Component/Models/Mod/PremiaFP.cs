@@ -100,8 +100,12 @@ namespace Tabel.Component.Models
 
                 case "md_cat_prem_tarif":
                     // проверка на превышение максимума
-                    if (model.md_cat_prem_tarif > model.person?.category.cat_max_level) 
+                    if (model.person?.category is null)
+                        model.md_cat_prem_tarif = 0;
+
+                    else if (model.md_cat_prem_tarif > model.person?.category.cat_max_level) 
                         model.md_cat_prem_tarif = model.person.category.cat_max_level;
+
                     Calculation();
                     CalcChangeProcent();
                     break;

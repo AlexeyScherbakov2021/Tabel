@@ -46,7 +46,9 @@ namespace Tabel.ViewModels.Admins
                 if (Set(ref _SelectedOtdel, value))
                 {
                     _SelectedOtdel = value;
-                    ListPersonal = new ObservableCollection<Personal>(repoPerson.Items.Where(it => it.p_otdel_id == _SelectedOtdel.id));
+                    //ListPersonal = new ObservableCollection<Personal>(repoPerson.Items.Where(it => it.p_otdel_id == _SelectedOtdel.id));
+                    var result = repoPerson.Items.Where(it => it.p_otdel_id == _SelectedOtdel.id).ToArrayAsync();
+                    ListPersonal = new ObservableCollection<Personal>(result.Result);
                 }
             } 
         }

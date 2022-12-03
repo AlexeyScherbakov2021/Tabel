@@ -191,6 +191,7 @@
                             <DataGridTextColumn Header="Макс. премия" Binding="{Binding md_prem_otdel, Mode=TwoWay, StringFormat=N0}" CellStyle="{StaticResource CellRight}"/>
                             <DataGridTextColumn Header="% выполнения" Binding="{Binding md_prem_otdel_proc, Mode=TwoWay, StringFormat=0.#}"  CellStyle="{StaticResource CellRight}"/>
                             <DataGridTextColumn Header="Премия" Binding="{Binding premiaOtdel.Summa, StringFormat=N2}" FontWeight="Bold" Width="90" IsReadOnly="True" CellStyle="{StaticResource CellRight}"/>
+                            <DataGridTextColumn Header="Примечание" Binding="{Binding md_prem_stimul_name}" IsReadOnly="False" />
                         </DataGrid.Columns>
                     </DataGrid>
                 </DockPanel>
