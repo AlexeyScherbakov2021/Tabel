@@ -258,10 +258,10 @@ namespace Tabel.ViewModels.Admins
         }
 
 
-        //public void DropPerson(object sender, DragEventArgs e)
-        //{
+        public void DropPerson(object sender, DragEventArgs e)
+        {
 
-        //}
+        }
         #endregion
 
     }
