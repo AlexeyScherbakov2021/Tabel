@@ -59,7 +59,16 @@
                     </Button>
                 </StackPanel>
                 <TextBlock Text="Отделы и группы" DockPanel.Dock="Top" FontSize="14"/>
-                <ext:ExtendedTreeView ItemsSource="{Binding ListOtdel}" Margin="3" SelectedItem_="{Binding SelectedOtdel, Mode=TwoWay}">
+                <ext:ExtendedTreeView ItemsSource="{Binding ListOtdel}" Margin="3" AllowDrop="True" 
+                                      SelectedItem_="{Binding SelectedOtdel, Mode=TwoWay}">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Drop">
+                            <!--<i:CallMethodAction MethodName="ItemsControl_Drop" TargetObject="{Binding}"/>-->
+                            <i:InvokeCommandAction Command="{Binding DropPersonCommand}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+
+
                     <ext:ExtendedTreeView.Resources>
                         <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="Transparent" />
                         <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="LightBlue" />

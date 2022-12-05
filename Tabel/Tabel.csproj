@@ -154,6 +154,7 @@
     <Compile Include="ViewModels\Admins\AddWorksUCViewModel.cs" />
     <Compile Include="ViewModels\Admins\CategoryUCViewModel.cs" />
     <Compile Include="ViewModels\Admins\OtdelsWindowViewModel.cs" />
+    <Compile Include="ViewModels\Admins\PersonUCViewModel.cs" />
     <Compile Include="ViewModels\Base\IBaseUCViewModel.cs" />
     <Compile Include="ViewModels\BasicWindowViewModel.cs" />
     <Compile Include="ViewModels\DataSummaryViewModel.cs" />
@@ -183,6 +184,9 @@
     </Compile>
     <Compile Include="Views\Admins\OtdelsWindow.xaml.cs">
       <DependentUpon>OtdelsWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Admins\PersonUC.xaml.cs">
+      <DependentUpon>PersonUC.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Admins\UsersWindow.xaml.cs">
       <DependentUpon>UsersWindow.xaml</DependentUpon>
@@ -270,6 +274,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Admins\OtdelsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Admins\PersonUC.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

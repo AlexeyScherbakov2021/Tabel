@@ -30,6 +30,10 @@
             <TabItem Header="Отделы и группы">
                 <view:OtdelsWindow VerticalAlignment="Stretch" Margin="0,10" />
             </TabItem>
+            <TabItem Header="Список сотрудников" Visibility="{Binding VisibleAdmin}">
+                <view:PersonUC/>
+            </TabItem>
+                    
             <TabItem Header="Разряды" Visibility="{Binding VisibleAdmin}">
                 <view:CategoryUC HorizontalAlignment="Left" Margin="20,23,0,0"/>
             </TabItem>

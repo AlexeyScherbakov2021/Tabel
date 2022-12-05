@@ -47,7 +47,11 @@ namespace Tabel.ViewModels.Admins
                 {
                     _SelectedOtdel = value;
                     //ListPersonal = new ObservableCollection<Personal>(repoPerson.Items.Where(it => it.p_otdel_id == _SelectedOtdel.id));
-                    var result = repoPerson.Items.Where(it => it.p_otdel_id == _SelectedOtdel.id).ToArrayAsync();
+                    var result = repoPerson.Items
+                        .Where(it => it.p_otdel_id == _SelectedOtdel.id)
+                        .OrderBy(o => o.p_lastname)
+                        .ThenBy(o => o.p_name)
+                        .ToArrayAsync();
                     ListPersonal = new ObservableCollection<Personal>(result.Result);
                 }
             } 
@@ -111,11 +115,9 @@ namespace Tabel.ViewModels.Admins
 
                 //ListOtdel = new ObservableCollection<Otdel>(repoOtdel.Items.Where(it => it.id == App.CurrentUser.u_otdel_id));
             }
-
             SelectedOtdel = ListOtdel.Count > 0 ?  ListOtdel[0] : null;
-
-
             ListCategory = repoCat.Items.AsNoTracking().OrderBy(o => o.id).ToList();
+
         }
 
         private void ListPersonalView_CurrentChanged(object sender, EventArgs e)
@@ -248,6 +250,18 @@ namespace Tabel.ViewModels.Admins
             repoPerson.Save();
         }
 
+
+        public ICommand DropPersonCommand => new LambdaCommand(OnDropPersonCommandExecuted, CanDropPersonCommand);
+        private bool CanDropPersonCommand(object p) => true;
+        private void OnDropPersonCommandExecuted(object p)
+        {
+        }
+
+
+        //public void DropPerson(object sender, DragEventArgs e)
+        //{
+
+        //}
         #endregion
 
     }

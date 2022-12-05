@@ -14,7 +14,7 @@ namespace Tabel.Infrastructure.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            ICollection<Otdel> ListOtdels = (ICollection < Otdel > )value;
+            ICollection<Otdel> ListOtdels = (ICollection<Otdel>)value;
 
             string s = "";
             foreach (var item in ListOtdels)

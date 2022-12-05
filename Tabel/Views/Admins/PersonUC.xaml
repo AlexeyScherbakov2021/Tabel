@@ -1,0 +1,104 @@
+﻿<UserControl x:Class="Tabel.Views.Admins.PersonUC"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Tabel.Views.Admins"
+             xmlns:fa="http://schemas.fontawesome.com/icons/"
+             xmlns:conv="clr-namespace:Tabel.Infrastructure.Converters"
+             xmlns:vm="clr-namespace:Tabel.ViewModels.Admins"
+             mc:Ignorable="d" 
+             x:Name="main"
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <vm:PersonUCViewModel x:Key="context"/>
+        <conv:OtdelsUserConverter x:Key="OtdelsUserConverter"/>
+    </UserControl.Resources>
+
+    <Grid DataContext="{Binding Source={StaticResource context}}">
+       
+        <Border Margin="4,0" Padding="3" CornerRadius="4" Background="WhiteSmoke" BorderThickness="1" BorderBrush="Gray">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="10" ShadowDepth="0" Color="#000000" Opacity="0.2"/>
+            </Border.Effect>
+            <DockPanel Margin="4,4,4,4">
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Margin="4">
+                    <TextBlock Text="Фильтр по фамилии "/>
+                    <TextBox Text="{Binding FilterName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="200"/>
+                </StackPanel>
+                <Button Command="{Binding SaveCommand}" Style="{StaticResource ButtonStyleShadow}" 
+                        DockPanel.Dock="Bottom" Margin="200,8">
+                    <StackPanel Orientation="Horizontal" Width="160">
+                        <fa:ImageAwesome  Width="20" Height="20" Foreground="#FF005AA0" Icon="Solid_Save" Margin="5,0"/>
+                        <TextBlock Text="Сохранить" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+                <DataGrid ItemsSource="{Binding ListPersonView}" SelectionMode="Single" SnapsToDevicePixels="True"
+                    Style="{DynamicResource DataGridStyle}" SelectedItem="{Binding SelectedPerson}">
+                    <DataGrid.ColumnHeaderStyle>
+                        <Style TargetType="{x:Type DataGridColumnHeader}">
+                            <Setter Property="FontWeight" Value="Bold"/>
+                        </Style>
+                    </DataGrid.ColumnHeaderStyle>
+                    
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Таб№" Binding="{Binding p_tab_number}" Width="40"/>
+                        <DataGridTextColumn Header="Фамилия" Binding="{Binding p_lastname}" Width="120"/>
+                        <DataGridTextColumn Header="Имя" Binding="{Binding p_name}" Width="120"/>
+                        <DataGridTextColumn Header="Отчество" Binding="{Binding p_midname}" Width="120"/>
+                        <DataGridTextColumn Header="Должность" Binding="{Binding p_profession}" Width="150"/>
+                        <!--<DataGridTextColumn Header="Отделы" Binding="{Binding otdel.ot_name}" IsReadOnly="True"/>-->
+
+                        <!--<DataGridComboBoxColumn Header="Отделы" ItemsSource="{Binding ListOtdel, Source={StaticResource context}}"
+                            SelectedItemBinding="{Binding otdel}"
+                            SelectedValueBinding="{Binding p_otdel_id}"
+                            DisplayMemberPath="ot_name" SelectedValuePath="id"/>-->
+
+                        <DataGridTemplateColumn Header="Рабочий отдел"  IsReadOnly="True" Width="160">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding otdel.ot_name}" Margin="3,0"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                            <DataGridTemplateColumn.CellEditingTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition MinWidth="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}" Width="0"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Popup IsOpen="{Binding IsChecked, ElementName=toggle}" Grid.ColumnSpan="2" >
+                                            <TreeView x:Name="tree" ItemsSource="{Binding ListOtdel, Source={StaticResource context}}" MaxHeight="250" 
+                                                      >
+                                                <TreeView.ItemTemplate>
+                                                    <HierarchicalDataTemplate ItemsSource="{Binding subOtdels}" >
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <CheckBox Content="{Binding ot_name}" IsChecked="{Binding IsSelected, Mode=TwoWay}"/>
+                                                        </StackPanel>
+                                                    </HierarchicalDataTemplate>
+                                                </TreeView.ItemTemplate>
+                                            </TreeView>
+                                        </Popup>
+                                        <ToggleButton x:Name="toggle" DockPanel.Dock="Right" Grid.ColumnSpan="2" 
+                                                          IsChecked="{Binding IsCheckedButton, Source={StaticResource context}}"
+                                                          Style="{StaticResource ComboBoxToggleButton}">
+                                        </ToggleButton>
+                                        <TextBlock Text="{Binding otdel.ot_name}" IsHitTestVisible="False" Foreground="Black" Margin="3,0"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellEditingTemplate>
+                        </DataGridTemplateColumn>
+
+                        <DataGridComboBoxColumn  Header="Разряд" ItemsSource="{Binding ListCategory, Source={StaticResource context}}"
+                            SelectedValueBinding="{Binding p_cat_id}" DisplayMemberPath="id" SelectedValuePath="id" Width="48"
+                                         />
+
+                        <DataGridTextColumn Header="Ставка" Binding="{Binding p_stavka}"  CellStyle="{StaticResource CellRight}" Width="45"/>
+                        <DataGridCheckBoxColumn Header="Удален" Binding="{Binding p_delete}" Width="50"/>
+
+                    </DataGrid.Columns>
+                </DataGrid>
+            </DockPanel>
+        </Border>
+    </Grid>
+</UserControl>

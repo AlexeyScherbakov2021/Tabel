@@ -69,7 +69,7 @@ namespace Tabel.Models
         public decimal? md_kvalif_tarif { get => _md_kvalif_tarif; set { Set(ref _md_kvalif_tarif, value); } }
 
         private string _md_kvalif_name;
-        [StringLength(250)]
+        //[StringLength(250)]
         public string md_kvalif_name { get => _md_kvalif_name; set { Set(ref _md_kvalif_name, value); } }
 
         private decimal? _md_cat_prem_tarif;
