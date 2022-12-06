@@ -66,12 +66,35 @@
                         <DataGridTextColumn Header="Пароль" Binding="{Binding u_pass}" Width="100"/>
                         <DataGridComboBoxColumn Header="Права" ItemsSource="{Binding Source={infr:UserRolesBinding {x:Type infr:UserRoles}}}"  
                             SelectedItemBinding="{Binding u_role}"   Width="130"/>
+
                         <DataGridTemplateColumn Header="Рабочий отдел"  Width="190">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding otdels, Mode=TwoWay, Converter={StaticResource OtdelsUserConverter}}"/>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
+
+                            <DataGridTemplateColumn.CellEditingTemplate>
+                                <DataTemplate>
+                                    <ComboBox ItemsSource="{Binding DataContext.ListOtdel, ElementName=userControl}"
+                                        Style="{StaticResource ComboLVBoxStyle}" 
+                                              SelectedItem="{Binding}"
+                                        Text="{Binding otdels, Mode=TwoWay, Converter={StaticResource OtdelsUserConverter}}" IsSynchronizedWithCurrentItem="True"
+                                        />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellEditingTemplate>
+
+
+                        </DataGridTemplateColumn>
+                        
+                        
+                        <!--<DataGridTemplateColumn Header="Рабочий отдел"  Width="190">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding otdels, Mode=TwoWay, Converter={StaticResource OtdelsUserConverter}}"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+
                             <DataGridTemplateColumn.CellEditingTemplate>
                                 <DataTemplate>
                                     <Grid>
@@ -98,7 +121,7 @@
                                     </Grid>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellEditingTemplate>
-                        </DataGridTemplateColumn>
+                        </DataGridTemplateColumn>-->
 
                         <DataGridTextColumn Header="ФИО" Binding="{Binding u_fio}" Width="150"/>
                     </DataGrid.Columns>

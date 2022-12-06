@@ -13,6 +13,7 @@
                 <ResourceDictionary Source="/Styles/ToolTipStyle.xaml"/>
                 <ResourceDictionary Source="/Styles/CheckComboBox.xaml"/>
                 <ResourceDictionary Source="/Styles/ListBoxItemSelectStyle.xaml"/>
+                <ResourceDictionary Source="/Styles/ComboLVBox.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources></Application>

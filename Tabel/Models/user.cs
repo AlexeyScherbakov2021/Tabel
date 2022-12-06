@@ -50,7 +50,8 @@ namespace Tabel.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Transport> transport { get; set; }
 
+        private ICollection<Otdel> _otdels;
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Otdel> otdels { get; set; }
+        public virtual ICollection<Otdel> otdels { get => _otdels; set { Set(ref _otdels, value); } }
     }
 }

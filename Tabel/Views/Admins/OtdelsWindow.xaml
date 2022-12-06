@@ -124,6 +124,7 @@
                                 <DataTemplate>
                                     <ComboBox ItemsSource="{Binding ListCategory, Source={StaticResource context}}" SelectedValuePath="id" 
                                               SelectedValue="{Binding p_cat_id}" DisplayMemberPath="id">
+                                        
                                         <!--<ComboBox.ItemTemplate>
                                             <DataTemplate>
                                                 <StackPanel Orientation="Horizontal">
