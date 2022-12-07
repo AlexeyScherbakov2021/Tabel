@@ -50,7 +50,7 @@ namespace Tabel.ViewModels.ModViewModel
                     modPerson.premiaFP.Calculation();
                     //рассчет суммарных процентов в премии ФП
                     modPerson.premiaFP.CalcChangeProcent();
-                    ListModPerson.Add(modPerson);
+                    //ListModPerson.Add(modPerson);
                 }
             }
             OnPropertyChanged(nameof(ListModPerson));

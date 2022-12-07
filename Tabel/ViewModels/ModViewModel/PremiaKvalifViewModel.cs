@@ -29,8 +29,8 @@ namespace Tabel.ViewModels.ModViewModel
 
         public override void AddPersons(ICollection<ModPerson> listPerson)
         {
-            foreach (var item in listPerson)
-                ListModPerson.Add(item);
+            //foreach (var item in listPerson)
+            //    ListModPerson.Add(item);
 
             OnPropertyChanged(nameof(ListModPerson));
 

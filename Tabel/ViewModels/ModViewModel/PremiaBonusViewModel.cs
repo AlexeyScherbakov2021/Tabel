@@ -39,8 +39,8 @@ namespace Tabel.ViewModels.ModViewModel
         {
             LoadFromGeneral(listPerson);
 
-            foreach (var item in listPerson)
-                ListModPerson.Add(item);
+            //foreach (var item in listPerson)
+            //    ListModPerson.Add(item);
 
             OnPropertyChanged(nameof(ListModPerson));
 

@@ -45,8 +45,8 @@ namespace Tabel.ViewModels.ModViewModel
             LoadFromTabel(listPerson);
             LoadFromSmena(listPerson);
 
-            foreach (var item in listPerson)
-                ListModPerson.Add(item);
+            //foreach (var item in listPerson)
+            //    ListModPerson.Add(item);
 
             OnPropertyChanged(nameof(ListModPerson));
 
