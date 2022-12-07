@@ -15,31 +15,40 @@ namespace Tabel.ViewModels.ModViewModel
     {
         private readonly RepositoryMSSQL<Transport> repoTransport;
 
-        public ObservableCollection<ModPerson> ListModPerson { get; set; }
+        public ICollection<ModPerson> ListModPerson { get; set; }
 
         public PremiaTransportViewModel(BaseModel db) : base(db)
         {
             repoTransport = new RepositoryMSSQL<Transport>(db);
         }
 
-        public override void ChangeListPerson(ObservableCollection<ModPerson> listPerson, int Year, int Month, Otdel Otdel)
+        public override void ChangeListPerson(ICollection<ModPerson> listPerson, int Year, int Month, Otdel Otdel)
         {
             _SelectMonth = Month;
             _SelectYear = Year;
             _SelectedOtdel = Otdel;
             ListModPerson = listPerson;
-
-            LoadFromTransport();
+            LoadFromTransport(ListModPerson);
 
             OnPropertyChanged(nameof(ListModPerson));
         }
 
+        public override void AddPersons(ICollection<ModPerson> listPerson)
+        {
+            LoadFromTransport(listPerson);
+
+            foreach (var item in listPerson)
+                ListModPerson.Add(item);
+
+            OnPropertyChanged(nameof(ListModPerson));
+
+        }
         //-------------------------------------------------------------------------------------------------------
         // подгрузка данных из данных по транспорту
         //-------------------------------------------------------------------------------------------------------
-        private void LoadFromTransport()
+        private void LoadFromTransport(ICollection<ModPerson> listPerson)
         {
-            if (ListModPerson is null)
+            if (listPerson is null)
                 return;
 
             Transport Transp;
@@ -48,9 +57,9 @@ namespace Tabel.ViewModels.ModViewModel
                 && it.tr_Month == _SelectMonth
                 && it.tr_OtdelId == (_SelectedOtdel.ot_parent ?? _SelectedOtdel.id));
 
-            if (ListModPerson is null || Transp is null) return;
+            if (listPerson is null || Transp is null) return;
 
-            foreach (var item in ListModPerson)
+            foreach (var item in listPerson)
             {
                 item.premiaTrnasport.Initialize(Transp.id);
             }

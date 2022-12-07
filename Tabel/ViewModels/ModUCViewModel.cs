@@ -51,7 +51,7 @@ namespace Tabel.ViewModels
         public decimal SetProcPrem { get; set; }
 
         public ObservableCollection<ModPerson> ListModPerson { get; set; }
-
+        public ModPerson SelectedModPerson { get; set; }
 
         public Mod CurrentMod { get; set; }
 
@@ -264,6 +264,107 @@ namespace Tabel.ViewModels
 
                 RepositoryCSV repoFile = new RepositoryCSV(fomExport);
                 repoFile.SaveFile(_SelectYear, _SelectMonth);
+            }
+        }
+
+        //--------------------------------------------------------------------------------
+        // Команда Добавить сотрудников
+        //--------------------------------------------------------------------------------
+        public ICommand AddPersonCommand => new LambdaCommand(OnAddPersonCommandExecuted, CanAddPersonCommand);
+        private bool CanAddPersonCommand(object p) => _SelectedOtdel != null;
+        private void OnAddPersonCommandExecuted(object p)
+        {
+            List<Personal> ListPersonal = repoPersonal.Items
+                //.AsNoTracking()
+                .Where(it => it.p_otdel_id == _SelectedOtdel.id && it.p_delete == false)
+                .ToList();
+
+            // составляем список добавленных людей
+            foreach (var item in ListModPerson)
+            {
+                var person = ListPersonal.FirstOrDefault(it => it.id == item.person.id);
+                if (person != null)
+                    ListPersonal.Remove(person);
+            }
+
+            List<ModPerson> ListNewPerson = new List<ModPerson>();
+
+            if (ListPersonal.Count == 0)
+            {
+                MessageBox.Show("Новых людей для отдела не обнаружено.", "Сообщение", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else if (MessageBox.Show($"Найдено людей: {ListPersonal.Count}. Добавлять?", "Предупреждение", MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
+            {
+
+                foreach (var pers in ListPersonal)
+                {
+                    ModPerson newPerson = new ModPerson();
+                    newPerson.md_group = pers.p_otdel_id.ToString();
+                    newPerson.md_modId = CurrentMod.id;
+                    //newPerson.md_personalId = pers.id;
+                    newPerson.person = pers;
+                    newPerson.md_tarif_offDay = pers.category?.cat_tarif * 8;
+                    if (newPerson.md_tarif_offDay < 1500)
+                        newPerson.md_tarif_offDay = 1500;
+
+                    // получение этого сотрудника из предыдущей существующей модели
+                    ModPerson PrevModPerson = repoModPerson.Items
+                        .AsNoTracking()
+                        .Where(it => it.md_personalId == newPerson.md_personalId
+                                && (
+                                    (it.Mod.m_year == _SelectYear && it.Mod.m_month < _SelectMonth)
+                                    || it.Mod.m_year < _SelectYear
+                                   ))
+                        .OrderByDescending(o => o.Mod.m_year)
+                        .ThenByDescending(o => o.Mod.m_month)
+                        .FirstOrDefault();
+
+
+                    // если был предыдущий месяц, то копируем нужные тарифы
+                    if (PrevModPerson != null)
+                    {
+                        // копирование тарифа бонусов
+                        newPerson.md_bonus_max = PrevModPerson.md_bonus_max;
+                        newPerson.md_cat_prem_tarif = PrevModPerson.md_cat_prem_tarif;
+                    }
+
+                    repoModPerson.Add(newPerson, true);
+                    ListModPerson.Add(newPerson);
+                    ListNewPerson.Add(newPerson);
+
+                }
+
+                modMainViewModel.AddPersons(ListNewPerson);
+                premiaBonusViewModel.AddPersons(ListNewPerson);
+                premiaFPViewModel.AddPersons(ListNewPerson);
+                premiaKvalifViewModel.AddPersons(ListNewPerson);
+                premiaOtdelViewModel.AddPersons(ListNewPerson);
+                premiaQualityViewModel.AddPersons(ListNewPerson);
+                premiaAddWorksViewModel.AddPersons(ListNewPerson);
+                premiaTransportViewModel.AddPersons(ListNewPerson);
+                premiaPrizeViewModel.AddPersons(ListNewPerson);
+
+                OnPropertyChanged(nameof(ListModPerson));
+                //IsModify = true;
+            }
+
+        }
+
+
+
+
+        //--------------------------------------------------------------------------------
+        // Команда Удалить сотрудника
+        //--------------------------------------------------------------------------------
+        public ICommand DeletePersonCommand => new LambdaCommand(OnDeletePersonCommandExecuted, CanDeletePersonCommand);
+        private bool CanDeletePersonCommand(object p) => SelectedModPerson != null;
+        private void OnDeletePersonCommandExecuted(object p)
+        {
+            if (MessageBox.Show($"Удалить {SelectedModPerson.person.FIO}?", "Предупреждение", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+            {
+                repoModPerson.Remove(SelectedModPerson, true);
+                ListModPerson.Remove(SelectedModPerson);
+                //IsModify = true;
             }
         }
 

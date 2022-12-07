@@ -1,5 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:m="clr-namespace:Tabel.Models"
+                    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <Color x:Key="SelectedBackgroundColor">LightBlue</Color>
@@ -9,7 +10,8 @@
 
     <HierarchicalDataTemplate DataType="{x:Type m:Otdel}" ItemsSource="{Binding subOtdels}">
         <!--<TextBox Text="{Binding ot_name}" IsHitTestVisible="False" BorderThickness="0" Margin="2,2"/>-->
-        <TextBlock Text="{Binding ot_name, Mode=TwoWay}" />
+        <TextBlock Text="{Binding ot_name, Mode=TwoWay}">
+        </TextBlock>
     </HierarchicalDataTemplate>
     <Style x:Key="FocusVisual">
         <Setter Property="Control.Template">

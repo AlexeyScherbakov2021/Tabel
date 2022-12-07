@@ -15,7 +15,7 @@ namespace Tabel.ViewModels.ModViewModel
 {
     internal class PremiaQualityViewModel : ModViewModel
     {
-        public ObservableCollection<ModPerson> ListModPerson { get; set; }
+        public ICollection<ModPerson> ListModPerson { get; set; }
         public bool IsCheckQuality { get; set; }
 
         public PremiaQualityViewModel(BaseModel db) : base(db)
@@ -24,15 +24,24 @@ namespace Tabel.ViewModels.ModViewModel
         }
 
 
-        public override void ChangeListPerson(ObservableCollection<ModPerson> listPerson, int Year, int Month, Otdel Otdel)
+        public override void ChangeListPerson(ICollection<ModPerson> listPerson, int Year, int Month, Otdel Otdel)
         {
             //_SelectedOtdel = Otdel;
             _SelectMonth = Month;
             _SelectYear = Year;
             ListModPerson = listPerson;
 
+            OnPropertyChanged(nameof(ListModPerson));
+        }
+
+
+        public override void AddPersons(ICollection<ModPerson> listPerson)
+        {
+            foreach (var item in listPerson)
+                ListModPerson.Add(item);
 
             OnPropertyChanged(nameof(ListModPerson));
+
         }
 
         #region Команды

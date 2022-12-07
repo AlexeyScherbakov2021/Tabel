@@ -100,10 +100,11 @@ namespace Tabel.Repository
             }
         }
 
-        public void Remove(T item)
+        public void Remove(T item, bool Autosave = false)
         {
             db.Set<T>().Remove(item);
-            Save();
+            if (Autosave)
+                Save();
         }
 
 

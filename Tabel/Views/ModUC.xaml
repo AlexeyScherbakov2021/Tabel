@@ -9,7 +9,9 @@
             xmlns:vm="clr-namespace:Tabel.ViewModels"
              xmlns:conv="clr-namespace:Tabel.Infrastructure.Converters"
             xmlns:ext="clr-namespace:Tabel.Infrastructure.Extend"
-             xmlns:ModViewModel="clr-namespace:Tabel.ViewModels.ModViewModel" x:Name="userControl" x:Class="Tabel.Views.ModUC"
+             xmlns:ModViewModel="clr-namespace:Tabel.ViewModels.ModViewModel" 
+            x:Name="userControl" 
+            x:Class="Tabel.Views.ModUC"
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="1200">
     <UserControl.Resources>
@@ -37,6 +39,18 @@
                     <TextBlock Text="Сохранить"/>
                 </StackPanel>
             </Button>
+            <Button Command="{Binding AddPersonCommand}" Margin="3" Style="{StaticResource ButtonStyleShadow}" ToolTip="Экспорт в 1С">
+                <StackPanel Orientation="Horizontal">
+                    <fa:ImageAwesome Icon="Solid_UserPlus" Width="24" Height="16" Foreground="#FF005AA0"/>
+                    <TextBlock Text="Добавить сотрудников"/>
+                </StackPanel>
+            </Button>
+            <Button Command="{Binding DeletePersonCommand}" Margin="3" Style="{StaticResource ButtonStyleShadow}" ToolTip="Экспорт в 1С">
+                <StackPanel Orientation="Horizontal">
+                    <fa:ImageAwesome Icon="Solid_UserMinus" Width="24" Height="16" Foreground="#FF005AA0"/>
+                    <TextBlock Text="Удалить"/>
+                </StackPanel>
+            </Button>
             <Button Command="{Binding ExportCSVCommand}" Margin="3" Style="{StaticResource ButtonStyleShadow}" ToolTip="Экспорт в 1С">
                 <StackPanel Orientation="Horizontal">
                     <fa:ImageAwesome Icon="Solid_Save" Width="24" Height="16" Foreground="#FF005AA0"/>
@@ -61,7 +75,8 @@
                             <ColumnDefinition Width="100"/>
                         </Grid.ColumnDefinitions>
                     </Grid>
-                    <DataGrid ItemsSource="{Binding ListModPerson}" Style="{StaticResource DataGridStyle}" IsReadOnly="True">
+                    <DataGrid ItemsSource="{Binding ListModPerson}" Style="{StaticResource DataGridStyle}" IsReadOnly="True" 
+                              SelectedItem="{Binding DataContext.SelectedModPerson, ElementName=userControl}">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Таб.№" Binding="{Binding person.p_tab_number}"/>
                             <DataGridTextColumn Header="ФИО" Binding="{Binding person.FIO}"/>

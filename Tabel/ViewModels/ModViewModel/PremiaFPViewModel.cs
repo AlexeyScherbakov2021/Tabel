@@ -11,14 +11,14 @@ namespace Tabel.ViewModels.ModViewModel
 {
     internal class PremiaFPViewModel : ModViewModel
     {
-        public ObservableCollection<ModPerson> ListModPerson { get; set; }
+        public ICollection<ModPerson> ListModPerson { get; set; }
 
         public PremiaFPViewModel(BaseModel db) : base(db)
         {
 
         }
 
-        public override void ChangeListPerson(ObservableCollection<ModPerson> listPerson, int Year, int Month, Otdel Otdel)
+        public override void ChangeListPerson(ICollection<ModPerson> listPerson, int Year, int Month, Otdel Otdel)
         {
 
             //_SelectedOtdel = Otdel;
@@ -37,6 +37,22 @@ namespace Tabel.ViewModels.ModViewModel
                 }
             }
 
+            OnPropertyChanged(nameof(ListModPerson));
+        }
+
+        public override void AddPersons(ICollection<ModPerson> listPerson)
+        {
+            if (listPerson != null)
+            {
+                foreach (var modPerson in listPerson)
+                {
+                    // расчет премии из ФП
+                    modPerson.premiaFP.Calculation();
+                    //рассчет суммарных процентов в премии ФП
+                    modPerson.premiaFP.CalcChangeProcent();
+                    ListModPerson.Add(modPerson);
+                }
+            }
             OnPropertyChanged(nameof(ListModPerson));
         }
 

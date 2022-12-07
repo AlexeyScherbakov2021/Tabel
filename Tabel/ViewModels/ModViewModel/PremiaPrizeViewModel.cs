@@ -11,7 +11,7 @@ namespace Tabel.ViewModels.ModViewModel
 {
     internal class PremiaPrizeViewModel : ModViewModel
     {
-        public ObservableCollection<ModPerson> ListModPerson { get; set; }
+        public ICollection<ModPerson> ListModPerson { get; set; }
 
 
         public PremiaPrizeViewModel(BaseModel db) : base(db)
@@ -19,7 +19,7 @@ namespace Tabel.ViewModels.ModViewModel
 
         }
 
-        public override void ChangeListPerson(ObservableCollection<ModPerson> listPerson, int Year, int Month, Otdel Otdel)
+        public override void ChangeListPerson(ICollection<ModPerson> listPerson, int Year, int Month, Otdel Otdel)
         {
 
             _SelectMonth = Month;
@@ -34,6 +34,20 @@ namespace Tabel.ViewModels.ModViewModel
             }
 
             OnPropertyChanged(nameof(ListModPerson));
+        }
+
+
+
+        public override void AddPersons(ICollection<ModPerson> listPerson)
+        {
+            foreach (var item in listPerson)
+            {
+                item.premiaPrize.Calculation();
+                ListModPerson.Add(item);
+            }
+
+            OnPropertyChanged(nameof(ListModPerson));
+
         }
     }
 }

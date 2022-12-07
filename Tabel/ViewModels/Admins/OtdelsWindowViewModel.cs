@@ -234,6 +234,39 @@ namespace Tabel.ViewModels.Admins
         {
             if(MessageBox.Show($"Удалить «{SelectedPerson.p_lastname} {SelectedPerson.p_name} {SelectedPerson.p_midname}»","Подтверждение", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
             {
+                List<string> ListUsedPerson = new List<string>();
+
+                RepositoryMSSQL<TabelPerson> repoTabelPerson = new RepositoryMSSQL<TabelPerson>();
+                var presTabel = repoTabelPerson.Items.AsNoTracking().Where(it => it.tp_person_id == SelectedPerson.id);
+                foreach (var item in presTabel)
+                    ListUsedPerson.Add("Табель " + App.ListMonth[item.tabel.t_month - 1].Name + " " + item.tabel.t_year.ToString() + "\n");
+
+                RepositoryMSSQL<ModPerson> repoModPerson = new RepositoryMSSQL<ModPerson>();
+                var presMod = repoModPerson.Items.AsNoTracking().Where(it => it.md_personalId == SelectedPerson.id);
+                foreach (var item in presMod)
+                    ListUsedPerson.Add("Модель " + App.ListMonth[item.Mod.m_month - 1].Name + " " + item.Mod.m_year.ToString() + "\n");
+
+                RepositoryMSSQL<SmenaPerson> repoSmenaPerson = new RepositoryMSSQL<SmenaPerson>();
+                var presSmena = repoSmenaPerson.Items.AsNoTracking().Where(it => it.sp_PersonId == SelectedPerson.id);
+                foreach (var item in presSmena)
+                    ListUsedPerson.Add("График смен " + App.ListMonth[item.smena.sm_Month - 1].Name + " " + item.smena.sm_Year.ToString() + "\n");
+
+                RepositoryMSSQL<TransPerson> repoTransPerson = new RepositoryMSSQL<TransPerson>();
+                var presTrans = repoTransPerson.Items.AsNoTracking().Where(it => it.tp_PersonId == SelectedPerson.id);
+                foreach (var item in presTrans)
+                    ListUsedPerson.Add("Транспорт " + App.ListMonth[item.Transport.tr_Month - 1].Name + " " + item.Transport.tr_Year.ToString() + "\n");
+
+                if (ListUsedPerson.Count() > 0)
+                {
+                    string message = "Удалить невозможно. Сотрудник задействован в \n";
+                    for(int i = 0; i < ListUsedPerson.Count && i < 14; i++)
+                        message += ListUsedPerson[i];
+
+                    MessageBox.Show(message, "Сообщение", MessageBoxButton.OK, MessageBoxImage.Warning);
+
+                    return;
+                }
+
                 repoPerson.Delete(SelectedPerson, true);
                 ListPersonal.Remove(SelectedPerson);
             }

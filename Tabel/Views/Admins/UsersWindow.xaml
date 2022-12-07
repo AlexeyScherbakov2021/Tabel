@@ -47,7 +47,8 @@
                 </Button>
             </UniformGrid>
             <Grid >
-                <DataGrid x:Name="dataGrid" ItemsSource="{Binding ListUserView}" AutoGenerateColumns="False" SelectedItem="{Binding SelectedUser}"
+                <DataGrid x:Name="dataGrid" ItemsSource="{Binding ListUserView}"
+                          AutoGenerateColumns="False" SelectedItem="{Binding SelectedUser}"
                     Style="{StaticResource DataGridStyle}"  >
                     <!--<i:Interaction.Triggers>
                         <i:EventTrigger EventName="GotFocus">
@@ -78,7 +79,6 @@
                                 <DataTemplate>
                                     <ComboBox ItemsSource="{Binding DataContext.ListOtdel, ElementName=userControl}"
                                         Style="{StaticResource ComboLVBoxStyle}" 
-                                              SelectedItem="{Binding}"
                                         Text="{Binding otdels, Mode=TwoWay, Converter={StaticResource OtdelsUserConverter}}" IsSynchronizedWithCurrentItem="True"
                                         />
                                 </DataTemplate>

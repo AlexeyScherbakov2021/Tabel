@@ -18,7 +18,7 @@ namespace Tabel.ViewModels.ModViewModel
         private readonly RepositoryMSSQL<WorkTabel> repoTabel;
         private readonly RepositoryMSSQL<Smena> repoSmena;
 
-        public ObservableCollection<ModPerson> ListModPerson { get; set; }
+        public ICollection<ModPerson> ListModPerson { get; set; }
 
         public ModMainViewModel(BaseModel ctx) : base(ctx)
         {
@@ -27,39 +27,52 @@ namespace Tabel.ViewModels.ModViewModel
         }
 
 
-        public override void ChangeListPerson(ObservableCollection<ModPerson> listPerson, int Year, int Month, Otdel Otdel)
+        public override void ChangeListPerson(ICollection<ModPerson> listPerson, int Year, int Month, Otdel Otdel)
         {
             ListModPerson = listPerson;
             _SelectYear= Year;
             _SelectMonth= Month;
             _SelectedOtdel = Otdel;
 
-            LoadFromTabel();
-            LoadFromSmena();
+            LoadFromTabel(ListModPerson);
+            LoadFromSmena(ListModPerson);
             OnPropertyChanged(nameof(ListModPerson));
+        }
+
+
+        public override void AddPersons(ICollection<ModPerson> listPerson)
+        {
+            LoadFromTabel(listPerson);
+            LoadFromSmena(listPerson);
+
+            foreach (var item in listPerson)
+                ListModPerson.Add(item);
+
+            OnPropertyChanged(nameof(ListModPerson));
+
         }
 
 
         //-------------------------------------------------------------------------------------------------------
         // подгрузка данных из табеля
         //-------------------------------------------------------------------------------------------------------
-        private void LoadFromTabel()
+        private void LoadFromTabel(ICollection<ModPerson> listPerson)
         {
-            if (ListModPerson is null)
+            if (listPerson is null)
                 return;
 
             WorkTabel tabel = repoTabel.Items.AsNoTracking().FirstOrDefault(it => it.t_year == _SelectYear
                 && it.t_month == _SelectMonth
                 && it.t_otdel_id == (_SelectedOtdel.ot_parent ?? _SelectedOtdel.id));
 
-            if (ListModPerson is null || tabel is null) return;
+            if (listPerson is null || tabel is null) return;
 
             // получение количества рабочих дней в указанном месяце
             RepositoryCalendar repoCal = new RepositoryCalendar(db);// AllRepo.GetRepoCalendar();
             var listDays = repoCal.GetListDays(_SelectYear, _SelectMonth);
             int CountWorkDays = listDays.Count(it => it.KindDay != TypeDays.Holyday);
 
-            foreach (var item in ListModPerson)
+            foreach (var item in listPerson)
             {
                 var pers = tabel.tabelPersons.FirstOrDefault(it => it.tp_person_id == item.md_personalId);
                 if (pers != null)
@@ -83,18 +96,18 @@ namespace Tabel.ViewModels.ModViewModel
         //-------------------------------------------------------------------------------------------------------
         // подгрузка данных из графика смен
         //-------------------------------------------------------------------------------------------------------
-        private void LoadFromSmena()
+        private void LoadFromSmena(ICollection<ModPerson> listPerson)
         {
-            if (ListModPerson is null)
+            if (listPerson is null)
                 return;
 
             var smena = repoSmena.Items.AsNoTracking().FirstOrDefault(it => it.sm_Year == _SelectYear
                 && it.sm_Month == _SelectMonth
                 && it.sm_OtdelId == (_SelectedOtdel.ot_parent ?? _SelectedOtdel.id));
 
-            if (ListModPerson is null || smena is null) return;
+            if (listPerson is null || smena is null) return;
 
-            foreach (var item in ListModPerson)
+            foreach (var item in listPerson)
             {
                 item.premiaNight.Initialize(smena.id);
             }

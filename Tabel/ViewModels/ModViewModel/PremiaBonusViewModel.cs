@@ -15,7 +15,7 @@ namespace Tabel.ViewModels.ModViewModel
 {
     internal class PremiaBonusViewModel : ModViewModel
     {
-        public ObservableCollection<ModPerson> ListModPerson { get; set; }
+        public ICollection<ModPerson> ListModPerson { get; set; }
         public bool IsCheckBonus { get; set; }
         public decimal SetMaxPrem { get; set; }
 
@@ -25,28 +25,39 @@ namespace Tabel.ViewModels.ModViewModel
 
         }
 
-        public override void ChangeListPerson(ObservableCollection<ModPerson> listPerson, int Year, int Month, Otdel Otdel)
+        public override void ChangeListPerson(ICollection<ModPerson> listPerson, int Year, int Month, Otdel Otdel)
         {
             //_SelectedOtdel = Otdel;
             _SelectMonth= Month;
             _SelectYear = Year;
             ListModPerson = listPerson;
-            LoadFromGeneral();
+            LoadFromGeneral(ListModPerson);
             OnPropertyChanged(nameof(ListModPerson));
+        }
+
+        public override void AddPersons(ICollection<ModPerson> listPerson)
+        {
+            LoadFromGeneral(listPerson);
+
+            foreach (var item in listPerson)
+                ListModPerson.Add(item);
+
+            OnPropertyChanged(nameof(ListModPerson));
+
         }
 
         //-------------------------------------------------------------------------------------------------------
         // подгрузка данных общего расчета 
         //-------------------------------------------------------------------------------------------------------
-        private void LoadFromGeneral()
+        private void LoadFromGeneral(ICollection<ModPerson> listPerson)
         {
-            if (ListModPerson is null) return;
+            if (listPerson is null) return;
 
             RepositoryMSSQL<GenChargMonth> repoGetAll = new RepositoryMSSQL<GenChargMonth>(db);
             decimal? BonusProc = repoGetAll.Items
                 .FirstOrDefault(it => it.gm_Year == _SelectYear && it.gm_Month == _SelectMonth && it.gm_GenId == (int)EnumKind.BonusProc)?.gm_Value;
 
-            foreach (var modPerson in ListModPerson)
+            foreach (var modPerson in listPerson)
             {
                 modPerson.premiaBonus.BonusForAll = BonusProc;
             }

@@ -37,6 +37,7 @@ namespace Tabel.ViewModels
         public WorkTabel Tabel { get; set; }
         public IEnumerable<typeDay> ListTypeDays { get; set; }
         public ObservableCollection<TabelPerson> ListTabelPerson { get; set; }
+        public TabelPerson SelectedPerson { get; set; }
 
         public Otdel SelectedOtdel { get; set; }
         private int _SelectMonth;
@@ -322,6 +323,22 @@ namespace Tabel.ViewModels
 
         }
 
+        //--------------------------------------------------------------------------------
+        // Команда Удалить сотрудника
+        //--------------------------------------------------------------------------------
+        public ICommand DeletePersonCommand => new LambdaCommand(OnDeletePersonCommandExecuted, CanDeletePersonCommand);
+        private bool CanDeletePersonCommand(object p) => SelectedPerson != null;
+        private void OnDeletePersonCommandExecuted(object p)
+        {
+            if(MessageBox.Show($"Удалить {SelectedPerson.person.FIO}?","Предупреждение", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+            {
+                repoTabelPerson.Remove(SelectedPerson, true);
+                ListTabelPerson.Remove(SelectedPerson);
+                //IsModify = true;
+            }
+        }
+
+
 
         //--------------------------------------------------------------------------------
         // Команда СЗ для выходного
@@ -332,7 +349,6 @@ namespace Tabel.ViewModels
         {
             RepositoryWord repoWord = new RepositoryWord(@"Отчеты\СЗ выходные дни.docx");
             repoWord.CreateWorkOffSZ(null, DateTime.Now);
-
         }
 
         #endregion
@@ -548,7 +564,7 @@ namespace Tabel.ViewModels
                 // получение количестве непрерывно отработанных дней в конце предыдущего месяца
                 item.PrevPermWorkCount = 0;
 
-                if (PrevTabel != null)
+                if (PrevTabel != null && item.person != null)
                 {
                     // получение данных предыдущего табеля
                     var PrevTabelPerson = PrevTabel.tabelPersons
@@ -568,7 +584,7 @@ namespace Tabel.ViewModels
                         }
                     }
                 }
-                else
+                else if(ListDaysMonth != null)
                 {
                     // расчет при отсутствии предыдущего табеля
                     item.PrevDay = new TabelDay();
