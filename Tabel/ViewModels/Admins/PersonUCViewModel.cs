@@ -20,7 +20,11 @@ namespace Tabel.ViewModels.Admins
     {
         private readonly BaseModel db;
 
+        private bool IsModify;
+
         private readonly RepositoryMSSQL<Personal> repoPerson;
+
+        public Personal SelectedPerson { get; set; }
 
         private List<Personal> _ListPersonal;
         public List<Personal> ListPersonal 
@@ -28,13 +32,24 @@ namespace Tabel.ViewModels.Admins
             get => _ListPersonal;
             set
             {
-                if (Set(ref _ListPersonal, value))
+                if (_ListPersonal == value) return;
+
+                if (_ListPersonal != null)
                 {
-                    _listPersonViewSource = new CollectionViewSource();
-                    _listPersonViewSource.Source = value;
-                    _listPersonViewSource.View.Refresh();
-                    _listPersonViewSource.Filter += _ListView_Filter;
+                    foreach (var item in _ListPersonal)
+                        item.PropertyChanged -= Item_PropertyChanged;
                 }
+
+                _ListPersonal = value;
+
+                _listPersonViewSource = new CollectionViewSource();
+                _listPersonViewSource.Source = value;
+                _listPersonViewSource.View.Refresh();
+                _listPersonViewSource.Filter += _ListView_Filter;
+
+                foreach (var item in _ListPersonal)
+                    item.PropertyChanged += Item_PropertyChanged;
+
             }
         }
 
@@ -65,15 +80,38 @@ namespace Tabel.ViewModels.Admins
 
             db = repoPerson.GetDB();
 
-
             repoOtdel = new RepositoryOtdel(db);
             ListOtdel = repoOtdel.Items.ToList();
 
             repoCat = new RepositoryMSSQL<Category>(db);
             ListCategory = repoCat.Items.OrderBy(o => o.id).ToList();
 
+            IsModify = false;
+        }
+
+
+        //--------------------------------------------------------------------------------
+        // Событие изменениея тарифа или разряда
+        //--------------------------------------------------------------------------------
+        private void Item_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "p_cat_id" || e.PropertyName == "p_premTarif")
+            {
+                Category cat = repoCat.Items.AsNoTracking().FirstOrDefault(it => it.id == SelectedPerson.p_cat_id);
+                if (cat != null)
+                {
+                    if (SelectedPerson.p_premTarif > cat.cat_max_level)
+                        SelectedPerson.p_premTarif = cat.cat_max_level;
+
+                    if (SelectedPerson.p_premTarif < cat.cat_min_level)
+                        SelectedPerson.p_premTarif = cat.cat_min_level;
+                }
+            }
+
+            IsModify = true;
 
         }
+
 
         //--------------------------------------------------------------------------------------
         // функция фильтрации 
@@ -97,7 +135,7 @@ namespace Tabel.ViewModels.Admins
         // Команда Сохранить
         //--------------------------------------------------------------------------------
         public ICommand SaveCommand => new LambdaCommand(OnSaveCommandExecuted, CanSaveCommand);
-        private bool CanSaveCommand(object p) => true;
+        private bool CanSaveCommand(object p) => IsModify;
         private void OnSaveCommandExecuted(object p)
         {
             repoPerson.Save();

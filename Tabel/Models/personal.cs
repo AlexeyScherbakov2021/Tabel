@@ -23,29 +23,39 @@ namespace Tabel.Models
         [Column("idPerson")]
         public int id { get; set; }
 
+        private string _p_tab_number;
         [StringLength(50)]
-        public string p_tab_number { get; set; }
+        public string p_tab_number { get => _p_tab_number; set { Set(ref _p_tab_number, value); } }
 
+
+        private string _p_lastname;
         [StringLength(50)]
-        public string p_lastname { get; set; }
+        public string p_lastname { get => _p_lastname; set { Set(ref _p_lastname, value); } }
 
+        private string _p_name;
         [StringLength(50)]
-        public string p_name { get; set; }
+        public string p_name { get => _p_name; set { Set(ref _p_name, value); } }
 
+        private string _p_midname;
         [StringLength(50)]
-        public string p_midname { get; set; }
+        public string p_midname { get => _p_midname; set { Set(ref _p_midname, value); } }
 
+        private string _p_profession;
         [StringLength(150)]
-        public string p_profession { get; set; }
+        public string p_profession { get => _p_profession; set { Set(ref _p_profession, value); } }
 
-        public int? p_otdel_id { get; set; }
+        private int? _p_otdel_id;
+        public int? p_otdel_id { get => _p_otdel_id; set { Set(ref _p_otdel_id, value); } }
+
 
         private int? _p_cat_id;
         public int? p_cat_id { get => _p_cat_id; set { Set(ref _p_cat_id, value); } }
 
-        public bool p_delete { get; set; }
+        private bool _p_delete;
+        public bool p_delete { get => _p_delete; set { Set(ref _p_delete, value); } }
 
-        public decimal p_stavka { get; set; }
+        private decimal _p_stavka;
+        public decimal p_stavka { get => _p_stavka; set { Set(ref _p_stavka, value); } }
 
         private decimal? _p_premTarif;
         public decimal? p_premTarif { get => _p_premTarif; set { Set(ref _p_premTarif, value); } }
