@@ -287,13 +287,15 @@
             <TextBlock Text="Дата создания" Margin="5,0" VerticalAlignment="Center"/>
             <TextBox Text="{Binding SmenaShedule.sm_DateCreate, StringFormat=dd.MM.yyyy HH:mm:ss}" Margin="5,0" VerticalAlignment="Center" Width="120"/>
 
-            <Button Content="Создать график" Command="{Binding CreateCommand}" Margin="3" Style="{DynamicResource ButtonStyleShadow}"/>
-            <Button Content="Сохранить" Command="{Binding SaveCommand}" Margin="3" Style="{DynamicResource ButtonStyleShadow}"/>
-            <Button Content="Печать" Command="{Binding PrintCommand}" Margin="3" Style="{DynamicResource ButtonStyleShadow}"/>
+            <Button Content="Создать график" Command="{Binding CreateCommand}" Margin="3" Style="{StaticResource ButtonStyleShadow}"/>
+            <Button Content="Сохранить" Command="{Binding SaveCommand}" Margin="3" Style="{StaticResource ButtonStyleShadow}"/>
+            <Button Content="Добавить сотрудников" Command="{Binding AddPersonCommand}" Margin="3" Style="{StaticResource ButtonStyleShadow}"/>
+            <Button Content="Удалить" Command="{Binding DeletePersonCommand}" Margin="3" Style="{StaticResource ButtonStyleShadow}"/>
+            <Button Content="Печать" Command="{Binding PrintCommand}" Margin="3" Style="{StaticResource ButtonStyleShadow}"/>
         </ToolBarPanel>
 
-        <DataGrid x:Name="dg" ItemsSource="{Binding ListSmenaPerson}" Style="{DynamicResource DataGridStyle}" 
-                  VerticalGridLinesBrush="LightGray" HorizontalGridLinesBrush="LightGray"
+        <DataGrid x:Name="dg" ItemsSource="{Binding ListSmenaPerson}" Style="{StaticResource DataGridStyle}" 
+                  VerticalGridLinesBrush="LightGray" HorizontalGridLinesBrush="LightGray" SelectedItem="{Binding SelectedPerson}"
                   FrozenColumnCount="1" >
             <DataGrid.Columns>
                 <DataGridTemplateColumn Header="Сотрудник" IsReadOnly="True" Width="130">

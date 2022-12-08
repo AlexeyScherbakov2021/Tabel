@@ -36,6 +36,8 @@ namespace Tabel.ViewModels
         // Текщий график смен
         public Smena SmenaShedule { get; set; }
         public ObservableCollection<SmenaPerson> ListSmenaPerson { get; set; }
+        public SmenaPerson SelectedPerson { get;set;}
+
 
         //private DateTime _CurrentDate;
 
@@ -237,6 +239,78 @@ namespace Tabel.ViewModels
             }
 
         }
+
+        //--------------------------------------------------------------------------------
+        // Команда Добавить сотрудников
+        //--------------------------------------------------------------------------------
+        public ICommand AddPersonCommand => new LambdaCommand(OnAddPersonCommandExecuted, CanAddPersonCommand);
+        private bool CanAddPersonCommand(object p) => _SelectedOtdel != null && SmenaShedule != null;
+        private void OnAddPersonCommandExecuted(object p)
+        {
+            List<Models.Personal> ListPersonal = repoPersonal.Items
+                .AsNoTracking()
+                .Where(it => it.p_otdel_id == _SelectedOtdel.id && it.p_delete == false)
+                .ToList();
+
+            // составляем список добавленных людей
+            foreach (var item in ListSmenaPerson)
+            {
+                var pers = ListPersonal.FirstOrDefault(it => it.id == item.personal.id);
+                if (pers != null)
+                    ListPersonal.Remove(pers);
+            }
+
+            if (ListPersonal.Count == 0)
+            {
+                MessageBox.Show("Новых людей для отдела не обнаружено.", "Сообщение", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else if (MessageBox.Show($"Найдено людей: {ListPersonal.Count}. Добавлять?", "Предупреждение", MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
+            {
+                RepositoryCalendar repo = new RepositoryCalendar(db);// AllRepo.GetRepoCalendar();
+                var ListDays = repo.GetListDays(_SelectYear, _SelectMonth);
+
+                foreach (var item in ListPersonal)
+                {
+                    SmenaPerson sp = new SmenaPerson();
+                    //tp.tp_person_id = item.id;
+                    sp.personal = repoPersonal.Items.FirstOrDefault(it => it.id == item.id);
+                    sp.SmenaDays = new ObservableCollection<SmenaDay>();
+
+                    foreach (var listItem in ListDays)
+                    {
+                        SmenaDay sd = new SmenaDay();
+                        sp.sp_SmenaId = SmenaShedule.id;
+                        sd.sd_Day = listItem.Day;
+                        sd.OffDay = listItem.KindDay == TypeDays.Holyday;
+                        sd.sd_Kind = sd.OffDay ? SmenaKind.DayOff : SmenaKind.First;
+                        sp.SmenaDays.Add(sd);
+                    }
+
+                    repoSmenaPersonal.Add(sp, true);
+                    ListSmenaPerson.Add(sp);
+                }
+
+                OnPropertyChanged(nameof(ListSmenaPerson));
+                //IsModify = true;
+            }
+
+        }
+
+        //--------------------------------------------------------------------------------
+        // Команда Удалить сотрудника
+        //--------------------------------------------------------------------------------
+        public ICommand DeletePersonCommand => new LambdaCommand(OnDeletePersonCommandExecuted, CanDeletePersonCommand);
+        private bool CanDeletePersonCommand(object p) => SelectedPerson != null;
+        private void OnDeletePersonCommandExecuted(object p)
+        {
+            if (MessageBox.Show($"Удалить {SelectedPerson.personal.FIO}?", "Предупреждение", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+            {
+                repoSmenaPersonal.Remove(SelectedPerson, true);
+                ListSmenaPerson.Remove(SelectedPerson);
+                //IsModify = true;
+            }
+        }
+
         #endregion
 
         //--------------------------------------------------------------------------------------------------

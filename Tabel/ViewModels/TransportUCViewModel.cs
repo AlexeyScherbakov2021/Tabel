@@ -34,6 +34,7 @@ namespace Tabel.ViewModels
 
         public Transport Transp { get; set; }
         public ObservableCollection<TransPerson> ListTransPerson { get; set; }
+        public TransPerson SelectedPerson { get; set; }
 
 
         public TransportUCViewModel()
@@ -228,6 +229,80 @@ namespace Tabel.ViewModels
         {
 
         }
+
+
+        //--------------------------------------------------------------------------------
+        // Команда Добавить сотрудников
+        //--------------------------------------------------------------------------------
+        public ICommand AddPersonCommand => new LambdaCommand(OnAddPersonCommandExecuted, CanAddPersonCommand);
+        private bool CanAddPersonCommand(object p) => _SelectedOtdel != null && Transp != null;
+        private void OnAddPersonCommandExecuted(object p)
+        {
+            List<Models.Personal> ListPersonal = repoPersonal.Items
+                .AsNoTracking()
+                .Where(it => it.p_otdel_id == _SelectedOtdel.id && it.p_delete == false)
+                .ToList();
+
+            // составляем список добавленных людей
+            foreach (var item in ListTransPerson)
+            {
+                var pers = ListPersonal.FirstOrDefault(it => it.id == item.person.id);
+                if (pers != null)
+                    ListPersonal.Remove(pers);
+            }
+
+            if (ListPersonal.Count == 0)
+            {
+                MessageBox.Show("Новых людей для отдела не обнаружено.", "Сообщение", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else if (MessageBox.Show($"Найдено людей: {ListPersonal.Count}. Добавлять?", "Предупреждение", MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
+            {
+                RepositoryCalendar repo = new RepositoryCalendar(db);
+                var ListDays = repo.GetListDays(_SelectYear, _SelectMonth);
+
+                foreach (var item in ListPersonal)
+                {
+                    TransPerson tp = new TransPerson();
+                    tp.person = repoPersonal.Items.FirstOrDefault(it => it.id == item.id);
+                    tp.TransDays = new ObservableCollection<TransDay>();
+
+                    foreach (var listItem in ListDays)
+                    {
+                        TransDay td = new TransDay();
+                        tp.tp_TranspId = Transp.id;
+                        td.td_Day = listItem.Day;
+                        td.OffDay = listItem.KindDay == TypeDays.Holyday;
+                        td.td_Kind = 0;
+                        tp.TransDays.Add(td);
+                    }
+
+                    repoTransPerson.Add(tp, true);
+                    ListTransPerson.Add(tp);
+                }
+
+                OnPropertyChanged(nameof(ListTransPerson));
+                //IsModify = true;
+            }
+
+        }
+
+        //--------------------------------------------------------------------------------
+        // Команда Удалить сотрудника
+        //--------------------------------------------------------------------------------
+        public ICommand DeletePersonCommand => new LambdaCommand(OnDeletePersonCommandExecuted, CanDeletePersonCommand);
+        private bool CanDeletePersonCommand(object p) => SelectedPerson != null;
+        private void OnDeletePersonCommandExecuted(object p)
+        {
+            if (MessageBox.Show($"Удалить {SelectedPerson.person.FIO}?", "Предупреждение", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+            {
+                repoTransPerson.Remove(SelectedPerson, true);
+                ListTransPerson.Remove(SelectedPerson);
+                //IsModify = true;
+            }
+        }
+
+
+
         #endregion
 
         //--------------------------------------------------------------------------------------------------

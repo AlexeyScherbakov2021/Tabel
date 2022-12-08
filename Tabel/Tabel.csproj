@@ -401,22 +401,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="231194.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="1644003791_46-phonoteka-org-p-grafik-raboti-fon-53.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="ForTabel.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="ForTabel2.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="date.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Calendar Red.ico" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="calendar.ico" />
