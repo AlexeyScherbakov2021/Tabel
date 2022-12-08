@@ -185,9 +185,6 @@ namespace Tabel.ViewModels
             premiaTransportViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
             premiaPrizeViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
 
-            //OnPropertyChanged(nameof(ListModPerson));
-            //OnPropertyChanged(nameof(CurrentMod));
-
         }
 
         //--------------------------------------------------------------------------------
@@ -199,24 +196,6 @@ namespace Tabel.ViewModels
         {
             SaveForm();
         }
-
-
-        ////--------------------------------------------------------------------------------
-        //// Команда Отметить выбранные за качество
-        ////--------------------------------------------------------------------------------
-        //public ICommand CheckQualCommand => new LambdaCommand(OnCheckQualCommandExecuted, CanCheckQualCommand);
-        //private bool CanCheckQualCommand(object p) => true;
-        //private void OnCheckQualCommandExecuted(object p)
-        //{
-        //    if( p is DataGrid dg)
-        //    {
-        //        foreach (ModPerson item in dg.SelectedItems)
-        //        {
-        //            item.md_quality_check = IsCheckQuality;
-        //            item.OnPropertyChanged(nameof(item.md_quality_check));
-        //        }
-        //    }
-        //}
 
 
         //--------------------------------------------------------------------------------
@@ -381,20 +360,6 @@ namespace Tabel.ViewModels
             _SelectYear = Year;
             _SelectedOtdel = SelectOtdel;
 
-             //if(_SelectedOtdel?.ot_itr == 1)
-             //{
-             //   IsVisibleITR = Visibility.Visible;
-             //   IsVisibleNoITR = Visibility.Collapsed;
-             //}
-             //else
-             //{
-             //   IsVisibleNoITR = Visibility.Visible;
-             //   IsVisibleITR = Visibility.Collapsed;
-             //}
-
-            //OnPropertyChanged(nameof(IsVisibleITR));
-            //OnPropertyChanged(nameof(IsVisibleNoITR));
-
             if (SelectOtdel is null) return;
 
             ListModPerson = null;
@@ -433,9 +398,6 @@ namespace Tabel.ViewModels
             premiaAddWorksViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
             premiaTransportViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
             premiaPrizeViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
-
-            //OnPropertyChanged(nameof(ListModPerson));
-            //OnPropertyChanged(nameof(CurrentMod));
 
         }
 

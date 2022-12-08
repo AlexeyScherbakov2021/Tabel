@@ -26,7 +26,6 @@ namespace Tabel.ViewModels.ModViewModel
 
         public override void ChangeListPerson(ICollection<ModPerson> listPerson, int Year, int Month, Otdel Otdel)
         {
-            //_SelectedOtdel = Otdel;
             _SelectMonth = Month;
             _SelectYear = Year;
             ListModPerson = listPerson;
@@ -37,11 +36,7 @@ namespace Tabel.ViewModels.ModViewModel
 
         public override void AddPersons(ICollection<ModPerson> listPerson)
         {
-            //foreach (var item in listPerson)
-            //    ListModPerson.Add(item);
-
             OnPropertyChanged(nameof(ListModPerson));
-
         }
 
         #region Команды

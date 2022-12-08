@@ -4,6 +4,9 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
+using System.Windows.Input;
+using Tabel.Commands;
 using Tabel.Models;
 using Tabel.ViewModels.Base;
 
@@ -12,6 +15,8 @@ namespace Tabel.ViewModels.ModViewModel
     internal class PremiaKvalifViewModel : ModViewModel
     {
         public ICollection<ModPerson> ListModPerson { get; set; }
+
+        public decimal? SetProcPrem { get; set; }
 
         public PremiaKvalifViewModel(BaseModel db) : base(db)
         {
@@ -24,16 +29,49 @@ namespace Tabel.ViewModels.ModViewModel
             _SelectYear = Year;
             ListModPerson = listPerson;
 
+            LoadFromCategory(listPerson);
+
             OnPropertyChanged(nameof(ListModPerson));
         }
 
         public override void AddPersons(ICollection<ModPerson> listPerson)
         {
-            //foreach (var item in listPerson)
-            //    ListModPerson.Add(item);
-
+            LoadFromCategory(listPerson);
             OnPropertyChanged(nameof(ListModPerson));
+        }
+
+        private void LoadFromCategory(ICollection<ModPerson> listPerson)
+        {
+            if (listPerson is null)
+                return;
+
+            foreach (var item in listPerson)
+            {
+                item.md_kvalif_tarif = item.TabelHours * item.person.p_premTarif;
+            }
+        }
+
+
+        #region Команды
+
+        //--------------------------------------------------------------------------------
+        // Команда Применить % премии к выбранным
+        //--------------------------------------------------------------------------------
+        public ICommand SetProcPremCommand => new LambdaCommand(OnSetProcPremCommandExecuted, CanSetProcPremCommand);
+        private bool CanSetProcPremCommand(object p) => true;
+        private void OnSetProcPremCommandExecuted(object p)
+        {
+            if (p is DataGrid dg)
+            {
+                foreach (ModPerson item in dg.SelectedItems)
+                {
+                    item.md_kvalif_prem = SetProcPrem;
+                    item.OnPropertyChanged(nameof(item.md_kvalif_prem));
+                }
+            }
 
         }
+        #endregion
+
     }
 }

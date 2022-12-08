@@ -34,6 +34,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>calendar.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="ClosedXML, Version=0.96.0.0, Culture=neutral, PublicKeyToken=fd1eb21b62ae805b, processorArchitecture=MSIL">
       <HintPath>..\packages\ClosedXML.0.96.0\lib\net46\ClosedXML.dll</HintPath>
@@ -396,6 +399,27 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="231194.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="1644003791_46-phonoteka-org-p-grafik-raboti-fon-53.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ForTabel.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ForTabel2.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="date.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Calendar Red.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="calendar.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

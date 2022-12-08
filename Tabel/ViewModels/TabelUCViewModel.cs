@@ -164,6 +164,8 @@ namespace Tabel.ViewModels
             {
                 using (XLWorkbook wb = new XLWorkbook(@"Отчеты\Табель.xlsx"))
                 {
+                    IEnumerable<TabelPerson> SelectedListPerson = ListTabelPerson.Where(it => !string.IsNullOrEmpty(it.person.p_tab_number));
+
                     int NumPP = 1;
                     var ws = wb.Worksheets.Worksheet(1);
 
@@ -182,14 +184,14 @@ namespace Tabel.ViewModels
                     ws.Row(27).InsertRowsBelow((ListTabelPerson.Count() - 1) * 4);
                     var range = ws.Range(RowNum, 1, RowNum + 3, 75);
 
-                    for (int i = 0; i < ListTabelPerson.Count() - 1; i++)
+                    for (int i = 0; i < SelectedListPerson.Count() - 1; i++)
                     {
                         RowNum += 4;
                         range.CopyTo(ws.Cell(RowNum, 1));
                     }
 
                     RowNum = 24;
-                    foreach (var item in ListTabelPerson)
+                    foreach (var item in SelectedListPerson)
                     {
                         ws.Cell(RowNum, 1).Value = NumPP++;
                         ws.Cell(RowNum, 3).Value = item.person.FIO;

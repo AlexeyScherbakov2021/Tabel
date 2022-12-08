@@ -25,7 +25,6 @@ namespace Tabel.ViewModels.Admins
         // Отделы -----------------------------------------------------
 
         private readonly RepositoryOtdel repoOtdel;
-        //private readonly RepositoryMSSQL<Otdel> repoOtdel;
         // Список всех отделов
         public ObservableCollection<Otdel> ListOtdel { get; set; }
 
@@ -46,7 +45,6 @@ namespace Tabel.ViewModels.Admins
                 if (Set(ref _SelectedOtdel, value))
                 {
                     _SelectedOtdel = value;
-                    //ListPersonal = new ObservableCollection<Personal>(repoPerson.Items.Where(it => it.p_otdel_id == _SelectedOtdel.id));
                     var result = repoPerson.Items
                         .Where(it => it.p_otdel_id == _SelectedOtdel.id)
                         .OrderBy(o => o.p_lastname)
@@ -60,7 +58,7 @@ namespace Tabel.ViewModels.Admins
         // Разряды ----------------------------------------------------
         private readonly RepositoryMSSQL<Category> repoCat;
 
-        public List<Category> ListCategory { get; set; } //= repoCat.Items.AsNoTracking().OrderBy(o => o.id).ToList();
+        public List<Category> ListCategory { get; set; } 
 
 
         // Персонал отдела --------------------------------------------
@@ -74,19 +72,32 @@ namespace Tabel.ViewModels.Admins
         { 
             get => _ListPersonal; 
             set 
-            { 
-                if(Set(ref _ListPersonal, value))
+            {
+                if (_ListPersonal == value) return;
+
+                if(_ListPersonal != null)
                 {
-                    //_ListCollectionPerson = new CollectionViewSource();
-                    if(_ListCollectionPerson.View != null)
-                        _ListCollectionPerson.View.CurrentChanged -= ListPersonalView_CurrentChanged;
-                    _ListCollectionPerson.Source = value;
-                    _ListCollectionPerson.View.CurrentChanged += ListPersonalView_CurrentChanged;
-                    _ListCollectionPerson.View.Refresh();
-                    OnPropertyChanged(nameof(ListPersonalView));
+                    foreach (var item in _ListPersonal)
+                        item.PropertyChanged -= Item_PropertyChanged;
                 }
+
+                _ListPersonal = value;
+
+                if(_ListCollectionPerson.View != null)
+                    _ListCollectionPerson.View.CurrentChanged -= ListPersonalView_CurrentChanged;
+                _ListCollectionPerson.Source = value;
+                _ListCollectionPerson.View.CurrentChanged += ListPersonalView_CurrentChanged;
+                _ListCollectionPerson.View.Refresh();
+                OnPropertyChanged(nameof(ListPersonalView));
+
+                foreach(var item in _ListPersonal)
+                    item.PropertyChanged += Item_PropertyChanged;
+
+                //OnPropertyChanged(nameof(ListPersonal));
             } 
         }
+
+
 
         private CollectionViewSource _ListCollectionPerson = new CollectionViewSource();
         public ICollectionView ListPersonalView => _ListCollectionPerson?.View;
@@ -100,26 +111,45 @@ namespace Tabel.ViewModels.Admins
             repoOtdel = new RepositoryOtdel();
             db = repoOtdel.GetDB();
 
-            //repoOtdel = AllRepo.GetRepoOtdel();
             repoPerson = new RepositoryMSSQL<Personal>(db);
             repoCat = new RepositoryMSSQL<Category>(db);
 
             if (App.CurrentUser.u_role == UserRoles.Admin)
             {
                 ListOtdel = new ObservableCollection<Otdel>(repoOtdel.Items.Where(it => it.ot_parent == null));
-                //ListOtdel = new ObservableCollection<Otdel>(repoOtdel.Items);
             }
             else
             {
                 ListOtdel = new ObservableCollection<Otdel>(repoOtdel.GetTreeOtdels(App.CurrentUser.otdels));
-
-                //ListOtdel = new ObservableCollection<Otdel>(repoOtdel.Items.Where(it => it.id == App.CurrentUser.u_otdel_id));
             }
             SelectedOtdel = ListOtdel.Count > 0 ?  ListOtdel[0] : null;
             ListCategory = repoCat.Items.AsNoTracking().OrderBy(o => o.id).ToList();
 
         }
 
+        //--------------------------------------------------------------------------------
+        // Событие изменениея тарифа или разряда
+        //--------------------------------------------------------------------------------
+        private void Item_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "p_cat_id" || e.PropertyName == "p_premTarif")
+            {
+                Category cat = repoCat.Items.AsNoTracking().FirstOrDefault(it => it.id == SelectedPerson.p_cat_id);
+                if (cat != null)
+                {
+                    if (SelectedPerson.p_premTarif > cat.cat_max_level)
+                        SelectedPerson.p_premTarif = cat.cat_max_level;
+
+                    if (SelectedPerson.p_premTarif < cat.cat_min_level)
+                        SelectedPerson.p_premTarif = cat.cat_min_level;
+                }
+            }
+        }
+
+
+        //--------------------------------------------------------------------------------
+        // Запись в базу
+        //--------------------------------------------------------------------------------
         private void ListPersonalView_CurrentChanged(object sender, EventArgs e)
         {
             repoPerson.Save();
@@ -140,7 +170,6 @@ namespace Tabel.ViewModels.Admins
             repoOtdel.Add(NewOtdel, true);
             ListOtdel.Add(NewOtdel);
 
-            //SelectedOtdel.subOtdels.Add(NewOtdel);
         }
 
         //--------------------------------------------------------------------------------
@@ -154,9 +183,7 @@ namespace Tabel.ViewModels.Admins
             NewOtdel.ot_name = "Новая группа";
             NewOtdel.ot_parent = SelectedOtdel.ot_parent ?? SelectedOtdel.id;
 
-           /* Otdel otdel =*/ repoOtdel.Add(NewOtdel, true);
-            //if(!SelectedOtdel.subOtdels.Contains(otdel))
-            //    SelectedOtdel.subOtdels.Add(NewOtdel);
+            repoOtdel.Add(NewOtdel, true);
 
             SelectedOtdel.OnPropertyChanged(nameof(SelectedOtdel.subOtdels));
             OnPropertyChanged(nameof(SelectedOtdel));

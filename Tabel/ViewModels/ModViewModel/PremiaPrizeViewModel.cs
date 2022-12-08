@@ -43,7 +43,6 @@ namespace Tabel.ViewModels.ModViewModel
             foreach (var item in listPerson)
             {
                 item.premiaPrize.Calculation();
-               //ListModPerson.Add(item);
             }
 
             OnPropertyChanged(nameof(ListModPerson));

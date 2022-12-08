@@ -47,7 +47,7 @@
                 </Button>
             </UniformGrid>
             <Grid >
-                <DataGrid x:Name="dataGrid" ItemsSource="{Binding ListUserView}"
+                <DataGrid x:Name="dataGrid" ItemsSource="{Binding ListUserView}" SelectionMode="Single"
                           AutoGenerateColumns="False" SelectedItem="{Binding SelectedUser}"
                     Style="{StaticResource DataGridStyle}"  >
                     <!--<i:Interaction.Triggers>
@@ -77,10 +77,47 @@
 
                             <DataGridTemplateColumn.CellEditingTemplate>
                                 <DataTemplate>
-                                    <ComboBox ItemsSource="{Binding DataContext.ListOtdel, ElementName=userControl}"
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition MinWidth="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}" Width="0"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Popup IsOpen="{Binding IsChecked, ElementName=toggle}" Grid.ColumnSpan="2" >
+                                            <TreeView ItemsSource="{Binding DataContext.ListOtdel, ElementName=userControl}">
+                                                <TreeView.ItemTemplate>
+                                                    <HierarchicalDataTemplate ItemsSource="{Binding subOtdels}" >
+                                                        <CheckBox x:Name="chb" Content="{Binding ot_name}" IsChecked="{Binding IsChecked, Mode=TwoWay}"/>
+                                                        <HierarchicalDataTemplate.Triggers>
+                                                            <DataTrigger Binding="{Binding IsChecked}" Value="True">
+                                                                <Setter Property="FontWeight" Value="Bold" TargetName="chb"/>
+                                                            </DataTrigger>
+                                                        </HierarchicalDataTemplate.Triggers>
+                                                    </HierarchicalDataTemplate>
+                                                </TreeView.ItemTemplate>
+                                            </TreeView>
+                                            
+                                            <!--<ListBox ItemsSource="{Binding DataContext.premiaAddWorksViewModel.ListWorks, ElementName=userControl}"  >
+                                                <ListBox.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <CheckBox Content="{Binding aw_Name}" IsChecked="{Binding IsChecked, Mode=TwoWay}"/>
+                                                        </StackPanel>
+                                                    </DataTemplate>
+                                                </ListBox.ItemTemplate>
+                                            </ListBox>-->
+                                            
+                                            
+                                        </Popup>
+                                        <ToggleButton x:Name="toggle" DockPanel.Dock="Right" Grid.ColumnSpan="2" 
+                                                          IsChecked="{Binding DataContext.IsCheckedButton, ElementName=userControl}"
+                                                          Style="{StaticResource ComboBoxToggleButton}"/>
+                                        <TextBlock Text="{Binding otdels, Mode=TwoWay, Converter={StaticResource OtdelsUserConverter}}" IsHitTestVisible="False" Foreground="Black"/>
+                                    </Grid>
+
+                                    <!--<ComboBox ItemsSource="{Binding DataContext.ListOtdel, ElementName=userControl}"
                                         Style="{StaticResource ComboLVBoxStyle}" 
                                         Text="{Binding otdels, Mode=TwoWay, Converter={StaticResource OtdelsUserConverter}}" IsSynchronizedWithCurrentItem="True"
-                                        />
+                                        />-->
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellEditingTemplate>
 

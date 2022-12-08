@@ -45,9 +45,6 @@ namespace Tabel.ViewModels.ModViewModel
             LoadFromTabel(listPerson);
             LoadFromSmena(listPerson);
 
-            //foreach (var item in listPerson)
-            //    ListModPerson.Add(item);
-
             OnPropertyChanged(nameof(ListModPerson));
 
         }
@@ -81,13 +78,11 @@ namespace Tabel.ViewModels.ModViewModel
                     item.TabelHours = pers.HoursMonth;
                     item.TabelWorkOffDay = pers.WorkedOffDays;
                     item.OverHours = pers.OverWork ?? 0;
-                    //item.DayOffSumma = item.TabelWorkOffDay * item.md_tarif_offDay;
                     item.Oklad = item.person.category is null ? 0 : item.TabelHours * item.person.category.cat_tarif.Value * item.person.p_stavka;
 
                     int CountWorkDaysPerson = pers.TabelDays.Count(it => it.td_KindId == 1);
                     item.TabelAbsent = CountWorkDays - CountWorkDaysPerson;
                     if (item.TabelAbsent < 0) item.TabelAbsent = 0;
-                    //item.premiaPrize.Calculation();
                 }
             }
 

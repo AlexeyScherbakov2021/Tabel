@@ -40,6 +40,24 @@ namespace Tabel.ViewModels
             }
         }
 
+        private bool _IsCheckedButton;
+        public bool IsCheckedButton
+        {
+            get => _IsCheckedButton;
+            set
+            {
+                _IsCheckedButton = value;
+                if (!value)
+                {
+                    GetOtdelsFromUser(_SelectedUser, ListOtdel);
+                    //SelectedUser.OnPropertyChanged(nameof(SelectedUser.otdels));
+                    //GetWorksFromPerson(_SelectedPerson, ListWorks);
+                }
+            }
+        }
+
+
+
         //--------------------------------------------------------------------------------
         // Конструктор 
         //--------------------------------------------------------------------------------
