@@ -35,8 +35,44 @@ namespace Tabel.ViewModels
 
         // Текщий график смен
         public Smena SmenaShedule { get; set; }
-        public ObservableCollection<SmenaPerson> ListSmenaPerson { get; set; }
+        private ObservableCollection<SmenaPerson> _ListSmenaPerson;
+        public ObservableCollection<SmenaPerson> ListSmenaPerson 
+        {
+            get => _ListSmenaPerson;
+            set
+            {
+                if (_ListSmenaPerson == value) return;
+
+                if (_ListSmenaPerson != null)
+                {
+                    foreach (var item in _ListSmenaPerson)
+                        foreach(var day in item.SmenaDays)
+                            day.PropertyChanged -= Item_PropertyChanged;
+                }
+
+                _ListSmenaPerson = value;
+                if (_ListSmenaPerson == null) return;
+
+                foreach (var item in _ListSmenaPerson)
+                    foreach (var day in item.SmenaDays)
+                        day.PropertyChanged += Item_PropertyChanged;
+
+            }
+        }
+
+        private void Item_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            //if (e.PropertyName == "md_kvalif_tarif"
+            //    || e.PropertyName == "md_prem_otdel")
+            //    return;
+            IsModify = true;
+        }
+
+
+
         public SmenaPerson SelectedPerson { get;set;}
+
+        private bool IsModify;
 
 
         //private DateTime _CurrentDate;
@@ -48,18 +84,20 @@ namespace Tabel.ViewModels
             repoSmena = new RepositoryMSSQL<Smena>(db);
             repoSmenaPersonal = new RepositoryMSSQL<SmenaPerson>(db);
             ListKind = EnumToString.ListSmenaKind.ToArray();
+            IsModify = false;
         }
 
 
         public bool ClosingFrom()
         {
-            return false;
+            return IsModify;
         }
 
         public void SaveForm()
         {
             repoSmenaPersonal.Save();
             repoSmena.Save();
+            IsModify = false;
         }
 
 
@@ -156,7 +194,7 @@ namespace Tabel.ViewModels
         // Команда Сохранить
         //--------------------------------------------------------------------------------
         public ICommand SaveCommand => new LambdaCommand(OnSaveCommandExecuted, CanSaveCommand);
-        private bool CanSaveCommand(object p) => _SelectedOtdel != null && SmenaShedule != null ;
+        private bool CanSaveCommand(object p) => /*_SelectedOtdel != null && SmenaShedule != null */ IsModify;
         private void OnSaveCommandExecuted(object p)
         {
             SaveForm();

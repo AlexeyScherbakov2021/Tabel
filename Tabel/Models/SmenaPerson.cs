@@ -6,6 +6,7 @@ namespace Tabel.Models
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
+    using Tabel.Infrastructure;
 
     [Table("SmenaPerson")]
     public partial class SmenaPerson : IEntity

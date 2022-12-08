@@ -5,9 +5,10 @@ namespace Tabel.Models
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
+    using Tabel.Infrastructure;
 
     [Table("TransDay")]
-    public partial class TransDay : IEntity
+    public partial class TransDay : Observable, IEntity
     {
         [Key]
         [Column("td_id")]
@@ -28,6 +29,7 @@ namespace Tabel.Models
                 {
                     _td_Kind = value;
                     TransPerson?.UpdateUI();
+                    OnPropertyChanged(nameof(td_Kind));
                 }
             }
         }

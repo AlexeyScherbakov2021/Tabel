@@ -33,9 +33,44 @@ namespace Tabel.ViewModels
         private readonly RepositoryMSSQL<TransPerson> repoTransPerson;
 
         public Transport Transp { get; set; }
-        public ObservableCollection<TransPerson> ListTransPerson { get; set; }
+
+        private ObservableCollection<TransPerson> _ListTransPerson;
+        public ObservableCollection<TransPerson> ListTransPerson 
+        {
+            get => _ListTransPerson;
+            set
+            {
+                if (_ListTransPerson == value) return;
+
+                if (_ListTransPerson != null)
+                {
+                    foreach (var item in _ListTransPerson)
+                        foreach (var day in item.TransDays)
+                            day.PropertyChanged -= Item_PropertyChanged;
+                }
+
+                _ListTransPerson = value;
+                if (_ListTransPerson == null) return;
+
+                foreach (var item in _ListTransPerson)
+                    foreach (var day in item.TransDays)
+                        day.PropertyChanged += Item_PropertyChanged;
+
+            }
+        }
+
+        private void Item_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            //if (e.PropertyName == "md_kvalif_tarif"
+            //    || e.PropertyName == "md_prem_otdel")
+            //    return;
+            IsModify = true;
+        }
+
+
         public TransPerson SelectedPerson { get; set; }
 
+        private bool IsModify;
 
         public TransportUCViewModel()
         {
@@ -43,6 +78,7 @@ namespace Tabel.ViewModels
             db = repoPersonal.GetDB();
             repoTransp = new RepositoryMSSQL<Transport>(db);
             repoTransPerson = new RepositoryMSSQL<TransPerson>(db);
+            IsModify = false;
         }
 
         #region Команды
@@ -135,7 +171,7 @@ namespace Tabel.ViewModels
         // Команда Сохранить
         //--------------------------------------------------------------------------------
         public ICommand SaveCommand => new LambdaCommand(OnSaveCommandExecuted, CanSaveCommand);
-        private bool CanSaveCommand(object p) => _SelectedOtdel != null && Transp != null;
+        private bool CanSaveCommand(object p) => /*_SelectedOtdel != null && Transp != null*/ IsModify;
         private void OnSaveCommandExecuted(object p)
         {
             SaveForm();
@@ -396,13 +432,14 @@ namespace Tabel.ViewModels
 
         public bool ClosingFrom()
         {
-            return false;
+            return IsModify;
         }
 
         public void SaveForm()
         {
             repoTransPerson.Save();
             repoTransp.Save();
+            IsModify = false;
         }
     }
 }

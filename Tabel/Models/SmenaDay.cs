@@ -8,7 +8,7 @@ namespace Tabel.Models
     using Tabel.Infrastructure;
 
     [Table("SmenaDay")]
-    public partial class SmenaDay : IEntity
+    public partial class SmenaDay : Observable, IEntity
     {
         [Key]
         [Column("sd_id")]
@@ -18,7 +18,8 @@ namespace Tabel.Models
 
         public int sd_Day { get; set; }
 
-        public SmenaKind sd_Kind { get; set; }
+        private SmenaKind _sd_Kind;
+        public SmenaKind sd_Kind { get => _sd_Kind; set { Set(ref _sd_Kind, value); } }
 
         public virtual SmenaPerson SmenaPerson { get; set; }
     }

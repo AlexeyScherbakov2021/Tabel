@@ -44,13 +44,44 @@ namespace Tabel.ViewModels
         private Otdel _SelectedOtdel;
         private int _SelectMonth;
         private int _SelectYear;
+        private bool IsModify;
 
         public Visibility IsVisibleITR { get; private set; }
         public Visibility IsVisibleNoITR { get; private set; }
 
         public decimal SetProcPrem { get; set; }
 
-        public ObservableCollection<ModPerson> ListModPerson { get; set; }
+        private ObservableCollection<ModPerson> _ListModPerson;
+        public ObservableCollection<ModPerson> ListModPerson 
+        { 
+            get => _ListModPerson; 
+            set
+            {
+                if(_ListModPerson == value) return;
+
+                if(_ListModPerson != null)
+                {
+                    foreach(var item in _ListModPerson)
+                        item.PropertyChanged -= Item_PropertyChanged;
+                }
+
+                _ListModPerson = value;
+                if (_ListModPerson == null) return;
+
+                foreach (var item in _ListModPerson)
+                    item.PropertyChanged += Item_PropertyChanged;
+
+            }
+        }
+
+        private void Item_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "md_kvalif_tarif"
+                || e.PropertyName == "md_prem_otdel")
+                return;
+            IsModify = true;
+        }
+
         public ModPerson SelectedModPerson { get; set; }
 
         public Mod CurrentMod { get; set; }
@@ -78,7 +109,73 @@ namespace Tabel.ViewModels
 
             DateTime _CurrentDate = DateTime.Now;
 
+            IsModify = false;
+
         }
+
+        //-------------------------------------------------------------------------------------------------------
+        // загрузка выбранных данных
+        //-------------------------------------------------------------------------------------------------------
+        public void OtdelChanged(Otdel SelectOtdel, int Year, int Month)
+        {
+
+            _SelectMonth = Month;
+            _SelectYear = Year;
+            _SelectedOtdel = SelectOtdel;
+
+            if (SelectOtdel is null) return;
+
+            ListModPerson = null;
+
+            if (_SelectedOtdel.ot_parent is null)
+            {
+                CurrentMod = repoModel.Items.FirstOrDefault(it => it.m_year == Year
+                    && it.m_month == Month
+                    && it.m_otdelId == _SelectedOtdel.id);
+                if (CurrentMod != null)
+                    ListModPerson = new ObservableCollection<ModPerson>(repoModPerson.Items
+                        .Where(it => it.md_modId == CurrentMod.id)
+                        .OrderBy(o => o.person.p_lastname)
+                        .ThenBy(o => o.person.p_name)
+                        );
+            }
+            else
+            {
+                CurrentMod = repoModel.Items.FirstOrDefault(it => it.m_year == Year
+                    && it.m_month == Month
+                    && it.m_otdelId == _SelectedOtdel.ot_parent);
+                if (CurrentMod != null)
+                    ListModPerson = new ObservableCollection<ModPerson>(repoModPerson.Items
+                        .Where(it => it.md_modId == CurrentMod.id && it.person.p_otdel_id == _SelectedOtdel.id)
+                        .OrderBy(o => o.person.p_lastname)
+                        .ThenBy(o => o.person.p_name)
+                        );
+            }
+
+            modMainViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
+            premiaBonusViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
+            premiaFPViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
+            premiaKvalifViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
+            premiaOtdelViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
+            premiaQualityViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
+            premiaAddWorksViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
+            premiaTransportViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
+            premiaPrizeViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
+
+        }
+
+        public bool ClosingFrom()
+        {
+            return IsModify;
+        }
+
+        public void SaveForm()
+        {
+            repoModPerson.Save();
+            repoModel.Save();
+            IsModify = false;
+        }
+
 
         #region Команды
 
@@ -191,7 +288,7 @@ namespace Tabel.ViewModels
         // Команда Сохранить
         //--------------------------------------------------------------------------------
         public ICommand SaveCommand => new LambdaCommand(OnSaveCommandExecuted, CanSaveCommand);
-        private bool CanSaveCommand(object p) => CurrentMod != null && _SelectedOtdel != null;
+        private bool CanSaveCommand(object p) => /*CurrentMod != null && _SelectedOtdel != null &&*/ IsModify;
         private void OnSaveCommandExecuted(object p)
         {
             SaveForm();
@@ -324,7 +421,6 @@ namespace Tabel.ViewModels
                 premiaPrizeViewModel.AddPersons(ListNewPerson);
 
                 OnPropertyChanged(nameof(ListModPerson));
-                //IsModify = true;
             }
 
         }
@@ -351,65 +447,5 @@ namespace Tabel.ViewModels
         #endregion
 
 
-        //-------------------------------------------------------------------------------------------------------
-        // загрузка выбранных данных
-        //-------------------------------------------------------------------------------------------------------
-        public void OtdelChanged(Otdel SelectOtdel, int Year, int Month)
-        {
-            _SelectMonth = Month;
-            _SelectYear = Year;
-            _SelectedOtdel = SelectOtdel;
-
-            if (SelectOtdel is null) return;
-
-            ListModPerson = null;
-
-            if (_SelectedOtdel.ot_parent is null)
-            {
-                CurrentMod = repoModel.Items.FirstOrDefault(it => it.m_year == Year
-                    && it.m_month == Month
-                    && it.m_otdelId == _SelectedOtdel.id);
-                if (CurrentMod != null)
-                    ListModPerson = new ObservableCollection<ModPerson>(repoModPerson.Items
-                        .Where(it => it.md_modId == CurrentMod.id)
-                        .OrderBy(o => o.person.p_lastname)
-                        .ThenBy(o => o.person.p_name)
-                        );
-            }
-            else
-            {
-                CurrentMod = repoModel.Items.FirstOrDefault(it => it.m_year == Year
-                    && it.m_month == Month
-                    && it.m_otdelId == _SelectedOtdel.ot_parent);
-                if (CurrentMod != null)
-                    ListModPerson = new ObservableCollection<ModPerson>(repoModPerson.Items
-                        .Where(it => it.md_modId == CurrentMod.id && it.person.p_otdel_id == _SelectedOtdel.id)
-                        .OrderBy(o => o.person.p_lastname)
-                        .ThenBy(o => o.person.p_name)
-                        );
-            }
-
-            modMainViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
-            premiaBonusViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
-            premiaFPViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
-            premiaKvalifViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
-            premiaOtdelViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
-            premiaQualityViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
-            premiaAddWorksViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
-            premiaTransportViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
-            premiaPrizeViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
-
-        }
-
-        public bool ClosingFrom()
-        {
-            return false;
-        }
-
-        public void SaveForm()
-        {
-            repoModPerson.Save();
-            repoModel.Save();
-        }
     }
 }
