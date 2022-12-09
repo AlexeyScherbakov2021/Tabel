@@ -79,6 +79,9 @@ namespace Tabel.Models
         private bool _md_quality_check;
         public bool md_quality_check { get => _md_quality_check; set { Set(ref _md_quality_check, value); } }
 
+        private decimal? _md_kvalif_proc;
+        public decimal? md_kvalif_proc { get => _md_kvalif_proc; set { Set(ref _md_kvalif_proc, value); } }
+
 
         public virtual Mod Mod { get; set; }
         public virtual Personal person { get; set; }

@@ -57,6 +57,7 @@ namespace Tabel.ViewModels.ModViewModel
             foreach (var modPerson in listPerson)
             {
                 modPerson.premiaBonus.BonusForAll = BonusProc;
+                modPerson.md_bonus_exec = (BonusProc != null && BonusProc > 0);
             }
 
         }

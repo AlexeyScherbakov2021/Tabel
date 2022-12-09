@@ -9,6 +9,7 @@ namespace Tabel.Component.Models.Mod
 {
     public class PremiaOtdel : BasePremia, IDisposable
     {
+        public decimal? OstPrem { get; set; }
 
         //-------------------------------------------------------------------------------------------------------
         // Конструктор
@@ -35,6 +36,7 @@ namespace Tabel.Component.Models.Mod
             {
                 case "md_prem_otdel":
                 case "md_prem_otdel_proc":
+                case "md_kvalif_proc":
                     Calculation();
                     break;
             }
@@ -46,7 +48,9 @@ namespace Tabel.Component.Models.Mod
         //-------------------------------------------------------------------------------------------------------
         public override void Calculation()
         {
-            Summa = model.md_prem_otdel * model.md_prem_otdel_proc / 100;
+            OstPrem = 100 - model.md_kvalif_proc;
+            Summa = (model.md_prem_otdel * model.md_prem_otdel_proc / 100) * OstPrem / 100;
+            OnPropertyChanged(nameof(OstPrem));
         }
 
 

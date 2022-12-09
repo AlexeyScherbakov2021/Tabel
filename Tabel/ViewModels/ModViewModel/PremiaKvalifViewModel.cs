@@ -17,6 +17,7 @@ namespace Tabel.ViewModels.ModViewModel
         public ICollection<ModPerson> ListModPerson { get; set; }
 
         public decimal? SetProcPrem { get; set; }
+        public decimal? SetProcFull { get; set; }
 
         public PremiaKvalifViewModel(BaseModel db) : base(db)
         {
@@ -67,6 +68,24 @@ namespace Tabel.ViewModels.ModViewModel
                 {
                     item.md_kvalif_prem = SetProcPrem;
                     item.OnPropertyChanged(nameof(item.md_kvalif_prem));
+                }
+            }
+
+        }
+
+        //--------------------------------------------------------------------------------
+        // Команда Применить % от полной к выбранным
+        //--------------------------------------------------------------------------------
+        public ICommand SetProcFullCommand => new LambdaCommand(OnSetProcFullCommandExecuted, CanSetProcFullCommand);
+        private bool CanSetProcFullCommand(object p) => true;
+        private void OnSetProcFullCommandExecuted(object p)
+        {
+            if (p is DataGrid dg)
+            {
+                foreach (ModPerson item in dg.SelectedItems)
+                {
+                    item.md_kvalif_proc = SetProcFull;
+                    item.OnPropertyChanged(nameof(item.md_kvalif_proc));
                 }
             }
 
