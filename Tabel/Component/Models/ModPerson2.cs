@@ -81,8 +81,8 @@ namespace Tabel.Models
         public decimal? TabelWorkOffDay { get; set; }
 
 
-        public decimal? Itogo => Oklad
-            + premiaFP.GetPremia()
+        public decimal? PremiaItogo => 
+            premiaFP.GetPremia()
             + premiaBonus.GetPremia()
             + premiaKvalif.GetPremia()
             + premiaOtdel.GetPremia()
@@ -91,6 +91,9 @@ namespace Tabel.Models
             + premiaTrnasport.GetPremia()
             + premiaAddWorks.GetPremia()
             + premiaQuality.GetPremia();
+
+
+        public decimal? Itogo => Oklad + PremiaItogo;
 
         //public void UpdateUI()
         //{

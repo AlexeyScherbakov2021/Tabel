@@ -66,7 +66,7 @@
                     <i:InvokeCommandAction Command="{Binding TabChangedCommand}" CommandParameter="{Binding SelectedIndex, ElementName=tab}"/>
                 </i:EventTrigger>
             </i:Interaction.Triggers>
-            
+
             <TabItem Header="По табелю" DataContext="{Binding modMainViewModel}">
                 <DockPanel  Background="Gainsboro">
                     <Grid DockPanel.Dock="Top" Margin="8,0" Height="30">
@@ -93,6 +93,7 @@
                             <DataGridTextColumn Header="Веч. премия" Binding="{Binding premiaNight.Summa, StringFormat=N2}" IsReadOnly="True" CellStyle="{StaticResource CellRight}"/>
                             <DataGridTextColumn Header="Вых. дней" Binding="{Binding TabelWorkOffDay, Mode=TwoWay}" CellStyle="{StaticResource CellRight}"/>
                             <DataGridTextColumn Header="Вых. доплата" Binding="{Binding md_tarif_offDay, StringFormat=N0}" Width="80" CellStyle="{StaticResource CellRight}"/>
+                            <DataGridTextColumn Header="Пермия" Binding="{Binding PremiaItogo, StringFormat=N2}" Width="80" FontWeight="Bold" CellStyle="{StaticResource CellRight}"/>
                             <DataGridTextColumn Header="Итого" Binding="{Binding Itogo, StringFormat=N2}" Width="80" FontWeight="Bold" CellStyle="{StaticResource CellRight}"/>
                         </DataGrid.Columns>
                     </DataGrid>
@@ -211,7 +212,7 @@
                                  Style="{StaticResource ButtonStyleShadow}">
                             <TextBox Text="{Binding SetProcPrem, Mode=OneWayToSource}" Width="40"/>
                         </Button>
-                        <Button  Grid.Column="6" HorizontalAlignment="Center" VerticalAlignment="Center" Width="60" 
+                        <Button  Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Center" Width="60" 
                                  HorizontalContentAlignment="Left"
                                  Command="{Binding SetProcFullCommand}" CommandParameter="{Binding ElementName=dgOt}"
                                  Style="{StaticResource ButtonStyleShadow}">
@@ -224,25 +225,30 @@
                             <DataGridTextColumn x:Name="colITR2" Header="Должность" Binding="{Binding person.p_profession}" IsReadOnly="True"/>
                             <DataGridTextColumn x:Name="colITR3" Header="Работа с ОР" Binding="{Binding md_kvalif_name}" Width="200"/>
                             <DataGridTextColumn x:Name="colITR4" Header="Прем. тариф" Binding="{Binding md_kvalif_tarif, Mode=TwoWay, StringFormat=N2}" CellStyle="{StaticResource CellRight}" IsReadOnly="True"/>
-                            <DataGridTextColumn x:Name="colITR5" Header="% выполн." Binding="{Binding md_kvalif_prem, StringFormat=N2}" CellStyle="{StaticResource CellRight}"/>
-                            <DataGridTextColumn x:Name="colITR6" Header="Премия" Binding="{Binding premiaKvalif.Summa, StringFormat=N2}" FontWeight="Bold" Width="90" IsReadOnly="True" CellStyle="{StaticResource CellRight}"/>
-                            <DataGridTextColumn x:Name="colITR7" Header="от полн.%" Binding="{Binding md_kvalif_proc, StringFormat=N2}" CellStyle="{StaticResource CellRight}"/>
+                            <DataGridTextColumn x:Name="colITR5" Header="от полн.%" Binding="{Binding md_kvalif_proc, StringFormat=N2}" CellStyle="{StaticResource CellRight}"/>
+                            <DataGridTextColumn x:Name="colITR6" Header="% выполн." Binding="{Binding md_kvalif_prem, StringFormat=N2}" CellStyle="{StaticResource CellRight}"/>
+                            <DataGridTextColumn x:Name="colITR7" Header="Премия" Binding="{Binding premiaKvalif.Summa, StringFormat=N2}" FontWeight="Bold" Width="90" IsReadOnly="True" CellStyle="{StaticResource CellRight}"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </DockPanel>
             </TabItem>
 
 
-            <TabItem Header="Премия 3 (стимуляция)" DataContext="{Binding premiaOtdelViewModel}">
+            <TabItem DataContext="{Binding premiaOtdelViewModel}">
+                <TabItem.Header>
+                    <TextBlock Text="Премия 3 (стимуляция)" Background="LightBlue" Padding="2"/>
+                </TabItem.Header>
                 <DockPanel  Background="Gainsboro">
                     <Grid DockPanel.Dock="Top" Margin="8,0" Height="30">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="{Binding ActualWidth, ElementName=colS1}"/>
-                            <ColumnDefinition Width="{Binding ActualWidth, ElementName=colS2}"/>
-                            <ColumnDefinition Width="{Binding ActualWidth, ElementName=colS3}"/>
-                            <ColumnDefinition Width="{Binding ActualWidth, ElementName=colS4}"/>
+                            <ColumnDefinition Width="295*"/>
+                            <ColumnDefinition Width="88*"/>
+                            <ColumnDefinition Width="28*"/>
+                            <ColumnDefinition Width="179*"/>
+                            <ColumnDefinition Width="295*"/>
+                            <ColumnDefinition Width="294*"/>
                         </Grid.ColumnDefinitions>
-                        <Button  Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" Width="60" 
+                        <Button  Grid.Column="6" HorizontalAlignment="Center" VerticalAlignment="Center" Width="60" 
                                  HorizontalContentAlignment="Left"
                                  Command="{Binding SetProcPremCommand}" CommandParameter="{Binding ElementName=dgStim}"
                                  Style="{StaticResource ButtonStyleShadow}">
@@ -254,16 +260,19 @@
                             <DataGridTextColumn x:Name="colS1" Header="ФИО" Binding="{Binding person.FIO}" IsReadOnly="True"/>
                             <DataGridTextColumn x:Name="colS2" Header="Должность" Binding="{Binding person.p_profession}" IsReadOnly="True"/>
                             <DataGridTextColumn x:Name="colS3" Header="Макс. премия" Binding="{Binding md_prem_otdel, Mode=TwoWay, StringFormat=N0}" CellStyle="{StaticResource CellRight}"  IsReadOnly="True"/>
-                            <DataGridTextColumn x:Name="colS4" Header="% выполнения" Binding="{Binding md_prem_otdel_proc, Mode=TwoWay, StringFormat=0.#}"  CellStyle="{StaticResource CellRight}"/>
+                            <DataGridTextColumn x:Name="colS4" Header="от полн.%" Binding="{Binding premiaOtdel.OstPrem, StringFormat=N2}" IsReadOnly="True" CellStyle="{StaticResource CellRight}"/>
+                            <DataGridTextColumn x:Name="colS5" Header="% выполнения" Binding="{Binding md_prem_otdel_proc, Mode=TwoWay, StringFormat=0.#}"  CellStyle="{StaticResource CellRight}"/>
                             <DataGridTextColumn Header="Премия" Binding="{Binding premiaOtdel.Summa, StringFormat=N2}" FontWeight="Bold" Width="90" IsReadOnly="True" CellStyle="{StaticResource CellRight}"/>
                             <DataGridTextColumn Header="Примечание" Binding="{Binding md_prem_stimul_name}" IsReadOnly="False" />
-                            <DataGridTextColumn Header="ост.%" Binding="{Binding premiaOtdel.OstPrem, StringFormat=N2}" IsReadOnly="True" CellStyle="{StaticResource CellRight}"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </DockPanel>
             </TabItem>
 
-            <TabItem Header="Премия 4 (кач. труд)" DataContext="{Binding premiaQualityViewModel}">
+            <TabItem  DataContext="{Binding premiaQualityViewModel}">
+                <TabItem.Header>
+                    <TextBlock Text="Премия 4 (кач. труд)" Background="LightBlue" Padding="2"/>
+                </TabItem.Header>
                 <DockPanel  Background="Gainsboro">
                     <Grid DockPanel.Dock="Top" Margin="8,0" Height="30">
                         <Grid.ColumnDefinitions>
