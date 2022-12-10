@@ -90,7 +90,8 @@ namespace Tabel.Models
             + premOffDays.GetPremia()
             + premiaTrnasport.GetPremia()
             + premiaAddWorks.GetPremia()
-            + premiaQuality.GetPremia();
+            + premiaQuality.GetPremia()
+            + premiaPrize.GetPremia();
 
 
         public decimal? Itogo => Oklad + PremiaItogo;

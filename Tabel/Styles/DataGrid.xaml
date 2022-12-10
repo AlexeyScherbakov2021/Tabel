@@ -16,5 +16,19 @@
         <Setter Property="CanUserDeleteRows" Value="False"/>
         <Setter Property="CanUserAddRows" Value="False"/>
     </Style>
-    
+
+    <Style TargetType="DataGridCell" x:Key="CellColor">
+        <Style.Setters>
+            <Setter Property="Background" Value="#1b00ff00"/>
+            <Setter Property="Foreground" Value="Black"/>
+        </Style.Setters>
+    </Style>
+
+    <Style TargetType="DataGridCell" x:Key="CellRightColor" BasedOn="{StaticResource CellRight}">
+        <Style.Setters>
+            <Setter Property="Background" Value="#1b00ff00"/>
+            <Setter Property="Foreground" Value="Black"/>
+        </Style.Setters>
+    </Style>
+
 </ResourceDictionary>

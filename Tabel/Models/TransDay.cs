@@ -33,9 +33,10 @@ namespace Tabel.Models
                 }
             }
         }
-
-
-
         public virtual TransPerson TransPerson { get; set; }
+
+        [NotMapped]
+        public bool OffDay { get; set; }
+
     }
 }
