@@ -5,9 +5,12 @@ namespace Tabel.Models
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
+    using System.Windows;
+    using Tabel.Component.MonthPanel;
+    using Tabel.Infrastructure;
 
     [Table("TabelDay")]
-    public partial class TabelDay : IEntity
+    public partial class TabelDay : Observable, IEntity
     {
         [Key]
         [Column("td_Id")]
@@ -49,6 +52,26 @@ namespace Tabel.Models
         public virtual TabelPerson TabelPerson { get; set; }
 
         public virtual typeDay typeDay { get; set; }
+
+
+        private Visibility _VisibilityHours = Visibility.Collapsed;
+        [NotMapped]
+        public Visibility VisibilityHours { get => _VisibilityHours; set { Set(ref _VisibilityHours, value); } }
+
+        [NotMapped]
+        public TypeDays CalendarTypeDay { get; set; }
+
+        [NotMapped]
+        public decimal WhiteHours => ((td_Hours ?? 0) - (td_Hours2 ?? 0));
+
+        public string DayString
+        {
+            get
+            {
+                DateTime dt = new DateTime(TabelPerson.tabel.t_year, TabelPerson.tabel.t_month, td_Day);
+                return dt.ToString("d ddd").ToLower();
+            }
+        }
 
 
     }

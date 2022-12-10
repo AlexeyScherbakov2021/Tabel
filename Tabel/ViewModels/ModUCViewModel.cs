@@ -190,8 +190,11 @@ namespace Tabel.ViewModels
             {
                 if(index == 0 && ListModPerson != null)
                 {
-                    foreach(var item in ListModPerson)
+                    foreach (var item in ListModPerson)
+                    {
                         item.OnPropertyChanged(nameof(item.Itogo));
+                        item.OnPropertyChanged(nameof(item.PremiaItogo));
+                    }
                 }
             }    
         }

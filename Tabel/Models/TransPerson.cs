@@ -5,9 +5,11 @@ namespace Tabel.Models
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
+    using System.Linq;
+    using Tabel.Infrastructure;
 
     [Table("TransPerson")]
-    public partial class TransPerson : IEntity
+    public partial class TransPerson : Observable, IEntity
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public TransPerson()
@@ -65,5 +67,22 @@ namespace Tabel.Models
         public virtual ICollection<TransDay> TransDays { get; set; }
 
         public virtual Transport Transport { get; set; }
+
+
+
+        [NotMapped]
+        public int ItogDays => TransDays.Where(it => it.td_Kind == 1).Count();
+        [NotMapped]
+        public decimal? Summa => ItogDays * tp_tarif ?? 0;
+        [NotMapped]
+        public decimal? Itogo => Summa + tp_Kompens ?? 0;
+
+        public void UpdateUI()
+        {
+            OnPropertyChanged(nameof(ItogDays));
+            OnPropertyChanged(nameof(Summa));
+            OnPropertyChanged(nameof(Itogo));
+        }
+
     }
 }

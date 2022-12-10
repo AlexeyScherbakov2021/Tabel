@@ -6,8 +6,9 @@ namespace Tabel.Models
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
+    using Tabel.Infrastructure;
 
-    public partial class Otdel : IEntity
+    public partial class Otdel : Observable, IEntity
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Otdel()
@@ -63,6 +64,11 @@ namespace Tabel.Models
 
         //[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         //public virtual IList<ModOtdelSumFP> ModOtdelSumFPs { get; set; }
+
+
+        private bool _IsChecked;
+        [NotMapped]
+        public bool IsChecked { get => _IsChecked; set { Set(ref _IsChecked, value); } }
 
 
     }

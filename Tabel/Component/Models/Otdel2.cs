@@ -12,10 +12,9 @@ namespace Tabel.Models
     public partial class Otdel : Observable
     {
 
-        private bool _IsChecked;
-        [NotMapped]
-        public bool IsChecked { get => _IsChecked; set { Set(ref _IsChecked, value); } }
-        //public bool IsChecked { get; set; }
+        //private bool _IsChecked;
+        //[NotMapped]
+        //public bool IsChecked { get => _IsChecked; set { Set(ref _IsChecked, value); } }
 
     }
 }

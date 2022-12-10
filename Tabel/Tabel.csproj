@@ -89,7 +89,6 @@
     </ApplicationDefinition>
     <Compile Include="Component\ListBoxEasySelect\ListBoxEasySelect.cs" />
     <Compile Include="Component\Models\Mod\BasePremia.cs" />
-    <Compile Include="Component\Models\ModPerson2.cs" />
     <Compile Include="Component\Models\Mod\PremiaAddWorks.cs" />
     <Compile Include="Component\Models\Mod\PremiaBonus.cs" />
     <Compile Include="Component\Models\Mod\PremiaKvalif.cs" />
@@ -99,13 +98,7 @@
     <Compile Include="Component\Models\Mod\PremiaQuality.cs" />
     <Compile Include="Component\Models\Mod\PremiaTransport.cs" />
     <Compile Include="Component\Models\Mod\PremOffDays.cs" />
-    <Compile Include="Component\Models\Otdel2.cs" />
     <Compile Include="Component\Models\Mod\PremiaFP.cs" />
-    <Compile Include="Component\Models\SmenaDay2.cs" />
-    <Compile Include="Component\Models\TabelDays2.cs" />
-    <Compile Include="Component\Models\TabelPerson2.cs" />
-    <Compile Include="Component\Models\TransDay2.cs" />
-    <Compile Include="Component\Models\TransPerson2.cs" />
     <Compile Include="Component\MonthPanel\Enums.cs" />
     <Compile Include="Component\MonthPanel\MonthControl.xaml.cs">
       <DependentUpon>MonthControl.xaml</DependentUpon>

@@ -22,5 +22,9 @@ namespace Tabel.Models
         public SmenaKind sd_Kind { get => _sd_Kind; set { Set(ref _sd_Kind, value); } }
 
         public virtual SmenaPerson SmenaPerson { get; set; }
+
+        [NotMapped]
+        public bool OffDay { get; set; }
+
     }
 }
