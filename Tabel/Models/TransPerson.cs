@@ -71,7 +71,7 @@ namespace Tabel.Models
 
 
         [NotMapped]
-        public int ItogDays => TransDays.Where(it => it.td_Kind == 1).Count();
+        public int ItogDays => TransDays.Where(it => it.td_Kind == KindTrans.Used).Count();
         [NotMapped]
         public decimal? Summa => ItogDays * tp_tarif ?? 0;
         [NotMapped]

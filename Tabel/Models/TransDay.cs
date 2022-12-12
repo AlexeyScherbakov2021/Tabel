@@ -7,6 +7,9 @@ namespace Tabel.Models
     using System.Data.Entity.Spatial;
     using Tabel.Infrastructure;
 
+
+    public enum KindTrans: int { None, Used};
+
     [Table("TransDay")]
     public partial class TransDay : Observable, IEntity
     {
@@ -19,8 +22,8 @@ namespace Tabel.Models
         public int td_Day { get; set; }
 
         //public int? td_Kind { get; set; }
-        private int? _td_Kind;
-        public int? td_Kind
+        private KindTrans? _td_Kind;
+        public KindTrans? td_Kind
         {
             get => _td_Kind;
             set
@@ -37,6 +40,16 @@ namespace Tabel.Models
 
         [NotMapped]
         public bool OffDay { get; set; }
+
+        public string DayString
+        {
+            get
+            {
+                DateTime dt = new DateTime(TransPerson.Transport.tr_Year, TransPerson.Transport.tr_Month, td_Day);
+                return dt.ToString("d ddd").ToLower();
+            }
+        }
+
 
     }
 }

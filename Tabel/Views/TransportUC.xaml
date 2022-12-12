@@ -7,11 +7,15 @@
             xmlns:ext="clr-namespace:Tabel.Infrastructure.Extend"
              xmlns:comp="clr-namespace:Tabel.Component.TransPanel"
              xmlns:local="clr-namespace:Tabel.Views"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d" 
+             
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.DataContext>
         <vm:TransportUCViewModel/>
     </UserControl.DataContext>
+
+
     <DockPanel>
         <ToolBarPanel DockPanel.Dock="Top" Orientation="Horizontal" Height="30"  Margin="10,8,0,4">
             <TextBlock Text="Номер документа" Margin="5,0" VerticalAlignment="Center"/>
@@ -24,11 +28,30 @@
             <Button Content="Добавить сотрудников" Command="{Binding AddPersonCommand}" Margin="3" Style="{StaticResource ButtonStyleShadow}"/>
             <Button Content="Удалить" Command="{Binding DeletePersonCommand}" Margin="3" Style="{StaticResource ButtonStyleShadow}"/>
             <Button Content="Распечатать" Command="{Binding PrintCommand}" Margin="3" Style="{DynamicResource ButtonStyleShadow}"/>
+            <ToolBarPanel.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Отм"/>
+                    <MenuItem Header="Снять"/>
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <i:InvokeCommandAction Command="{Binding IsSelectCommand}" PassEventArgsToCommand="True"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </ContextMenu>
+            </ToolBarPanel.ContextMenu>
         </ToolBarPanel>
 
         <DataGrid x:Name="dg" ItemsSource="{Binding ListTransPerson, IsAsync=True}" Style="{StaticResource DataGridStyle}" 
                   VerticalGridLinesBrush="LightGray" HorizontalGridLinesBrush="LightGray" SelectedItem="{Binding SelectedPerson}"
                   FrozenColumnCount="1" >
+
+                       
+            <!--<i:Interaction.Triggers>
+                <i:EventTrigger EventName="MouseDoubleClick">
+                    <i:InvokeCommandAction Command="{Binding IsSelectCommand}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>-->
+
             <DataGrid.Columns>
                 <DataGridTemplateColumn Header="Сотрудник" IsReadOnly="True" Width="130">
                     <DataGridTemplateColumn.CellTemplate>
@@ -40,7 +63,17 @@
                 <DataGridTemplateColumn Header="Дни">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <comp:TransPanel ItemsSource="{Binding TransDays}" SelectionMode="Extended">
+                            <comp:TransPanel ItemsSource="{Binding TransDays}" >
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="ContextMenuCheck">
+                                        <i:InvokeCommandAction PassEventArgsToCommand="True"
+                                            Command="{Binding DataContext.IsSelectCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}"/>
+                                    </i:EventTrigger>
+                                    <i:EventTrigger EventName="ContextMenuUnCheck">
+                                        <i:InvokeCommandAction PassEventArgsToCommand="True"
+                                            Command="{Binding DataContext.IsUnSelectCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
                                 <comp:TransPanel.ItemsPanel>
                                     <ItemsPanelTemplate>
                                         <StackPanel Orientation="Horizontal"/>

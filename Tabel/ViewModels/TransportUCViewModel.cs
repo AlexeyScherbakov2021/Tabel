@@ -12,6 +12,7 @@ using System.Windows;
 using System.Windows.Input;
 using Tabel.Commands;
 using Tabel.Component.MonthPanel;
+using Tabel.Component.TransPanel;
 using Tabel.Infrastructure;
 using Tabel.Models;
 using Tabel.Repository;
@@ -234,7 +235,7 @@ namespace Tabel.ViewModels
                     ColNum = 4;
                     foreach (var day in item.TransDays)
                     {
-                        if (day.td_Kind == 1)
+                        if (day.td_Kind == KindTrans.Used)
                             ws.Cell(RowNum, ColNum).Value = day.td_Kind;
                         if (day.OffDay)
                             ws.Cell(RowNum, ColNum).Style.Fill.BackgroundColor = XLColor.LightGray;
@@ -335,6 +336,43 @@ namespace Tabel.ViewModels
                 ListTransPerson.Remove(SelectedPerson);
                 //IsModify = true;
             }
+        }
+
+        //--------------------------------------------------------------------------------
+        // Команда Отметить использование 
+        //--------------------------------------------------------------------------------
+        public ICommand IsSelectCommand => new LambdaCommand(OnIsSelectCommandExecuted, CanIsSelectCommand);
+        private bool CanIsSelectCommand(object p) => true;
+        private void OnIsSelectCommandExecuted(object p)
+        {
+            TransPanel panel =(TransPanel)( (p as RoutedEventArgs).Source);
+            //TransPanel panel = p.Source as TransPanel;
+
+            foreach(TransDay item in panel.SelectedItems)
+            {
+                item.td_Kind = KindTrans.Used;
+                item.OnPropertyChanged(nameof(item.td_Kind));
+            }
+            panel.SelectedItems.Clear();
+        }
+
+
+        //--------------------------------------------------------------------------------
+        // Команда Снять отметки использование 
+        //--------------------------------------------------------------------------------
+        public ICommand IsUnSelectCommand => new LambdaCommand(OnIsUnSelectCommandExecuted, CanIsUnSelectCommand);
+        private bool CanIsUnSelectCommand(object p) => true;
+        private void OnIsUnSelectCommandExecuted(object p)
+        {
+            TransPanel panel =(TransPanel)( (p as RoutedEventArgs).Source);
+            //TransPanel panel = p.Source as TransPanel;
+
+            foreach(TransDay item in panel.SelectedItems)
+            {
+                item.td_Kind = KindTrans.None;
+                item.OnPropertyChanged(nameof(item.td_Kind));
+            }
+            panel.SelectedItems.Clear();
         }
 
 

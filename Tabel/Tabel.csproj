@@ -110,6 +110,7 @@
     </Compile>
     <Compile Include="Component\TabelPanel\TabelPanel.cs" />
     <Compile Include="Component\TabelPanel\TestConvert.cs" />
+    <Compile Include="Component\TransPanel\TransImageConvert.cs" />
     <Compile Include="Component\TransPanel\TransPanel.xaml.cs">
       <DependentUpon>TransPanel.xaml</DependentUpon>
     </Compile>
