@@ -117,6 +117,9 @@
     </Compile>
     <Compile Include="Component\TabelPanel\TabelPanel.cs" />
     <Compile Include="Component\TabelPanel\TestConvert.cs" />
+    <Compile Include="Component\TransPanel\TransPanel.xaml.cs">
+      <DependentUpon>TransPanel.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Infrastructure\Converters\AddWorksConverter.cs" />
     <Compile Include="Infrastructure\Converters\Convert0ToNull.cs" />
     <Compile Include="Infrastructure\Converters\KindSmenaConverter.cs" />
@@ -229,6 +232,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Component\TabelPanel\TabelControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Component\TransPanel\TransPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
