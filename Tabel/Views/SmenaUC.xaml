@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Tabel.Views"
             xmlns:vm="clr-namespace:Tabel.ViewModels"
-            xmlns:ext="clr-namespace:Tabel.Infrastructure.Extend"
+            xmlns:comp="clr-namespace:Tabel.Component.SmenaPanel"
             xmlns:conv="clr-namespace:Tabel.Infrastructure.Converters"
             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
             xmlns:theme="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2"
@@ -308,7 +308,18 @@
                 <DataGridTemplateColumn Header="Дни">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <ext:ListBoxExt ItemsSource="{Binding SmenaDays}" SelectionMode="Extended" BorderBrush="Transparent"
+                            <comp:SmenaPanel ItemsSource="{Binding SmenaDays}">
+
+                                <comp:SmenaPanel.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Horizontal"/>
+                                    </ItemsPanelTemplate>
+                                </comp:SmenaPanel.ItemsPanel>
+
+                            </comp:SmenaPanel>
+                            
+                            
+                            <!--<ext:ListBoxExt ItemsSource="{Binding SmenaDays}" SelectionMode="Extended" BorderBrush="Transparent"
                                     SelectedIndex="{Binding SelectIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                     SelectedItems2="{Binding SelectedDays, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
 
@@ -344,7 +355,7 @@
                                         </DataTemplate.Triggers>
                                     </DataTemplate>
                                 </ListBox.ItemTemplate>
-                            </ext:ListBoxExt>
+                            </ext:ListBoxExt>-->
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
