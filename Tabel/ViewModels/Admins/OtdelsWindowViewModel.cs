@@ -93,6 +93,8 @@ namespace Tabel.ViewModels.Admins
                 foreach(var item in _ListPersonal)
                     item.PropertyChanged += Item_PropertyChanged;
 
+                ListCategory = repoCat.Items.AsNoTracking().OrderBy(o => o.id).ToList();
+
                 //OnPropertyChanged(nameof(ListPersonal));
             } 
         }
@@ -123,7 +125,6 @@ namespace Tabel.ViewModels.Admins
                 ListOtdel = new ObservableCollection<Otdel>(repoOtdel.GetTreeOtdels(App.CurrentUser.otdels));
             }
             SelectedOtdel = ListOtdel.Count > 0 ?  ListOtdel[0] : null;
-            ListCategory = repoCat.Items.AsNoTracking().OrderBy(o => o.id).ToList();
 
         }
 
@@ -242,6 +243,9 @@ namespace Tabel.ViewModels.Admins
             NewPerson.p_otdel_id = SelectedOtdel.id;
             NewPerson.p_delete = false;
             NewPerson.p_stavka = 1;
+
+            NewPerson.p_cat_id = repoCat.Items.FirstOrDefault().id;
+            NewPerson.p_premTarif = 0;
 
             repoPerson.Add(NewPerson, true);
             ListPersonal.Add(NewPerson);

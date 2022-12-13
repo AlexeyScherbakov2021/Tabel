@@ -77,6 +77,14 @@ namespace Tabel.ViewModels.ModViewModel
                     item.TabelDays = listDays.Count;
                     item.TabelHours = pers.HoursMonth;
                     item.TabelWorkOffDay = pers.WorkedOffDays;
+                    if (item.TabelWorkOffDay > 0)
+                    {
+                        item.md_tarif_offDay = pers.person.category?.cat_tarif * 8;
+                        if (item.md_tarif_offDay < 1500)
+                            item.md_tarif_offDay = 1500;
+                    }
+
+
                     item.OverHours = pers.OverWork ?? 0;
                     item.Oklad = item.person.category is null ? 0 : item.TabelHours * item.person.category.cat_tarif.Value * item.person.p_stavka;
 

@@ -169,6 +169,7 @@
     <Compile Include="ViewModels\ModViewModel\PremiaAddWorksViewModel.cs" />
     <Compile Include="ViewModels\ModViewModel\PremiaBonusViewModel.cs" />
     <Compile Include="ViewModels\ModViewModel\PremiaFPViewModel.cs" />
+    <Compile Include="ViewModels\ModViewModel\PremiaItogoViewModel.cs" />
     <Compile Include="ViewModels\ModViewModel\PremiaKvalifViewModel.cs" />
     <Compile Include="ViewModels\ModViewModel\PremiaOtdelViewModel.cs" />
     <Compile Include="ViewModels\ModViewModel\PremiaPrizeViewModel.cs" />

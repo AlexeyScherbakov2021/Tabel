@@ -16,11 +16,13 @@
         <ToolBarPanel DockPanel.Dock="Top" Orientation="Horizontal" Height="30" Margin="0,0,0,8">
             <!--<Button Content="Создать график" Command="{Binding CreateCommand}" Margin="3" Style="{DynamicResource ButtonStyleShadow}"/>
             <Button Content="Сохранить" Command="{Binding SaveCommand}" Margin="3" Style="{DynamicResource ButtonStyleShadow}"/>-->
-            <TextBlock Text="Год" Margin="210,0,8,0" VerticalAlignment="Center"/>
+            <TextBlock Text="Год" Margin="100,0,8,0" VerticalAlignment="Center" FontSize="18"/>
             <!--<TextBox Text="{Binding CurrentYear}"  VerticalAlignment="Center" Width="100"/>-->
-            <ComboBox ItemsSource="{Binding ListYears}"  VerticalAlignment="Center" Width="100" SelectedItem="{Binding CurrentYear}"/>
-            <TextBlock Text="Месяц"  VerticalAlignment="Center" Margin="8,0"/>
-            <ComboBox  ItemsSource="{Binding ListMonth}"  VerticalAlignment="Center" Width="150"
+            <ComboBox ItemsSource="{Binding ListYears}"  VerticalAlignment="Center" Width="100" SelectedItem="{Binding CurrentYear}"
+                      FontWeight="Bold" FontSize="18"
+                      />
+            <TextBlock Text="Месяц"  VerticalAlignment="Center" Margin="8,0" FontSize="18"/>
+            <ComboBox  ItemsSource="{Binding ListMonth}"  VerticalAlignment="Center" Width="150" FontWeight="Bold" FontSize="18"
                       DisplayMemberPath="Name" SelectedValuePath="Number" SelectedValue="{Binding CurrentMonth, Mode=TwoWay}"
                       />
         </ToolBarPanel>

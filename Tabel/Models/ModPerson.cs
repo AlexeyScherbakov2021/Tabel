@@ -60,7 +60,8 @@ namespace Tabel.Models
         public string md_prem_stimul_name { get; set; }
 
         [Column(TypeName = "numeric")]
-        public decimal? md_tarif_offDay { get; set; }
+        private decimal? _md_tarif_offDay;
+        public decimal? md_tarif_offDay { get => _md_tarif_offDay; set { Set(ref _md_tarif_offDay, value); } }
 
 
         private decimal? _md_kvalif_prem;
@@ -84,6 +85,9 @@ namespace Tabel.Models
 
         private decimal? _md_kvalif_proc;
         public decimal? md_kvalif_proc { get => _md_kvalif_proc; set { Set(ref _md_kvalif_proc, value); } }
+
+        private decimal? _md_person_achiev;
+        public decimal? md_person_achiev { get => _md_person_achiev; set { Set(ref _md_person_achiev, value); } }
 
 
         public virtual Mod Mod { get; set; }
@@ -159,8 +163,9 @@ namespace Tabel.Models
         public decimal OverHours;
 
 
+        private decimal? _TabelWorkOffDay;
         [NotMapped]
-        public decimal? TabelWorkOffDay { get; set; }
+        public decimal? TabelWorkOffDay { get => _TabelWorkOffDay; set { Set(ref _TabelWorkOffDay, value); } }
 
 
         public decimal? PremiaItogo =>

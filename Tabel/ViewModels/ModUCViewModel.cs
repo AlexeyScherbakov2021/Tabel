@@ -39,6 +39,7 @@ namespace Tabel.ViewModels
         public PremiaAddWorksViewModel premiaAddWorksViewModel { get; set; }
         public PremiaTransportViewModel premiaTransportViewModel { get; set; }
         public PremiaPrizeViewModel premiaPrizeViewModel { get; set; }
+        public PremiaItogoViewModel premiaItogoViewModel { get; set; }
 
 
         private Otdel _SelectedOtdel;
@@ -106,6 +107,7 @@ namespace Tabel.ViewModels
             premiaAddWorksViewModel = new PremiaAddWorksViewModel(db);
             premiaTransportViewModel = new PremiaTransportViewModel(db);
             premiaPrizeViewModel = new PremiaPrizeViewModel(db);
+            premiaItogoViewModel = new PremiaItogoViewModel(db);
 
             DateTime _CurrentDate = DateTime.Now;
 
@@ -161,6 +163,7 @@ namespace Tabel.ViewModels
             premiaAddWorksViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
             premiaTransportViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
             premiaPrizeViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
+            premiaItogoViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
 
         }
 
@@ -238,9 +241,14 @@ namespace Tabel.ViewModels
                 ModPerson newPerson = new ModPerson();
                 newPerson.md_group = pers.p_otdel_id.ToString();
                 newPerson.md_personalId = pers.id;
-                newPerson.md_tarif_offDay = pers.category?.cat_tarif * 8;
-                if (newPerson.md_tarif_offDay < 1500)
-                    newPerson.md_tarif_offDay = 1500;
+
+                //if (newPerson.TabelWorkOffDay > 0)
+                //{
+                //    newPerson.md_tarif_offDay = pers.category?.cat_tarif * 8;
+                //    if (newPerson.md_tarif_offDay < 1500)
+                //        newPerson.md_tarif_offDay = 1500;
+                //}
+
 
                 // получение этого сотрудника из предыдущей существующей модели
                 ModPerson PrevModPerson = repoModPerson.Items
@@ -382,9 +390,9 @@ namespace Tabel.ViewModels
                     newPerson.md_modId = CurrentMod.id;
                     //newPerson.md_personalId = pers.id;
                     newPerson.person = pers;
-                    newPerson.md_tarif_offDay = pers.category?.cat_tarif * 8;
-                    if (newPerson.md_tarif_offDay < 1500)
-                        newPerson.md_tarif_offDay = 1500;
+                    //newPerson.md_tarif_offDay = pers.category?.cat_tarif * 8;
+                    //if (newPerson.md_tarif_offDay < 1500)
+                    //    newPerson.md_tarif_offDay = 1500;
 
                     // получение этого сотрудника из предыдущей существующей модели
                     ModPerson PrevModPerson = repoModPerson.Items

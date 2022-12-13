@@ -27,7 +27,7 @@ namespace Tabel.Component.Models.Mod
 
         public override void Calculation()
         {
-            Summa = model.ListAddWorks is null ? 0 : model.ListAddWorks.Sum(it => it.aw_Tarif);
+            Summa = model.ListAddWorks is null ? 0 : model.ListAddWorks.Sum(it => it.aw_Tarif) + (model.md_person_achiev ?? 0);
         }
 
 
