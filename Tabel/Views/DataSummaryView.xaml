@@ -5,6 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Tabel.Views"
         xmlns:vm="clr-namespace:Tabel.ViewModels"
+             xmlns:fa="http://schemas.fontawesome.com/icons/"
+             xmlns:cmd="clr-namespace:Tabel.Commands"
         mc:Ignorable="d"
         Title="Параметры начислений" Height="500" Width="900" WindowStartupLocation="CenterScreen">
     <Window.DataContext>
@@ -20,6 +22,15 @@
                       DisplayMemberPath="Name" SelectedValuePath="Number" SelectedValue="{Binding CurrentMonth, Mode=TwoWay}"
                       />
             <Button Content="Сохранить" Command="{Binding SaveCommand}" Margin="13,3" Style="{DynamicResource ButtonStyleShadow}"/>
+            <Button Margin="3" Style="{StaticResource ButtonStyleShadow}" ToolTip="Экспорт в 1С" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=local:DataSummaryView}}">
+                <StackPanel Orientation="Horizontal">
+                    <fa:ImageAwesome Icon="Solid_DoorOpen" Width="24" Height="16" Foreground="#FF005AA0"/>
+                    <TextBlock Text="Закрыть"/>
+                </StackPanel>
+                <Button.Command>
+                    <cmd:CloseDialogCommand/>
+                </Button.Command>
+            </Button>
         </ToolBarPanel>
 
         <StatusBar DockPanel.Dock="Bottom">

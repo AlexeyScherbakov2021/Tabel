@@ -7,6 +7,8 @@
             xmlns:vm="clr-namespace:Tabel.ViewModels"
             xmlns:conv="clr-namespace:Tabel.Infrastructure.Converters"
             xmlns:comp="clr-namespace:Tabel.Component.TabelPanel"
+             xmlns:fa="http://schemas.fontawesome.com/icons/"
+             xmlns:cmd="clr-namespace:Tabel.Commands"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="1000">
     <UserControl.DataContext>
@@ -27,6 +29,15 @@
             <Button Content="Распечатать" Command="{Binding PrintCommand}" Margin="3" Style="{StaticResource ButtonStyleShadow}"/>
             <Button Content="Добавить сотрудников" Command="{Binding AddPersonCommand}" Margin="3" Style="{StaticResource ButtonStyleShadow}"/>
             <Button Content="Удалить сотрудника" Command="{Binding DeletePersonCommand}" Margin="3" Style="{StaticResource ButtonStyleShadow}"/>
+            <Button Margin="3" Style="{StaticResource ButtonStyleShadow}" ToolTip="Экспорт в 1С" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=local:BasicWindow}}">
+                <StackPanel Orientation="Horizontal">
+                    <fa:ImageAwesome Icon="Solid_DoorOpen" Width="24" Height="16" Foreground="#FF005AA0"/>
+                    <TextBlock Text="Закрыть"/>
+                </StackPanel>
+                <Button.Command>
+                    <cmd:CloseDialogCommand/>
+                </Button.Command>
+            </Button>
         </StackPanel>
 
         <DataGrid x:Name="dg" ItemsSource="{Binding ListTabelPerson}" AutoGenerateColumns="False" IsReadOnly="True"

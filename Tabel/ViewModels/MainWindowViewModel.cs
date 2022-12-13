@@ -25,6 +25,7 @@ namespace Tabel.ViewModels
 #endif
         public string LoginUser => App.CurrentUser.u_fio;
 
+        public WindowState WinState { get; set; }
 
 #region Команды
         //--------------------------------------------------------------------------------
@@ -35,6 +36,7 @@ namespace Tabel.ViewModels
         private void OnExecSmenaCommandExecuted(object p)
         {
             BasicWindow win = new BasicWindow();
+            win.WindowState = WinState;
             BasicWindowViewModel vm = new BasicWindowViewModel(win, new SmenaUC(), "График смен");
             win.DataContext = vm;
             win.ShowDialog();
@@ -59,6 +61,7 @@ namespace Tabel.ViewModels
         private void OnExecTabelCommandExecuted(object p)
         {
             BasicWindow win = new BasicWindow();
+            win.WindowState = WinState;
             BasicWindowViewModel vm = new BasicWindowViewModel(win, new TabelUC(), "Табель");
             win.DataContext = vm;
             win.ShowDialog();
@@ -73,6 +76,7 @@ namespace Tabel.ViewModels
         private void OnExecModCommandExecuted(object p)
         {
             BasicWindow win = new BasicWindow();
+            win.WindowState = WinState;
             BasicWindowViewModel vm = new BasicWindowViewModel(win, new ModUC(), "Модель расчета");
             win.DataContext = vm;
             win.ShowDialog();
@@ -86,6 +90,7 @@ namespace Tabel.ViewModels
         private void OnDataSummaryCommandExecuted(object p)
         {
             DataSummaryView win = new DataSummaryView();
+            //win.WindowState = WinState;
             win.ShowDialog();
         }
 
@@ -97,6 +102,7 @@ namespace Tabel.ViewModels
         private void OnExecTranspCommandExecuted(object p)
         {
             BasicWindow win = new BasicWindow();
+            win.WindowState = WinState;
             BasicWindowViewModel vm = new BasicWindowViewModel(win, new TransportUC(), "Использование транспорта");
             win.DataContext = vm;
             win.ShowDialog();

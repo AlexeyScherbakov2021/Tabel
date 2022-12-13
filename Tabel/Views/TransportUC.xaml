@@ -8,9 +8,11 @@
              xmlns:comp="clr-namespace:Tabel.Component.TransPanel"
              xmlns:local="clr-namespace:Tabel.Views"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:fa="http://schemas.fontawesome.com/icons/"
+             xmlns:cmd="clr-namespace:Tabel.Commands"
              mc:Ignorable="d" 
              
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="1000">
     <UserControl.DataContext>
         <vm:TransportUCViewModel/>
     </UserControl.DataContext>
@@ -28,6 +30,15 @@
             <Button Content="Добавить сотрудников" Command="{Binding AddPersonCommand}" Margin="3" Style="{StaticResource ButtonStyleShadow}"/>
             <Button Content="Удалить" Command="{Binding DeletePersonCommand}" Margin="3" Style="{StaticResource ButtonStyleShadow}"/>
             <Button Content="Распечатать" Command="{Binding PrintCommand}" Margin="3" Style="{DynamicResource ButtonStyleShadow}"/>
+            <Button Margin="3" Style="{StaticResource ButtonStyleShadow}" ToolTip="Экспорт в 1С" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=local:BasicWindow}}">
+                <StackPanel Orientation="Horizontal">
+                    <fa:ImageAwesome Icon="Solid_DoorOpen" Width="24" Height="16" Foreground="#FF005AA0"/>
+                    <TextBlock Text="Закрыть"/>
+                </StackPanel>
+                <Button.Command>
+                    <cmd:CloseDialogCommand/>
+                </Button.Command>
+            </Button>
             <ToolBarPanel.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="Отм"/>

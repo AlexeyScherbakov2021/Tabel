@@ -8,6 +8,7 @@
              xmlns:fa="http://schemas.fontawesome.com/icons/"
             xmlns:vm="clr-namespace:Tabel.ViewModels"
              xmlns:conv="clr-namespace:Tabel.Infrastructure.Converters"
+            xmlns:cmd="clr-namespace:Tabel.Commands"
             xmlns:ext="clr-namespace:Tabel.Infrastructure.Extend"
              xmlns:ModViewModel="clr-namespace:Tabel.ViewModels.ModViewModel" 
             x:Name="userControl" 
@@ -56,6 +57,15 @@
                     <fa:ImageAwesome Icon="Solid_Save" Width="24" Height="16" Foreground="#FF005AA0"/>
                     <TextBlock Text="Экспорт в 1С"/>
                 </StackPanel>
+            </Button>
+            <Button Margin="3" Style="{StaticResource ButtonStyleShadow}" ToolTip="Экспорт в 1С" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=local:BasicWindow}}">
+                <StackPanel Orientation="Horizontal">
+                    <fa:ImageAwesome Icon="Solid_DoorOpen" Width="24" Height="16" Foreground="#FF005AA0"/>
+                    <TextBlock Text="Закрыть"/>
+                </StackPanel>
+                <Button.Command>
+                    <cmd:CloseDialogCommand/>
+                </Button.Command>
             </Button>
         </ToolBarPanel>
 
@@ -111,18 +121,26 @@
                             <ColumnDefinition Width="{Binding ActualWidth, ElementName=col4}"/>
                             <ColumnDefinition Width="{Binding ActualWidth, ElementName=col5}"/>
                         </Grid.ColumnDefinitions>
-                        <Button Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" Width="40"
-                                Command="{Binding CheckCommand}" CommandParameter="{Binding ElementName=dgBonus}"
-                                HorizontalContentAlignment="Left"
-                                Style="{StaticResource ButtonStyleShadow}">
-                            <CheckBox IsChecked="{Binding IsCheckBonus}"/>
-                        </Button>
-                        <Button  Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Center" Width="80" 
-                                 HorizontalContentAlignment="Left"
-                                 Command="{Binding SetMaxSummaCommand}" CommandParameter="{Binding ElementName=dgBonus}"
-                                 Style="{StaticResource ButtonStyleShadow}">
-                            <TextBox Text="{Binding SetMaxPrem, Mode=OneWayToSource}" Width="50"/>
-                        </Button>
+
+
+                        <DockPanel Grid.Column="2" Margin="2,4">
+                            <Button DockPanel.Dock="Right" Command="{Binding CheckCommand}" Padding="0" 
+                                    CommandParameter="{Binding ElementName=dgBonus}" Style="{StaticResource ButtonStyleShadow}">
+                                <fa:ImageAwesome Icon="Solid_CheckCircle" Foreground="Green" Width="18" Height="16"/>
+                            </Button>
+                            <Border Background="Snow" BorderBrush="Gray" BorderThickness="0.5">
+                                <CheckBox IsChecked="{Binding IsCheckBonus}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                        </DockPanel>
+
+                        <DockPanel Grid.Column="4" Margin="2,4">
+                            <Button DockPanel.Dock="Right" Command="{Binding SetMaxSummaCommand}" Padding="0" 
+                                    CommandParameter="{Binding ElementName=dgBonus}" Style="{StaticResource ButtonStyleShadow}">
+                                <fa:ImageAwesome Icon="Solid_CheckCircle" Foreground="Green" Width="18" Height="16"/>
+                            </Button>
+                            <TextBox Text="{Binding SetMaxPrem, Mode=OneWayToSource}" />
+                        </DockPanel>
+
                     </Grid>
                     <DataGrid x:Name="dgBonus" ItemsSource="{Binding ListModPerson}" Style="{StaticResource DataGridStyle}" >
                         <DataGrid.Columns>
@@ -155,24 +173,30 @@
                             <ColumnDefinition Width="{Binding ActualWidth, ElementName=colFP7}"/>
                             <ColumnDefinition Width="{Binding ActualWidth, ElementName=colFP8}"/>
                         </Grid.ColumnDefinitions>
-                        <Button  Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" Width="60" 
-                                 HorizontalContentAlignment="Left"
-                                 Command="{Binding SetProcPremCommand}" CommandParameter="{Binding ElementName=dgFP}"
-                                 Style="{StaticResource ButtonStyleShadow}">
-                            <TextBox Text="{Binding SetProcPrem, Mode=OneWayToSource}" Width="40"/>
-                        </Button>
-                        <Button  Grid.Column="5" HorizontalAlignment="Center" VerticalAlignment="Center" Width="80" 
-                                 HorizontalContentAlignment="Left"
-                                 Command="{Binding SetTarifPremCommand}" CommandParameter="{Binding ElementName=dgFP}"
-                                 Style="{StaticResource ButtonStyleShadow}">
-                            <TextBox Text="{Binding SetTarif, Mode=OneWayToSource}" Width="50"/>
-                        </Button>
-                        <Button  Grid.Column="7" HorizontalAlignment="Center" VerticalAlignment="Center" Width="60" 
-                                 HorizontalContentAlignment="Left"
-                                 Command="{Binding SetGroupCommand}" CommandParameter="{Binding ElementName=dgFP}"
-                                 Style="{StaticResource ButtonStyleShadow}">
-                            <TextBox Text="{Binding SetGroupName, Mode=OneWayToSource}" Width="36"/>
-                        </Button>
+                        <DockPanel Grid.Column="2" Margin="2,4">
+                            <Button DockPanel.Dock="Right" Command="{Binding SetProcPremCommand}" Padding="0" 
+                                    CommandParameter="{Binding ElementName=dgFP}" Style="{StaticResource ButtonStyleShadow}">
+                                <fa:ImageAwesome Icon="Solid_CheckCircle" Foreground="Green" Width="18" Height="16"/>
+                            </Button>
+                            <TextBox Text="{Binding SetProcPrem, Mode=OneWayToSource}" />
+                        </DockPanel>
+                        
+                        <DockPanel Grid.Column="5" Margin="2,4">
+                            <Button DockPanel.Dock="Right" Command="{Binding SetTarifPremCommand}" Padding="0" 
+                                    CommandParameter="{Binding ElementName=dgFP}" Style="{StaticResource ButtonStyleShadow}">
+                                <fa:ImageAwesome Icon="Solid_CheckCircle" Foreground="Green" Width="18" Height="16"/>
+                            </Button>
+                            <TextBox Text="{Binding SetTarif, Mode=OneWayToSource}" />
+                        </DockPanel>
+                        
+                        <DockPanel Grid.Column="7" Margin="2,4">
+                            <Button DockPanel.Dock="Right" Command="{Binding SetGroupCommand}" Padding="0" 
+                                    CommandParameter="{Binding ElementName=dgFP}" Style="{StaticResource ButtonStyleShadow}">
+                                <fa:ImageAwesome Icon="Solid_CheckCircle" Foreground="Green" Width="18" Height="16"/>
+                            </Button>
+                            <TextBox Text="{Binding SetGroupName, Mode=OneWayToSource}" />
+                        </DockPanel>
+                        
                     </Grid>
                     <DataGrid x:Name="dgFP" ItemsSource="{Binding ListModPerson}" Style="{StaticResource DataGridStyle}" >
                         <DataGrid.Columns>
@@ -207,18 +231,37 @@
                             <ColumnDefinition Width="{Binding ActualWidth, ElementName=colITR6}"/>
                             <ColumnDefinition Width="{Binding ActualWidth, ElementName=colITR7}"/>
                         </Grid.ColumnDefinitions>
-                        <Button  Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Center" Width="60" 
+
+                        <DockPanel Grid.Column="4" Margin="2,4">
+                            <Button DockPanel.Dock="Right" Command="{Binding SetProcFullCommand}" Padding="0" 
+                                    CommandParameter="{Binding ElementName=dgOt}" Style="{StaticResource ButtonStyleShadow}">
+                                <fa:ImageAwesome Icon="Solid_CheckCircle" Foreground="Green" Width="18" Height="16"/>
+                            </Button>
+                            <TextBox Text="{Binding SetProcFull, Mode=OneWayToSource}" />
+                        </DockPanel>
+
+                        <DockPanel Grid.Column="5" Margin="2,4">
+                            <Button DockPanel.Dock="Right" Command="{Binding SetProcPremCommand}" Padding="0" 
+                                    CommandParameter="{Binding ElementName=dgOt}" Style="{StaticResource ButtonStyleShadow}">
+                                <fa:ImageAwesome Icon="Solid_CheckCircle" Foreground="Green" Width="18" Height="16"/>
+                            </Button>
+                            <TextBox Text="{Binding SetProcPrem, Mode=OneWayToSource}" />
+                        </DockPanel>
+
+
+                        <!--<Button  Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Center" Width="60" 
                                  HorizontalContentAlignment="Left"
                                  Command="{Binding SetProcPremCommand}" CommandParameter="{Binding ElementName=dgOt}"
                                  Style="{StaticResource ButtonStyleShadow}">
                             <TextBox Text="{Binding SetProcPrem, Mode=OneWayToSource}" Width="40"/>
-                        </Button>
-                        <Button  Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Center" Width="60" 
+                        </Button>-->
+
+                        <!--<Button  Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Center" Width="60" 
                                  HorizontalContentAlignment="Left"
                                  Command="{Binding SetProcFullCommand}" CommandParameter="{Binding ElementName=dgOt}"
                                  Style="{StaticResource ButtonStyleShadow}">
                             <TextBox Text="{Binding SetProcFull, Mode=OneWayToSource}" Width="40"/>
-                        </Button>
+                        </Button>-->
                     </Grid>
                     <DataGrid x:Name="dgOt" ItemsSource="{Binding ListModPerson}" Style="{StaticResource DataGridStyle}" >
                         <DataGrid.Columns>
@@ -283,12 +326,24 @@
                             <!--<ColumnDefinition Width="{Binding ActualWidth, ElementName=col4}"/>-->
                             <!--<ColumnDefinition Width="{Binding ActualWidth, ElementName=col5}"/>-->
                         </Grid.ColumnDefinitions>
-                        <Button Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" Width="40"
+                        
+                        <DockPanel Grid.Column="2" Margin="2,4">
+                            <Button DockPanel.Dock="Right" Command="{Binding CheckQualCommand}" Padding="0" 
+                                    CommandParameter="{Binding ElementName=dgQuality}" Style="{StaticResource ButtonStyleShadow}">
+                                <fa:ImageAwesome Icon="Solid_CheckCircle" Foreground="Green" Width="18" Height="16"/>
+                            </Button>
+                            <Border Background="Snow" BorderBrush="Gray" BorderThickness="0.5">
+                                <CheckBox IsChecked="{Binding IsCheckQuality}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                        </DockPanel>
+
+
+                        <!--<Button Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" Width="40"
                                 Command="{Binding CheckQualCommand}" CommandParameter="{Binding ElementName=dgQuality}"
                                 HorizontalContentAlignment="Left"
                                 Style="{StaticResource ButtonStyleShadow}">
                             <CheckBox IsChecked="{Binding IsCheckQuality}"/>
-                        </Button>
+                        </Button>-->
                         <!--<Button  Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Center" Width="80" 
                                  HorizontalContentAlignment="Left"
                                  Command="{Binding SetMaxSummaCommand}" CommandParameter="{Binding ElementName=dgQuality}"
