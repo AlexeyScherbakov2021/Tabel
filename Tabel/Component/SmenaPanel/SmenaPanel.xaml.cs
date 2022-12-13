@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Tabel.Infrastructure;
 
 namespace Tabel.Component.SmenaPanel
 {
@@ -49,6 +50,11 @@ namespace Tabel.Component.SmenaPanel
         public SmenaPanel()
         {
             InitializeComponent();
+            Menu1smena.Tag = SmenaKind.First;
+            Menu2smena.Tag = SmenaKind.Second;
+            MenuDayOff.Tag = SmenaKind.DayOff;
+            MenuNone.Tag = SmenaKind.None;
+            MenuOtpusk.Tag = SmenaKind.Otpusk;
         }
 
 
@@ -131,18 +137,18 @@ namespace Tabel.Component.SmenaPanel
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
             RoutedEventArgs args = new RoutedEventArgs(ContextMenuCheckEvent);
-            args.Source = this;
+            args.Source = sender;
             RaiseEvent(args);
 
         }
 
-        private void MenuItem_Click_1(object sender, RoutedEventArgs e)
-        {
-            RoutedEventArgs args = new RoutedEventArgs(ContextMenuUnCheckEvent);
-            args.Source = this;
-            RaiseEvent(args);
+        //private void MenuItem_Click_1(object sender, RoutedEventArgs e)
+        //{
+        //    RoutedEventArgs args = new RoutedEventArgs(ContextMenuUnCheckEvent);
+        //    args.Source = this;
+        //    RaiseEvent(args);
 
-        }
+        //}
 
     }
 }

@@ -4,13 +4,14 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
             xmlns:fa="http://schemas.fontawesome.com/icons/"
+            xmlns:inf="clr-namespace:Tabel.Infrastructure"
              xmlns:local="clr-namespace:Tabel.Component.SmenaPanel"
             SelectionMode="Extended"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <ListBox.Resources>
 
-        <local:SmenaImageConvert x:Key="SmenaImageConvert"/>
+        <local:SmenaStringConvert x:Key="SmenaStringConvert"/>
 
         <!--<ItemsPanelTemplate x:Key="ItemsControlItemsPanel1">
             <StackPanel Orientation="Horizontal">
@@ -56,12 +57,15 @@
                             <Border x:Name="border"  Opacity="0.9" CornerRadius="3" BorderThickness="1"  ClipToBounds="True"
                                     BorderBrush="Black" Margin="-2,0" IsHitTestVisible="False" Background="Gainsboro">
                                 <UniformGrid Rows="2" >
-                                    <Border Background="LightSteelBlue" Width="24" CornerRadius="3">
-                                        <TextBlock Name="NumberDay" Text="{Binding sd_Day}" HorizontalAlignment="Center" MinWidth="24" TextAlignment="Center" 
+                                    <Border Background="Gainsboro" Width="30" CornerRadius="3">
+                                        <TextBlock Name="NumberDay" Text="{Binding DayString}" HorizontalAlignment="Center" MinWidth="24" TextAlignment="Center" 
                                                IsHitTestVisible="False"/>
                                     </Border>
-                                    <fa:ImageAwesome Icon="{Binding sd_Kind, Converter={StaticResource SmenaImageConvert}}" Width="14" 
-                                                     Height="16" IsHitTestVisible="False"/>
+                                    <TextBlock Text="{Binding sd_Kind, Converter={StaticResource SmenaStringConvert}}" Width="14" 
+                                               TextAlignment="Center" FontWeight="Bold"
+                                                     IsHitTestVisible="False"/>
+                                    <!--<fa:ImageAwesome Icon="{Binding sd_Kind, Converter={StaticResource SmenaImageConvert}}" Width="14" 
+                                                     Height="16" IsHitTestVisible="False"/>-->
                                 </UniformGrid>
                             </Border>
 
@@ -74,7 +78,21 @@
                         <ControlTemplate.Triggers>
                             <DataTrigger Binding="{Binding OffDay}" Value="True">
                                 <Setter Property="Background" Value="#E0C4DE" TargetName="NumberDay"/>
-                                <Setter Property="ToolTip" Value="Выходной день" TargetName="NumberDay"/>
+                                <Setter Property="ToolTip" Value="Выходной день" TargetName="Bd"/>
+                                <Setter Property="Background" Value="#E0C4DE" TargetName="border"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding sd_Kind}" Value="2">
+                                <Setter Property="Background" Value="Wheat" TargetName="border"/>
+                                <Setter Property="Background" Value="Wheat" TargetName="NumberDay"/>
+                                <Setter Property="ToolTip" Value="Вторая смена" TargetName="Bd"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding sd_Kind}" Value="1">
+                                <Setter Property="Background" Value="Gainsboro" TargetName="border"/>
+                                <Setter Property="ToolTip" Value="Первая смена" TargetName="Bd"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding sd_Kind}" Value="4">
+                                <Setter Property="Background" Value="Snow" TargetName="border"/>
+                                <Setter Property="ToolTip" Value="Отпуск" TargetName="Bd"/>
                             </DataTrigger>
                             <MultiTrigger>
                                 <MultiTrigger.Conditions>
@@ -110,11 +128,11 @@
     </ListBox.Resources>
     <ListBox.ContextMenu>
         <ContextMenu>
-            <MenuItem Header="1 смена" Click="MenuItem_Click"/>
-            <MenuItem Header="2 смена" Click="MenuItem_Click_1"/>
-            <MenuItem Header="Выходной" Click="MenuItem_Click_1"/>
-            <MenuItem Header="Отпуск" Click="MenuItem_Click_1"/>
-            <MenuItem Header="Пусто" Click="MenuItem_Click_1"/>
+            <MenuItem Name="Menu1smena" Header="1 смена" Click="MenuItem_Click"/>
+            <MenuItem Name="Menu2smena" Header="2 смена" Click="MenuItem_Click"/>
+            <MenuItem Name="MenuDayOff" Header="Выходной" Click="MenuItem_Click"/>
+            <MenuItem Name="MenuOtpusk" Header="Отпуск" Click="MenuItem_Click"/>
+            <MenuItem Name="MenuNone" Header="Пусто" Click="MenuItem_Click"/>
 
         </ContextMenu>
     </ListBox.ContextMenu>

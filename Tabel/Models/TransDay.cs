@@ -7,9 +7,6 @@ namespace Tabel.Models
     using System.Data.Entity.Spatial;
     using Tabel.Infrastructure;
 
-
-    public enum KindTrans: int { None, Used};
-
     [Table("TransDay")]
     public partial class TransDay : Observable, IEntity
     {

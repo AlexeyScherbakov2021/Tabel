@@ -17,6 +17,9 @@ using Tabel.Repository;
 using Tabel.ViewModels.Base;
 using System.Globalization;
 using System.IO;
+using Tabel.Component.TransPanel;
+using Tabel.Component.SmenaPanel;
+using System.Windows.Controls;
 
 namespace Tabel.ViewModels
 {
@@ -348,6 +351,31 @@ namespace Tabel.ViewModels
                 //IsModify = true;
             }
         }
+
+        //--------------------------------------------------------------------------------
+        // Команда Конекстного меню выбора смены 
+        //--------------------------------------------------------------------------------
+        public ICommand IsSelectCommand => new LambdaCommand(OnIsSelectCommandExecuted, CanIsSelectCommand);
+        private bool CanIsSelectCommand(object p) => true;
+        private void OnIsSelectCommandExecuted(object p)
+        {
+            SmenaPanel panel = (SmenaPanel)((p as RoutedEventArgs).Source);
+            SmenaKind smena = (SmenaKind)((p as RoutedEventArgs).OriginalSource as MenuItem).Tag;
+            //TransPanel panel = p.Source as TransPanel;
+
+            foreach (SmenaDay item in panel.SelectedItems)
+            {
+                if (item.OffDay && smena != SmenaKind.Otpusk)
+                    item.sd_Kind = SmenaKind.DayOff;
+                else
+                    item.sd_Kind = smena;
+
+                item.OnPropertyChanged(nameof(item.sd_Kind));
+            }
+            panel.SelectedItems.Clear();
+        }
+
+
 
         #endregion
 

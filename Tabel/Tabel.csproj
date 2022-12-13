@@ -105,7 +105,7 @@
     </Compile>
     <Compile Include="Component\MonthPanel\MonthDays.cs" />
     <Compile Include="Component\MonthPanel\MonthPanel.cs" />
-    <Compile Include="Component\SmenaPanel\SmenaImageConvert.cs" />
+    <Compile Include="Component\SmenaPanel\SmenaStringConvert.cs" />
     <Compile Include="Component\SmenaPanel\SmenaPanel.xaml.cs">
       <DependentUpon>SmenaPanel.xaml</DependentUpon>
     </Compile>

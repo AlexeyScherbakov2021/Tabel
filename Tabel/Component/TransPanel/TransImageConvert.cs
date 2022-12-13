@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows.Media;
+using Tabel.Infrastructure;
 using Tabel.Models;
 
 namespace Tabel.Component.TransPanel

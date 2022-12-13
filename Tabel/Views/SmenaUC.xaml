@@ -309,13 +309,21 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <comp:SmenaPanel ItemsSource="{Binding SmenaDays}">
-
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="ContextMenuCheck">
+                                        <i:InvokeCommandAction PassEventArgsToCommand="True"
+                                            Command="{Binding DataContext.IsSelectCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}"/>
+                                    </i:EventTrigger>
+                                    <i:EventTrigger EventName="ContextMenuUnCheck">
+                                        <i:InvokeCommandAction PassEventArgsToCommand="True"
+                                            Command="{Binding DataContext.IsUnSelectCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
                                 <comp:SmenaPanel.ItemsPanel>
                                     <ItemsPanelTemplate>
                                         <StackPanel Orientation="Horizontal"/>
                                     </ItemsPanelTemplate>
                                 </comp:SmenaPanel.ItemsPanel>
-
                             </comp:SmenaPanel>
                             
                             

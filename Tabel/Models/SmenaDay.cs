@@ -26,5 +26,15 @@ namespace Tabel.Models
         [NotMapped]
         public bool OffDay { get; set; }
 
+        public string DayString
+        {
+            get
+            {
+                DateTime dt = new DateTime(SmenaPerson.smena.sm_Year, SmenaPerson.smena.sm_Month, sd_Day);
+                return dt.ToString("d ddd").ToLower();
+            }
+        }
+
+
     }
 }
