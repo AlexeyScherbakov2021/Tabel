@@ -58,7 +58,7 @@
                                     BorderBrush="Black" Margin="-2,0" IsHitTestVisible="False" Background="Gainsboro">
                                 <UniformGrid Rows="2" >
                                     <Border Background="Gainsboro" Width="30" CornerRadius="3">
-                                        <TextBlock Name="NumberDay" Text="{Binding DayString}" HorizontalAlignment="Center" MinWidth="24" TextAlignment="Center" 
+                                        <TextBlock Name="NumberDay" Text="{Binding DayString}" HorizontalAlignment="Stretch" MinWidth="24" TextAlignment="Center" 
                                                IsHitTestVisible="False"/>
                                     </Border>
                                     <TextBlock Text="{Binding sd_Kind, Converter={StaticResource SmenaStringConvert}}" Width="14" 
@@ -77,9 +77,9 @@
                         </Border>
                         <ControlTemplate.Triggers>
                             <DataTrigger Binding="{Binding OffDay}" Value="True">
-                                <Setter Property="Background" Value="#E0C4DE" TargetName="NumberDay"/>
+                                <Setter Property="Background" Value="#FFc0c0" TargetName="NumberDay"/>
                                 <Setter Property="ToolTip" Value="Выходной день" TargetName="Bd"/>
-                                <Setter Property="Background" Value="#E0C4DE" TargetName="border"/>
+                                <Setter Property="Background" Value="#FFc0c0" TargetName="border"/>
                             </DataTrigger>
                             <DataTrigger Binding="{Binding sd_Kind}" Value="2">
                                 <Setter Property="Background" Value="Wheat" TargetName="border"/>
