@@ -30,12 +30,22 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;RELEASE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>calendar.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'ReleaseDemo|AnyCPU'">
+    <OutputPath>bin\ReleaseDemo\</OutputPath>
+    <DefineConstants>TRACE;DEMO</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ClosedXML, Version=0.96.0.0, Culture=neutral, PublicKeyToken=fd1eb21b62ae805b, processorArchitecture=MSIL">
@@ -175,6 +185,7 @@
     <Compile Include="ViewModels\ModViewModel\PremiaPrizeViewModel.cs" />
     <Compile Include="ViewModels\ModViewModel\PremiaQualityViewModel.cs" />
     <Compile Include="ViewModels\ModViewModel\PremiaTransportViewModel.cs" />
+    <Compile Include="ViewModels\OtpuskUCViewModel.cs" />
     <Compile Include="ViewModels\SelectOtdelWindowViewModel.cs" />
     <Compile Include="ViewModels\Admins\UserWindowViewModel.cs" />
     <Compile Include="ViewModels\Admins\YearCalendarViewModel.cs" />
@@ -207,6 +218,9 @@
     </Compile>
     <Compile Include="Views\ModUC.xaml.cs">
       <DependentUpon>ModUC.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\OtpuskUC.xaml.cs">
+      <DependentUpon>OtpuskUC.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\PrintForm\SmenaPrint.xaml.cs">
       <DependentUpon>SmenaPrint.xaml</DependentUpon>
@@ -355,6 +369,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Views\ModUC.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\OtpuskUC.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -20,9 +20,16 @@ namespace Tabel.ViewModels
     {
 #if DEBUG
         public string Title { get; set; } = "Учет рабочего времени (Отладочная версия)";
-#else
+#endif
+
+#if DEMO
+        public string Title { get; set; } = "Учет рабочего времени (ДЕМО)";
+#endif
+
+#if RELEASE
         public string Title { get; set; } = "Учет рабочего времени";
 #endif
+
         public string LoginUser => App.CurrentUser.u_fio;
 
         public WindowState WinState { get; set; }
@@ -97,13 +104,28 @@ namespace Tabel.ViewModels
         //--------------------------------------------------------------------------------
         // Команда Загрузить Транспорт
         //--------------------------------------------------------------------------------
-        public ICommand ExecTranspCommand => new LambdaCommand(OnExecTranspCommandExecuted, CanTranspTabelCommand);
-        private bool CanTranspTabelCommand(object p) => true;
+        public ICommand ExecTranspCommand => new LambdaCommand(OnExecTranspCommandExecuted, CanTranspCommand);
+        private bool CanTranspCommand(object p) => true;
         private void OnExecTranspCommandExecuted(object p)
         {
             BasicWindow win = new BasicWindow();
             win.WindowState = WinState;
             BasicWindowViewModel vm = new BasicWindowViewModel(win, new TransportUC(), "Использование транспорта");
+            win.DataContext = vm;
+            win.ShowDialog();
+
+        }
+
+        //--------------------------------------------------------------------------------
+        // Команда Загрузить График отпусков
+        //--------------------------------------------------------------------------------
+        public ICommand ExecOtpuskCommand => new LambdaCommand(OnExecOtpuskpCommandExecuted, CanOtpuskCommand);
+        private bool CanOtpuskCommand(object p) => true;
+        private void OnExecOtpuskpCommandExecuted(object p)
+        {
+            BasicWindow win = new BasicWindow();
+            win.WindowState = WinState;
+            BasicWindowViewModel vm = new BasicWindowViewModel(win, new OtpuskUC(), "График отпусков");
             win.DataContext = vm;
             win.ShowDialog();
 

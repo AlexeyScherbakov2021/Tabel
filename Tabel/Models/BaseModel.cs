@@ -26,10 +26,20 @@ namespace Tabel.Models
 
 #if DEBUG
             ConnectString = ConfigurationManager.ConnectionStrings["BaseModelLocal"].ConnectionString;
-#else
+#endif
+
+#if RELEASE
             ConnectString = ConfigurationManager.ConnectionStrings["BaseModel"].ConnectionString;
             ConnectString += ";user id=fpLoginName;password=ctcnhjt,s";
 #endif
+
+#if DEMO
+            ConnectString = ConfigurationManager.ConnectionStrings["BaseModelDemo"].ConnectionString;
+            ConnectString += ";user id=fpLoginName;password=ctcnhjt,s";
+#endif
+
+
+
             BaseModel db = new BaseModel(ConnectString);
 
             return db;

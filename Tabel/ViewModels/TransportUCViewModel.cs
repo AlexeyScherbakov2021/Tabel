@@ -27,10 +27,8 @@ namespace Tabel.ViewModels
         private int _SelectYear;
 
         private readonly BaseModel db;
-        //private readonly RepositoryMSSQL<Personal> repoPersonal = new RepositoryMSSQL<Personal>();
         private readonly RepositoryMSSQL<Personal> repoPersonal;
         private readonly RepositoryMSSQL<Transport> repoTransp;
-        //private readonly RepositoryMSSQL<TransPerson> repoTrnaspPersonal = new RepositoryMSSQL<TransPerson>();
         private readonly RepositoryMSSQL<TransPerson> repoTransPerson;
 
         public Transport Transp { get; set; }

@@ -8,7 +8,7 @@
         xmlns:theme="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2"
         mc:Ignorable="d"
         WindowState="{Binding WinState, Mode=OneWayToSource}"
-        Title="{Binding Title}" Height="500" Width="820" WindowStartupLocation="CenterScreen" Background="#FF537F82">
+        Title="{Binding Title}" Height="591" Width="957" WindowStartupLocation="CenterScreen" Background="#FF537F82">
     <Window.DataContext>
         <vm:MainWindowViewModel/>
     </Window.DataContext>
@@ -62,7 +62,7 @@
                                               TextWrapping="Wrap" FontSize="25" FontWeight="Bold"
                                               TextAlignment="Center" Foreground="Blue"
                                        />
-                            
+
                             <!--<ContentPresenter x:Name="contentPresenter" Focusable="False" 
                                               HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
                                               Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" 
@@ -113,10 +113,11 @@
             <StatusBarItem Content="Пользователь"/>
             <StatusBarItem Content="{Binding LoginUser}"/>
         </StatusBar>
-        <UniformGrid Columns="3" Rows="2">
+        <UniformGrid Columns="3" Rows="3">
             <Button Content="График сменной работы" Command="{Binding ExecSmenaCommand}"/>
             <Button Content="График использования личного транспорта" Command="{Binding ExecTranspCommand}"/>
             <Button Content="Табель рабочего времени" Command="{Binding ExecTabelCommand}"/>
+            <Button Content="График отпусков" Command="{Binding ExecOtpuskCommand}"/>
             <Button Content="Модель оплаты"  Command="{Binding ExecModCommand}"/>
             <Button Content="Общие начисления"  Command="{Binding DataSummaryCommand}"/>
             <Button Content="Настройки" Command="{Binding ExecCalCommand}"/>
