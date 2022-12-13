@@ -67,6 +67,8 @@ namespace Tabel.ViewModels
                     PremiaPrize prem = new PremiaPrize(mPerson);
                     prem.Calculation();
                     summa = prem.GetPremia().Value;
+                    summa = mPerson.PremiaItogo.Value;
+
                     //summa = mPerson.Oklad / item.HoursMonth * (item.OverWork ?? 0) * 2;
 
                     if (summa > 0 && !String.IsNullOrEmpty( mPerson.person.p_tab_number))

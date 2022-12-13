@@ -173,15 +173,17 @@ namespace Tabel.Models
             + premiaBonus.GetPremia()
             + premiaKvalif.GetPremia()
             + premiaOtdel.GetPremia()
-            + premiaNight.GetPremia()
-            + premOffDays.GetPremia()
             + premiaTrnasport.GetPremia()
             + premiaAddWorks.GetPremia()
             + premiaQuality.GetPremia()
             + premiaPrize.GetPremia();
 
 
-        public decimal? Itogo => Oklad + PremiaItogo;
+        public decimal? Itogo => 
+            Oklad
+            + premiaNight.GetPremia()
+            + premOffDays.GetPremia()
+            + PremiaItogo;
 
     }
 }
