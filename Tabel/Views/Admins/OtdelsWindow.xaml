@@ -79,7 +79,6 @@
             </Border.Effect>
             <DockPanel>
                 <DockPanel DockPanel.Dock="Top" >
-                    <CheckBox Content="ИТР" IsChecked="{Binding SelectedOtdel.ot_itr}" DockPanel.Dock="Left" Margin="10,0" VerticalAlignment="Center"/>
                     <TextBox Text="{Binding SelectedOtdel.ot_name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FontSize="16"
                         TextAlignment="Center" FontWeight="Bold" Background="Khaki"/>
                 </DockPanel>
@@ -116,7 +115,7 @@
                             DisplayMemberPath="cat_tarif" SelectedValuePath="id" SelectedValueBinding="{Binding p_cat_id}" >
                         </DataGridComboBoxColumn>-->
 
-                        <DataGridTemplateColumn Header="Разряд">
+                        <DataGridTemplateColumn Header="Грейд">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding p_cat_id, StringFormat=0.#}" TextAlignment="Right" Margin="5,0"/>
@@ -148,6 +147,38 @@
                             ItemsSource="{Binding Source={infr:EnumTypeBinding {x:Type infr:SpecType}}}"
                             SelectedItemBinding="{Binding p_type_id}"
                             CellStyle="{StaticResource CellRight}"/>
+
+                        <DataGridTemplateColumn Header="Справч.оклад" CellStyle="{StaticResource CellRight}" IsReadOnly="True">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding  MidOklad, StringFormat=N2}" Background="LightGray" Foreground="Black"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        
+                        <DataGridTemplateColumn Header="Справч.прем" CellStyle="{StaticResource CellRight}" IsReadOnly="True">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding  MidPrem, StringFormat=N2}" Background="LightGray" Foreground="Black"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+                        <DataGridTemplateColumn Header="Справч.итог" CellStyle="{StaticResource CellRight}" IsReadOnly="True">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding  MidItog, StringFormat=N2}" Background="LightGray" Foreground="Black"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        
+                        <DataGridTemplateColumn Header="Справч.ндфл" CellStyle="{StaticResource CellRight}" IsReadOnly="True">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding  MidNdfl, StringFormat=N2}" Background="LightGray" Foreground="Black"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
 
                     </DataGrid.Columns>
                 </DataGrid>

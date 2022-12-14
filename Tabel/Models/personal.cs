@@ -49,7 +49,7 @@ namespace Tabel.Models
 
 
         private int? _p_cat_id;
-        public int? p_cat_id { get => _p_cat_id; set { Set(ref _p_cat_id, value); } }
+        public int? p_cat_id { get => _p_cat_id; set { Set(ref _p_cat_id, value);  } }
 
         private bool _p_delete;
         public bool p_delete { get => _p_delete; set { Set(ref _p_delete, value); } }
@@ -86,6 +86,19 @@ namespace Tabel.Models
             (String.IsNullOrEmpty(p_name) ? ""
               : (p_name[0] + ". " +
                 (String.IsNullOrEmpty(p_midname) ? "" : (p_midname[0] + ". "))));
+
+        [NotMapped]
+        public decimal? MidOklad => 162 * category?.cat_tarif * p_stavka;
+
+        [NotMapped]
+        public decimal? MidPrem => 162 * p_premTarif * p_stavka;
+
+        [NotMapped]
+        public decimal? MidItog => MidOklad + MidPrem;
+
+        [NotMapped]
+        public decimal? MidNdfl => MidItog / 0.87m;
+
 
     }
 }

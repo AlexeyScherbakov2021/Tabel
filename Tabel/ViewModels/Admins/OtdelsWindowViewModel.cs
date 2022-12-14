@@ -135,14 +135,22 @@ namespace Tabel.ViewModels.Admins
         {
             if (e.PropertyName == "p_cat_id" || e.PropertyName == "p_premTarif")
             {
-                Category cat = repoCat.Items.AsNoTracking().FirstOrDefault(it => it.id == SelectedPerson.p_cat_id);
+                Category cat = repoCat.Items.FirstOrDefault(it => it.id == SelectedPerson.p_cat_id);
                 if (cat != null)
                 {
+                    SelectedPerson.category = cat;
+
                     if (SelectedPerson.p_premTarif > cat.cat_max_level)
                         SelectedPerson.p_premTarif = cat.cat_max_level;
 
                     if (SelectedPerson.p_premTarif < cat.cat_min_level)
                         SelectedPerson.p_premTarif = cat.cat_min_level;
+
+                    SelectedPerson.OnPropertyChanged(nameof(SelectedPerson.MidOklad));
+                    SelectedPerson.OnPropertyChanged(nameof(SelectedPerson.MidPrem));
+                    SelectedPerson.OnPropertyChanged(nameof(SelectedPerson.MidItog));
+                    SelectedPerson.OnPropertyChanged(nameof(SelectedPerson.MidNdfl));
+
                 }
             }
         }

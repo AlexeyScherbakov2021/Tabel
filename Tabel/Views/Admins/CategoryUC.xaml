@@ -50,7 +50,7 @@
                                 </ContextMenu>
                             </DataGrid.ContextMenu>
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="Разряд" Binding="{Binding id}" Width="80" CellStyle="{StaticResource CellRight}"/>
+                                <DataGridTextColumn Header="Грейд" Binding="{Binding id}" Width="80" CellStyle="{StaticResource CellRight}"/>
                                 <DataGridTextColumn Header="Тариф" Binding="{Binding cat_tarif}" Width="100" CellStyle="{StaticResource CellRight}"/>
                                 <!--<DataGridTextColumn Header="Прем. тариф" Binding="{Binding cat_prem_tarif}" Width="100" CellStyle="{StaticResource CellRight}"/>-->
                                 <DataGridTextColumn Header="Мин. уровень" Binding="{Binding cat_min_level}" Width="100" CellStyle="{StaticResource CellRight}"/>

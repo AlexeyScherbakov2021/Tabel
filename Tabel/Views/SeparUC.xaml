@@ -1,0 +1,53 @@
+﻿<UserControl x:Class="Tabel.Views.SeparUC"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Tabel.Views"
+            xmlns:vm="clr-namespace:Tabel.ViewModels"
+             xmlns:fa="http://schemas.fontawesome.com/icons/"
+             xmlns:cmd="clr-namespace:Tabel.Commands"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="1000">
+    <UserControl.DataContext>
+        <vm:SeparUCViewModel/>
+    </UserControl.DataContext>
+
+    <DockPanel>
+        <ToolBarPanel DockPanel.Dock="Top" Orientation="Horizontal" Height="30" Margin="10,8,0,4" >
+            <TextBlock Text="Номер документа" Margin="5,0" VerticalAlignment="Center"/>
+            <TextBox Text="{Binding SmenaShedule.sm_Number}" Margin="5,0" VerticalAlignment="Center" Width="120"/>
+            <TextBlock Text="Дата создания" Margin="5,0" VerticalAlignment="Center"/>
+            <TextBox Text="{Binding SmenaShedule.sm_DateCreate, StringFormat=dd.MM.yyyy HH:mm:ss}" Margin="5,0" VerticalAlignment="Center" Width="120"/>
+
+            <Button Content="Создать форму" Command="{Binding CreateCommand}" Margin="3" Style="{StaticResource ButtonStyleShadow}"/>
+            <Button Content="Сохранить" Command="{Binding SaveCommand}" Margin="3" Style="{StaticResource ButtonStyleShadow}"/>
+            <Button Content="Добавить сотрудников" Command="{Binding AddPersonCommand}" Margin="3" Style="{StaticResource ButtonStyleShadow}"/>
+            <Button Content="Удалить" Command="{Binding DeletePersonCommand}" Margin="3" Style="{StaticResource ButtonStyleShadow}"/>
+            <!--<Button Content="Печать" Command="{Binding PrintCommand}" Margin="3" Style="{StaticResource ButtonStyleShadow}"/>-->
+            <Button Margin="3" Style="{StaticResource ButtonStyleShadow}" ToolTip="Экспорт в 1С" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=local:BasicWindow}}">
+                <StackPanel Orientation="Horizontal">
+                    <fa:ImageAwesome Icon="Solid_DoorOpen" Width="24" Height="16" Foreground="#FF005AA0"/>
+                    <TextBlock Text="Закрыть"/>
+                </StackPanel>
+                <Button.Command>
+                    <cmd:CloseDialogCommand/>
+                </Button.Command>
+            </Button>
+        </ToolBarPanel>
+
+        <DataGrid x:Name="dg" ItemsSource="{Binding ListSmenaPerson}" Style="{StaticResource DataGridStyle}" 
+                  VerticalGridLinesBrush="LightGray" HorizontalGridLinesBrush="LightGray" SelectedItem="{Binding SelectedPerson}"
+                  FrozenColumnCount="1" >
+            <DataGrid.Columns>
+                <DataGridTemplateColumn Header="Сотрудник" IsReadOnly="True" Width="130">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding personal.FIO}" TextWrapping="Wrap" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+    </DockPanel>
+</UserControl>

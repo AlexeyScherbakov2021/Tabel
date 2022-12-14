@@ -120,6 +120,7 @@
             <Button Content="График отпусков" Command="{Binding ExecOtpuskCommand}" Visibility="Collapsed"/>
             <Button Content="Модель оплаты"  Command="{Binding ExecModCommand}"/>
             <Button Content="Общие начисления"  Command="{Binding DataSummaryCommand}"/>
+            <Button Content="Отдельная форма" Command="{Binding ExecSeparCommand}" Visibility="Collapsed"/>
             <Button Content="Настройки" Command="{Binding ExecCalCommand}"/>
         </UniformGrid>
     </DockPanel>

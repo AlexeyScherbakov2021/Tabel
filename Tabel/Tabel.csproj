@@ -189,6 +189,7 @@
     <Compile Include="ViewModels\SelectOtdelWindowViewModel.cs" />
     <Compile Include="ViewModels\Admins\UserWindowViewModel.cs" />
     <Compile Include="ViewModels\Admins\YearCalendarViewModel.cs" />
+    <Compile Include="ViewModels\SeparUCViewModel.cs" />
     <Compile Include="ViewModels\SmenaUCViewModel.cs" />
     <Compile Include="ViewModels\TabelUCViewModel.cs" />
     <Compile Include="ViewModels\TransportUCViewModel.cs" />
@@ -230,6 +231,9 @@
     </Compile>
     <Compile Include="Views\SelectOtdelWindow.xaml.cs">
       <DependentUpon>SelectOtdelWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SeparUC.xaml.cs">
+      <DependentUpon>SeparUC.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SmenaUC.xaml.cs">
       <DependentUpon>SmenaUC.xaml</DependentUpon>
@@ -385,6 +389,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\SelectOtdelWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SeparUC.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
