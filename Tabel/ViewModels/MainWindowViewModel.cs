@@ -131,6 +131,21 @@ namespace Tabel.ViewModels
 
         }
 
+        //--------------------------------------------------------------------------------
+        // Команда Загрузить График отпусков
+        //--------------------------------------------------------------------------------
+        public ICommand ExecSeparCommand => new LambdaCommand(OnExecSeparCommandExecuted, CanExecSeparCommand);
+        private bool CanExecSeparCommand(object p) => true;
+        private void OnExecSeparCommandExecuted(object p)
+        {
+            BasicWindow win = new BasicWindow();
+            win.WindowState = WinState;
+            BasicWindowViewModel vm = new BasicWindowViewModel(win, new SeparUC(), "Отдельная форма");
+            win.DataContext = vm;
+            win.ShowDialog();
+
+        }
+
 #endregion
 
 
