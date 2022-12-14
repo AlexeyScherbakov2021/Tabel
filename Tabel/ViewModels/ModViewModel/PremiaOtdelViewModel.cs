@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Tabel.Commands;
+using Tabel.Infrastructure;
 using Tabel.Models;
 using Tabel.ViewModels.Base;
 
@@ -26,7 +27,7 @@ namespace Tabel.ViewModels.ModViewModel
         {
             _SelectMonth = Month;
             _SelectYear = Year;
-            ListModPerson = listPerson;
+            ListModPerson = listPerson.Where(it => it.person.p_type_id == SpecType.ИТР).ToList(); ;
 
             LoadFromCategory(ListModPerson);
 

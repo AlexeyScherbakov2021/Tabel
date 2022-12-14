@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Tabel.Commands;
+using Tabel.Infrastructure;
 using Tabel.Models;
 using Tabel.ViewModels.Base;
 
@@ -32,7 +33,7 @@ namespace Tabel.ViewModels.ModViewModel
             //_SelectedOtdel = Otdel;
             _SelectMonth = Month;
             _SelectYear = Year;
-            ListModPerson = listPerson;
+            ListModPerson = listPerson.Where(it => it.person.p_type_id == SpecType.Рабочий).ToList();
 
             if (ListModPerson != null)
             {

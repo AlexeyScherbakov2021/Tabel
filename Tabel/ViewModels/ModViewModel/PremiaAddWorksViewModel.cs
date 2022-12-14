@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Tabel.Infrastructure;
 using Tabel.Models;
 using Tabel.Repository;
 using Tabel.ViewModels.Base;
@@ -59,7 +60,7 @@ namespace Tabel.ViewModels.ModViewModel
             //_SelectedOtdel = Otdel;
             _SelectMonth = Month;
             _SelectYear = Year;
-            ListModPerson = listPerson;
+            ListModPerson = listPerson.Where(it => it.person.p_type_id == SpecType.Рабочий).ToList(); ;
 
             OnPropertyChanged(nameof(ListModPerson));
         }
