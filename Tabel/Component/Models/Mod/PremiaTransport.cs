@@ -17,18 +17,18 @@ namespace Tabel.Component.Models.Mod
         //-------------------------------------------------------------------------------------------------------
         public PremiaTransport(ModPerson person) : base(person)
         {
-
+            Summa = 300;
         }
 
         //-------------------------------------------------------------------------------------------------------
         // Инициализация
         //-------------------------------------------------------------------------------------------------------
-        public override void Initialize(int TransportId)
-        {
-            RepositoryMSSQL<TransPerson> repoTransPerson = new RepositoryMSSQL<TransPerson>();// AllRepo.GetRepoTransPerson();
-            var pers = repoTransPerson.Items.FirstOrDefault(it => it.tp_TranspId == TransportId && it.tp_PersonId == model.md_personalId);
-            Summa = pers?.Summa;
-        }
+        //public override void Initialize(int TransportId)
+        //{
+        //    RepositoryMSSQL<TransPerson> repoTransPerson = new RepositoryMSSQL<TransPerson>();// AllRepo.GetRepoTransPerson();
+        //    var pers = repoTransPerson.Items.FirstOrDefault(it => it.tp_TranspId == TransportId && it.tp_PersonId == model.md_personalId);
+        //    Summa = pers?.Summa;
+        //}
 
 
         //-------------------------------------------------------------------------------------------------------
@@ -36,6 +36,7 @@ namespace Tabel.Component.Models.Mod
         //-------------------------------------------------------------------------------------------------------
         public override void Calculation()
         {
+            Summa = model.TransportPremia;
         }
 
     }

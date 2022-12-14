@@ -29,6 +29,7 @@ namespace Tabel.ViewModels
         private RepositoryMSSQL<Personal> repoPersonal;
         private readonly RepositoryMSSQL<WorkTabel> repoTabel;
         private readonly RepositoryMSSQL<Mod> repoModel;
+        private decimal? BonusProc;
 
         public PremiaBonusViewModel premiaBonusViewModel { get; set; }
         public ModMainViewModel modMainViewModel { get; set; }
@@ -98,8 +99,10 @@ namespace Tabel.ViewModels
             repoTabel = new RepositoryMSSQL<WorkTabel>(db);
             repoModel = new RepositoryMSSQL<Mod>(db);
 
+            LoadBonusProcent();
+
             modMainViewModel = new ModMainViewModel(db);
-            premiaBonusViewModel = new PremiaBonusViewModel(db);
+            premiaBonusViewModel = new PremiaBonusViewModel(db, BonusProc);
             premiaFPViewModel = new PremiaFPViewModel(db);
             premiaKvalifViewModel = new PremiaKvalifViewModel(db);
             premiaOtdelViewModel = new PremiaOtdelViewModel(db);
@@ -116,6 +119,18 @@ namespace Tabel.ViewModels
         }
 
         //-------------------------------------------------------------------------------------------------------
+        // загрузка процента бонуса для текущего месяца
+        //-------------------------------------------------------------------------------------------------------
+        private void LoadBonusProcent()
+        {
+            RepositoryMSSQL<GenChargMonth> repoGetAll = new RepositoryMSSQL<GenChargMonth>(db);
+            decimal? BonusProc = repoGetAll.Items
+                .FirstOrDefault(it => it.gm_Year == _SelectYear && it.gm_Month == _SelectMonth && it.gm_GenId == (int)EnumKind.BonusProc)?.gm_Value;
+
+        }
+
+
+        //-------------------------------------------------------------------------------------------------------
         // загрузка выбранных данных
         //-------------------------------------------------------------------------------------------------------
         public void OtdelChanged(Otdel SelectOtdel, int Year, int Month)
@@ -128,6 +143,8 @@ namespace Tabel.ViewModels
             if (SelectOtdel is null) return;
 
             ListModPerson = null;
+
+            LoadBonusProcent();
 
             if (_SelectedOtdel.ot_parent is null)
             {
@@ -314,44 +331,56 @@ namespace Tabel.ViewModels
         private void OnExportCSVCommandExecuted(object p)
         {
 
-            IEnumerable<WorkTabel> ListTabel = repoTabel.Items.Where(it => it.t_year == _SelectYear
-                    && it.t_month == _SelectMonth);
+            // берем часы переработки
+            FormExport fomExport = new FormExport();
+
+            //fomExport.ListPersonToListExport(ListTabelPerson, ListModAllPerson,  BonusProc);
+            fomExport.ListPersonToListExport(_SelectYear, _SelectMonth, BonusProc);
+
+            RepositoryCSV repoFile = new RepositoryCSV(fomExport);
+            repoFile.SaveFile(_SelectYear, _SelectMonth);
+
+            //return;
+
+            //IEnumerable<WorkTabel> ListTabel = repoTabel.Items.Where(it => it.t_year == _SelectYear
+            //        && it.t_month == _SelectMonth);
 
 
-            if (ListTabel != null)
-            {
-                RepositoryMSSQL<TabelPerson> repoTabelPerson = new RepositoryMSSQL<TabelPerson>(db);// AllRepo.GetRepoTabelPerson();
-                List<TabelPerson> ListTabelPerson = new List<TabelPerson>();
+            //if (ListTabel != null)
+            //{
+            //    RepositoryMSSQL<TabelPerson> repoTabelPerson = new RepositoryMSSQL<TabelPerson>(db);
+            //    List<TabelPerson> ListTabelPerson = new List<TabelPerson>();
 
-                foreach (var tabel in ListTabel)
-                {
-                    List<TabelPerson> listPerson = repoTabelPerson.Items
-                        .AsNoTracking()
-                        .Where(it => it.tp_tabel_id == tabel.id)
-                        .OrderBy(o => o.person.p_lastname)
-                        .ThenBy(o => o.person.p_name).ToList();
+            //    foreach (var tabel in ListTabel)
+            //    {
+            //        List<TabelPerson> listPerson = repoTabelPerson.Items
+            //            .AsNoTracking()
+            //            .Where(it => it.tp_tabel_id == tabel.id)
+            //            .OrderBy(o => o.person.p_lastname)
+            //            .ThenBy(o => o.person.p_name).ToList();
 
-                    ListTabelPerson.AddRange(listPerson);
-                }
+            //        ListTabelPerson.AddRange(listPerson);
+            //    }
 
-                ListTabelPerson.Sort((item1, item2) =>
-                {
-                    return item1.person.p_lastname.CompareTo(item2.person.p_lastname);
-                });
+            //    ListTabelPerson.Sort((item1, item2) =>
+            //    {
+            //        return item1.person.p_lastname.CompareTo(item2.person.p_lastname);
+            //    });
 
-                List<ModPerson> ListModAllPerson = repoModPerson.Items
-                    .AsNoTracking()
-                    .Where(it => it.Mod.m_year == _SelectYear && it.Mod.m_month == _SelectMonth)
-                    .ToList();
+            //    List<ModPerson> ListModAllPerson = repoModPerson.Items
+            //        .AsNoTracking()
+            //        .Where(it => it.Mod.m_year == _SelectYear && it.Mod.m_month == _SelectMonth)
+            //        .ToList();
 
-                // берем часы переработки
-                FormExport fomExport = new FormExport();
+            //    // берем часы переработки
+            //    FormExport fromExport = new FormExport();
 
-                fomExport.ListPersonToListExport(ListTabelPerson, ListModAllPerson);
+            //    //fomExport.ListPersonToListExport(ListTabelPerson, ListModAllPerson,  BonusProc);
+            //    fomExport.ListPersonToListExport(_SelectYear, _SelectMonth, BonusProc);
 
-                RepositoryCSV repoFile = new RepositoryCSV(fomExport);
-                repoFile.SaveFile(_SelectYear, _SelectMonth);
-            }
+            //    RepositoryCSV repoFile = new RepositoryCSV(fomExport);
+            //    repoFile.SaveFile(_SelectYear, _SelectMonth);
+            //}
         }
 
         //--------------------------------------------------------------------------------

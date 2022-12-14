@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DocumentFormat.OpenXml.EMMA;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data.Entity;
@@ -9,21 +10,17 @@ using Tabel.Component.MonthPanel;
 using Tabel.Models;
 using Tabel.Repository;
 using Tabel.ViewModels.Base;
+using Tabel.Views;
 
 namespace Tabel.ViewModels.ModViewModel
 {
     internal class ModMainViewModel : ModViewModel
     {
 
-        private readonly RepositoryMSSQL<WorkTabel> repoTabel;
-        private readonly RepositoryMSSQL<Smena> repoSmena;
-
         public ICollection<ModPerson> ListModPerson { get; set; }
 
         public ModMainViewModel(BaseModel ctx) : base(ctx)
         {
-            repoTabel = new RepositoryMSSQL<WorkTabel>(db);
-            repoSmena = new RepositoryMSSQL<Smena>(db);
         }
 
 
@@ -36,6 +33,7 @@ namespace Tabel.ViewModels.ModViewModel
 
             LoadFromTabel(ListModPerson);
             LoadFromSmena(ListModPerson);
+            LoadFromTransport(listPerson);
             OnPropertyChanged(nameof(ListModPerson));
         }
 
@@ -44,8 +42,35 @@ namespace Tabel.ViewModels.ModViewModel
         {
             LoadFromTabel(listPerson);
             LoadFromSmena(listPerson);
+            LoadFromTransport(listPerson);
 
             OnPropertyChanged(nameof(ListModPerson));
+
+        }
+
+        //-------------------------------------------------------------------------------------------------------
+        // подгрузка данных из транспорта
+        //-------------------------------------------------------------------------------------------------------
+        private void LoadFromTransport(ICollection<ModPerson> listPerson)
+        {
+            if (listPerson is null)
+                return;
+
+            RepositoryMSSQL<Transport> repoTransport = new RepositoryMSSQL<Transport>(db);
+            Transport Transp = repoTransport.Items.AsNoTracking().FirstOrDefault(it => it.tr_Year == _SelectYear
+                && it.tr_Month == _SelectMonth
+                && it.tr_OtdelId == (_SelectedOtdel.ot_parent ?? _SelectedOtdel.id));
+
+            if (Transp is null) return;
+
+            RepositoryMSSQL<TransPerson> repoTransPerson = new RepositoryMSSQL<TransPerson>(db);
+
+            foreach (var item in listPerson)
+            {
+                var pers = repoTransPerson.Items.FirstOrDefault(it => it.tp_TranspId == Transp.id && it.tp_PersonId == item.md_personalId);
+                item.TransportPremia = pers.Summa;
+            }
+
 
         }
 
@@ -58,6 +83,7 @@ namespace Tabel.ViewModels.ModViewModel
             if (listPerson is null)
                 return;
 
+            RepositoryMSSQL<WorkTabel> repoTabel = new RepositoryMSSQL<WorkTabel>(db);
             WorkTabel tabel = repoTabel.Items.AsNoTracking().FirstOrDefault(it => it.t_year == _SelectYear
                 && it.t_month == _SelectMonth
                 && it.t_otdel_id == (_SelectedOtdel.ot_parent ?? _SelectedOtdel.id));
@@ -104,6 +130,7 @@ namespace Tabel.ViewModels.ModViewModel
             if (listPerson is null)
                 return;
 
+            RepositoryMSSQL<Smena> repoSmena = new RepositoryMSSQL<Smena>(db);
             var smena = repoSmena.Items.AsNoTracking().FirstOrDefault(it => it.sm_Year == _SelectYear
                 && it.sm_Month == _SelectMonth
                 && it.sm_OtdelId == (_SelectedOtdel.ot_parent ?? _SelectedOtdel.id));

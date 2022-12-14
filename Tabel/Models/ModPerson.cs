@@ -117,7 +117,7 @@ namespace Tabel.Models
         public PremiaAddWorks premiaAddWorks { get; set; }
 
         [NotMapped]
-        public PremiaTransport premiaTrnasport { get; set; }
+        public PremiaTransport premiaTransport { get; set; }
 
         [NotMapped]
         public premiaNight premiaNight { get; set; }
@@ -144,7 +144,7 @@ namespace Tabel.Models
             premiaOtdel = new PremiaOtdel(this);
             premOffDays = new PremOffDays(this);
             premiaAddWorks = new PremiaAddWorks(this);
-            premiaTrnasport = new PremiaTransport(this);
+            premiaTransport = new PremiaTransport(this);
             premiaNight = new premiaNight(this);
             premiaPrize = new PremiaPrize(this);
             premiaQuality = new PremiaQuality(this);
@@ -162,6 +162,9 @@ namespace Tabel.Models
         [NotMapped]
         public decimal OverHours;
 
+        [NotMapped]
+        public decimal? TransportPremia;
+
 
         private decimal? _TabelWorkOffDay;
         [NotMapped]
@@ -173,7 +176,7 @@ namespace Tabel.Models
             + premiaBonus.GetPremia()
             + premiaKvalif.GetPremia()
             + premiaOtdel.GetPremia()
-            + premiaTrnasport.GetPremia()
+            + premiaTransport.GetPremia()
             + premiaAddWorks.GetPremia()
             + premiaQuality.GetPremia()
             + premiaPrize.GetPremia();

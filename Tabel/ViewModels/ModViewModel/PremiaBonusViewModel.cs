@@ -19,10 +19,11 @@ namespace Tabel.ViewModels.ModViewModel
         public bool IsCheckBonus { get; set; }
         public decimal SetMaxPrem { get; set; }
 
+        private decimal? BonusProc;
 
-        public PremiaBonusViewModel(BaseModel db) : base(db)
+        public PremiaBonusViewModel(BaseModel db, decimal? bonusProc) : base(db)
         {
-
+            BonusProc = bonusProc;
         }
 
         public override void ChangeListPerson(ICollection<ModPerson> listPerson, int Year, int Month, Otdel Otdel)
@@ -31,14 +32,13 @@ namespace Tabel.ViewModels.ModViewModel
             _SelectMonth= Month;
             _SelectYear = Year;
             ListModPerson = listPerson;
-            LoadFromGeneral(ListModPerson);
+            SetPersonBonusProc(ListModPerson);
             OnPropertyChanged(nameof(ListModPerson));
         }
 
         public override void AddPersons(ICollection<ModPerson> listPerson)
         {
-            LoadFromGeneral(listPerson);
-
+            SetPersonBonusProc(listPerson);
             OnPropertyChanged(nameof(ListModPerson));
 
         }
@@ -46,13 +46,13 @@ namespace Tabel.ViewModels.ModViewModel
         //-------------------------------------------------------------------------------------------------------
         // подгрузка данных общего расчета 
         //-------------------------------------------------------------------------------------------------------
-        private void LoadFromGeneral(ICollection<ModPerson> listPerson)
+        private void SetPersonBonusProc(ICollection<ModPerson> listPerson)
         {
             if (listPerson is null) return;
 
-            RepositoryMSSQL<GenChargMonth> repoGetAll = new RepositoryMSSQL<GenChargMonth>(db);
-            decimal? BonusProc = repoGetAll.Items
-                .FirstOrDefault(it => it.gm_Year == _SelectYear && it.gm_Month == _SelectMonth && it.gm_GenId == (int)EnumKind.BonusProc)?.gm_Value;
+            //RepositoryMSSQL<GenChargMonth> repoGetAll = new RepositoryMSSQL<GenChargMonth>(db);
+            //decimal? BonusProc = repoGetAll.Items
+            //    .FirstOrDefault(it => it.gm_Year == _SelectYear && it.gm_Month == _SelectMonth && it.gm_GenId == (int)EnumKind.BonusProc)?.gm_Value;
 
             foreach (var modPerson in listPerson)
             {

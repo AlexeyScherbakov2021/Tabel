@@ -1,12 +1,14 @@
 ﻿using DocumentFormat.OpenXml.Bibliography;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Tabel.Component.Models.Mod;
 using Tabel.Models;
+using Tabel.Repository;
 
 namespace Tabel.ViewModels
 {
@@ -45,28 +47,66 @@ namespace Tabel.ViewModels
     {
         public List<ExportPerson> ListExportPerson;
 
+        //------------------------------------------------------------------------------------------
+        // конструктор
+        //------------------------------------------------------------------------------------------
         public FormExport()
         {
             ListExportPerson = new List<ExportPerson>();
         }
 
-        public void ListPersonToListExport(IEnumerable<TabelPerson> ListPersonal, IEnumerable<ModPerson> ListModPerson)
+
+        //------------------------------------------------------------------------------------------
+        // Перенос данных в структуры для экспорта
+        //------------------------------------------------------------------------------------------
+        public void ListPersonToListExport(
+            //IEnumerable<TabelPerson> ListPersonal, 
+            //IEnumerable<ModPerson> ListModPerson,
+            //IEnumerable<TransPerson> ListTransPerson,
+            int SelectYear, int SelectMonth,
+            decimal? bonusProc
+            )
         {
+            RepositoryMSSQL<TabelPerson> repoTabelPerson = new RepositoryMSSQL<TabelPerson>();
+            IEnumerable<TabelPerson> ListTabelPerson = repoTabelPerson.Items
+                .AsNoTracking()
+                .Where(it => it.tabel.t_year == SelectYear && it.tabel.t_month == SelectMonth)
+                .OrderBy(o => o.person.p_lastname)
+                .ThenBy(o => o.person.p_name);
+
+            var db = repoTabelPerson.GetDB();
+
+            RepositoryMSSQL<ModPerson> repoModPerson = new RepositoryMSSQL<ModPerson>(db);
+            List<ModPerson> ListModPerson = repoModPerson.Items
+                .AsNoTracking()
+                .Where(it => it.Mod.m_year == SelectYear && it.Mod.m_month == SelectMonth)
+                .ToList();
+
+            RepositoryMSSQL<TransPerson> repoTransPerson = new RepositoryMSSQL<TransPerson>(db);
+            List<TransPerson> ListTransPerson = repoTransPerson.Items
+                .AsNoTracking()
+                .Where(it => it.Transport.tr_Year == SelectYear && it.Transport.tr_Month == SelectMonth)
+                .ToList();
+
+
             decimal summa = 0;
             ListExportPerson.Clear();
-            foreach(var item in ListPersonal)
+            foreach(var item in ListTabelPerson)
             {
                 ModPerson mPerson = ListModPerson.FirstOrDefault(it => it.person.id == item.person.id);
+                TransPerson tPerson = ListTransPerson.FirstOrDefault(it => it.person.id == item.person.id);
+
                 if (mPerson != null)
                 {
                     mPerson.TabelHours = item.HoursMonth;
+                    mPerson.TabelDays= item.DaysMonth;
+                    //mPerson.TabelAbsent = item.
                     mPerson.OverHours = item.OverWork.Value;
                     mPerson.Oklad = mPerson.person.category is null 
                         ? 0 
                         : mPerson.TabelHours * item.person.category.cat_tarif.Value * mPerson.person.p_stavka;
-                    PremiaPrize prem = new PremiaPrize(mPerson);
-                    prem.Calculation();
-                    summa = prem.GetPremia().Value;
+                    mPerson.TransportPremia = tPerson?.Summa;
+                    mPerson.premiaBonus.BonusForAll = bonusProc;
                     summa = mPerson.PremiaItogo.Value;
 
                     //summa = mPerson.Oklad / item.HoursMonth * (item.OverWork ?? 0) * 2;
