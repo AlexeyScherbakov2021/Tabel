@@ -60,6 +60,9 @@ namespace Tabel.Models
         private decimal? _p_premTarif;
         public decimal? p_premTarif { get => _p_premTarif; set { Set(ref _p_premTarif, value); } }
 
+        private SpecType _p_type_id;
+        public SpecType p_type_id { get => _p_type_id; set { Set(ref _p_type_id, value); } }
+
         public virtual Category category { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

@@ -65,8 +65,9 @@
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Пользователь" Binding="{Binding u_login}" />
                         <DataGridTextColumn Header="Пароль" Binding="{Binding u_pass}" Width="100"/>
-                        <DataGridComboBoxColumn Header="Права" ItemsSource="{Binding Source={infr:UserRolesBinding {x:Type infr:UserRoles}}}"  
-                            SelectedItemBinding="{Binding u_role}"   Width="130"/>
+                        <DataGridComboBoxColumn Header="Права" ItemsSource="{Binding Source={infr:EnumTypeBinding {x:Type infr:UserRoles}}}"  
+                            SelectedItemBinding="{Binding u_role}" 
+                            Width="130"/>
 
                         <DataGridTemplateColumn Header="Рабочий отдел"  Width="190">
                             <DataGridTemplateColumn.CellTemplate>

@@ -7,9 +7,10 @@
              xmlns:ext="clr-namespace:Tabel.Infrastructure.Extend"
              xmlns:fa="http://schemas.fontawesome.com/icons/"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:infr="clr-namespace:Tabel.Infrastructure"
              xmlns:m="clr-namespace:Tabel.Models"
              xmlns:vm="clr-namespace:Tabel.ViewModels.Admins"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="434">
+             mc:Ignorable="d" d:DesignWidth="900" d:DesignHeight="434">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="LostFocus">
             <i:InvokeCommandAction Command="{Binding LostFocusCommand}"/>
@@ -142,6 +143,11 @@
                         <DataGridTextColumn Header="Прем.тариф" Binding="{Binding p_premTarif, StringFormat=N2}"  CellStyle="{StaticResource CellRight}"/>
                         <DataGridTextColumn Header="Ставка" Binding="{Binding p_stavka}"  CellStyle="{StaticResource CellRight}"/>
                         <DataGridCheckBoxColumn Header="Удален" Binding="{Binding p_delete}"/>
+
+                        <DataGridComboBoxColumn Header="Спец." 
+                            ItemsSource="{Binding Source={infr:EnumTypeBinding {x:Type infr:SpecType}}}"
+                            SelectedItemBinding="{Binding p_type_id}"
+                            CellStyle="{StaticResource CellRight}"/>
 
                     </DataGrid.Columns>
                 </DataGrid>
