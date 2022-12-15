@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DocumentFormat.OpenXml.Spreadsheet;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
@@ -45,12 +46,12 @@ namespace Tabel.Repository
         //    return item;
         //}
 
-        public ICollection<Otdel> GetTreeOtdelsNoTracking(ICollection<Otdel> ListUserOtdels)
+        public ICollection<Otdel> GetTreeOtdelsNoTracking(ICollection<Otdel> ListUserOtdels, int level)
         {
             ICollection<Otdel> ListOtdels = new Collection<Otdel>();
 
             // получение корневых отделов
-            IEnumerable<Otdel> ListRootOtdels = Items.AsNoTracking();
+            IEnumerable<Otdel> ListRootOtdels = Items.AsNoTracking().Where(it => it.ot_itr <= level);
 
             // удаление ненужных отделов
             foreach (var item in ListRootOtdels)
@@ -61,7 +62,7 @@ namespace Tabel.Repository
 
             // добавлеие подотделов, которых еще не добавлены
             RepositoryMSSQL<Otdel> repo1 = new RepositoryMSSQL<Otdel>(db); // AllRepo.GetRepoAllOtdels();
-            IEnumerable<Otdel> AllOtdels = repo1.Items.AsNoTracking().Where(it => it.parent != null);
+            IEnumerable<Otdel> AllOtdels = repo1.Items.AsNoTracking().Where(it => it.parent != null && it.ot_itr <= level);
             CombaineOtdels(ListUserOtdels, ListOtdels, AllOtdels);
             return ListOtdels;
 
@@ -69,12 +70,12 @@ namespace Tabel.Repository
 
 
 
-        public ICollection<Otdel> GetTreeOtdels(ICollection<Otdel> ListUserOtdels)
+        public ICollection<Otdel> GetTreeOtdels(ICollection<Otdel> ListUserOtdels, int level)
         {
             ICollection<Otdel> ListOtdels = new Collection<Otdel>();
 
             // получение корневых отделов
-            IEnumerable<Otdel> ListRootOtdels = Items;
+            IEnumerable<Otdel> ListRootOtdels = Items.Where(it => it.ot_itr <= level);
 
             // удаление ненужных отделов
             foreach (var item in ListRootOtdels)
@@ -85,7 +86,7 @@ namespace Tabel.Repository
 
             // добавлеие подотделов, которых еще не добавлены
             RepositoryMSSQL<Otdel> repo1 = new RepositoryMSSQL<Otdel>(db);
-            IEnumerable<Otdel> AllOtdels = repo1.Items.Where(it => it.parent != null);
+            IEnumerable<Otdel> AllOtdels = repo1.Items.Where(it => it.parent != null && it.ot_itr <= level);
             CombaineOtdels(ListUserOtdels, ListOtdels, AllOtdels);
 
             return ListOtdels;

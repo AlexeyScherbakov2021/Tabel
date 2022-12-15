@@ -34,6 +34,10 @@ namespace Tabel.ViewModels
 
         public WindowState WinState { get; set; }
 
+        public Visibility VisibleSuper { get; set; }
+
+
+
 #region Команды
         //--------------------------------------------------------------------------------
         // Команда Загрузить график смен
@@ -140,7 +144,7 @@ namespace Tabel.ViewModels
         {
             BasicWindow win = new BasicWindow();
             win.WindowState = WinState;
-            BasicWindowViewModel vm = new BasicWindowViewModel(win, new SeparUC(), "Отдельная форма");
+            BasicWindowViewModel vm = new BasicWindowViewModel(win, new SeparUC(), "Отдельная форма", 1);
             win.DataContext = vm;
             win.ShowDialog();
 
@@ -152,7 +156,7 @@ namespace Tabel.ViewModels
 
         public MainWindowViewModel()
         {
-
+            VisibleSuper = App.CurrentUser.u_role == UserRoles.Внетарифный ? Visibility.Visible : Visibility.Collapsed;
         }
 
 

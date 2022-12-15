@@ -116,13 +116,16 @@ namespace Tabel.ViewModels.Admins
             repoPerson = new RepositoryMSSQL<Personal>(db);
             repoCat = new RepositoryMSSQL<Category>(db);
 
+            int level = App.CurrentUser.u_role == UserRoles.Внетарифный ? 1 : 0;
+
+
             if (App.CurrentUser.u_role == UserRoles.Admin)
             {
-                ListOtdel = new ObservableCollection<Otdel>(repoOtdel.Items.Where(it => it.ot_parent == null));
+                ListOtdel = new ObservableCollection<Otdel>(repoOtdel.Items.Where(it => it.ot_parent == null && it.ot_itr <= level));
             }
             else
             {
-                ListOtdel = new ObservableCollection<Otdel>(repoOtdel.GetTreeOtdels(App.CurrentUser.otdels));
+                ListOtdel = new ObservableCollection<Otdel>(repoOtdel.GetTreeOtdels(App.CurrentUser.otdels, level));
             }
             SelectedOtdel = ListOtdel.Count > 0 ?  ListOtdel[0] : null;
 

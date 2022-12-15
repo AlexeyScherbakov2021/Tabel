@@ -14,6 +14,7 @@ using Tabel.Repository;
 using Tabel.ViewModels.Base;
 using Tabel.ViewModels.ModViewModel;
 using Tabel.Component.MonthPanel;
+using DocumentFormat.OpenXml.Drawing.Charts;
 
 namespace Tabel.ViewModels
 {
@@ -47,7 +48,6 @@ namespace Tabel.ViewModels
             //repoPersonal = new RepositoryMSSQL<Personal>(db);
             //repoTabel = new RepositoryMSSQL<WorkTabel>(db);
             repoSep = new RepositoryMSSQL<Separate>(db);
-
 
             IsModify = false;
         }
@@ -108,7 +108,7 @@ namespace Tabel.ViewModels
                 && it.t_month == _SelectMonth
                 && it.t_otdel_id == (_SelectedOtdel.ot_parent ?? _SelectedOtdel.id));
 
-            if (listPerson is null || CurrentSeparate is null) return;
+            if (listPerson is null || tabel is null) return;
 
             // получение количества рабочих дней в указанном месяце
             RepositoryCalendar repoCal = new RepositoryCalendar(db);// AllRepo.GetRepoCalendar();
@@ -260,6 +260,7 @@ namespace Tabel.ViewModels
             .FirstOrDefault();
 
             ListSeparPerson = new ObservableCollection<SeparPerson>(CurrentSeparate.ListSeparPerson);
+            OnPropertyChanged(nameof(ListSeparPerson));
 
         }
 

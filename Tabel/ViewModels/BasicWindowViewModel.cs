@@ -32,7 +32,8 @@ namespace Tabel.ViewModels
 
         public List<Months> ListMonth => App.ListMonth;
         public User User { get; set; }
-        
+
+       
         private int _CurrentMonth;
         public int CurrentMonth
         {
@@ -122,7 +123,7 @@ namespace Tabel.ViewModels
         //--------------------------------------------------------------------------------
         public BasicWindowViewModel() { }
 
-        public BasicWindowViewModel(BasicWindow win,  UserControl control, string title)
+        public BasicWindowViewModel(BasicWindow win,  UserControl control, string title, int forma = 0)
         {
             win.Closing += MainWindow_Closing;
 
@@ -143,7 +144,17 @@ namespace Tabel.ViewModels
 
             User = repoUser.Items.FirstOrDefault(it => it.id == App.CurrentUser.id);
 
-            ListOtdel = repo.GetTreeOtdelsNoTracking(User.otdels).ToList();
+
+            int level = User.u_role == UserRoles.Внетарифный ? 1 : 0;
+
+
+            ListOtdel = repo.GetTreeOtdelsNoTracking(User.otdels, level).ToList();
+
+            if(forma == 1)
+            {
+                ListOtdel = ListOtdel.Where(it => it.ot_itr == 1).ToList();
+            }
+
 
             if (ListOtdel?.Count > 0)
                 SelectedOtdel = ListOtdel[0];
