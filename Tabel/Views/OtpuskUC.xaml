@@ -10,7 +10,7 @@
     <UserControl.DataContext>
         <vm:OtpuskUCViewModel/>
     </UserControl.DataContext>
-    <Grid>
-            
-    </Grid>
+    <UniformGrid>
+        <Calendar SelectionMode="SingleRange" DisplayDate="2023-10-01"/>
+    </UniformGrid>
 </UserControl>

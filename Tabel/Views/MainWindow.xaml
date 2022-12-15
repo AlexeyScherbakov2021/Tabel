@@ -117,7 +117,7 @@
             <Button Content="График сменной работы" Command="{Binding ExecSmenaCommand}"/>
             <Button Content="График использования личного транспорта" Command="{Binding ExecTranspCommand}"/>
             <Button Content="Табель рабочего времени" Command="{Binding ExecTabelCommand}"/>
-            <Button Content="График отпусков" Command="{Binding ExecOtpuskCommand}" Visibility="Collapsed"/>
+            <Button Content="График отпусков" Command="{Binding ExecOtpuskCommand}" Visibility="Visible"/>
             <Button Content="Модель оплаты"  Command="{Binding ExecModCommand}"/>
             <Button Content="Общие начисления"  Command="{Binding DataSummaryCommand}"/>
             <Button Content="Отдельная форма" Command="{Binding ExecSeparCommand}" Visibility="{Binding VisibleSuper}"/>
