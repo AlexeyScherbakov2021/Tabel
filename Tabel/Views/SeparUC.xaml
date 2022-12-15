@@ -25,6 +25,12 @@
             <Button Content="Добавить сотрудников" Command="{Binding AddPersonCommand}" Margin="3" Style="{StaticResource ButtonStyleShadow}"/>
             <Button Content="Удалить" Command="{Binding DeletePersonCommand}" Margin="3" Style="{StaticResource ButtonStyleShadow}"/>
             <!--<Button Content="Печать" Command="{Binding PrintCommand}" Margin="3" Style="{StaticResource ButtonStyleShadow}"/>-->
+            <Button Command="{Binding ExportCSVCommand}" Margin="3" Style="{StaticResource ButtonStyleShadow}" ToolTip="Экспорт в 1С">
+                <StackPanel Orientation="Horizontal">
+                    <fa:ImageAwesome Icon="Solid_Save" Width="24" Height="16" Foreground="#FF005AA0"/>
+                    <TextBlock Text="Экспорт в 1С"/>
+                </StackPanel>
+            </Button>
             <Button Margin="3" Style="{StaticResource ButtonStyleShadow}" ToolTip="Экспорт в 1С" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=local:BasicWindow}}">
                 <StackPanel Orientation="Horizontal">
                     <fa:ImageAwesome Icon="Solid_DoorOpen" Width="24" Height="16" Foreground="#FF005AA0"/>

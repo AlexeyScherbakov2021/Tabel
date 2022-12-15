@@ -174,7 +174,7 @@
     <Compile Include="ViewModels\Base\IBaseUCViewModel.cs" />
     <Compile Include="ViewModels\BasicWindowViewModel.cs" />
     <Compile Include="ViewModels\DataSummaryViewModel.cs" />
-    <Compile Include="ViewModels\ExportPerson.cs" />
+    <Compile Include="Infrastructure\ExportPerson.cs" />
     <Compile Include="ViewModels\ModUCViewModel.cs" />
     <Compile Include="ViewModels\ModViewModel\ModViewModel.cs" />
     <Compile Include="ViewModels\ModViewModel\ModMainViewModel.cs" />

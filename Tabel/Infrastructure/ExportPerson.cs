@@ -59,14 +59,9 @@ namespace Tabel.ViewModels
         //------------------------------------------------------------------------------------------
         // Перенос данных в структуры для экспорта
         //------------------------------------------------------------------------------------------
-        public void ListPersonToListExport(
-            //IEnumerable<TabelPerson> ListPersonal, 
-            //IEnumerable<ModPerson> ListModPerson,
-            //IEnumerable<TransPerson> ListTransPerson,
-            int SelectYear, int SelectMonth,
-            decimal? bonusProc
-            )
+        public void ListPersonToListExport( int SelectYear, int SelectMonth, decimal? bonusProc )
         {
+
             RepositoryMSSQL<TabelPerson> repoTabelPerson = new RepositoryMSSQL<TabelPerson>();
             IEnumerable<TabelPerson> ListTabelPerson = repoTabelPerson.Items
                 .AsNoTracking()
@@ -114,6 +109,57 @@ namespace Tabel.ViewModels
                     if (summa > 0 && !String.IsNullOrEmpty( mPerson.person.p_tab_number))
                     {
                         ExportPerson p = new ExportPerson(item, summa);
+                        ListExportPerson.Add(p);
+                    }
+                }
+
+            }
+
+        }
+
+
+        //------------------------------------------------------------------------------------------
+        // Перенос данных в структуры для экспорта для Внетарифов
+        //------------------------------------------------------------------------------------------
+        public void ListPersonSeparToListExport( int SelectYear, int SelectMonth)
+        {
+
+            RepositoryMSSQL<TabelPerson> repoTabelPerson = new RepositoryMSSQL<TabelPerson>();
+            IEnumerable<TabelPerson> ListTabelPerson = repoTabelPerson.Items
+                .AsNoTracking()
+                .Where(it => it.tabel.t_year == SelectYear && it.tabel.t_month == SelectMonth && it.tabel.otdel.ot_itr == 1)
+                .OrderBy(o => o.person.p_lastname)
+                .ThenBy(o => o.person.p_name);
+
+            var db = repoTabelPerson.GetDB();
+
+            RepositoryMSSQL<SeparPerson> repoSeparPerson = new RepositoryMSSQL<SeparPerson>(db);
+            List<SeparPerson> ListModPerson = repoSeparPerson.Items
+                .AsNoTracking()
+                .Where(it => it.Separate.s_year == SelectYear && it.Separate.s_month == SelectMonth)
+                .ToList();
+
+
+
+            decimal summa = 0;
+            ListExportPerson.Clear();
+            foreach(var item in ListTabelPerson)
+            {
+                SeparPerson sPerson = ListModPerson.FirstOrDefault(it => it.person.id == item.person.id);
+
+                if (sPerson != null)
+                {
+                    sPerson.TabelHours = item.HoursMonth;
+                    sPerson.TabelDays= item.DaysMonth;
+                    sPerson.Oklad = sPerson.person.category is null 
+                        ? 0 
+                        : sPerson.TabelHours * item.person.category.cat_tarif.Value * sPerson.person.p_stavka;
+
+                    //summa = mPerson.Oklad / item.HoursMonth * (item.OverWork ?? 0) * 2;
+
+                    if (sPerson.Oklad > 0 && !String.IsNullOrEmpty( sPerson.person.p_tab_number))
+                    {
+                        ExportPerson p = new ExportPerson(item, sPerson.Oklad.Value);
                         ListExportPerson.Add(p);
                     }
                 }

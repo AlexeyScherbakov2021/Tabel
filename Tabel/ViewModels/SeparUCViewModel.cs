@@ -279,18 +279,17 @@ namespace Tabel.ViewModels
         // Команда Экспорт в 1С
         //--------------------------------------------------------------------------------
         public ICommand ExportCSVCommand => new LambdaCommand(OnExportCSVCommandExecuted, CanExportCSVCommand);
-        private bool CanExportCSVCommand(object p) => App.CurrentUser.u_role == UserRoles.Admin;
+        private bool CanExportCSVCommand(object p) => true;
         private void OnExportCSVCommandExecuted(object p)
         {
 
-            // берем часы переработки
-            //FormExport fomExport = new FormExport();
+           //
+           FormExport fomExport = new FormExport();
 
-            ////fomExport.ListPersonToListExport(ListTabelPerson, ListModAllPerson,  BonusProc);
-            //fomExport.ListPersonToListExport(_SelectYear, _SelectMonth, BonusProc);
+            fomExport.ListPersonSeparToListExport(_SelectYear, _SelectMonth);
 
-            //RepositoryCSV repoFile = new RepositoryCSV(fomExport);
-            //repoFile.SaveFile(_SelectYear, _SelectMonth);
+            RepositoryCSV repoFile = new RepositoryCSV(fomExport);
+            repoFile.SaveFile(_SelectYear, _SelectMonth);
 
         }
 
