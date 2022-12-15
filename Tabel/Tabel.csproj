@@ -115,6 +115,9 @@
     </Compile>
     <Compile Include="Component\MonthPanel\MonthDays.cs" />
     <Compile Include="Component\MonthPanel\MonthPanel.cs" />
+    <Compile Include="Component\OtpuskPanel\OtpuskPanel.xaml.cs">
+      <DependentUpon>OtpuskPanel.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Component\SmenaPanel\SmenaStringConvert.cs" />
     <Compile Include="Component\SmenaPanel\SmenaPanel.xaml.cs">
       <DependentUpon>SmenaPanel.xaml</DependentUpon>
@@ -250,6 +253,10 @@
     <Page Include="Component\MonthPanel\MonthControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Component\OtpuskPanel\OtpuskPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Component\SmenaPanel\SmenaPanel.xaml">
       <SubType>Designer</SubType>
