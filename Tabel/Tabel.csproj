@@ -148,6 +148,8 @@
     <Compile Include="Models\ModPerson.cs" />
     <Compile Include="Models\otdel.cs" />
     <Compile Include="Models\personal.cs" />
+    <Compile Include="Models\Separate.cs" />
+    <Compile Include="Models\SeparPerson.cs" />
     <Compile Include="Models\smena.cs" />
     <Compile Include="Models\SmenaDay.cs" />
     <Compile Include="Models\SmenaPerson.cs" />

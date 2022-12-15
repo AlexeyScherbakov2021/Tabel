@@ -70,6 +70,8 @@ namespace Tabel.Models
         public virtual DbSet<AddWorks> addWorks { get; set; }
         public virtual DbSet<GeneralCharges> GeneralCharges { get; set; }
         public virtual DbSet<GenChargMonth> GenChargMonth { get; set; }
+        public virtual DbSet<Separate> Separate { get; set; }
+        public virtual DbSet<SeparPerson> SeparPersons { get; set; }
 
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -94,6 +96,18 @@ namespace Tabel.Models
             //    .HasMany(e => e.ModOtdelSumFPs)
             //    .WithRequired(e => e.Mod)
             //    .HasForeignKey(e => e.mo_mod_id);
+
+            modelBuilder.Entity<Separate>()
+                .HasMany(e => e.ListSeparPerson)
+                .WithOptional(e => e.Separate)
+                .HasForeignKey(e => e.sp_separId)
+                .WillCascadeOnDelete();
+
+            modelBuilder.Entity<Personal>()
+                .HasMany(e => e.SeparPersons)
+                .WithRequired(e => e.person)
+                .HasForeignKey(e => e.sp_personalId)
+                .WillCascadeOnDelete(false);
 
 
             modelBuilder.Entity<Category>()

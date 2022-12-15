@@ -138,7 +138,7 @@
                                     CommandParameter="{Binding ElementName=dgBonus}" Style="{StaticResource ButtonStyleShadow}">
                                 <fa:ImageAwesome Icon="Solid_CheckCircle" Foreground="Green" Width="18" Height="16"/>
                             </Button>
-                            <TextBox Text="{Binding SetMaxPrem, Mode=OneWayToSource}" />
+                            <TextBox Text="{Binding SetMaxPrem, FallbackValue=0}" />
                         </DockPanel>
 
                     </Grid>
@@ -178,7 +178,7 @@
                                     CommandParameter="{Binding ElementName=dgFP}" Style="{StaticResource ButtonStyleShadow}">
                                 <fa:ImageAwesome Icon="Solid_CheckCircle" Foreground="Green" Width="18" Height="16"/>
                             </Button>
-                            <TextBox Text="{Binding SetProcPrem, Mode=OneWayToSource}" />
+                            <TextBox Text="{Binding SetProcPrem, FallbackValue=0}" />
                         </DockPanel>
                         
                         <DockPanel Grid.Column="5" Margin="2,4">
@@ -186,7 +186,7 @@
                                     CommandParameter="{Binding ElementName=dgFP}" Style="{StaticResource ButtonStyleShadow}">
                                 <fa:ImageAwesome Icon="Solid_CheckCircle" Foreground="Green" Width="18" Height="16"/>
                             </Button>
-                            <TextBox Text="{Binding SetTarif, Mode=OneWayToSource}" />
+                            <TextBox Text="{Binding SetTarif, FallbackValue=0}" />
                         </DockPanel>
                         
                         <DockPanel Grid.Column="7" Margin="2,4">
@@ -237,7 +237,7 @@
                                     CommandParameter="{Binding ElementName=dgOt}" Style="{StaticResource ButtonStyleShadow}">
                                 <fa:ImageAwesome Icon="Solid_CheckCircle" Foreground="Green" Width="18" Height="16"/>
                             </Button>
-                            <TextBox Text="{Binding SetProcFull, Mode=OneWayToSource}" />
+                            <TextBox Text="{Binding SetProcFull, FallbackValue=0}" />
                         </DockPanel>
 
                         <DockPanel Grid.Column="5" Margin="2,4">
@@ -245,7 +245,7 @@
                                     CommandParameter="{Binding ElementName=dgOt}" Style="{StaticResource ButtonStyleShadow}">
                                 <fa:ImageAwesome Icon="Solid_CheckCircle" Foreground="Green" Width="18" Height="16"/>
                             </Button>
-                            <TextBox Text="{Binding SetProcPrem, Mode=OneWayToSource}" />
+                            <TextBox Text="{Binding SetProcPrem, FallbackValue=0}" />
                         </DockPanel>
 
 
@@ -298,7 +298,7 @@
                                     CommandParameter="{Binding ElementName=dgStim}" Style="{StaticResource ButtonStyleShadow}">
                                 <fa:ImageAwesome Icon="Solid_CheckCircle" Foreground="Green" Width="18" Height="16"/>
                             </Button>
-                            <TextBox Text="{Binding SetProcPrem, Mode=OneWayToSource}" />
+                            <TextBox Text="{Binding SetProcPrem, FallbackValue=0}" />
                         </DockPanel>
 
 

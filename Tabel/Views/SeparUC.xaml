@@ -15,10 +15,10 @@
 
     <DockPanel>
         <ToolBarPanel DockPanel.Dock="Top" Orientation="Horizontal" Height="30" Margin="10,8,0,4" >
-            <TextBlock Text="Номер документа" Margin="5,0" VerticalAlignment="Center"/>
-            <TextBox Text="{Binding SmenaShedule.sm_Number}" Margin="5,0" VerticalAlignment="Center" Width="120"/>
+            <!--<TextBlock Text="Номер документа" Margin="5,0" VerticalAlignment="Center"/>
+            <TextBox Text="" Margin="5,0" VerticalAlignment="Center" Width="120"/>
             <TextBlock Text="Дата создания" Margin="5,0" VerticalAlignment="Center"/>
-            <TextBox Text="{Binding SmenaShedule.sm_DateCreate, StringFormat=dd.MM.yyyy HH:mm:ss}" Margin="5,0" VerticalAlignment="Center" Width="120"/>
+            <TextBox Text="" Margin="5,0" VerticalAlignment="Center" Width="120"/>-->
 
             <Button Content="Создать форму" Command="{Binding CreateCommand}" Margin="3" Style="{StaticResource ButtonStyleShadow}"/>
             <Button Content="Сохранить" Command="{Binding SaveCommand}" Margin="3" Style="{StaticResource ButtonStyleShadow}"/>
@@ -36,17 +36,14 @@
             </Button>
         </ToolBarPanel>
 
-        <DataGrid x:Name="dg" ItemsSource="{Binding ListSmenaPerson}" Style="{StaticResource DataGridStyle}" 
+        <DataGrid ItemsSource="{Binding ListSeparPerson}" Style="{StaticResource DataGridStyle}" 
                   VerticalGridLinesBrush="LightGray" HorizontalGridLinesBrush="LightGray" SelectedItem="{Binding SelectedPerson}"
                   FrozenColumnCount="1" >
             <DataGrid.Columns>
-                <DataGridTemplateColumn Header="Сотрудник" IsReadOnly="True" Width="130">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding personal.FIO}" TextWrapping="Wrap" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
+                <DataGridTextColumn Header="Таб.№" Binding="{Binding person.p_tab_number}"/>
+                <DataGridTextColumn Header="ФИО" Binding="{Binding person.FIO}"/>
+                <DataGridTextColumn Header="Должность" Binding="{Binding person.p_profession}"/>
+                <DataGridTextColumn Header="Дней" Binding="{Binding person.p_profession}"/>
             </DataGrid.Columns>
         </DataGrid>
     </DockPanel>

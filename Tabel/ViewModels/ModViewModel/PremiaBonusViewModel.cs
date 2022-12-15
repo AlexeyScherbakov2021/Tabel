@@ -17,7 +17,7 @@ namespace Tabel.ViewModels.ModViewModel
     {
         public ICollection<ModPerson> ListModPerson { get; set; }
         public bool IsCheckBonus { get; set; }
-        public decimal SetMaxPrem { get; set; }
+        public decimal? SetMaxPrem { get; set; }
 
         private decimal? BonusProc;
 

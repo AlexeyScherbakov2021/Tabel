@@ -325,10 +325,10 @@
                                         <i:InvokeCommandAction PassEventArgsToCommand="True"
                                             Command="{Binding DataContext.IsSelectCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}"/>
                                     </i:EventTrigger>
-                                    <i:EventTrigger EventName="ContextMenuUnCheck">
+                                    <!--<i:EventTrigger EventName="ContextMenuUnCheck">
                                         <i:InvokeCommandAction PassEventArgsToCommand="True"
                                             Command="{Binding DataContext.IsUnSelectCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}"/>
-                                    </i:EventTrigger>
+                                    </i:EventTrigger>-->
                                 </i:Interaction.Triggers>
                                 <comp:SmenaPanel.ItemsPanel>
                                     <ItemsPanelTemplate>
