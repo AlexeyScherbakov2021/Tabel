@@ -106,7 +106,9 @@ namespace Tabel.ViewModels
 
                     //summa = mPerson.Oklad / item.HoursMonth * (item.OverWork ?? 0) * 2;
 
-                    if (summa > 0 && !String.IsNullOrEmpty( mPerson.person.p_tab_number))
+                    if (summa > 0 
+                        && !String.IsNullOrEmpty( mPerson.person.p_tab_number) 
+                        && IsAllDigits(mPerson.person.p_tab_number))
                     {
                         ExportPerson p = new ExportPerson(item, summa);
                         ListExportPerson.Add(p);
@@ -115,6 +117,20 @@ namespace Tabel.ViewModels
 
             }
 
+        }
+
+
+        //------------------------------------------------------------------------------------------
+        // Проверка строки на наличие только цифр
+        //------------------------------------------------------------------------------------------
+        private bool IsAllDigits(string StringWithNumber)
+        {
+            foreach(Char c in StringWithNumber.Trim())
+            {
+                if (!Char.IsDigit(c))
+                    return false;
+            }
+            return true;
         }
 
 
@@ -157,7 +173,9 @@ namespace Tabel.ViewModels
 
                     //summa = mPerson.Oklad / item.HoursMonth * (item.OverWork ?? 0) * 2;
 
-                    if (sPerson.Oklad > 0 && !String.IsNullOrEmpty( sPerson.person.p_tab_number))
+                    if (sPerson.Oklad > 0 
+                        && !String.IsNullOrEmpty( sPerson.person.p_tab_number) 
+                        && IsAllDigits(sPerson.person.p_tab_number))
                     {
                         ExportPerson p = new ExportPerson(item, sPerson.Oklad.Value);
                         ListExportPerson.Add(p);

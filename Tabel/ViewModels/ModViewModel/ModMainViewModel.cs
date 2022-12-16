@@ -68,7 +68,7 @@ namespace Tabel.ViewModels.ModViewModel
             foreach (var item in listPerson)
             {
                 var pers = repoTransPerson.Items.FirstOrDefault(it => it.tp_TranspId == Transp.id && it.tp_PersonId == item.md_personalId);
-                item.TransportPremia = pers.Summa;
+                item.TransportPremia = pers?.Summa;
             }
 
 
