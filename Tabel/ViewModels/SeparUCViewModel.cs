@@ -47,8 +47,12 @@ namespace Tabel.ViewModels
                 }
 
                 Set(ref _ListSeparPerson, value);
-                foreach(var item in _ListSeparPerson)
-                    item.PropertyChanged += Item_PropertyChanged;
+
+                if (_ListSeparPerson != null)
+                {
+                    foreach (var item in _ListSeparPerson)
+                        item.PropertyChanged += Item_PropertyChanged;
+                }
             }
 
         }
