@@ -159,30 +159,28 @@ namespace Tabel.ViewModels
 
             decimal summa = 0;
             ListExportPerson.Clear();
-            foreach(var item in ListTabelPerson)
-            {
-                SeparPerson sPerson = ListModPerson.FirstOrDefault(it => it.person.id == item.person.id);
+            //foreach(var item in ListTabelPerson)
+            //{
+            //    SeparPerson sPerson = ListModPerson.FirstOrDefault(it => it.person.id == item.person.id);
 
-                if (sPerson != null)
-                {
-                    sPerson.TabelHours = item.HoursMonth;
-                    sPerson.TabelDays= item.DaysMonth;
-                    sPerson.Oklad = sPerson.person.category is null 
-                        ? 0 
-                        : sPerson.TabelHours * item.person.category.cat_tarif.Value * sPerson.person.p_stavka;
+            //    if (sPerson != null)
+            //    {
+            //        sPerson.Oklad = sPerson.person.category is null 
+            //            ? 0 
+            //            : sPerson.TabelHours * item.person.category.cat_tarif.Value * sPerson.person.p_stavka;
 
-                    //summa = mPerson.Oklad / item.HoursMonth * (item.OverWork ?? 0) * 2;
+            //        //summa = mPerson.Oklad / item.HoursMonth * (item.OverWork ?? 0) * 2;
 
-                    if (sPerson.Oklad > 0 
-                        && !String.IsNullOrEmpty( sPerson.person.p_tab_number) 
-                        && IsAllDigits(sPerson.person.p_tab_number))
-                    {
-                        ExportPerson p = new ExportPerson(item, sPerson.Oklad.Value);
-                        ListExportPerson.Add(p);
-                    }
-                }
+            //        if (sPerson.Oklad > 0 
+            //            && !String.IsNullOrEmpty( sPerson.person.p_tab_number) 
+            //            && IsAllDigits(sPerson.person.p_tab_number))
+            //        {
+            //            ExportPerson p = new ExportPerson(item, sPerson.Oklad.Value);
+            //            ListExportPerson.Add(p);
+            //        }
+            //    }
 
-            }
+            //}
 
         }
     }

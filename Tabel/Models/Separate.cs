@@ -19,6 +19,7 @@ namespace Tabel.Models
         public int s_otdelId { get; set; }
         public int s_year { get; set; }
         public int s_month { get; set;}
+        public string s_author { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SeparPerson> ListSeparPerson { get; set; }

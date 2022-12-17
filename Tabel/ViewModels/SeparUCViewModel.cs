@@ -33,7 +33,31 @@ namespace Tabel.ViewModels
         private bool IsModify;
 
         public Separate CurrentSeparate { get; set; }
-        public ObservableCollection<SeparPerson> ListSeparPerson { get; set; }
+        private ObservableCollection<SeparPerson> _ListSeparPerson;
+        public ObservableCollection<SeparPerson> ListSeparPerson 
+        { 
+            get => _ListSeparPerson;
+            set
+            {
+                if (_ListSeparPerson == value) return;
+                if(_ListSeparPerson != null)
+                {
+                    foreach (var item in _ListSeparPerson)
+                        item.PropertyChanged -= Item_PropertyChanged;
+                }
+
+                Set(ref _ListSeparPerson, value);
+                foreach(var item in _ListSeparPerson)
+                    item.PropertyChanged += Item_PropertyChanged;
+            }
+
+        }
+
+        private void Item_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            IsModify = true;
+        }
+
         public SeparPerson SelectedPerson { get; set; }
 
 
@@ -90,7 +114,7 @@ namespace Tabel.ViewModels
                         );
             }
 
-            LoadFromTabel(ListSeparPerson);
+            //LoadFromTabel(ListSeparPerson);
 
             OnPropertyChanged(nameof(ListSeparPerson));
         }
@@ -98,48 +122,48 @@ namespace Tabel.ViewModels
         //-------------------------------------------------------------------------------------------------------
         // подгрузка данных из табеля
         //-------------------------------------------------------------------------------------------------------
-        private void LoadFromTabel(ICollection<SeparPerson> listPerson)
-        {
-            if (listPerson is null)
-                return;
+        //private void LoadFromTabel(ICollection<SeparPerson> listPerson)
+        //{
+        //    if (listPerson is null)
+        //        return;
 
-            RepositoryMSSQL<WorkTabel> repoTabel = new RepositoryMSSQL<WorkTabel>(db);
-            WorkTabel tabel = repoTabel.Items.AsNoTracking().FirstOrDefault(it => it.t_year == _SelectYear
-                && it.t_month == _SelectMonth
-                && it.t_otdel_id == (_SelectedOtdel.ot_parent ?? _SelectedOtdel.id));
+        //    RepositoryMSSQL<WorkTabel> repoTabel = new RepositoryMSSQL<WorkTabel>(db);
+        //    WorkTabel tabel = repoTabel.Items.AsNoTracking().FirstOrDefault(it => it.t_year == _SelectYear
+        //        && it.t_month == _SelectMonth
+        //        && it.t_otdel_id == (_SelectedOtdel.ot_parent ?? _SelectedOtdel.id));
 
-            if (listPerson is null || tabel is null) return;
+        //    if (listPerson is null || tabel is null) return;
 
-            // получение количества рабочих дней в указанном месяце
-            RepositoryCalendar repoCal = new RepositoryCalendar(db);// AllRepo.GetRepoCalendar();
-            var listDays = repoCal.GetListDays(_SelectYear, _SelectMonth);
-            int CountWorkDays = listDays.Count(it => it.KindDay != TypeDays.Holyday);
+        //    // получение количества рабочих дней в указанном месяце
+        //    RepositoryCalendar repoCal = new RepositoryCalendar(db);// AllRepo.GetRepoCalendar();
+        //    var listDays = repoCal.GetListDays(_SelectYear, _SelectMonth);
+        //    int CountWorkDays = listDays.Count(it => it.KindDay != TypeDays.Holyday);
 
-            foreach (var item in listPerson)
-            {
-                var pers = tabel.tabelPersons.FirstOrDefault(it => it.tp_person_id == item.sp_personalId);
-                if (pers != null)
-                {
-                    item.TabelDays = listDays.Count;
-                    item.TabelHours = pers.HoursMonth;
-                    //item.TabelWorkOffDay = pers.WorkedOffDays;
-                    //if (item.TabelWorkOffDay > 0)
-                    //{
-                    //    item.md_tarif_offDay = pers.person.category?.cat_tarif * 8;
-                    //    if (item.md_tarif_offDay < 1500)
-                    //        item.md_tarif_offDay = 1500;
-                    //}
+        //    foreach (var item in listPerson)
+        //    {
+        //        var pers = tabel.tabelPersons.FirstOrDefault(it => it.tp_person_id == item.sp_personalId);
+        //        if (pers != null)
+        //        {
+        //            item.TabelDays = listDays.Count;
+        //            item.TabelHours = pers.HoursMonth;
+        //            //item.TabelWorkOffDay = pers.WorkedOffDays;
+        //            //if (item.TabelWorkOffDay > 0)
+        //            //{
+        //            //    item.md_tarif_offDay = pers.person.category?.cat_tarif * 8;
+        //            //    if (item.md_tarif_offDay < 1500)
+        //            //        item.md_tarif_offDay = 1500;
+        //            //}
 
-                    //item.OverHours = pers.OverWork ?? 0;
-                    item.Oklad = item.person.category is null ? 0 : item.TabelHours * item.person.category.cat_tarif.Value * item.person.p_stavka;
+        //            //item.OverHours = pers.OverWork ?? 0;
+        //            item.Oklad = item.person.category is null ? 0 : item.TabelHours * item.person.category.cat_tarif.Value * item.person.p_stavka;
 
-                    //int CountWorkDaysPerson = pers.TabelDays.Count(it => it.td_KindId == 1);
-                    //item.TabelAbsent = CountWorkDays - CountWorkDaysPerson;
-                    //if (item.TabelAbsent < 0) item.TabelAbsent = 0;
-                }
-            }
+        //            //int CountWorkDaysPerson = pers.TabelDays.Count(it => it.td_KindId == 1);
+        //            //item.TabelAbsent = CountWorkDays - CountWorkDaysPerson;
+        //            //if (item.TabelAbsent < 0) item.TabelAbsent = 0;
+        //        }
+        //    }
 
-        }
+        //}
 
 
 
@@ -159,27 +183,6 @@ namespace Tabel.ViewModels
         #region Команды
 
         //--------------------------------------------------------------------------------
-        // Событие выбора закладки
-        //--------------------------------------------------------------------------------
-        //public ICommand TabChangedCommand => new LambdaCommand(OnTabChangedCommandExecuted, CanTabChangedCommand);
-        //private bool CanTabChangedCommand(object p) => true;
-        //private void OnTabChangedCommandExecuted(object p)
-        //{
-        //    if (p is int index)
-        //    {
-        //        if (index == 0 && ListSeparPerson != null)
-        //        {
-        //            foreach (var item in ListSeparPerson)
-        //            {
-        //                item.OnPropertyChanged(nameof(item.Itogo));
-        //                item.OnPropertyChanged(nameof(item.PremiaItogo));
-        //            }
-        //        }
-        //    }
-        //}
-
-
-        //--------------------------------------------------------------------------------
         // Команда Создать 
         //--------------------------------------------------------------------------------
         public ICommand CreateCommand => new LambdaCommand(OnCreateCommandExecuted, CanCreateCommand);
@@ -195,7 +198,7 @@ namespace Tabel.ViewModels
             }
 
             CurrentSeparate = new Separate();
-            //CurrentSeparate.m_author = App.CurrentUser.id;
+            CurrentSeparate.s_author = App.CurrentUser.u_fio;
             CurrentSeparate.s_month = _SelectMonth;
             CurrentSeparate.s_year = _SelectYear;
             CurrentSeparate.s_otdelId = _SelectedOtdel.id;
@@ -213,11 +216,20 @@ namespace Tabel.ViewModels
                 .OrderBy(o => o.p_lastname)
                 .ThenBy(o => o.p_name);
 
+            // получение списка людей для отделов и групп для прошлого месяца
+            var ListPrevSeparPerson = repoSepPerson.Items
+                .AsNoTracking()
+                .Where(it => (it.person.p_otdel_id == _SelectedOtdel.id || listOtdels.Contains(it.person.p_otdel_id.Value)));
+
+
             foreach (var pers in persons)
             {
                 SeparPerson newPerson = new SeparPerson();
                 newPerson.sp_personalId = pers.id;
                 newPerson.sp_separId = CurrentSeparate.id;
+
+                SeparPerson PrevSeparPerson = ListPrevSeparPerson.FirstOrDefault(it => it.person.id == pers.id);
+                newPerson.sp_oklad = PrevSeparPerson?.sp_oklad;
 
                 //if (newPerson.TabelWorkOffDay > 0)
                 //{
