@@ -58,6 +58,12 @@
                     <TextBlock Text="Экспорт в 1С"/>
                 </StackPanel>
             </Button>
+            <Button Command="{Binding PrintCommand}" Margin="3" Style="{StaticResource ButtonStyleShadow}" ToolTip="Экспорт в 1С">
+                <StackPanel Orientation="Horizontal">
+                    <fa:ImageAwesome Icon="Solid_Print" Width="24" Height="16" Foreground="#FF005AA0"/>
+                    <TextBlock Text="Печать"/>
+                </StackPanel>
+            </Button>
             <Button Margin="3" Style="{StaticResource ButtonStyleShadow}" ToolTip="Экспорт в 1С" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=local:BasicWindow}}">
                 <StackPanel Orientation="Horizontal">
                     <fa:ImageAwesome Icon="Solid_DoorOpen" Width="24" Height="16" Foreground="#FF005AA0"/>

@@ -31,9 +31,13 @@ namespace Tabel.Models
         [NotMapped]
         public decimal? ItogoNDFL => Itogo / 0.87m;
 
+        [NotMapped]
+        public decimal? PremiaNDFL => sp_premia / 0.87m;
+
         private void UpdateItogo()
         {
             OnPropertyChanged(nameof(Itogo));
+            OnPropertyChanged(nameof(PremiaNDFL));
             OnPropertyChanged(nameof(ItogoNDFL));
         }
 

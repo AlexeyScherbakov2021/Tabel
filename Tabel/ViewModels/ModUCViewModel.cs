@@ -1,8 +1,10 @@
-﻿using DocumentFormat.OpenXml.Bibliography;
+﻿using ClosedXML.Excel;
+using DocumentFormat.OpenXml.Bibliography;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data.Entity;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -99,7 +101,7 @@ namespace Tabel.ViewModels
             repoTabel = new RepositoryMSSQL<WorkTabel>(db);
             repoModel = new RepositoryMSSQL<Mod>(db);
 
-            LoadBonusProcent();
+            //LoadBonusProcent();
 
             modMainViewModel = new ModMainViewModel(db);
             premiaBonusViewModel = new PremiaBonusViewModel(db, BonusProc);
@@ -124,7 +126,7 @@ namespace Tabel.ViewModels
         private void LoadBonusProcent()
         {
             RepositoryMSSQL<GenChargMonth> repoGetAll = new RepositoryMSSQL<GenChargMonth>(db);
-            decimal? BonusProc = repoGetAll.Items
+            BonusProc = repoGetAll.Items
                 .FirstOrDefault(it => it.gm_Year == _SelectYear && it.gm_Month == _SelectMonth && it.gm_GenId == (int)EnumKind.BonusProc)?.gm_Value;
 
         }
@@ -145,6 +147,7 @@ namespace Tabel.ViewModels
             ListModPerson = null;
 
             LoadBonusProcent();
+            premiaBonusViewModel.SetBonus(BonusProc);
 
             if (_SelectedOtdel.ot_parent is null)
             {
@@ -170,6 +173,7 @@ namespace Tabel.ViewModels
                         .ThenBy(o => o.person.p_name)
                         );
             }
+
 
             modMainViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
             premiaBonusViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
@@ -482,6 +486,74 @@ namespace Tabel.ViewModels
                 ListModPerson.Remove(SelectedModPerson);
                 //IsModify = true;
             }
+        }
+
+        //--------------------------------------------------------------------------------
+        // Команда Печать
+        //--------------------------------------------------------------------------------
+        public ICommand PrintCommand => new LambdaCommand(OnPrintPersonCommandExecuted, CanPrintPersonCommand);
+        private bool CanPrintPersonCommand(object p) => true;
+        private void OnPrintPersonCommandExecuted(object p)
+        {
+            try
+            {
+                using (XLWorkbook wb = new XLWorkbook(@"Отчеты\Модель.xlsx"))
+                {
+                    //IEnumerable<ModPerson> SelectedListPerson = ListModPerson.Where(it => !string.IsNullOrEmpty(it.person.p_tab_number));
+
+                    int NumPP = 1;
+                    var ws = wb.Worksheets.Worksheet(1);
+
+                    // Заполение шапки
+                    ws.Cell("C1").Value = CurrentMod.otdel.ot_name;
+
+                    DateTime startDate = new DateTime(_SelectYear, CurrentMod.m_month, 1);
+                    ws.Cell("C2").Value = startDate.ToString("dd.MM.yyyy");
+                    DateTime endDate = startDate.AddMonths(1).AddDays(-1);
+                    ws.Cell("D2").Value = endDate.ToString("dd.MM.yyyy");
+                    //ws.Cell("AA15").Value = "Составил: " + App.CurrentUser.u_fio;
+
+                    int RowNum = 5;
+                    ws.Row(5).InsertRowsBelow(ListModPerson.Count() - 1 );
+                    var range = ws.Range(RowNum, 1, RowNum, 75);
+
+                    for (int i = 0; i < ListModPerson.Count() - 1; i++)
+                    {
+                        RowNum++;
+                        range.CopyTo(ws.Cell(RowNum, 1));
+                    }
+
+                    RowNum = 5;
+                    foreach (var item in ListModPerson)
+                    {
+                        ws.Cell(RowNum, 1).Value = item.person.p_tab_number;
+                        ws.Cell(RowNum, 2).Value = item.person.FIO;
+                        ws.Cell(RowNum, 3).Value = item.person.p_profession;
+                        ws.Cell(RowNum, 4).Value = item.premiaBonus.Summa;
+                        ws.Cell(RowNum, 5).Value = item.premiaFP.Summa;
+                        ws.Cell(RowNum, 6).Value = item.premiaKvalif.Summa;
+                        ws.Cell(RowNum, 7).Value = item.premiaOtdel.Summa;
+                        ws.Cell(RowNum, 8).Value = item.premiaQuality.Summa;
+                        ws.Cell(RowNum, 9).Value = item.premiaAddWorks.Summa;
+                        ws.Cell(RowNum, 10).Value = item.premiaTransport.Summa;
+                        ws.Cell(RowNum, 11).Value = item.premiaPrize.Summa;
+                        ws.Cell(RowNum, 12).Value = item.PremiaItogo;
+                        ws.Cell(RowNum, 13).Value = item.Itogo;
+                        RowNum++;
+                    }
+
+                    string TempFile = System.IO.Path.GetTempFileName();
+                    TempFile = System.IO.Path.ChangeExtension(TempFile, "xlsx");
+                    //string TempFile = FileOperation.GenerateTempFileNameWithDelete("TempTabel.xlsx");
+                    wb.SaveAs(TempFile);
+                    Process.Start(TempFile);
+                }
+            }
+            catch
+            {
+                MessageBox.Show("Не найден шаблон модели", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
         }
 
 

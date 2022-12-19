@@ -26,6 +26,13 @@ namespace Tabel.ViewModels.ModViewModel
             BonusProc = bonusProc;
         }
 
+
+        public void SetBonus(decimal? bonusProc)
+        {
+            BonusProc = bonusProc;
+        }
+
+
         public override void ChangeListPerson(ICollection<ModPerson> listPerson, int Year, int Month, Otdel Otdel)
         {
             //_SelectedOtdel = Otdel;

@@ -15,6 +15,8 @@ using Tabel.ViewModels.Base;
 using Tabel.ViewModels.ModViewModel;
 using Tabel.Component.MonthPanel;
 using DocumentFormat.OpenXml.Drawing.Charts;
+using ClosedXML.Excel;
+using System.Diagnostics;
 
 namespace Tabel.ViewModels
 {
@@ -423,6 +425,69 @@ namespace Tabel.ViewModels
                 //IsModify = true;
             }
         }
+
+        //--------------------------------------------------------------------------------
+        // Команда Печать
+        //--------------------------------------------------------------------------------
+        public ICommand PrintCommand => new LambdaCommand(OnPrintPersonCommandExecuted, CanPrintPersonCommand);
+        private bool CanPrintPersonCommand(object p) => true;
+        private void OnPrintPersonCommandExecuted(object p)
+        {
+            try
+            {
+                using (XLWorkbook wb = new XLWorkbook(@"Отчеты\МодельВне.xlsx"))
+                {
+                    //IEnumerable<ModPerson> SelectedListPerson = ListModPerson.Where(it => !string.IsNullOrEmpty(it.person.p_tab_number));
+
+                    int NumPP = 1;
+                    var ws = wb.Worksheets.Worksheet(1);
+
+                    // Заполение шапки
+                    //ws.Cell("C1").Value = CurrentSeparate.otd.ot_name;
+
+                    DateTime startDate = new DateTime(_SelectYear, CurrentSeparate.s_month, 1);
+                    ws.Cell("C2").Value = startDate.ToString("dd.MM.yyyy");
+                    DateTime endDate = startDate.AddMonths(1).AddDays(-1);
+                    ws.Cell("D2").Value = endDate.ToString("dd.MM.yyyy");
+
+                    int RowNum = 5;
+                    ws.Row(5).InsertRowsBelow(ListSeparPerson.Count() - 1);
+                    var range = ws.Range(RowNum, 1, RowNum, 75);
+
+                    for (int i = 0; i < ListSeparPerson.Count() - 1; i++)
+                    {
+                        RowNum++;
+                        range.CopyTo(ws.Cell(RowNum, 1));
+                    }
+
+                    RowNum = 5;
+                    foreach (var item in ListSeparPerson)
+                    {
+                        ws.Cell(RowNum, 1).Value = item.person.p_tab_number;
+                        ws.Cell(RowNum, 2).Value = item.person.FIO;
+                        ws.Cell(RowNum, 3).Value = item.person.p_profession;
+                        ws.Cell(RowNum, 4).Value = item.sp_oklad;
+                        ws.Cell(RowNum, 5).Value = item.sp_premia;
+                        ws.Cell(RowNum, 6).Value = item.Itogo;
+                        ws.Cell(RowNum, 7).Value = item.PremiaNDFL;
+                        ws.Cell(RowNum, 8).Value = item.ItogoNDFL;
+                        RowNum++;
+                    }
+
+                    string TempFile = System.IO.Path.GetTempFileName();
+                    TempFile = System.IO.Path.ChangeExtension(TempFile, "xlsx");
+                    //string TempFile = FileOperation.GenerateTempFileNameWithDelete("TempTabel.xlsx");
+                    wb.SaveAs(TempFile);
+                    Process.Start(TempFile);
+                }
+            }
+            catch
+            {
+                MessageBox.Show("Не найден шаблон модели", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
+        }
+
 
 
         #endregion

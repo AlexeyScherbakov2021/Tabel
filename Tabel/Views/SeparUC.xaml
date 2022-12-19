@@ -25,6 +25,12 @@
             <Button Content="Добавить сотрудников" Command="{Binding AddPersonCommand}" Margin="3" Style="{StaticResource ButtonStyleShadow}"/>
             <Button Content="Удалить" Command="{Binding DeletePersonCommand}" Margin="3" Style="{StaticResource ButtonStyleShadow}"/>
             <!--<Button Content="Печать" Command="{Binding PrintCommand}" Margin="3" Style="{StaticResource ButtonStyleShadow}"/>-->
+            <Button Command="{Binding PrintCommand}" Margin="3" Style="{StaticResource ButtonStyleShadow}" ToolTip="Экспорт в 1С">
+                <StackPanel Orientation="Horizontal">
+                    <fa:ImageAwesome Icon="Solid_Print" Width="24" Height="16" Foreground="#FF005AA0"/>
+                    <TextBlock Text="Печать"/>
+                </StackPanel>
+            </Button>
             <Button Command="{Binding ExportCSVCommand}" Margin="3" Visibility="Collapsed" Style="{StaticResource ButtonStyleShadow}" ToolTip="Экспорт в 1С">
                 <StackPanel Orientation="Horizontal">
                     <fa:ImageAwesome Icon="Solid_Save" Width="24" Height="16" Foreground="#FF005AA0"/>
@@ -52,6 +58,7 @@
                 <DataGridTextColumn Header="Оклад" Binding="{Binding sp_oklad, StringFormat=N2}" Width="90" CellStyle="{StaticResource CellRightColor}"/>
                 <DataGridTextColumn Header="Премия" Binding="{Binding sp_premia, StringFormat=N2}" CellStyle="{StaticResource CellRightColor}"/>
                 <DataGridTextColumn Header="Итого" Binding="{Binding Itogo, StringFormat=N2}" CellStyle="{StaticResource CellRight}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Пермия с НДФЛ" Binding="{Binding PremiaNDFL, StringFormat=N2}" CellStyle="{StaticResource CellRight}" FontWeight="Bold" IsReadOnly="True"/>
                 <DataGridTextColumn Header="Итого с НДФЛ" Binding="{Binding ItogoNDFL, StringFormat=N2}" CellStyle="{StaticResource CellRight}" FontWeight="Bold" IsReadOnly="True"/>
             </DataGrid.Columns>
         </DataGrid>

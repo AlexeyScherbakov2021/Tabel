@@ -60,9 +60,13 @@ namespace Tabel.Component.Models.Mod
         //-------------------------------------------------------------------------------------------------------
         public override void Calculation()
         {
-            Summa = (model.TabelDays == 0 || !model.md_bonus_exec) 
-                ? null 
-                : model.md_bonus_max * BonusForAll / 100 * (model.TabelDays - model.TabelAbsent) / model.TabelDays;
+            //Summa = (model.TabelDays == 0 || !model.md_bonus_exec) 
+            //    ? null 
+            //    : model.md_bonus_max * BonusForAll / 100 * (model.TabelDays - model.TabelAbsent) / model.TabelDays;
+
+            Summa = !model.md_bonus_exec
+                ? null
+                : model.md_bonus_max * BonusForAll / 100;
 
         }
     }
