@@ -220,11 +220,15 @@ namespace Tabel.ViewModels
                 .OrderBy(o => o.p_lastname)
                 .ThenBy(o => o.p_name);
 
-            // получение списка людей для отделов и групп для прошлого месяца
-            var ListPrevSeparPerson = repoSepPerson.Items
-                .AsNoTracking()
-                .Where(it => (it.person.p_otdel_id == _SelectedOtdel.id || listOtdels.Contains(it.person.p_otdel_id.Value)));
 
+            // получение списка людей для отделов и групп для прошлого месяца
+            //int PrevYear = _SelectYear;
+            //int PrevMonth = _SelectMonth - 1;
+            //if(PrevMonth < 1)
+            //{
+            //    PrevMonth = 12;
+            //    PrevYear--;
+            //}
 
             foreach (var pers in persons)
             {
@@ -232,7 +236,34 @@ namespace Tabel.ViewModels
                 newPerson.sp_personalId = pers.id;
                 newPerson.sp_separId = CurrentSeparate.id;
 
-                SeparPerson PrevSeparPerson = ListPrevSeparPerson.FirstOrDefault(it => it.person.id == pers.id);
+
+                SeparPerson PrevSeparPerson = repoSepPerson.Items
+                    .AsNoTracking()
+                    .Where(it => it.sp_personalId == newPerson.sp_personalId
+                        && ((it.Separate.s_year == _SelectYear && it.Separate.s_month < _SelectMonth)
+                        || it.Separate.s_year < _SelectYear))
+                    .OrderByDescending(o => o.Separate.s_year)
+                    .ThenByDescending(o => o.Separate.s_month)
+                    .FirstOrDefault();
+
+                //List<SeparPerson> ListPrevSeparPerson = repoSepPerson.Items
+                //    .AsNoTracking()
+                //    .Where(it => it.person.id == newPerson.sp_personalId && it.Separate.s_year <= _SelectYear)
+                //    .OrderByDescending(o => o.Separate.s_year)
+                //    .ThenByDescending(o => o.Separate.s_month)
+                //    .ToList();
+
+                //SeparPerson PrevSeparPerson = null;
+                //foreach (var item in ListPrevSeparPerson)
+                //{
+                //    if ((item.Separate.s_year == _SelectYear && item.Separate.s_month < _SelectMonth) || item.Separate.s_year < _SelectYear)
+                //    {
+                //        PrevSeparPerson = item;
+                //        break;
+                //    }
+                //}
+
+                //SeparPerson PrevSeparPerson = ListPrevSeparPerson.FirstOrDefault(it => it.person.id == pers.id);
                 newPerson.sp_oklad = PrevSeparPerson?.sp_oklad;
 
                 //if (newPerson.TabelWorkOffDay > 0)

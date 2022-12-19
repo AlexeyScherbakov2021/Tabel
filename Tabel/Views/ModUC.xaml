@@ -214,6 +214,68 @@
                 </DockPanel>
             </TabItem>
 
+            <TabItem Visibility="Visible" Background="LightGreen" DataContext="{Binding premiaAddWorksViewModel}" ToolTip="Для рабочего персонала">
+                <TabItem.Header>
+                    <TextBlock Text="Доп. работы" Background="LightGreen" Padding="2"/>
+                </TabItem.Header>
+
+                <DockPanel  Background="Gainsboro">
+                    <Grid DockPanel.Dock="Top" Margin="8,0" Height="30">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="100"/>
+                        </Grid.ColumnDefinitions>
+                    </Grid>
+                    <DataGrid ItemsSource="{Binding ListModPerson}" Style="{StaticResource DataGridStyle}" IsReadOnly="False"
+                              SelectedItem="{Binding SelectedPerson, Mode=TwoWay}"
+                              >
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="ФИО" Binding="{Binding person.FIO}" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Должность" Binding="{Binding person.p_profession}"  IsReadOnly="True"/>
+
+                            <!--<DataGridComboBoxColumn Header="Доп. работа" 
+                                ItemsSource="{Binding DataContext.ListWorks, ElementName=userControl}" ElementStyle="{Binding Mode=OneWay, Source={StaticResource StyleCheckComboBox}}"
+                             />-->
+
+                            <DataGridTemplateColumn Header="Работы"  Width="200" CellStyle="{StaticResource CellColor}">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding ListAddWorks, Converter={StaticResource AddWorksConverter}}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                                <DataGridTemplateColumn.CellEditingTemplate>
+                                    <DataTemplate>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition MinWidth="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}" Width="0"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Popup IsOpen="{Binding IsChecked, ElementName=toggle}" Grid.ColumnSpan="2" >
+                                                <ListBox ItemsSource="{Binding DataContext.premiaAddWorksViewModel.ListWorks, ElementName=userControl}"  >
+                                                    <ListBox.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <StackPanel Orientation="Horizontal">
+                                                                <CheckBox Content="{Binding aw_Name}" IsChecked="{Binding IsChecked, Mode=TwoWay}"/>
+                                                            </StackPanel>
+                                                        </DataTemplate>
+                                                    </ListBox.ItemTemplate>
+                                                </ListBox>
+                                            </Popup>
+                                            <ToggleButton x:Name="toggle" DockPanel.Dock="Right" Grid.ColumnSpan="2" 
+                                                          IsChecked="{Binding DataContext.premiaAddWorksViewModel.IsCheckedButton, ElementName=userControl}"
+                                                          Style="{StaticResource ComboBoxToggleButton}"/>
+                                            <TextBlock Text="{Binding ListAddWorks, Converter={StaticResource AddWorksConverter}}" IsHitTestVisible="False" Foreground="Black"/>
+                                        </Grid>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellEditingTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTextColumn Header="За личн. достиж." Binding="{Binding md_person_achiev, StringFormat=N2}" Width="100"  CellStyle="{StaticResource CellRightColor}"/>
+                            <DataGridTextColumn Header="Тариф" Binding="{Binding premiaAddWorks.Summa, StringFormat=N2}" FontWeight="Bold" Width="90"  CellStyle="{StaticResource CellRight}" IsReadOnly="True"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </DockPanel>
+            </TabItem>
+
 
             <TabItem Visibility="Visible" Background="LightBlue" DataContext="{Binding premiaKvalifViewModel}"
                      ToolTip="Для ИТР">
@@ -375,69 +437,7 @@
 
             </TabItem>
 
-            <TabItem Visibility="Visible" Background="LightGreen" DataContext="{Binding premiaAddWorksViewModel}" ToolTip="Для рабочего персонала">
-                <TabItem.Header>
-                    <TextBlock Text="Доп. работы" Background="LightGreen" Padding="2"/>
-                </TabItem.Header>
-
-                <DockPanel  Background="Gainsboro">
-                    <Grid DockPanel.Dock="Top" Margin="8,0" Height="30">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="100"/>
-                            <ColumnDefinition Width="100"/>
-                        </Grid.ColumnDefinitions>
-                    </Grid>
-                    <DataGrid ItemsSource="{Binding ListModPerson}" Style="{StaticResource DataGridStyle}" IsReadOnly="False"
-                              SelectedItem="{Binding SelectedPerson, Mode=TwoWay}"
-                              >
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="ФИО" Binding="{Binding person.FIO}" IsReadOnly="True"/>
-                            <DataGridTextColumn Header="Должность" Binding="{Binding person.p_profession}"  IsReadOnly="True"/>
-
-                            <!--<DataGridComboBoxColumn Header="Доп. работа" 
-                                ItemsSource="{Binding DataContext.ListWorks, ElementName=userControl}" ElementStyle="{Binding Mode=OneWay, Source={StaticResource StyleCheckComboBox}}"
-                             />-->
-
-                            <DataGridTemplateColumn Header="Работы"  Width="200" CellStyle="{StaticResource CellColor}">
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <TextBlock Text="{Binding ListAddWorks, Converter={StaticResource AddWorksConverter}}"/>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                                <DataGridTemplateColumn.CellEditingTemplate>
-                                    <DataTemplate>
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition MinWidth="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}" Width="0"/>
-                                            </Grid.ColumnDefinitions>
-                                            <Popup IsOpen="{Binding IsChecked, ElementName=toggle}" Grid.ColumnSpan="2" >
-                                                <ListBox ItemsSource="{Binding DataContext.premiaAddWorksViewModel.ListWorks, ElementName=userControl}"  >
-                                                    <ListBox.ItemTemplate>
-                                                        <DataTemplate>
-                                                            <StackPanel Orientation="Horizontal">
-                                                                <CheckBox Content="{Binding aw_Name}" IsChecked="{Binding IsChecked, Mode=TwoWay}"/>
-                                                            </StackPanel>
-                                                        </DataTemplate>
-                                                    </ListBox.ItemTemplate>
-                                                </ListBox>
-                                            </Popup>
-                                            <ToggleButton x:Name="toggle" DockPanel.Dock="Right" Grid.ColumnSpan="2" 
-                                                          IsChecked="{Binding DataContext.premiaAddWorksViewModel.IsCheckedButton, ElementName=userControl}"
-                                                          Style="{StaticResource ComboBoxToggleButton}"/>
-                                            <TextBlock Text="{Binding ListAddWorks, Converter={StaticResource AddWorksConverter}}" IsHitTestVisible="False" Foreground="Black"/>
-                                        </Grid>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellEditingTemplate>
-                            </DataGridTemplateColumn>
-                            <DataGridTextColumn Header="За личн. достиж." Binding="{Binding md_person_achiev, StringFormat=N2}" Width="100"  CellStyle="{StaticResource CellRightColor}"/>
-                            <DataGridTextColumn Header="Тариф" Binding="{Binding premiaAddWorks.Summa, StringFormat=N2}" FontWeight="Bold" Width="90"  CellStyle="{StaticResource CellRight}" IsReadOnly="True"/>
-                        </DataGrid.Columns>
-                    </DataGrid>
-                </DockPanel>
-            </TabItem>
-
-            <TabItem Header="Доставка" DataContext="{Binding premiaTransportViewModel}">
+            <!--<TabItem Header="Доставка" DataContext="{Binding premiaTransportViewModel}">
                 <DockPanel  Background="Gainsboro">
                     <Grid DockPanel.Dock="Top" Margin="8,0" Height="30">
                         <Grid.ColumnDefinitions>
@@ -454,7 +454,7 @@
                     </DataGrid>
                 </DockPanel>
 
-            </TabItem>
+            </TabItem>-->
 
             <!--<TabItem Header="Вечерние">
                 <DockPanel  Background="Gainsboro">
@@ -477,7 +477,7 @@
 
             </TabItem>-->
 
-            <TabItem Header="За добросовестный труд" DataContext="{Binding premiaPrizeViewModel}">
+            <!--<TabItem Header="За добросовестный труд" DataContext="{Binding premiaPrizeViewModel}">
                 <DockPanel  Background="Gainsboro">
                     <Grid DockPanel.Dock="Top" Margin="8,0" Height="30">
                         <Grid.ColumnDefinitions>
@@ -493,8 +493,8 @@
                         </DataGrid.Columns>
                     </DataGrid>
                 </DockPanel>
-
-            </TabItem>
+            </TabItem>-->
+            
             <TabItem Header="Итого" DataContext="{Binding premiaItogoViewModel}">
                 <DockPanel  Background="Gainsboro">
                     <Grid DockPanel.Dock="Top" Margin="8,0" Height="30">

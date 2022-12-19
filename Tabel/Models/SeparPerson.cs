@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
@@ -24,12 +25,11 @@ namespace Tabel.Models
         public virtual Separate Separate { get; set; }
         public virtual Personal person { get; set; }
 
-
         [NotMapped]
         public decimal? Itogo => (sp_oklad ?? 0) + (sp_premia ?? 0);
 
         [NotMapped]
-        public decimal? ItogoNDFL => Itogo * 1.13m;
+        public decimal? ItogoNDFL => Itogo / 0.87m;
 
         private void UpdateItogo()
         {
