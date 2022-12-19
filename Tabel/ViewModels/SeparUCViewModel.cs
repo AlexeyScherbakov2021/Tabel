@@ -437,13 +437,12 @@ namespace Tabel.ViewModels
             {
                 using (XLWorkbook wb = new XLWorkbook(@"Отчеты\МодельВне.xlsx"))
                 {
-                    //IEnumerable<ModPerson> SelectedListPerson = ListModPerson.Where(it => !string.IsNullOrEmpty(it.person.p_tab_number));
 
                     int NumPP = 1;
                     var ws = wb.Worksheets.Worksheet(1);
 
                     // Заполение шапки
-                    //ws.Cell("C1").Value = CurrentSeparate.otd.ot_name;
+                    ws.Cell("C1").Value = CurrentSeparate.otdel.ot_name;
 
                     DateTime startDate = new DateTime(_SelectYear, CurrentSeparate.s_month, 1);
                     ws.Cell("C2").Value = startDate.ToString("dd.MM.yyyy");

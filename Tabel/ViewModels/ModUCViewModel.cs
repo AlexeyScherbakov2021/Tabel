@@ -499,7 +499,6 @@ namespace Tabel.ViewModels
             {
                 using (XLWorkbook wb = new XLWorkbook(@"Отчеты\Модель.xlsx"))
                 {
-                    //IEnumerable<ModPerson> SelectedListPerson = ListModPerson.Where(it => !string.IsNullOrEmpty(it.person.p_tab_number));
 
                     int NumPP = 1;
                     var ws = wb.Worksheets.Worksheet(1);
@@ -544,7 +543,6 @@ namespace Tabel.ViewModels
 
                     string TempFile = System.IO.Path.GetTempFileName();
                     TempFile = System.IO.Path.ChangeExtension(TempFile, "xlsx");
-                    //string TempFile = FileOperation.GenerateTempFileNameWithDelete("TempTabel.xlsx");
                     wb.SaveAs(TempFile);
                     Process.Start(TempFile);
                 }

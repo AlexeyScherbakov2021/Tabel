@@ -24,6 +24,7 @@ namespace Tabel.Models
         [StringLength(50)]
         public string s_author { get; set; }
 
+        public virtual Otdel otdel { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SeparPerson> ListSeparPerson { get; set; }

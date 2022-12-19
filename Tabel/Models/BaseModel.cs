@@ -142,6 +142,14 @@ namespace Tabel.Models
                 .HasForeignKey(e => e.p_otdel_id)
                 .WillCascadeOnDelete();
 
+
+            modelBuilder.Entity<Otdel>()
+                .HasMany(e => e.Separs)
+                .WithRequired(e => e.otdel)
+                .HasForeignKey(e => e.s_otdelId)
+                .WillCascadeOnDelete(false);
+
+
             modelBuilder.Entity<Otdel>()
                 .HasMany(e => e.smenas)
                 .WithRequired(e => e.otdel)
