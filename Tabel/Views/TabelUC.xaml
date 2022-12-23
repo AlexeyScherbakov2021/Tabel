@@ -42,7 +42,14 @@
 
         <DataGrid x:Name="dg" ItemsSource="{Binding ListTabelPerson}" AutoGenerateColumns="False" IsReadOnly="True"
                   VerticalGridLinesBrush="LightGray" HorizontalGridLinesBrush="DarkGray" SelectedItem="{Binding SelectedPerson}"
+                  EnableRowVirtualization="True"
                   FrozenColumnCount="1" VirtualizingPanel.ScrollUnit="Pixel" CanUserAddRows="False" CanUserDeleteRows="False" Focusable="False"  >
+            <DataGrid.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <VirtualizingStackPanel/>
+                </ItemsPanelTemplate>
+            </DataGrid.ItemsPanel>
+            
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Таб.№" Binding="{Binding person.p_tab_number}"/>
                 <DataGridTemplateColumn Header="Сотрудник" IsReadOnly="True" Width="120">

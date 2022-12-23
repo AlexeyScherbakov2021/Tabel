@@ -65,7 +65,6 @@ namespace Tabel.Component.TransPanel
                 {
                     ListBoxItem CurrentListBoxItem = (ListBoxItem)ContainerFromElement(border);
 
-
                     if ((Keyboard.Modifiers & ModifierKeys.Shift) == ModifierKeys.Shift)
                     {
 

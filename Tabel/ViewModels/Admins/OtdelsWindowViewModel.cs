@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data.Entity;
 using System.Linq;
+using System.Runtime.Remoting.Channels;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -11,6 +12,7 @@ using System.Windows.Automation.Peers;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
+using System.Windows.Media;
 using Tabel.Commands;
 using Tabel.Infrastructure;
 using Tabel.Models;
@@ -45,15 +47,28 @@ namespace Tabel.ViewModels.Admins
                 if (Set(ref _SelectedOtdel, value))
                 {
                     _SelectedOtdel = value;
-                    var result = repoPerson.Items
-                        .Where(it => it.p_otdel_id == _SelectedOtdel.id)
-                        .OrderBy(o => o.p_lastname)
-                        .ThenBy(o => o.p_name)
-                        .ToArrayAsync();
-                    ListPersonal = new ObservableCollection<Personal>(result.Result);
+                    LoadListPerson(_SelectedOtdel.id);
+
+                    //var result = repoPerson.Items
+                    //    .Where(it => it.p_otdel_id == _SelectedOtdel.id)
+                    //    .OrderBy(o => o.p_lastname)
+                    //    .ThenBy(o => o.p_name)
+                    //    .ToArrayAsync();
+                    //ListPersonal = new ObservableCollection<Personal>(result.Result);
                 }
             } 
         }
+
+        private void LoadListPerson(int OtdelId)
+        {
+            var result = repoPerson.Items
+                .Where(it => it.p_otdel_id == OtdelId)
+                .OrderBy(o => o.p_lastname)
+                .ThenBy(o => o.p_name)
+                .ToArrayAsync();
+            ListPersonal = new ObservableCollection<Personal>(result.Result);
+        }
+
 
         // Разряды ----------------------------------------------------
         private readonly RepositoryMSSQL<Category> repoCat;
@@ -326,17 +341,41 @@ namespace Tabel.ViewModels.Admins
         }
 
 
-        public ICommand DropPersonCommand => new LambdaCommand(OnDropPersonCommandExecuted, CanDropPersonCommand);
-        private bool CanDropPersonCommand(object p) => true;
-        private void OnDropPersonCommandExecuted(object p)
+        public ICommand DropToOtdelCommand => new LambdaCommand(OnDropToOtdelPersonCommandExecuted, CanDropToOtdelPersonCommand);
+        private bool CanDropToOtdelPersonCommand(object p) => true;
+        private void OnDropToOtdelPersonCommandExecuted(object p)
         {
+            DragEventArgs args = p as DragEventArgs;
+
+            Personal person = args.Data.GetData("Person") as Personal;
+
+            if(person != null)
+            {
+                string NewOtdelName = (args.OriginalSource as TextBlock).Text;
+                RepositoryMSSQL<Otdel> repoOtdel = new RepositoryMSSQL<Otdel>();
+                var NewOtdel = repoOtdel.Items.FirstOrDefault(it => it.ot_name == NewOtdelName);
+                
+                if(NewOtdel != null)
+                {
+                    if (MessageBox.Show($"Переместить «{person.FIO}» в отдел «{NewOtdel.ot_name}»","Предупреждение", 
+                        MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+                    {
+                        person.p_otdel_id = NewOtdel.id;
+                        ListPersonal.Remove(person);
+                        OnPropertyChanged(nameof(ListPersonal));
+                    }
+                }
+
+
+
+            }
         }
 
 
-        public void DropPerson(object sender, DragEventArgs e)
-        {
+        //public void DropToOtdel(object sender, DragEventArgs e)
+        //{
 
-        }
+        //}
         #endregion
 
     }

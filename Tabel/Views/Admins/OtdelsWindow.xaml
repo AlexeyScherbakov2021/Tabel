@@ -9,6 +9,7 @@
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:infr="clr-namespace:Tabel.Infrastructure"
              xmlns:m="clr-namespace:Tabel.Models"
+             xmlns:b="clr-namespace:Tabel.ViewModels.Admins.Behavior"
              xmlns:vm="clr-namespace:Tabel.ViewModels.Admins"
              mc:Ignorable="d" d:DesignWidth="900" d:DesignHeight="434">
     <i:Interaction.Triggers>
@@ -63,7 +64,11 @@
                 <ext:ExtendedTreeView ItemsSource="{Binding ListOtdel}" Margin="3" AllowDrop="True" 
                                       SelectedItem_="{Binding SelectedOtdel, Mode=TwoWay}">
 
-
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Drop">
+                            <i:InvokeCommandAction Command="{Binding DropToOtdelCommand}" PassEventArgsToCommand="True"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
                     <ext:ExtendedTreeView.Resources>
                         <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="Transparent" />
                         <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="LightBlue" />
@@ -104,7 +109,10 @@
                 </UniformGrid>
 
                 <DataGrid x:Name="dg" ItemsSource="{Binding ListPersonalView}" SelectionMode="Single" Margin="4,0" SnapsToDevicePixels="True" 
-                          Style="{DynamicResource DataGridStyle}" SelectedItem="{Binding SelectedPerson}" >
+                          Style="{DynamicResource DataGridStyle}" SelectedItem="{Binding SelectedPerson}" AllowDrop="True">
+                    <i:Interaction.Behaviors>
+                        <b:DataGridBehavior/>
+                    </i:Interaction.Behaviors>
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Таб№" Binding="{Binding p_tab_number}"/>
                         <DataGridTextColumn Header="Фамилия" Binding="{Binding p_lastname}"/>
