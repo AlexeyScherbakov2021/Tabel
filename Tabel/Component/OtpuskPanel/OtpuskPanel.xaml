@@ -5,7 +5,11 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Tabel.Component.OtpuskPanel"
              mc:Ignorable="d" 
-             d:DesignHeight="30" d:DesignWidth="800">
+             d:DesignHeight="26" d:DesignWidth="800">
+    <UserControl.Resources>
+        <local:OtpuskStartConverter x:Key="OtpuskStartConverter"/>
+    </UserControl.Resources>
+    
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="31*"/>
@@ -78,9 +82,55 @@
             <TextBlock Text="янв"/>
         </Border>
 
-        <Border Background="#7000FF00" Grid.ColumnSpan="13" Margin="31,0,0,0" Width="100" 
-                BorderBrush="Black" BorderThickness="1"
-                HorizontalAlignment="Left" Style="{x:Null}"/>
+        <ListBox x:Name="lb" Grid.ColumnSpan="35" Background="Transparent"
+            ItemsSource="{Binding ItemsSource, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}">
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <Canvas />
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="{x:Type ListBoxItem}">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate>
+                                <Border Background="#5000FF00" BorderBrush="Black" BorderThickness="0.4" 
+                                    CornerRadius="3" 
+                                        Width="100" 
+                                        Height="30">
+                                    <Border.Margin>
+                                        <MultiBinding Converter="{StaticResource OtpuskStartConverter}">
+                                            <Binding Path="StartDate"/>
+                                            <Binding Path="ActualWidth" ElementName="lb"/>                                            
+                                        </MultiBinding>
+                                    </Border.Margin>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </ListBox.ItemContainerStyle>
+
+        </ListBox>
+
+        
+        <!--<Border Background="#5000FF00" Grid.ColumnSpan="13" Margin="139,0,0,0" Width="31" 
+                BorderBrush="Black" BorderThickness="0.4" CornerRadius="3"
+                HorizontalAlignment="Left" Style="{x:Null}">
+            <Border.Effect>
+                <DropShadowEffect ShadowDepth="0" BlurRadius="5" Opacity="0.5"/>
+            </Border.Effect>
+        </Border>
+
+        <Border Background="#5000FF00" Grid.ColumnSpan="13" Margin="428,0,0,0" Width="28" 
+                BorderBrush="Black" BorderThickness="0.4" CornerRadius="3"
+                HorizontalAlignment="Left" Style="{x:Null}">
+            <Border.Effect>
+                <DropShadowEffect ShadowDepth="0" BlurRadius="5" Opacity="0.5"/>
+            </Border.Effect>
+        </Border>-->
+
 
     </Grid>
 </UserControl>

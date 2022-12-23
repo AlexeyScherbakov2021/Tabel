@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,6 +21,18 @@ namespace Tabel.Component.OtpuskPanel
     /// </summary>
     public partial class OtpuskPanel : UserControl
     {
+
+        public static DependencyProperty ItemsSourceProperty = 
+            DependencyProperty.Register("ItemsSource", typeof(IList), typeof(OtpuskPanel));
+
+        public IList ItemsSource
+        {
+            get { return (IList)GetValue(ItemsSourceProperty); }
+            set { SetValue(ItemsSourceProperty, value); }
+        }
+
+
+
         public OtpuskPanel()
         {
             InitializeComponent();

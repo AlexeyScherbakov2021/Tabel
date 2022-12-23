@@ -118,6 +118,7 @@
     <Compile Include="Component\OtpuskPanel\OtpuskPanel.xaml.cs">
       <DependentUpon>OtpuskPanel.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Component\OtpuskPanel\OtpuskStartConverter.cs" />
     <Compile Include="Component\SmenaPanel\SmenaStringConvert.cs" />
     <Compile Include="Component\SmenaPanel\SmenaPanel.xaml.cs">
       <DependentUpon>SmenaPanel.xaml</DependentUpon>

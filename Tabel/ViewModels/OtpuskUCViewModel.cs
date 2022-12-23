@@ -1,20 +1,48 @@
-﻿using System;
+﻿//using DocumentFormat.OpenXml.Drawing.Charts;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using Tabel.Models;
 using Tabel.Repository;
 using Tabel.ViewModels.Base;
 
 namespace Tabel.ViewModels
 {
+
+    public class OtpuskDays
+    {
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
+        public int CountDays { get; set; }
+
+        public Thickness start { get; set; }
+
+        public int width { get; set; }
+
+        public OtpuskDays() { }
+    }
+
+
+
     internal class OtpuskUCViewModel : ViewModel, IBaseUCViewModel
     {
         private Otdel _SelectedOtdel;
         private int _SelectMonth;
         private int _SelectYear;
+
+
+
+
+        public List<OtpuskDays> ListDays { get; set; } = new List<OtpuskDays>() { 
+            new OtpuskDays() { start = new Thickness(10,0,0,0), width= 80 },
+            new OtpuskDays() { start = new Thickness(200,0,0,0), width= 80 },
+            new OtpuskDays() { start = new Thickness(300,0,0,0), width= 80 },
+        };
+
 
         private readonly BaseModel db;
         private readonly RepositoryMSSQL<Personal> repoPersonal;
@@ -22,6 +50,8 @@ namespace Tabel.ViewModels
         public TransPerson SelectedPerson { get; set; }
 
         private bool IsModify;
+
+        
 
 
         private ObservableCollection<TransPerson> _ListTransPerson;
