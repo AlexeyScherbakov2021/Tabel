@@ -8,8 +8,14 @@
              d:DesignHeight="26" d:DesignWidth="800">
     <UserControl.Resources>
         <local:OtpuskStartConverter x:Key="OtpuskStartConverter"/>
+        <local:OtpuskCountConverter x:Key="OtpuskCountConverter"/>
     </UserControl.Resources>
-    
+    <UserControl.ContextMenu>
+        <ContextMenu>
+            <MenuItem Header="Добавить отпуск" Click="AddOtpusk_Click" />
+        </ContextMenu>
+    </UserControl.ContextMenu>
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="31*"/>
@@ -38,6 +44,7 @@
                 <Setter Property="BorderThickness" Value="0.5"/>
                 <Setter Property="BorderBrush" Value="Black"/>
                 <Setter Property="Height" Value="20"/>
+                <Setter Property="Margin" Value="0,0,0,0"/>
                 <Setter Property="VerticalAlignment" Value="Top"/>
             </Style>
             
@@ -82,55 +89,44 @@
             <TextBlock Text="янв"/>
         </Border>
 
-        <ListBox x:Name="lb" Grid.ColumnSpan="35" Background="Transparent"
+        <ItemsControl x:Name="lb" Grid.ColumnSpan="35" Background="Transparent"
             ItemsSource="{Binding ItemsSource, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}">
-            <ListBox.ItemsPanel>
+            <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <Canvas />
                 </ItemsPanelTemplate>
-            </ListBox.ItemsPanel>
+            </ItemsControl.ItemsPanel>
 
-            <ListBox.ItemContainerStyle>
-                <Style TargetType="{x:Type ListBoxItem}">
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate>
-                                <Border Background="#5000FF00" BorderBrush="Black" BorderThickness="0.4" 
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Border Background="#5000FF00" BorderBrush="Black" BorderThickness="0.4" 
+                                    HorizontalAlignment="Left"
                                     CornerRadius="3" 
-                                        Width="100" 
-                                        Height="30">
-                                    <Border.Margin>
-                                        <MultiBinding Converter="{StaticResource OtpuskStartConverter}">
-                                            <Binding Path="StartDate"/>
-                                            <Binding Path="ActualWidth" ElementName="lb"/>                                            
-                                        </MultiBinding>
-                                    </Border.Margin>
-                                </Border>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
-            </ListBox.ItemContainerStyle>
+                                    Tag="{Binding}"
+                                    ToolTip="{Binding ToolTipName}"                                      
+                                    Height="30">
+                        <Border.Margin>
+                            <MultiBinding Converter="{StaticResource OtpuskStartConverter}">
+                                <Binding Path="StartDate"/>
+                                <Binding Path="ActualWidth" ElementName="lb"/>
+                            </MultiBinding>
+                        </Border.Margin>
+                        <Border.Width>
+                            <MultiBinding Converter="{StaticResource OtpuskCountConverter}">
+                                <Binding Path="CountDay"/>
+                                <Binding Path="ActualWidth" ElementName="lb"/>
+                            </MultiBinding>
+                        </Border.Width>
+                        <Border.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="Редактировать отпуск" Click="EditOtpusk_Click" Tag="{Binding}"/>
+                                <MenuItem Header="Удалить отпуск" Tag="{Binding}" Click="DeleteOtpusk_Click"/>
+                            </ContextMenu>
+                        </Border.ContextMenu>
+                    </Border>
 
-        </ListBox>
-
-        
-        <!--<Border Background="#5000FF00" Grid.ColumnSpan="13" Margin="139,0,0,0" Width="31" 
-                BorderBrush="Black" BorderThickness="0.4" CornerRadius="3"
-                HorizontalAlignment="Left" Style="{x:Null}">
-            <Border.Effect>
-                <DropShadowEffect ShadowDepth="0" BlurRadius="5" Opacity="0.5"/>
-            </Border.Effect>
-        </Border>
-
-        <Border Background="#5000FF00" Grid.ColumnSpan="13" Margin="428,0,0,0" Width="28" 
-                BorderBrush="Black" BorderThickness="0.4" CornerRadius="3"
-                HorizontalAlignment="Left" Style="{x:Null}">
-            <Border.Effect>
-                <DropShadowEffect ShadowDepth="0" BlurRadius="5" Opacity="0.5"/>
-            </Border.Effect>
-        </Border>-->
-
-
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
     </Grid>
 </UserControl>

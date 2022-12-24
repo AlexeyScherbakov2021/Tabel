@@ -1,5 +1,4 @@
-﻿//using DocumentFormat.OpenXml.Drawing.Charts;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -7,25 +6,20 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
-using Tabel.Infrastructure;
 
 namespace Tabel.Component.OtpuskPanel
 {
-    internal class OtpuskStartConverter : IMultiValueConverter
+    internal class OtpuskCountConverter : IMultiValueConverter
     {
         public object Convert(object[] value, Type targetType, object parameter, CultureInfo culture)
         {
 
             double width = double.Parse(value[1].ToString());
-            if (width == 0) return new Thickness();
+            if (width == 0) return 0;
 
-            DateTime StartDate = (DateTime)value[0];
-
+            double CountDays = double.Parse( value[0].ToString());
             double tick = width / 396;
-            double start = (StartDate.DayOfYear - 1) * tick;
-
-            Thickness result = new Thickness(start, 0,0,0);
-            return result;
+            return CountDays * tick;
 
         }
 

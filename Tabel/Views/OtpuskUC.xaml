@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:otp="clr-namespace:Tabel.Component.OtpuskPanel"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:local="clr-namespace:Tabel.Views"
              xmlns:vm="clr-namespace:Tabel.ViewModels"
              mc:Ignorable="d" 
@@ -12,7 +13,13 @@
         <vm:OtpuskUCViewModel/>
     </UserControl.DataContext>
     <Grid>
-        <otp:OtpuskPanel Margin="20,200" ItemsSource="{Binding ListDays}"/>
+        <otp:OtpuskPanel Margin="20,200" ItemsSource="{Binding ListDays}" EditOtpusk="OtpuskPanel_EditOtpuk">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="EditOtpusk">
+                    <i:InvokeCommandAction Command="{Binding EditOtpuskCommand}" PassEventArgsToCommand="True"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </otp:OtpuskPanel>
     </Grid>
     
 </UserControl>

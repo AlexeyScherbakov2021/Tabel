@@ -6,6 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
+using Tabel.Commands;
+using Tabel.Infrastructure;
 using Tabel.Models;
 using Tabel.Repository;
 using Tabel.ViewModels.Base;
@@ -13,15 +16,13 @@ using Tabel.ViewModels.Base;
 namespace Tabel.ViewModels
 {
 
-    public class OtpuskDays
+    public class OtpuskDays : Observable
     {
         public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
-        public int CountDays { get; set; }
-
-        public Thickness start { get; set; }
-
-        public int width { get; set; }
+        private DateTime _EndDate;
+        public DateTime EndDate { get => _EndDate; set { Set(ref _EndDate, value); } }
+        public int CountDay => EndDate.DayOfYear - StartDate.DayOfYear + 1;
+        public string ToolTipName { get; set; }
 
         public OtpuskDays() { }
     }
@@ -31,16 +32,14 @@ namespace Tabel.ViewModels
     internal class OtpuskUCViewModel : ViewModel, IBaseUCViewModel
     {
         private Otdel _SelectedOtdel;
-        private int _SelectMonth;
+        //private int _SelectMonth;
         private int _SelectYear;
 
 
-
-
         public List<OtpuskDays> ListDays { get; set; } = new List<OtpuskDays>() { 
-            new OtpuskDays() { start = new Thickness(10,0,0,0), width= 80 },
-            new OtpuskDays() { start = new Thickness(200,0,0,0), width= 80 },
-            new OtpuskDays() { start = new Thickness(300,0,0,0), width= 80 },
+            new OtpuskDays() { StartDate = new DateTime(2023, 1, 1), EndDate = new DateTime(2023,1,31), ToolTipName="подсказка 1" },
+            new OtpuskDays() { StartDate = new DateTime(2023, 6, 1), EndDate = new DateTime(2023,6,30), ToolTipName="подсказка 2" },
+            new OtpuskDays() { StartDate = new DateTime(2023, 11, 1), EndDate = new DateTime(2023,11,30), ToolTipName="подсказка 3"  },
         };
 
 
@@ -110,7 +109,7 @@ namespace Tabel.ViewModels
         //--------------------------------------------------------------------------------------------------
         public void OtdelChanged(Otdel SelectOtdel, int Year, int Month)
         {
-            _SelectMonth = Month;
+            //_SelectMonth = Month;
             _SelectYear = Year;
             _SelectedOtdel = SelectOtdel;
             ListTransPerson = null;
@@ -154,5 +153,23 @@ namespace Tabel.ViewModels
             //repoTransp.Save();
             IsModify = false;
         }
+
+
+        #region Команды
+
+        //--------------------------------------------------------------------------------
+        // Событие выбора закладки
+        //--------------------------------------------------------------------------------
+        public ICommand EditOtpuskCommand => new LambdaCommand(OnEditOtpuskCommandExecuted, CanEditOtpuskCommand);
+        private bool CanEditOtpuskCommand(object p) => true;
+        private void OnEditOtpuskCommandExecuted(object p)
+        {
+            OtpuskDays od = (p as RoutedEventArgs).OriginalSource as OtpuskDays;
+            od.EndDate = new DateTime(2023, 12, 10);
+            od.OnPropertyChanged(nameof(od.CountDay));
+        }
+
+        #endregion
+
     }
 }
