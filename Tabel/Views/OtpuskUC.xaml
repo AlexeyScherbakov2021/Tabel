@@ -13,7 +13,7 @@
         <vm:OtpuskUCViewModel/>
     </UserControl.DataContext>
     <Grid>
-        <otp:OtpuskPanel Margin="20,200" ItemsSource="{Binding ListDays}" EditOtpusk="OtpuskPanel_EditOtpuk">
+        <otp:OtpuskPanel Margin="20,200" ItemsSource="{Binding ListDays}" >
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="EditOtpusk">
                     <i:InvokeCommandAction Command="{Binding EditOtpuskCommand}" PassEventArgsToCommand="True"/>
