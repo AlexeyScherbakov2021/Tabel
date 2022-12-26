@@ -2,31 +2,23 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data.Entity;
 using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
 using Tabel.Commands;
-using Tabel.Infrastructure;
+using Tabel.Component.MonthPanel;
 using Tabel.Models;
 using Tabel.Repository;
 using Tabel.ViewModels.Base;
+using Tabel.Views;
 
 namespace Tabel.ViewModels
 {
-
-    public class OtpuskDays : Observable
-    {
-        public DateTime StartDate { get; set; }
-        private DateTime _EndDate;
-        public DateTime EndDate { get => _EndDate; set { Set(ref _EndDate, value); } }
-        public int CountDay => EndDate.DayOfYear - StartDate.DayOfYear + 1;
-        public string ToolTipName { get; set; }
-
-        public OtpuskDays() { }
-    }
-
 
 
     internal class OtpuskUCViewModel : ViewModel, IBaseUCViewModel
@@ -35,48 +27,64 @@ namespace Tabel.ViewModels
         //private int _SelectMonth;
         private int _SelectYear;
 
-
-        public List<OtpuskDays> ListDays { get; set; } = new List<OtpuskDays>() { 
-            new OtpuskDays() { StartDate = new DateTime(2023, 1, 1), EndDate = new DateTime(2023,1,31), ToolTipName="подсказка 1" },
-            new OtpuskDays() { StartDate = new DateTime(2023, 6, 1), EndDate = new DateTime(2023,6,30), ToolTipName="подсказка 2" },
-            new OtpuskDays() { StartDate = new DateTime(2023, 11, 1), EndDate = new DateTime(2023,11,30), ToolTipName="подсказка 3"  },
-        };
-
-
         private readonly BaseModel db;
         private readonly RepositoryMSSQL<Personal> repoPersonal;
+        private readonly RepositoryMSSQL<Otpusk> repoOtpusk;
+        private readonly RepositoryMSSQL<OtpuskPerson> repoOtpuskPerson;
 
-        public TransPerson SelectedPerson { get; set; }
+        //public ObservableCollection<OtpuskDays> ListDays { get; set; }
+        //    = new ObservableCollection<OtpuskDays>() { 
+        //    new OtpuskDays() { od_StartDate = new DateTime(2023, 1, 1), od_EndDate = new DateTime(2023,1,31) },
+        //    new OtpuskDays() { od_StartDate = new DateTime(2023, 6, 1), od_EndDate = new DateTime(2023,6,30) },
+        //    new OtpuskDays() { od_StartDate = new DateTime(2023, 11, 1), od_EndDate = new DateTime(2023,11,30)  },
+        //};
+
+        public Otpusk otpusk { get; set; }
+
+
+        public OtpuskPerson SelectedPerson { get; set; }
 
         private bool IsModify;
 
-        
-
-
-        private ObservableCollection<TransPerson> _ListTransPerson;
-        public ObservableCollection<TransPerson> ListTransPerson
+        private ObservableCollection<OtpuskPerson> _ListOtpuskPerson;
+        public ObservableCollection<OtpuskPerson> ListOtpuskPerson
         {
-            get => _ListTransPerson;
+            get => _ListOtpuskPerson;
             set
             {
-                if (_ListTransPerson == value) return;
+                if (_ListOtpuskPerson == value) return;
 
-                if (_ListTransPerson != null)
+                if (_ListOtpuskPerson != null)
                 {
-                    foreach (var item in _ListTransPerson)
-                        foreach (var day in item.TransDays)
+                    foreach (var item in _ListOtpuskPerson)
+                        foreach (var day in item.ListDays)
                             day.PropertyChanged -= Item_PropertyChanged;
                 }
 
-                _ListTransPerson = value;
-                if (_ListTransPerson == null) return;
+                _ListOtpuskPerson = value;
+                if (_ListOtpuskPerson == null) return;
 
-                foreach (var item in _ListTransPerson)
-                    foreach (var day in item.TransDays)
+                foreach (var item in _ListOtpuskPerson)
+                    foreach (var day in item.ListDays)
                         day.PropertyChanged += Item_PropertyChanged;
 
             }
         }
+
+
+
+        //------------------------------------------------------------------------------------------------------------
+        //  Конструктор
+        //------------------------------------------------------------------------------------------------------------
+        public OtpuskUCViewModel()
+        {
+            repoOtpusk = new RepositoryMSSQL<Otpusk>();
+            db = repoOtpusk.GetDB();
+            repoOtpuskPerson = new RepositoryMSSQL<OtpuskPerson>(db);
+            repoPersonal = new RepositoryMSSQL<Personal>(db);
+            IsModify = false;
+        }
+
 
         private void Item_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
@@ -85,16 +93,6 @@ namespace Tabel.ViewModels
             //    return;
             IsModify = true;
         }
-
-        public OtpuskUCViewModel()
-        {
-            repoPersonal = new RepositoryMSSQL<Personal>();
-            db = repoPersonal.GetDB();
-            //repoTransp = new RepositoryMSSQL<Transport>(db);
-            //repoTransPerson = new RepositoryMSSQL<TransPerson>(db);
-            IsModify = false;
-        }
-
 
 
 
@@ -112,45 +110,43 @@ namespace Tabel.ViewModels
             //_SelectMonth = Month;
             _SelectYear = Year;
             _SelectedOtdel = SelectOtdel;
-            ListTransPerson = null;
+            ListOtpuskPerson  = null;
 
             if (SelectOtdel is null) return;
 
             if (_SelectedOtdel.ot_parent is null)
             {
-                //Transp = repoTransp.Items.FirstOrDefault(it => it.tr_Year == Year
-                //    && it.tr_Month == Month
-                //    && it.tr_OtdelId == _SelectedOtdel.id);
-                //if (Transp != null)
-                //    ListTransPerson = new ObservableCollection<TransPerson>(repoTransPerson.Items
-                //        .Where(it => it.tp_TranspId == Transp.id)
-                //        .OrderBy(o => o.person.p_lastname)
-                //        .ThenBy(o => o.person.p_name)
-                //        );
+                otpusk = repoOtpusk.Items.FirstOrDefault(it => it.o_year == Year
+                    && it.o_otdelId == _SelectedOtdel.id);
+                if (otpusk != null)
+                    ListOtpuskPerson = new ObservableCollection<OtpuskPerson>(repoOtpuskPerson.Items
+                        .Where(it => it.op_otpuskId == otpusk.id)
+                        .OrderBy(o => o.person.p_lastname)
+                        .ThenBy(o => o.person.p_name)
+                        );
             }
             else
             {
-                //Transp = repoTransp.Items.FirstOrDefault(it => it.tr_Year == Year
-                //    && it.tr_Month == Month
-                //    && it.tr_OtdelId == _SelectedOtdel.ot_parent);
-                //if (Transp != null)
-                //    ListTransPerson = new ObservableCollection<TransPerson>(repoTransPerson.Items
-                //        .Where(it => it.tp_TranspId == Transp.id && it.person.p_otdel_id == _SelectedOtdel.id)
-                //        .OrderBy(o => o.person.p_lastname)
-                //        .ThenBy(o => o.person.p_name)
-                //        );
+                otpusk = repoOtpusk.Items.FirstOrDefault(it => it.o_year == Year
+                    && it.o_otdelId == _SelectedOtdel.ot_parent);
+                if (otpusk != null)
+                    ListOtpuskPerson = new ObservableCollection<OtpuskPerson>(repoOtpuskPerson.Items
+                        .Where(it => it.op_otpuskId == otpusk.id && it.person.p_otdel_id == _SelectedOtdel.id)
+                        .OrderBy(o => o.person.p_lastname)
+                        .ThenBy(o => o.person.p_name)
+                        );
             }
 
             //SetTypeDays();
 
-            //OnPropertyChanged(nameof(Transp));
-            //OnPropertyChanged(nameof(ListTransPerson));
+            OnPropertyChanged(nameof(otpusk));
+            OnPropertyChanged(nameof(ListOtpuskPerson));
         }
 
         public void SaveForm()
         {
-            //repoTransPerson.Save();
-            //repoTransp.Save();
+            repoOtpuskPerson.Save();
+            repoOtpusk.Save();
             IsModify = false;
         }
 
@@ -158,15 +154,166 @@ namespace Tabel.ViewModels
         #region Команды
 
         //--------------------------------------------------------------------------------
-        // Событие выбора закладки
+        // Событие редактирования отпуска
         //--------------------------------------------------------------------------------
         public ICommand EditOtpuskCommand => new LambdaCommand(OnEditOtpuskCommandExecuted, CanEditOtpuskCommand);
         private bool CanEditOtpuskCommand(object p) => true;
         private void OnEditOtpuskCommandExecuted(object p)
         {
             OtpuskDays od = (p as RoutedEventArgs).OriginalSource as OtpuskDays;
-            od.EndDate = new DateTime(2023, 12, 10);
-            od.OnPropertyChanged(nameof(od.CountDay));
+
+            SelectOtpuskWindow WinSelect = new SelectOtpuskWindow();
+            //for (var start = od.StartDate; start <= od.EndDate; start = start.AddDays(1))
+            WinSelect.cal.SelectedDates.AddRange(od.od_StartDate, od.od_EndDate);
+
+            WinSelect.cal.DisplayDateStart = new DateTime(od.od_StartDate.Year, od.od_StartDate.Month, 1);
+            if (WinSelect.ShowDialog() == true)
+            {
+                od.od_StartDate = WinSelect.cal.SelectedDates.First();
+                od.od_EndDate = WinSelect.cal.SelectedDates.Last();
+                od.OnPropertyChanged(nameof(od.CountDay));
+                IsModify = true;
+            }
+
+        }
+
+        //--------------------------------------------------------------------------------
+        // Событие удаления отпуска
+        //--------------------------------------------------------------------------------
+        public ICommand DeleteOtpuskCommand => new LambdaCommand(OnDeleteOtpuskCommandExecuted, CanDeleteOtpuskCommand);
+        private bool CanDeleteOtpuskCommand(object p) => true;
+        private void OnDeleteOtpuskCommandExecuted(object p)
+        {
+            OtpuskDays od = (p as RoutedEventArgs).OriginalSource as OtpuskDays;
+            SelectedPerson.ListDays.Remove(od);
+            IsModify = true;
+            //OnPropertyChanged(nameof(ListDays));
+        }
+
+        //--------------------------------------------------------------------------------
+        // Событие добавление отпуска
+        //--------------------------------------------------------------------------------
+        public ICommand AddOtpuskCommand => new LambdaCommand(OnAddOtpuskCommandExecuted, CanAddOtpuskCommand);
+        private bool CanAddOtpuskCommand(object p) => true;
+        private void OnAddOtpuskCommandExecuted(object p)
+        {
+            SelectOtpuskWindow WinSelect = new SelectOtpuskWindow();
+            FrameworkElement elem = ((p as RoutedEventArgs).OriginalSource) as FrameworkElement;
+            Point pt = Mouse.GetPosition(elem);
+            pt = elem.PointToScreen(pt);
+            WinSelect.Top = pt.Y - WinSelect.Height / 2;
+            WinSelect.Left = pt.X - WinSelect.Width / 2;
+
+            int month = int.Parse(elem.Tag.ToString());
+            WinSelect.cal.DisplayDate = new DateTime(_SelectYear, month, 1);
+
+            if (WinSelect.ShowDialog() == true)
+            {
+                var NewOtpusk = new OtpuskDays()
+                {
+                    od_StartDate = WinSelect.cal.SelectedDates.First(),
+                    od_EndDate = WinSelect.cal.SelectedDates.Last()
+                };
+                IsModify = true;
+                SelectedPerson.ListDays.Add(NewOtpusk);
+                
+            }
+        }
+
+
+        //--------------------------------------------------------------------------------
+        // Команда Создать 
+        //--------------------------------------------------------------------------------
+        public ICommand CreateCommand => new LambdaCommand(OnCreateCommandExecuted, CanCreateCommand);
+        private bool CanCreateCommand(object p) => _SelectedOtdel != null && _SelectedOtdel.ot_parent is null;
+        private void OnCreateCommandExecuted(object p)
+        {
+            if (otpusk != null)
+            {
+                if (MessageBox.Show("Текущая форма будет удалена. Продолжить?", "Предупреждение", MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
+                    return;
+                repoOtpusk.Remove(otpusk);
+            }
+
+            RepositoryMSSQL<Otdel> repoOtdel = new RepositoryMSSQL<Otdel>(db);// AllRepo.GetRepoAllOtdels();
+            List<int> listOtdels = repoOtdel.Items.AsNoTracking().Where(it => it.ot_parent == _SelectedOtdel.id).Select(s => s.id).ToList();
+
+            List<Personal> PersonsFromOtdel = repoPersonal.Items
+                .AsNoTracking()
+                .Where(it => (it.p_otdel_id == _SelectedOtdel.id || listOtdels.Contains(it.p_otdel_id.Value)) && it.p_delete == false)
+                .OrderBy(o => o.p_lastname)
+                .ThenBy(o => o.p_name)
+                .ToList();
+
+            if (PersonsFromOtdel?.Count == 0)
+            {
+                MessageBox.Show("В вашем отделе нет сотрудников. Форма не создана.", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+
+            otpusk = new Otpusk();
+            //otpusk.tr_UserId = App.CurrentUser.id;
+            otpusk.o_otdelId = _SelectedOtdel.id;
+            otpusk.o_year = _SelectYear;
+            otpusk.o_DateCreate = DateTime.Now;
+            otpusk.ListOtpuskPerson = new ObservableCollection<OtpuskPerson>();
+
+            // количество дней в месяце
+            //DateTime StartDay = new DateTime(_SelectYear, _SelectMonth, 1);
+
+            // получение данных производственного календаря
+            //RepositoryCalendar repo = new RepositoryCalendar(db);// AllRepo.GetRepoCalendar();
+            //var ListDays = repo.GetListDays(_SelectYear, _SelectMonth);
+
+            // если есть персонал в отделе, добавляем его и формируем дни
+            foreach (var item in PersonsFromOtdel)
+            {
+                OtpuskPerson op = new OtpuskPerson();
+                op.op_personId = item.id;
+                //tp.person = item;
+                op.ListDays = new ObservableCollection<OtpuskDays>();
+
+                //for (DateTime IndexDate = StartDay; IndexDate.Month == _SelectMonth; IndexDate = IndexDate.AddDays(1))
+                //foreach (var listItem in ListDays)
+                //{
+                //    OtpuskDays od = new OtpuskDays();
+                //    //od.td_Day = listItem.Day;
+                //    //od.OffDay = listItem.KindDay == TypeDays.Holyday;
+
+                //    //if (IndexDate.DayOfWeek == DayOfWeek.Sunday || IndexDate.DayOfWeek == DayOfWeek.Saturday)
+                //    //    td.OffDay = true;
+                //    op.ListDays.Add(td);
+                //}
+
+                otpusk.ListOtpuskPerson.Add(op);
+            }
+
+
+            if (otpusk.ListOtpuskPerson.Count > 0)
+                repoOtpusk.Add(otpusk, true);
+
+            otpusk = repoOtpusk.Items.Where(it => it.id == otpusk.id)
+                .Include(i => i.ListOtpuskPerson.Select(s => s.person))
+                .FirstOrDefault();
+
+            ListOtpuskPerson = new ObservableCollection<OtpuskPerson>(otpusk.ListOtpuskPerson);
+            //SetTypeDays();
+
+            OnPropertyChanged(nameof(ListOtpuskPerson));
+            OnPropertyChanged(nameof(otpusk));
+
+        }
+
+
+        //--------------------------------------------------------------------------------
+        // Команда Сохранить
+        //--------------------------------------------------------------------------------
+        public ICommand SaveCommand => new LambdaCommand(OnSaveCommandExecuted, CanSaveCommand);
+        private bool CanSaveCommand(object p) => /*_SelectedOtdel != null && Transp != null*/ IsModify;
+        private void OnSaveCommandExecuted(object p)
+        {
+            SaveForm();
         }
 
         #endregion

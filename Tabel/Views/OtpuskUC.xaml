@@ -6,20 +6,90 @@
              xmlns:otp="clr-namespace:Tabel.Component.OtpuskPanel"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:local="clr-namespace:Tabel.Views"
+             xmlns:fa="http://schemas.fontawesome.com/icons/"
+             xmlns:cmd="clr-namespace:Tabel.Commands"
              xmlns:vm="clr-namespace:Tabel.ViewModels"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="1200">
     <UserControl.DataContext>
         <vm:OtpuskUCViewModel/>
     </UserControl.DataContext>
-    <Grid>
-        <otp:OtpuskPanel Margin="20,200" ItemsSource="{Binding ListDays}" >
-            <i:Interaction.Triggers>
-                <i:EventTrigger EventName="EditOtpusk">
-                    <i:InvokeCommandAction Command="{Binding EditOtpuskCommand}" PassEventArgsToCommand="True"/>
-                </i:EventTrigger>
-            </i:Interaction.Triggers>
-        </otp:OtpuskPanel>
-    </Grid>
+   
+    
+    <DockPanel>
+        <ToolBarPanel DockPanel.Dock="Top" Orientation="Horizontal" Height="30"  Margin="10,8,0,4">
+            <TextBlock Text="Номер документа" Margin="5,0" VerticalAlignment="Center"/>
+            <TextBox Text="{Binding o_number}" Margin="5,0" VerticalAlignment="Center" Width="120"/>
+            <TextBlock Text="Дата создания" Margin="5,0" VerticalAlignment="Center"/>
+            <TextBox Text="{Binding o_DateCreate, StringFormat=dd.MM.yyyy HH:mm:ss}" Margin="5,0" VerticalAlignment="Center" Width="120"/>
+
+            <Button Content="Создать" Command="{Binding CreateCommand}" Margin="3" Style="{DynamicResource ButtonStyleShadow}"/>
+            <Button Content="Сохранить" Command="{Binding SaveCommand}" Margin="3" Style="{DynamicResource ButtonStyleShadow}"/>
+            <Button Content="Добавить сотрудников" Command="{Binding AddPersonCommand}" Margin="3" Style="{StaticResource ButtonStyleShadow}"/>
+            <Button Content="Удалить" Command="{Binding DeletePersonCommand}" Margin="3" Style="{StaticResource ButtonStyleShadow}"/>
+            <Button Content="Распечатать" Command="{Binding PrintCommand}" Margin="3" Style="{DynamicResource ButtonStyleShadow}"/>
+            <Button Margin="3" Style="{StaticResource ButtonStyleShadow}" ToolTip="Экспорт в 1С" 
+                    CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=local:BasicWindow}}">
+                <StackPanel Orientation="Horizontal">
+                    <fa:ImageAwesome Icon="Solid_DoorOpen" Width="24" Height="16" Foreground="#FF005AA0"/>
+                    <TextBlock Text="Закрыть"/>
+                </StackPanel>
+                <Button.Command>
+                    <cmd:CloseDialogCommand/>
+                </Button.Command>
+            </Button>
+            <ToolBarPanel.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Отм"/>
+                    <MenuItem Header="Снять"/>
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <i:InvokeCommandAction Command="{Binding IsSelectCommand}" PassEventArgsToCommand="True"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </ContextMenu>
+            </ToolBarPanel.ContextMenu>
+        </ToolBarPanel>
+
+
+        <DataGrid x:Name="dg" ItemsSource="{Binding ListOtpuskPerson, IsAsync=True}" Style="{StaticResource DataGridStyle}" 
+                  VerticalGridLinesBrush="LightGray" HorizontalGridLinesBrush="LightGray" SelectedItem="{Binding SelectedPerson}"
+                  FrozenColumnCount="1">
+
+            <DataGrid.Columns>
+                <DataGridTemplateColumn Header="Сотрудник" IsReadOnly="True" Width="130">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding person.FIO}" TextWrapping="Wrap" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn Header="Отпуска">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <otp:OtpuskPanel ItemsSource="{Binding ListDays}" VerticalContentAlignment="Center">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="EditOtpusk">
+                                        <i:InvokeCommandAction Command="{Binding DataContext.EditOtpuskCommand, ElementName=dg}" PassEventArgsToCommand="True"/>
+                                    </i:EventTrigger>
+                                    <i:EventTrigger EventName="DeleteOtpusk">
+                                        <i:InvokeCommandAction Command="{Binding DataContext.DeleteOtpuskCommand, ElementName=dg}" PassEventArgsToCommand="True"/>
+                                    </i:EventTrigger>
+                                    <i:EventTrigger EventName="AddOtpusk">
+                                        <i:InvokeCommandAction Command="{Binding DataContext.AddOtpuskCommand, ElementName=dg}" PassEventArgsToCommand="True"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </otp:OtpuskPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+
+
+
+    </DockPanel>
     
 </UserControl>

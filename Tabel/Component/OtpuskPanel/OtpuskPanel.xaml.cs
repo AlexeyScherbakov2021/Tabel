@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Tabel.Commands;
 
 namespace Tabel.Component.OtpuskPanel
 {
@@ -22,6 +23,7 @@ namespace Tabel.Component.OtpuskPanel
     /// </summary>
     public partial class OtpuskPanel : UserControl
     {
+        private object SelectedMonth;
 
         public static DependencyProperty ItemsSourceProperty = 
             DependencyProperty.Register("ItemsSource", typeof(IList), typeof(OtpuskPanel));
@@ -32,6 +34,8 @@ namespace Tabel.Component.OtpuskPanel
             set { SetValue(ItemsSourceProperty, value); }
         }
 
+
+        // событие редактирования отпуска
         public static readonly RoutedEvent EditOtpuskEvent =
           EventManager.RegisterRoutedEvent("EditOtpusk", RoutingStrategy.Bubble,
               typeof(RoutedEventHandler), typeof(OtpuskPanel));
@@ -40,6 +44,28 @@ namespace Tabel.Component.OtpuskPanel
         {
             add { AddHandler(EditOtpuskEvent, value); }
             remove { RemoveHandler(EditOtpuskEvent, value); }
+        }
+
+        // событие добавления отпуска
+        public static readonly RoutedEvent AddOtpuskEvent =
+          EventManager.RegisterRoutedEvent("AddOtpusk", RoutingStrategy.Bubble,
+              typeof(RoutedEventHandler), typeof(OtpuskPanel));
+
+        public event RoutedEventHandler AddOtpusk
+        {
+            add { AddHandler(AddOtpuskEvent, value); }
+            remove { RemoveHandler(AddOtpuskEvent, value); }
+        }
+
+        // событие удаления отпуска
+        public static readonly RoutedEvent DeleteOtpuskEvent =
+          EventManager.RegisterRoutedEvent("DeleteOtpusk", RoutingStrategy.Bubble,
+              typeof(RoutedEventHandler), typeof(OtpuskPanel));
+
+        public event RoutedEventHandler DeleteOtpusk
+        {
+            add { AddHandler(DeleteOtpuskEvent, value); }
+            remove { RemoveHandler(DeleteOtpuskEvent, value); }
         }
 
 
@@ -59,28 +85,59 @@ namespace Tabel.Component.OtpuskPanel
         public OtpuskPanel()
         {
             InitializeComponent();
+            //DataContext = this;
             //lb.SizeChanged += Lb_SizeChanged;
 
         }
 
+        //public ICommand AddOtpuskCommand => new LambdaCommand(AddOtpuskExec, CanAddOtpuskCommand);
+        //bool CanAddOtpuskCommand(object p) => true;
+        //void AddOtpuskExec(object p)
+        //{
+        //    RoutedEventArgs args;
+        //    args = new RoutedEventArgs(AddOtpuskEvent);
+        //    //args.Source = ;
+        //    RaiseEvent(args);
+        //}
+
+        //-------------------------------------------------------------------------------------------
+        // событие меню Редактировать отпуск
+        //-------------------------------------------------------------------------------------------
         private void EditOtpusk_Click(object sender, RoutedEventArgs e)
         {
             RoutedEventArgs args;
-
             args = new RoutedEventArgs(EditOtpuskEvent);
             args.Source = (sender as MenuItem).Tag;
             RaiseEvent(args);
         }
 
+        //-------------------------------------------------------------------------------------------
+        // событие меню Удалить отпуск
+        //-------------------------------------------------------------------------------------------
         private void DeleteOtpusk_Click(object sender, RoutedEventArgs e)
         {
+            RoutedEventArgs args;
+            args = new RoutedEventArgs(DeleteOtpuskEvent);
+            args.Source = (sender as MenuItem).Tag;
+            RaiseEvent(args);
 
         }
 
+        //-------------------------------------------------------------------------------------------
+        // событие меню Добавить отпуск
+        //-------------------------------------------------------------------------------------------
         private void AddOtpusk_Click(object sender, RoutedEventArgs e)
         {
 
+            RoutedEventArgs args;
+            args = new RoutedEventArgs(AddOtpuskEvent);
+            args.Source = SelectedMonth;
+            RaiseEvent(args);
         }
 
+        private void TextBlock_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            SelectedMonth = sender;
+        }
     }
 }

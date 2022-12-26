@@ -5,10 +5,11 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Tabel.Component.OtpuskPanel"
              mc:Ignorable="d" 
-             d:DesignHeight="26" d:DesignWidth="800">
+             Height="36" Width="1100" >
     <UserControl.Resources>
         <local:OtpuskStartConverter x:Key="OtpuskStartConverter"/>
         <local:OtpuskCountConverter x:Key="OtpuskCountConverter"/>
+        <!--<local:OtpuskPanel x:Key="OtpuskPanel"/>-->
     </UserControl.Resources>
     <UserControl.ContextMenu>
         <ContextMenu>
@@ -36,6 +37,8 @@
             <Style TargetType="{x:Type TextBlock}">
                 <Setter Property="TextAlignment" Value="Center"/>
                 <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="Foreground" Value="Black"/>
+                <Setter Property="FontWeight" Value="Bold"/>
                 <Setter Property="FontSize" Value="14"/>
             </Style>
             <Style TargetType="{x:Type Border}">
@@ -45,51 +48,60 @@
                 <Setter Property="BorderBrush" Value="Black"/>
                 <Setter Property="Height" Value="20"/>
                 <Setter Property="Margin" Value="0,0,0,0"/>
+                <!--<Setter Property="Tag" Value="month"/>-->
                 <Setter Property="VerticalAlignment" Value="Top"/>
+                <!--<Setter Property="DataContext" Value="{StaticResource OtpuskPanel}"/>-->
+                <!--<Setter Property="ContextMenu">
+                    <Setter.Value>
+                        <ContextMenu>
+                            <MenuItem Header="Добавить отпуск" Command="{Binding AddOtpuskCommand}"/>
+                        </ContextMenu>
+                    </Setter.Value>
+                </Setter>-->
             </Style>
-            
         </Grid.Resources>
+
         <Border Grid.Column="0" >
-            <TextBlock Text="янв" />
+            <TextBlock Text="янв" Tag="1" PreviewMouseRightButtonDown="TextBlock_PreviewMouseRightButtonDown"/>
         </Border>
         <Border Grid.Column="1">
-            <TextBlock Text="фев"/>
+            <TextBlock Text="фев"  Tag="2" PreviewMouseRightButtonDown="TextBlock_PreviewMouseRightButtonDown"/>
         </Border>
         <Border Grid.Column="2">
-            <TextBlock Text="март" />
+            <TextBlock Text="март" Tag="3" PreviewMouseRightButtonDown="TextBlock_PreviewMouseRightButtonDown" />
         </Border>
         <Border Grid.Column="3">
-            <TextBlock Text="апр" />
+            <TextBlock Text="апр" Tag="4" PreviewMouseRightButtonDown="TextBlock_PreviewMouseRightButtonDown" />
         </Border>
         <Border Grid.Column="4">
-            <TextBlock Text="май"/>
+            <TextBlock Text="май" Tag="5" PreviewMouseRightButtonDown="TextBlock_PreviewMouseRightButtonDown"/>
         </Border>
         <Border Grid.Column="5">
-            <TextBlock Text="июнь" />
+            <TextBlock Text="июнь"  Tag="6" PreviewMouseRightButtonDown="TextBlock_PreviewMouseRightButtonDown"/>
         </Border>
         <Border Grid.Column="6">
-            <TextBlock Text="июль" />
+            <TextBlock Text="июль"  Tag="7" PreviewMouseRightButtonDown="TextBlock_PreviewMouseRightButtonDown"/>
         </Border>
         <Border Grid.Column="7">
-            <TextBlock Text="авг"  />
+            <TextBlock Text="авг"   Tag="8" PreviewMouseRightButtonDown="TextBlock_PreviewMouseRightButtonDown"/>
         </Border>
         <Border Grid.Column="8">
-            <TextBlock Text="сен" />
+            <TextBlock Text="сен"  Tag="9" PreviewMouseRightButtonDown="TextBlock_PreviewMouseRightButtonDown"/>
         </Border>
         <Border Grid.Column="9">
-            <TextBlock Text="окт"/>
+            <TextBlock Text="окт" Tag="10" PreviewMouseRightButtonDown="TextBlock_PreviewMouseRightButtonDown"/>
         </Border>
         <Border Grid.Column="10">
-            <TextBlock Text="нояб" />
+            <TextBlock Text="нояб" Tag="11" PreviewMouseRightButtonDown="TextBlock_PreviewMouseRightButtonDown"/>
         </Border>
         <Border Grid.Column="11">
-            <TextBlock Text="дек" />
+            <TextBlock Text="дек"  Tag="12" PreviewMouseRightButtonDown="TextBlock_PreviewMouseRightButtonDown"/>
         </Border>
-        <Border Grid.Column="12">
+        <Border Grid.Column="12" Tag="13" PreviewMouseRightButtonDown="TextBlock_PreviewMouseRightButtonDown">
             <TextBlock Text="янв"/>
         </Border>
 
-        <ItemsControl x:Name="lb" Grid.ColumnSpan="35" Background="Transparent"
+        <ItemsControl x:Name="lb" Grid.ColumnSpan="35" 
             ItemsSource="{Binding ItemsSource, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -104,10 +116,10 @@
                                     CornerRadius="3" 
                                     Tag="{Binding}"
                                     ToolTip="{Binding ToolTipName}"                                      
-                                    Height="30">
+                                    Height="20">
                         <Border.Margin>
                             <MultiBinding Converter="{StaticResource OtpuskStartConverter}">
-                                <Binding Path="StartDate"/>
+                                <Binding Path="od_StartDate"/>
                                 <Binding Path="ActualWidth" ElementName="lb"/>
                             </MultiBinding>
                         </Border.Margin>

@@ -18,6 +18,7 @@ namespace Tabel.Models
             SmenaPersons = new HashSet<SmenaPerson>();
             TransPersons = new HashSet<TransPerson>();
             SeparPersons = new HashSet<SeparPerson>();
+            OtpuskPersons = new HashSet<OtpuskPerson>();
         }
 
         [Key]
@@ -82,6 +83,9 @@ namespace Tabel.Models
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SeparPerson> SeparPersons { get; set;}
+        
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<OtpuskPerson> OtpuskPersons { get; set;}
 
         [NotMapped]
         public string FIO => p_lastname + " " + p_name + " " + p_midname;

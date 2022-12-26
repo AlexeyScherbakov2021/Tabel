@@ -72,6 +72,9 @@ namespace Tabel.Models
         public virtual DbSet<GenChargMonth> GenChargMonth { get; set; }
         public virtual DbSet<Separate> Separate { get; set; }
         public virtual DbSet<SeparPerson> SeparPersons { get; set; }
+        public virtual DbSet<Otpusk> Otpusk { get; set; }
+        public virtual DbSet<OtpuskPerson> OtpuskPerson { get; set; }
+        public virtual DbSet<OtpuskDays> OtpuskDays { get; set; }
 
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -96,6 +99,19 @@ namespace Tabel.Models
             //    .HasMany(e => e.ModOtdelSumFPs)
             //    .WithRequired(e => e.Mod)
             //    .HasForeignKey(e => e.mo_mod_id);
+
+            modelBuilder.Entity<Otpusk>()
+                .HasMany(e => e.ListOtpuskPerson)
+                .WithOptional(e => e.otpusk)
+                .HasForeignKey(e => e.op_otpuskId)
+                .WillCascadeOnDelete();
+
+            modelBuilder.Entity<OtpuskPerson>()
+                .HasMany(e => e.ListDays)
+                .WithOptional(e => e.otpuskPerson)
+                .HasForeignKey(e => e.od_otpuskPersonId) 
+                .WillCascadeOnDelete();
+
 
             modelBuilder.Entity<Separate>()
                 .HasMany(e => e.ListSeparPerson)
@@ -225,6 +241,13 @@ namespace Tabel.Models
                 .WithRequired(e => e.person)
                 .HasForeignKey(e => e.tp_PersonId)
                 .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Personal>()
+                .HasMany(e => e.OtpuskPersons)
+                .WithRequired(e => e.person)
+                .HasForeignKey(e => e.op_personId)
+                .WillCascadeOnDelete(false);
+
 
             modelBuilder.Entity<Smena>()
                 .Property(e => e.sm_Number)

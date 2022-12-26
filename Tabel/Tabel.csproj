@@ -120,6 +120,12 @@
       <DependentUpon>OtpuskPanel.xaml</DependentUpon>
     </Compile>
     <Compile Include="Component\OtpuskPanel\OtpuskStartConverter.cs" />
+    <Compile Include="Models\Otpusk.cs" />
+    <Compile Include="Models\OtpuskDays.cs" />
+    <Compile Include="Models\OtpuskPerson.cs" />
+    <Compile Include="Views\SelectOtpuskWindow.xaml.cs">
+      <DependentUpon>SelectOtpuskWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Component\SmenaPanel\SmenaStringConvert.cs" />
     <Compile Include="Component\SmenaPanel\SmenaPanel.xaml.cs">
       <DependentUpon>SmenaPanel.xaml</DependentUpon>
@@ -257,6 +263,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Component\OtpuskPanel\OtpuskPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SelectOtpuskWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
