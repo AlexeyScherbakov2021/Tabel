@@ -36,6 +36,7 @@ namespace Tabel.Models
                 if (_tp_tarif != value)
                 {
                     _tp_tarif = value;
+                    OnPropertyChanged(nameof(tp_tarif));
                     UpdateUI();
                 }
 
@@ -75,7 +76,7 @@ namespace Tabel.Models
         [NotMapped]
         public decimal? Summa => ItogDays * tp_tarif ?? 0;
         [NotMapped]
-        public decimal? Itogo => Summa + tp_Kompens ?? 0;
+        public decimal? Itogo => Summa + (tp_Kompens ?? 0);
 
         public void UpdateUI()
         {

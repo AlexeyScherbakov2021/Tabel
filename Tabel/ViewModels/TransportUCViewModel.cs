@@ -6,6 +6,7 @@ using System.Data.Entity;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -31,6 +32,10 @@ namespace Tabel.ViewModels
         private readonly RepositoryMSSQL<Transport> repoTransp;
         private readonly RepositoryMSSQL<TransPerson> repoTransPerson;
 
+
+        public List<decimal> ListTarif { get; set; } = new List<decimal>() { 200, 300 };
+
+
         public Transport Transp { get; set; }
 
         private ObservableCollection<TransPerson> _ListTransPerson;
@@ -44,19 +49,25 @@ namespace Tabel.ViewModels
                 if (_ListTransPerson != null)
                 {
                     foreach (var item in _ListTransPerson)
+                    {
+                        item.PropertyChanged -= Item_PropertyChanged;
                         foreach (var day in item.TransDays)
                             day.PropertyChanged -= Item_PropertyChanged;
+                    }
                 }
 
                 _ListTransPerson = value;
                 if (_ListTransPerson == null) return;
 
                 foreach (var item in _ListTransPerson)
+                {
+                    item.PropertyChanged += Item_PropertyChanged;
                     foreach (var day in item.TransDays)
                         day.PropertyChanged += Item_PropertyChanged;
-
+                }
             }
         }
+
 
         private void Item_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {

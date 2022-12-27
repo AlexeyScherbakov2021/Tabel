@@ -58,10 +58,16 @@
                     <TextBlock Text="Экспорт в 1С"/>
                 </StackPanel>
             </Button>
-            <Button Command="{Binding PrintCommand}" Margin="3" Style="{StaticResource ButtonStyleShadow}" ToolTip="Печать расчетки">
+            <Button Command="{Binding PrintCommand}" Margin="3" Style="{StaticResource ButtonStyleShadow}" ToolTip="Печать формы">
                 <StackPanel Orientation="Horizontal">
                     <fa:ImageAwesome Icon="Solid_Print" Width="24" Height="16" Foreground="#FF005AA0"/>
                     <TextBlock Text="Печать"/>
+                </StackPanel>
+            </Button>
+            <Button Command="{Binding PrintPersonCommand}" Margin="3" Style="{StaticResource ButtonStyleShadow}" ToolTip="Печать расчетки">
+                <StackPanel Orientation="Horizontal">
+                    <fa:ImageAwesome Icon="Solid_Print" Width="24" Height="16" Foreground="#FF005AA0"/>
+                    <TextBlock Text="Расч.листок"/>
                 </StackPanel>
             </Button>
             <Button Margin="3" Style="{StaticResource ButtonStyleShadow}" ToolTip="Закрыть окно" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=local:BasicWindow}}">
@@ -92,7 +98,7 @@
                         </Grid.ColumnDefinitions>
                     </Grid>
                     <DataGrid ItemsSource="{Binding ListModPerson}" Style="{StaticResource DataGridStyle}" IsReadOnly="True" 
-                              SelectedItem="{Binding DataContext.SelectedModPerson, ElementName=userControl}">
+                              SelectedItem="{Binding DataContext.SelectedModPerson, Mode=TwoWay, ElementName=userControl}">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Таб.№" Binding="{Binding person.p_tab_number}"/>
                             <DataGridTextColumn Header="ФИО" Binding="{Binding person.FIO}"/>
@@ -148,7 +154,9 @@
                         </DockPanel>
 
                     </Grid>
-                    <DataGrid x:Name="dgBonus" ItemsSource="{Binding ListModPerson}" Style="{StaticResource DataGridStyle}" >
+                    <DataGrid x:Name="dgBonus" ItemsSource="{Binding ListModPerson}" 
+                              SelectedItem="{Binding DataContext.SelectedModPerson, Mode=TwoWay, ElementName=userControl}"
+                              Style="{StaticResource DataGridStyle}" >
                         <DataGrid.Columns>
                             <DataGridTextColumn x:Name="col1" Header="ФИО" Binding="{Binding person.FIO}" IsReadOnly="True"/>
                             <DataGridTextColumn x:Name="col2" Header="Должность" Binding="{Binding person.p_profession}" IsReadOnly="True"/>
@@ -204,7 +212,9 @@
                         </DockPanel>
                         
                     </Grid>
-                    <DataGrid x:Name="dgFP" ItemsSource="{Binding ListModPerson}" Style="{StaticResource DataGridStyle}" >
+                    <DataGrid x:Name="dgFP" ItemsSource="{Binding ListModPerson}" 
+                              SelectedItem="{Binding DataContext.SelectedModPerson, Mode=TwoWay, ElementName=userControl}"
+                              Style="{StaticResource DataGridStyle}" >
                         <DataGrid.Columns>
                             <DataGridTextColumn x:Name="colFP1" Header="ФИО" Binding="{Binding person.FIO}" IsReadOnly="True"/>
                             <DataGridTextColumn x:Name="colFP2" Header="Должность" Binding="{Binding person.p_profession}" IsReadOnly="True"/>
@@ -234,7 +244,7 @@
                     </Grid>
                     <FrameworkElement x:Name="ProxyElement" Visibility="Collapsed" DataContext="{Binding}"/>
                     <DataGrid x:Name="dgDop" ItemsSource="{Binding ListModPerson}" Style="{StaticResource DataGridStyle}" IsReadOnly="False"
-                              SelectedItem="{Binding SelectedPerson, Mode=TwoWay}"
+                              SelectedItem="{Binding DataContext.SelectedModPerson, Mode=TwoWay, ElementName=userControl}"
                               >
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="ФИО" Binding="{Binding person.FIO}" IsReadOnly="True"/>
@@ -335,7 +345,9 @@
                             <TextBox Text="{Binding SetProcFull, Mode=OneWayToSource}" Width="40"/>
                         </Button>-->
                     </Grid>
-                    <DataGrid x:Name="dgOt" ItemsSource="{Binding ListModPerson}" Style="{StaticResource DataGridStyle}" >
+                    <DataGrid x:Name="dgOt" ItemsSource="{Binding ListModPerson}" 
+                              SelectedItem="{Binding DataContext.SelectedModPerson, Mode=TwoWay, ElementName=userControl}"
+                              Style="{StaticResource DataGridStyle}" >
                         <DataGrid.Columns>
                             <DataGridTextColumn x:Name="colITR1" Header="ФИО" Binding="{Binding person.FIO}" IsReadOnly="True"/>
                             <DataGridTextColumn x:Name="colITR2" Header="Должность" Binding="{Binding person.p_profession}" IsReadOnly="True"/>
@@ -381,7 +393,9 @@
                             <TextBox Text="{Binding SetProcPrem, Mode=OneWayToSource}" Width="40"/>
                         </Button>-->
                     </Grid>
-                    <DataGrid x:Name="dgStim" ItemsSource="{Binding ListModPerson}" Style="{StaticResource DataGridStyle}" >
+                    <DataGrid x:Name="dgStim" ItemsSource="{Binding ListModPerson}" 
+                              SelectedItem="{Binding DataContext.SelectedModPerson, Mode=TwoWay, ElementName=userControl}"
+                              Style="{StaticResource DataGridStyle}" >
                         <DataGrid.Columns>
                             <DataGridTextColumn x:Name="colS1" Header="ФИО" Binding="{Binding person.FIO}" IsReadOnly="True"/>
                             <DataGridTextColumn x:Name="colS2" Header="Должность" Binding="{Binding person.p_profession}" IsReadOnly="True"/>
@@ -513,7 +527,9 @@
                             <ColumnDefinition Width="100"/>
                         </Grid.ColumnDefinitions>
                     </Grid>
-                    <DataGrid ItemsSource="{Binding ListModPerson}" Style="{StaticResource DataGridStyle}" >
+                    <DataGrid ItemsSource="{Binding ListModPerson}" 
+                              SelectedItem="{Binding DataContext.SelectedModPerson, Mode=TwoWay, ElementName=userControl}"
+                              Style="{StaticResource DataGridStyle}" >
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Таб.№" Binding="{Binding person.p_tab_number}"/>
                             <DataGridTextColumn Header="ФИО" Binding="{Binding person.FIO}" IsReadOnly="True"/>

@@ -53,11 +53,13 @@
             </ToolBarPanel.ContextMenu>
         </ToolBarPanel>
 
+        <FrameworkElement x:Name="proxyElement" Visibility="Collapsed" DataContext="{Binding}"/>
         <DataGrid x:Name="dg" ItemsSource="{Binding ListTransPerson, IsAsync=True}" Style="{StaticResource DataGridStyle}" 
                   VerticalGridLinesBrush="LightGray" HorizontalGridLinesBrush="LightGray" SelectedItem="{Binding SelectedPerson}"
                   FrozenColumnCount="1" >
 
                        
+            
             <!--<i:Interaction.Triggers>
                 <i:EventTrigger EventName="MouseDoubleClick">
                     <i:InvokeCommandAction Command="{Binding IsSelectCommand}"/>
@@ -130,7 +132,15 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTextColumn Header="Тариф" Binding="{Binding tp_tarif, Mode=TwoWay}" IsReadOnly="False" CellStyle="{StaticResource CellRight}"/>
+                <!--<DataGridTextColumn Header="Тариф" Binding="{Binding tp_tarif, Mode=TwoWay}" IsReadOnly="False" CellStyle="{StaticResource CellRight}"/>-->
+                
+                <DataGridComboBoxColumn Header="Тариф"  IsReadOnly="False" 
+                                        ItemsSource="{Binding DataContext.ListTarif, Source={x:Reference proxyElement}}"
+                                        SelectedValueBinding="{Binding tp_tarif}"
+                                        TextBinding="{Binding tp_tarif}"
+                                        CellStyle="{StaticResource CellRight}"/>
+
+
                 <DataGridTextColumn Header="Всего дней" Binding="{Binding ItogDays}" IsReadOnly="True" CellStyle="{StaticResource CellRight}"/>
                 <DataGridTextColumn Header="Итого" Binding="{Binding Summa, StringFormat=N2}" Width="70" IsReadOnly="True" CellStyle="{StaticResource CellRight}"/>
                 <DataGridTextColumn Header="Компенс.такси" Binding="{Binding tp_Kompens, Mode=TwoWay, StringFormat=N2}" Width="70"  CellStyle="{StaticResource CellRight}"/>
