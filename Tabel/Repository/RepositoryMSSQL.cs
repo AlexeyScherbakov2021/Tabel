@@ -89,7 +89,6 @@ namespace Tabel.Repository
 
         public void Save()
         {
-
             try
             {
                 db.SaveChanges();
@@ -106,9 +105,6 @@ namespace Tabel.Repository
             if (Autosave)
                 Save();
         }
-
-
-
 
     }
 }

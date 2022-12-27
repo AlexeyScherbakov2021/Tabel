@@ -300,11 +300,11 @@ namespace Tabel.ViewModels
                     TransPerson tp = new TransPerson();
                     tp.person = repoPersonal.Items.FirstOrDefault(it => it.id == item.id);
                     tp.TransDays = new ObservableCollection<TransDay>();
+                    tp.tp_TranspId = Transp.id;
 
                     foreach (var listItem in ListDays)
                     {
                         TransDay td = new TransDay();
-                        tp.tp_TranspId = Transp.id;
                         td.td_Day = listItem.Day;
                         td.OffDay = listItem.KindDay == TypeDays.Holyday;
                         td.td_Kind = 0;

@@ -91,7 +91,7 @@ namespace Tabel.ViewModels
             //if (e.PropertyName == "md_kvalif_tarif"
             //    || e.PropertyName == "md_prem_otdel")
             //    return;
-            SelectedPerson.OnPropertyChanged(nameof(SelectedPerson.AllDays));
+            //SelectedPerson.OnPropertyChanged(nameof(SelectedPerson.AllDays));
             IsModify = true;
         }
 
@@ -193,6 +193,8 @@ namespace Tabel.ViewModels
                 od.od_EndDate = WinSelect.cal.SelectedDates.Last();
                 od.OnPropertyChanged(nameof(od.CountDay));
                 IsModify = true;
+                SelectedPerson.OnPropertyChanged(nameof(SelectedPerson.AllDays));
+
             }
 
         }
@@ -247,7 +249,8 @@ namespace Tabel.ViewModels
                 };
                 IsModify = true;
                 SelectedPerson.ListDays.Add(NewOtpusk);
-                
+                SelectedPerson.OnPropertyChanged(nameof(SelectedPerson.AllDays));
+
             }
         }
 
@@ -346,6 +349,80 @@ namespace Tabel.ViewModels
         {
             SaveForm();
         }
+
+        //--------------------------------------------------------------------------------
+        // Команда Добавить сотрудников
+        //--------------------------------------------------------------------------------
+        public ICommand AddPersonCommand => new LambdaCommand(OnAddPersonCommandExecuted, CanAddPersonCommand);
+        private bool CanAddPersonCommand(object p) => _SelectedOtdel != null && otpusk != null;
+        private void OnAddPersonCommandExecuted(object p)
+        {
+            List<Models.Personal> ListPersonal = repoPersonal.Items
+                .AsNoTracking()
+                .Where(it => it.p_otdel_id == _SelectedOtdel.id && it.p_delete == false)
+                .ToList();
+
+            // составляем список добавленных людей
+            foreach (var item in ListOtpuskPerson)
+            {
+                var pers = ListPersonal.FirstOrDefault(it => it.id == item.person.id);
+                if (pers != null)
+                    ListPersonal.Remove(pers);
+            }
+
+            if (ListPersonal.Count == 0)
+            {
+                MessageBox.Show("Новых людей для отдела не обнаружено.", "Сообщение", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else if (MessageBox.Show($"Найдено людей: {ListPersonal.Count}. Добавлять?", "Предупреждение", MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
+            {
+                //RepositoryCalendar repo = new RepositoryCalendar(db);
+                //var ListDays = repo.GetListDays(_SelectYear, _SelectMonth);
+
+                foreach (var item in ListPersonal)
+                {
+                    OtpuskPerson op = new OtpuskPerson();
+                    op.op_otpuskId = otpusk.id;
+                    op.person = repoPersonal.Items.FirstOrDefault(it => it.id == item.id);
+                    op.ListDays = new ObservableCollection<OtpuskDays>();
+
+                    //foreach (var listItem in ListDays)
+                    //{
+                    //    TransDay td = new TransDay();
+                    //    tp.tp_TranspId = Transp.id;
+                    //    td.td_Day = listItem.Day;
+                    //    td.OffDay = listItem.KindDay == TypeDays.Holyday;
+                    //    td.td_Kind = 0;
+                    //    tp.TransDays.Add(td);
+                    //}
+
+                    repoOtpuskPerson.Add(op, true);
+                    ListOtpuskPerson.Add(op);
+                }
+
+                OnPropertyChanged(nameof(ListOtpuskPerson));
+                //IsModify = true;
+            }
+
+        }
+
+        //--------------------------------------------------------------------------------
+        // Команда Удалить сотрудника
+        //--------------------------------------------------------------------------------
+        public ICommand DeletePersonCommand => new LambdaCommand(OnDeletePersonCommandExecuted, CanDeletePersonCommand);
+        private bool CanDeletePersonCommand(object p) => SelectedPerson != null;
+        private void OnDeletePersonCommandExecuted(object p)
+        {
+            if (MessageBox.Show($"Удалить {SelectedPerson.person.FIO}?", "Предупреждение", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+            {
+                repoOtpuskPerson.Remove(SelectedPerson, true);
+                ListOtpuskPerson.Remove(SelectedPerson);
+                //IsModify = true;
+            }
+        }
+
+
+
 
         #endregion
 
