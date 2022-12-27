@@ -54,7 +54,7 @@
 
         <DataGrid x:Name="dg" ItemsSource="{Binding ListOtpuskPerson, IsAsync=True}" Style="{StaticResource DataGridStyle}" 
                   VerticalGridLinesBrush="LightGray" HorizontalGridLinesBrush="LightGray" SelectedItem="{Binding SelectedPerson}"
-                  FrozenColumnCount="1">
+                  FrozenColumnCount="1" SelectionMode="Single">
 
             <DataGrid.Columns>
                 <DataGridTemplateColumn Header="Сотрудник" IsReadOnly="True" Width="130">

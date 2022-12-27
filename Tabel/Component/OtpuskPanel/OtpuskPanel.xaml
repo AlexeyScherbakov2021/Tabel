@@ -142,7 +142,7 @@
             </ItemsControl.ItemTemplate>
         </ItemsControl>
 
-        <Border Grid.Column="36" BorderBrush="Black" BorderThickness="0.4" Margin="3,0" Background="Transparent">
+        <Border Grid.Column="36" BorderBrush="Black" BorderThickness="0.4" Margin="3,0" Background="White">
             <TextBlock Text="{Binding AllDays}"/>
         </Border>
         
