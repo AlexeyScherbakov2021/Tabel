@@ -22,10 +22,24 @@ namespace Tabel.Models
 
         public virtual OtpuskPerson otpuskPerson { get; set; }
         
-        public int CountDay => od_EndDate.DayOfYear - od_StartDate.DayOfYear + 1;
-        
-        public string ToolTipName => od_StartDate.ToString("d") + " - " + od_EndDate.ToString("d");
-
+        public int CountDay
+        {
+            get
+            {
+                int count = od_EndDate.DayOfYear - od_StartDate.DayOfYear + 1;
+                if (count < 0) count += 365;
+                return count;
+            }
+        }
+            
+       
+        public string ToolTipName => 
+            od_StartDate.ToString("d") 
+            + " - " 
+            + od_EndDate.ToString("d") 
+            + " (" 
+            + (od_EndDate.DayOfYear - od_StartDate.DayOfYear + 1).ToString()
+            +  ")";
 
     }
 }

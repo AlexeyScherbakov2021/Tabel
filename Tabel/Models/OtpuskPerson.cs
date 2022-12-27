@@ -5,11 +5,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Tabel.Infrastructure;
 
 namespace Tabel.Models
 {
     [Table("OtpuskPerson")]
-    public class OtpuskPerson : IEntity
+    public class OtpuskPerson : Observable, IEntity
     {
         public OtpuskPerson()
         {
@@ -25,6 +26,9 @@ namespace Tabel.Models
         public virtual Personal person { get; set; }
 
         public virtual ObservableCollection<OtpuskDays> ListDays { get; set; }
+
+        [NotMapped]
+        public int AllDays => ListDays.Sum(s => s.CountDay);
 
     }
 }

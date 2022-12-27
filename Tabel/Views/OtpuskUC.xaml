@@ -65,7 +65,7 @@
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
 
-                <DataGridTemplateColumn Header="Отпуска">
+                <DataGridTemplateColumn Header="Отпуска" Width="1100">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <otp:OtpuskPanel ItemsSource="{Binding ListDays}" VerticalContentAlignment="Center">

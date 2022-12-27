@@ -1,4 +1,5 @@
 ﻿//using DocumentFormat.OpenXml.Drawing.Charts;
+using DocumentFormat.OpenXml.Bibliography;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -40,7 +41,6 @@ namespace Tabel.ViewModels
         //};
 
         public Otpusk otpusk { get; set; }
-
 
         public OtpuskPerson SelectedPerson { get; set; }
 
@@ -91,9 +91,9 @@ namespace Tabel.ViewModels
             //if (e.PropertyName == "md_kvalif_tarif"
             //    || e.PropertyName == "md_prem_otdel")
             //    return;
+            SelectedPerson.OnPropertyChanged(nameof(SelectedPerson.AllDays));
             IsModify = true;
         }
-
 
 
         public bool ClosingFrom()
@@ -107,6 +107,9 @@ namespace Tabel.ViewModels
         //--------------------------------------------------------------------------------------------------
         public void OtdelChanged(Otdel SelectOtdel, int Year, int Month)
         {
+            if (_SelectYear == Year && _SelectedOtdel == SelectOtdel)
+                return;
+
             //_SelectMonth = Month;
             _SelectYear = Year;
             _SelectedOtdel = SelectOtdel;
@@ -163,13 +166,30 @@ namespace Tabel.ViewModels
             OtpuskDays od = (p as RoutedEventArgs).OriginalSource as OtpuskDays;
 
             SelectOtpuskWindow WinSelect = new SelectOtpuskWindow();
-            //for (var start = od.StartDate; start <= od.EndDate; start = start.AddDays(1))
+
+            FrameworkElement elem = ((p as RoutedEventArgs).Source) as FrameworkElement;
+            Point pt = Mouse.GetPosition(elem);
+            pt = elem.PointToScreen(pt);
+            WinSelect.Top = pt.Y - WinSelect.Height / 2;
+            WinSelect.Left = pt.X - WinSelect.Width / 2;
+
+
+            WinSelect.cal.DisplayDate = new DateTime(_SelectYear, od.od_StartDate.Month, 1);
             WinSelect.cal.SelectedDates.AddRange(od.od_StartDate, od.od_EndDate);
 
-            WinSelect.cal.DisplayDateStart = new DateTime(od.od_StartDate.Year, od.od_StartDate.Month, 1);
+            WinSelect.cal.DisplayDateStart = new DateTime(_SelectYear, 1, 1);
+            WinSelect.cal.DisplayDateEnd = new DateTime(_SelectYear + 1, 1, 31);
+
             if (WinSelect.ShowDialog() == true)
             {
-                od.od_StartDate = WinSelect.cal.SelectedDates.First();
+                DateTime StartDate = WinSelect.cal.SelectedDates.First();
+                if (StartDate.Year != _SelectYear)
+                {
+                    MessageBox.Show($"Начальная дата должна быть в {_SelectYear} году", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Stop);
+                    return;
+                }
+
+                od.od_StartDate = StartDate;
                 od.od_EndDate = WinSelect.cal.SelectedDates.Last();
                 od.OnPropertyChanged(nameof(od.CountDay));
                 IsModify = true;
@@ -205,13 +225,24 @@ namespace Tabel.ViewModels
             WinSelect.Left = pt.X - WinSelect.Width / 2;
 
             int month = int.Parse(elem.Tag.ToString());
+            if (month > 12) month--;
             WinSelect.cal.DisplayDate = new DateTime(_SelectYear, month, 1);
+
+            WinSelect.cal.DisplayDateStart = new DateTime(_SelectYear, 1, 1);
+            WinSelect.cal.DisplayDateEnd = new DateTime(_SelectYear + 1, 1, 31);
 
             if (WinSelect.ShowDialog() == true)
             {
+                DateTime StartDate = WinSelect.cal.SelectedDates.First();
+                if (StartDate.Year != _SelectYear )
+                {
+                    MessageBox.Show($"Начальная дата должна быть в {_SelectYear} году", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Stop) ;
+                    return;
+                }
+
                 var NewOtpusk = new OtpuskDays()
                 {
-                    od_StartDate = WinSelect.cal.SelectedDates.First(),
+                    od_StartDate = StartDate,
                     od_EndDate = WinSelect.cal.SelectedDates.Last()
                 };
                 IsModify = true;
