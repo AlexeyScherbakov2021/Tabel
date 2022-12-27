@@ -35,6 +35,7 @@ namespace Tabel.ViewModels
         public WindowState WinState { get; set; }
 
         public Visibility VisibleSuper { get; set; }
+        public Visibility VisibleAdmin { get; set; }
 
 
 
@@ -153,10 +154,12 @@ namespace Tabel.ViewModels
 #endregion
 
 
-
         public MainWindowViewModel()
         {
             VisibleSuper = App.CurrentUser.u_role == UserRoles.Внетарифный ? Visibility.Visible : Visibility.Collapsed;
+            VisibleAdmin = (App.CurrentUser.u_role == UserRoles.Admin || App.CurrentUser.id == 12)
+                ? Visibility.Visible 
+                : Visibility.Collapsed;
         }
 
 

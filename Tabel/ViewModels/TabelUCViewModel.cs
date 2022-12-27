@@ -444,7 +444,8 @@ namespace Tabel.ViewModels
             {
                 using (XLWorkbook wb = new XLWorkbook(@"Отчеты\Табель.xlsx"))
                 {
-                    IEnumerable<TabelPerson> SelectedListPerson = ListTabelPerson.Where(it => !string.IsNullOrEmpty(it.person.p_tab_number));
+                    IEnumerable<TabelPerson> SelectedListPerson = ListTabelPerson
+                        .Where(it => !string.IsNullOrEmpty(it.person.p_tab_number) && it.person.p_tab_number != "ГПХ");
 
                     int NumPP = 1;
                     var ws = wb.Worksheets.Worksheet(1);

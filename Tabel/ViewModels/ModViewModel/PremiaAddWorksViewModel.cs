@@ -48,7 +48,16 @@ namespace Tabel.ViewModels.ModViewModel
         }
 
 
-        public PremiaAddWorksViewModel(BaseModel db) : base(db)
+        public bool IsNotAdmin => App.CurrentUser.u_role != UserRoles.Admin;
+//        {
+//            get
+//            {
+//                return App.CurrentUser.u_role != UserRoles.Admin;
+//            }
+//}
+
+
+public PremiaAddWorksViewModel(BaseModel db) : base(db)
         {
             repoAddWorks = new RepositoryMSSQL<AddWorks>(db);
             ListWorks = repoAddWorks.Items.ToList();
@@ -60,7 +69,8 @@ namespace Tabel.ViewModels.ModViewModel
             //_SelectedOtdel = Otdel;
             _SelectMonth = Month;
             _SelectYear = Year;
-            ListModPerson = listPerson?.Where(it => it.person.p_type_id == SpecType.Рабочий).ToList(); ;
+            //ListModPerson = listPerson?.Where(it => it.person.p_type_id == SpecType.Рабочий).ToList(); ;
+            ListModPerson = listPerson?.ToList(); 
 
             OnPropertyChanged(nameof(ListModPerson));
         }

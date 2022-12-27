@@ -53,6 +53,7 @@ namespace Tabel.ViewModels
         public Visibility IsVisibleITR { get; private set; }
         public Visibility IsVisibleNoITR { get; private set; }
 
+
         public decimal SetProcPrem { get; set; }
 
         private ObservableCollection<ModPerson> _ListModPerson;
