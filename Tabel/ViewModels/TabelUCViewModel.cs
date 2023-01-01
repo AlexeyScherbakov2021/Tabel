@@ -33,6 +33,7 @@ namespace Tabel.ViewModels
         private readonly RepositoryMSSQL<WorkTabel> repoTabel;
         private readonly RepositoryMSSQL<typeDay> repoTypeDay;
         private readonly RepositoryMSSQL<TabelPerson> repoTabelPerson;
+        private readonly RepositoryMSSQL<OtpuskPerson> repoOtpuskPerson;
 
         public WorkTabel Tabel { get; set; }
         public IEnumerable<typeDay> ListTypeDays { get; set; }
@@ -56,6 +57,7 @@ namespace Tabel.ViewModels
             repoTabel = new RepositoryMSSQL<WorkTabel>(db);
             repoTypeDay = new RepositoryMSSQL<typeDay>(db);
             repoTabelPerson = new RepositoryMSSQL<TabelPerson>(db);
+            repoOtpuskPerson = new RepositoryMSSQL<OtpuskPerson>(db);
 
             //repoPersonal = AllRepo.GetRepoPersonal();
             //repoTabel = AllRepo.GetRepoTabel();
@@ -332,7 +334,6 @@ namespace Tabel.ViewModels
         private bool CanCreateCommand(object p) => SelectedOtdel != null && SelectedOtdel.ot_parent is null;
         private void OnCreateCommandExecuted(object p)
         {
-
             if (Tabel != null)
             {
                 if (MessageBox.Show("Текущий табель будет удален. Подтверждаете?", "Предупреждение", MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
@@ -378,6 +379,11 @@ namespace Tabel.ViewModels
                 TabelPerson tp = new TabelPerson();
                 tp.tp_person_id = item.id;
 
+                List<OtpuskDays> OtpDays = repoOtpuskPerson
+                    .Items
+                    .AsNoTracking()
+                    .FirstOrDefault(it => it.person.id == item.id && it.otpusk.o_year == _SelectYear).ListDays.ToList();
+
                 //tp.person = repoPersonal.Items.FirstOrDefault(it => it.id == item.id); 
                 tp.TabelDays = new ObservableCollection<TabelDay>();
 
@@ -385,6 +391,7 @@ namespace Tabel.ViewModels
                 {
                     TabelDay td = new TabelDay();
                     td.td_Day = listItem.Day;
+
                     td.CalendarTypeDay = listItem.KindDay;
                     switch (td.CalendarTypeDay)
                     {
@@ -402,9 +409,16 @@ namespace Tabel.ViewModels
                             break;
                     }
 
+                    if (OtpuskUCViewModel.IsOtpuskDay(new DateTime(_SelectYear, _SelectMonth, td.td_Day), OtpDays))
+                    {
+                        td.typeDay = repoTypeDay.Items.FirstOrDefault(it => it.t_name == "ОТ");
+                        td.td_Hours = 0;
+                    }
+
                     tp.TabelDays.Add(td);
 
                 }
+
 
                 Tabel.tabelPersons.Add(tp);
             }
@@ -432,6 +446,19 @@ namespace Tabel.ViewModels
             OnPropertyChanged(nameof(Tabel));
 
         }
+
+
+        //private bool IsOtpuskDay(DateTime date, List<OtpuskDays> OtpDays)
+        //{
+        //    foreach(var item in OtpDays)
+        //    {
+        //        if (date >= item.od_StartDate && date <= item.od_EndDate)
+        //            return true;
+        //    }
+
+        //    return false;
+        //}
+
 
         //--------------------------------------------------------------------------------
         // Команда Загрузить из производственного календаря
@@ -565,6 +592,11 @@ namespace Tabel.ViewModels
 
                 foreach (var item in ListPersonal)
                 {
+                    List<OtpuskDays> OtpDays = repoOtpuskPerson
+                        .Items
+                        .AsNoTracking()
+                        .FirstOrDefault(it => it.person.id == item.id && it.otpusk.o_year == _SelectYear).ListDays.ToList();
+
                     TabelPerson tp = new TabelPerson();
                     //tp.tp_person_id = item.id;
                     tp.person = repoPersonal.Items.FirstOrDefault(it => it.id == item.id);
@@ -592,8 +624,12 @@ namespace Tabel.ViewModels
                                 break;
                         }
 
+                        if (OtpuskUCViewModel.IsOtpuskDay(new DateTime(_SelectYear, _SelectMonth, td.td_Day), OtpDays))
+                        {
+                            td.typeDay = repoTypeDay.Items.FirstOrDefault(it => it.t_name == "ОТ");
+                            td.td_Hours = 0;
+                        }
                         tp.TabelDays.Add(td);
-
                     }
 
                     repoTabelPerson.Add(tp, true);

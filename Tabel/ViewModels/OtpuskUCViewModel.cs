@@ -20,8 +20,6 @@ using Tabel.Views;
 
 namespace Tabel.ViewModels
 {
-
-
     internal class OtpuskUCViewModel : ViewModel, IBaseUCViewModel
     {
         private Otdel _SelectedOtdel;
@@ -425,6 +423,18 @@ namespace Tabel.ViewModels
 
 
         #endregion
+
+
+        public static bool IsOtpuskDay(DateTime date, List<OtpuskDays> OtpDays)
+        {
+            foreach (var item in OtpDays)
+            {
+                if (date >= item.od_StartDate && date <= item.od_EndDate)
+                    return true;
+            }
+
+            return false;
+        }
 
     }
 }

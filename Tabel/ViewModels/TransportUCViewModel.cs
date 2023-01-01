@@ -31,6 +31,7 @@ namespace Tabel.ViewModels
         private readonly RepositoryMSSQL<Personal> repoPersonal;
         private readonly RepositoryMSSQL<Transport> repoTransp;
         private readonly RepositoryMSSQL<TransPerson> repoTransPerson;
+        //private readonly RepositoryMSSQL<OtpuskPerson> repoOtpuskPerson;
 
 
         public List<decimal> ListTarif { get; set; } = new List<decimal>() { 200, 300 };
@@ -82,12 +83,17 @@ namespace Tabel.ViewModels
 
         private bool IsModify;
 
+
+        //--------------------------------------------------------------------------------------------------
+        // Конструктор
+        //--------------------------------------------------------------------------------------------------
         public TransportUCViewModel()
         {
             repoPersonal = new RepositoryMSSQL<Personal>();
             db = repoPersonal.GetDB();
             repoTransp = new RepositoryMSSQL<Transport>(db);
             repoTransPerson = new RepositoryMSSQL<TransPerson>(db);
+            //repoOtpuskPerson = new RepositoryMSSQL<OtpuskPerson>(db);
             IsModify = false;
         }
 
@@ -155,8 +161,12 @@ namespace Tabel.ViewModels
 
                     //if (IndexDate.DayOfWeek == DayOfWeek.Sunday || IndexDate.DayOfWeek == DayOfWeek.Saturday)
                     //    td.OffDay = true;
+
                     tp.TransDays.Add(td);
+
                 }
+
+
 
                 Transp.TransportPerson.Add(tp);
             }
@@ -176,6 +186,7 @@ namespace Tabel.ViewModels
             OnPropertyChanged(nameof(Transp));
 
         }
+
 
         //--------------------------------------------------------------------------------
         // Команда Сохранить

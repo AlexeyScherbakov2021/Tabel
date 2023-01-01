@@ -33,6 +33,7 @@ namespace Tabel.ViewModels
         private readonly RepositoryMSSQL<Personal> repoPersonal;
         private readonly RepositoryMSSQL<Smena> repoSmena;
         private readonly RepositoryMSSQL<SmenaPerson> repoSmenaPersonal;
+        private readonly RepositoryMSSQL<OtpuskPerson> repoOtpuskPerson;
 
         public string[] ListKind { get; set; } //= { "1см", "2см", "В", "О" };
 
@@ -80,10 +81,14 @@ namespace Tabel.ViewModels
 
         //private DateTime _CurrentDate;
 
+        //--------------------------------------------------------------------------------------------------
+        // Конструктор
+        //--------------------------------------------------------------------------------------------------
         public SmenaUCViewModel()
         {
             repoPersonal = new RepositoryMSSQL<Personal>();
             db = repoPersonal.GetDB();
+            repoOtpuskPerson = new RepositoryMSSQL<OtpuskPerson>(db);
             repoSmena = new RepositoryMSSQL<Smena>(db);
             repoSmenaPersonal = new RepositoryMSSQL<SmenaPerson>(db);
             ListKind = EnumToString.ListSmenaKind.ToArray();
@@ -153,6 +158,11 @@ namespace Tabel.ViewModels
             // если есть персонал в отделе, добавляем его и формируем дни
             foreach (var item in PersonsFromOtdel)
             {
+                List<OtpuskDays> OtpDays = repoOtpuskPerson
+                    .Items
+                    .AsNoTracking()
+                    .FirstOrDefault(it => it.person.id == item.id && it.otpusk.o_year == _SelectYear).ListDays.ToList();
+
                 SmenaPerson sp = new SmenaPerson();
                 sp.sp_PersonId = item.id;
                 sp.SmenaDays = new List<SmenaDay>();
@@ -171,6 +181,10 @@ namespace Tabel.ViewModels
                         sd.sd_Kind = SmenaKind.First;
                         sd.OffDay = false;
                     }
+
+                    if (OtpuskUCViewModel.IsOtpuskDay(new DateTime(_SelectYear, _SelectMonth, sd.sd_Day), OtpDays))
+                        sd.sd_Kind = SmenaKind.Otpusk;
+
                     sp.SmenaDays.Add(sd);
                 }
 
@@ -312,6 +326,11 @@ namespace Tabel.ViewModels
 
                 foreach (var item in ListPersonal)
                 {
+                    List<OtpuskDays> OtpDays = repoOtpuskPerson
+                        .Items
+                        .AsNoTracking()
+                        .FirstOrDefault(it => it.person.id == item.id && it.otpusk.o_year == _SelectYear).ListDays.ToList();
+
                     SmenaPerson sp = new SmenaPerson();
                     //tp.tp_person_id = item.id;
                     sp.personal = repoPersonal.Items.FirstOrDefault(it => it.id == item.id);
@@ -324,6 +343,10 @@ namespace Tabel.ViewModels
                         sd.sd_Day = listItem.Day;
                         sd.OffDay = listItem.KindDay == TypeDays.Holyday;
                         sd.sd_Kind = sd.OffDay ? SmenaKind.DayOff : SmenaKind.First;
+
+                        if (OtpuskUCViewModel.IsOtpuskDay(new DateTime(_SelectYear, _SelectMonth, sd.sd_Day), OtpDays))
+                            sd.sd_Kind = SmenaKind.Otpusk;
+
                         sp.SmenaDays.Add(sd);
                     }
 
