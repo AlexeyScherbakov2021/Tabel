@@ -8,8 +8,10 @@
         xmlns:comp="clr-namespace:StartButton"
         xmlns:theme="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2"
         mc:Ignorable="d"
+        MinHeight="590" Height="594"
+        Width="980" MinWidth="957"
         WindowState="{Binding WinState, Mode=OneWayToSource}"
-        Title="{Binding Title}" Height="591" Width="957" WindowStartupLocation="CenterScreen" Background="#FF537F82">
+        Title="{Binding Title}"  WindowStartupLocation="CenterScreen" Background="#FF537F82">
     <Window.DataContext>
         <vm:MainWindowViewModel/>
     </Window.DataContext>
