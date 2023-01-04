@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Tabel"
         xmlns:vm="clr-namespace:Tabel.ViewModels"
+        xmlns:comp="clr-namespace:StartButton"
         xmlns:theme="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2"
         mc:Ignorable="d"
         WindowState="{Binding WinState, Mode=OneWayToSource}"
@@ -45,37 +46,55 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Button}">
-                        <Border x:Name="border" CornerRadius="20" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" SnapsToDevicePixels="true">
-                            <Border.Effect>
-                                <DropShadowEffect Opacity="0.2" ShadowDepth="8" BlurRadius="15"/>
-                            </Border.Effect>
-                            <Border.Background>
-                                <RadialGradientBrush>
-                                    <GradientStop Color="#FFF8FCFF"/>
-                                    <GradientStop Color="#FFC3C8CC" Offset="1"/>
-                                </RadialGradientBrush>
-                            </Border.Background>
-                            <TextBlock Text="{TemplateBinding Content}" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                        <Grid>
+
+                        <Border x:Name="border" SnapsToDevicePixels="true" 
+                                         CornerRadius="16" Margin="8" BorderBrush="#FF0A3E58" 
+                                BorderThickness="0">
+                                    <Border.Effect>
+                                        <DropShadowEffect Opacity="0.4" ShadowDepth="12" BlurRadius="15"/>
+                                    </Border.Effect>
+                                    <Border.Background>
+                                    <RadialGradientBrush>
+                                        <GradientStop Color="#FFF9FDFF"/>
+                                        <GradientStop Color="#FFD3D8DC" Offset="1"/>
+                                    </RadialGradientBrush>
+                                </Border.Background>
+                                <!--<TextBlock Text="{TemplateBinding Content}" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
                                               Margin="{TemplateBinding Padding}"  
                                               SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" 
                                               VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                               TextWrapping="Wrap" FontSize="25" FontWeight="Bold"
                                               TextAlignment="Center" Foreground="Blue"
-                                       />
+                                       />-->
 
-                            <!--<ContentPresenter x:Name="contentPresenter" Focusable="False" 
-                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
-                                              Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" 
-                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" 
-                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>-->
-                        </Border>
+                                <ContentPresenter x:Name="contentPresenter" Focusable="False" 
+                                    HorizontalAlignment="Stretch" 
+                                    Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" 
+                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" 
+                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                            </Border>
+                            <Border x:Name="borderOut" Background="Transparent" CornerRadius="20" 
+                                    BorderThickness="8" BorderBrush="#FF226080">
+                                <Border.Effect>
+                                    <BlurEffect Radius="6"/>
+                                </Border.Effect>
+                            </Border>
+
+                        </Grid>
+
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsDefaulted" Value="true">
                                 <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
                             </Trigger>
                             <Trigger Property="IsMouseOver" Value="true">
                                 <Setter Property="Background" TargetName="border" Value="{StaticResource Button.MouseOver.Background}"/>
-                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.MouseOver.Border}"/>
+                                <Setter Property="BorderBrush" TargetName="borderOut" Value="#FF226080"/>
+                                <Setter Property="Effect" TargetName="borderOut" Value="{x:Null}">
+                                    <!--<Setter.Value>
+                                        <BlurEffect Radius="0"/>
+                                    </Setter.Value>-->
+                                </Setter>
                             </Trigger>
                             <Trigger Property="IsPressed" Value="true">
                                 <Setter Property="Background" TargetName="border" Value="{StaticResource Button.Pressed.Background}"/>
@@ -113,15 +132,62 @@
             <StatusBarItem Content="Пользователь"/>
             <StatusBarItem Content="{Binding LoginUser}"/>
         </StatusBar>
-        <UniformGrid Columns="3" Rows="3">
-            <Button Content="График сменной работы" Command="{Binding ExecSmenaCommand}"/>
+        <UniformGrid Columns="2" Rows="4">
+            <UniformGrid.Resources>
+                <Style TargetType="{x:Type TextBlock}">
+                    <Setter Property="FontSize" Value="24"/>
+                    <Setter Property="FontWeight" Value="Bold"/>
+                    <Setter Property="TextWrapping" Value="Wrap"/>
+                    <Setter Property="TextAlignment" Value="Center"/>
+                    <Setter Property="Margin" Value="5,0"/>
+                </Style>
+            </UniformGrid.Resources>
+            <!--<Button Content="График сменной работы" Command="{Binding ExecSmenaCommand}"/>
             <Button Content="График использования личного транспорта" Command="{Binding ExecTranspCommand}"/>
             <Button Content="Табель рабочего времени" Command="{Binding ExecTabelCommand}"/>
             <Button Content="График отпусков" Command="{Binding ExecOtpuskCommand}" />
             <Button Content="Модель оплаты"  Command="{Binding ExecModCommand}"/>
             <Button Content="Общие начисления"  Command="{Binding DataSummaryCommand}" Visibility="{Binding VisibleAdmin}"/>
-            <Button Content="Отдельная форма" Command="{Binding ExecSeparCommand}" Visibility="{Binding VisibleSuper}"/>
-            <Button Content="Настройки" Command="{Binding ExecCalCommand}"/>
+            <Button Content="Отдельная форма" Command="{Binding ExecSeparCommand}" Visibility="{Binding VisibleSuper}"/>-->
+
+            <comp:ButtonT  ImageSource="/Resources/post-218619-1485371070.png" Command="{Binding ExecSmenaCommand}" >
+                <TextBlock Text="График сменной работы"/>
+            </comp:ButtonT>
+            <comp:ButtonT ImageSource="/Resources/post-218619-1485371070.png" Command="{Binding ExecTranspCommand}" >
+                <TextBlock Text="График использования личного транспорта"/>
+            </comp:ButtonT>
+            <comp:ButtonT ImageSource="/Resources/post-218619-1485371070.png" Command="{Binding ExecTabelCommand}" >
+                <TextBlock Text="Табель рабочего времени"/>
+            </comp:ButtonT>
+            <comp:ButtonT  ImageSource="/Resources/post-218619-1485371070.png" Command="{Binding ExecOtpuskCommand}" >
+                <TextBlock Text="График отпусков"/>
+            </comp:ButtonT>
+            <comp:ButtonT ImageSource="/Resources/post-218619-1485371070.png" Command="{Binding ExecModCommand}">
+                <TextBlock Text="Модель оплаты"/>
+            </comp:ButtonT>
+            <comp:ButtonT ImageSource="/Resources/post-218619-1485371070.png" Command="{Binding DataSummaryCommand}" Visibility="{Binding VisibleAdmin}">
+                <TextBlock Text="Общие начисления"/>
+            </comp:ButtonT>
+            <comp:ButtonT  ImageSource="/Resources/post-218619-1485371070.png" Command="{Binding ExecSeparCommand}"  Visibility="{Binding VisibleSuper}">
+                <TextBlock Text="Отдельная форма"/>
+            </comp:ButtonT>
+            <comp:ButtonT ImageSource="/Resources/post-218619-1485371070.png" Command="{Binding ExecCalCommand}">
+                <TextBlock Text="Настройки"/>
+            </comp:ButtonT>
+
+            <!--<Button Command="{Binding ExecCalCommand}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="10*"/>
+                        <ColumnDefinition Width="12*" MinWidth="140"/>
+                    </Grid.ColumnDefinitions>
+                    <Image Source="/Resources/post-218619-1485371070.png" HorizontalAlignment="Left" Margin="10,0" />
+                    <Border Background="Transparent" VerticalAlignment="Center"
+                            Padding="3" Grid.Column="1"  CornerRadius="5">
+                        <TextBlock Text="Настройки" FontWeight="Bold" HorizontalAlignment="Center" FontSize="24" Foreground="Blue"/>
+                    </Border>
+                </Grid>
+            </Button>-->
         </UniformGrid>
     </DockPanel>
 

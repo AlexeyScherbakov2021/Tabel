@@ -68,7 +68,7 @@
                 <DataGridTemplateColumn Header="Отпуска" Width="1100">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <otp:OtpuskPanel ItemsSource="{Binding ListDays}" VerticalContentAlignment="Center">
+                            <otp:OtpuskPanel ItemsSource="{Binding ListDays}" VerticalContentAlignment="Stretch">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="EditOtpusk">
                                         <i:InvokeCommandAction Command="{Binding DataContext.EditOtpuskCommand, ElementName=dg}" PassEventArgsToCommand="True"/>

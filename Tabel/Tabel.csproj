@@ -120,6 +120,9 @@
       <DependentUpon>OtpuskPanel.xaml</DependentUpon>
     </Compile>
     <Compile Include="Component\OtpuskPanel\OtpuskStartConverter.cs" />
+    <Compile Include="Component\StartButton\ButtonT.xaml.cs">
+      <DependentUpon>ButtonT.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Models\Otpusk.cs" />
     <Compile Include="Models\OtpuskDays.cs" />
     <Compile Include="Models\OtpuskPerson.cs" />
@@ -265,6 +268,10 @@
     <Page Include="Component\OtpuskPanel\OtpuskPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Component\StartButton\ButtonT.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\SelectOtpuskWindow.xaml">
       <SubType>Designer</SubType>
@@ -463,6 +470,10 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="calendar.ico" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Resources\post-218619-1485371070.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

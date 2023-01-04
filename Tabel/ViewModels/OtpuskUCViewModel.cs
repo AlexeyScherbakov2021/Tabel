@@ -168,8 +168,8 @@ namespace Tabel.ViewModels
             FrameworkElement elem = ((p as RoutedEventArgs).Source) as FrameworkElement;
             Point pt = Mouse.GetPosition(elem);
             pt = elem.PointToScreen(pt);
-            WinSelect.Top = pt.Y - WinSelect.Height / 2;
-            WinSelect.Left = pt.X - WinSelect.Width / 2;
+            WinSelect.Top = pt.Y; // - WinSelect.Height / 2;
+            WinSelect.Left = pt.X; // - WinSelect.Width / 2;
 
 
             WinSelect.cal.DisplayDate = new DateTime(_SelectYear, od.od_StartDate.Month, 1);
@@ -207,6 +207,7 @@ namespace Tabel.ViewModels
             OtpuskDays od = (p as RoutedEventArgs).OriginalSource as OtpuskDays;
             SelectedPerson.ListDays.Remove(od);
             IsModify = true;
+            SelectedPerson.OnPropertyChanged(nameof(SelectedPerson.AllDays));
             //OnPropertyChanged(nameof(ListDays));
         }
 
