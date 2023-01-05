@@ -481,6 +481,7 @@
     <Resource Include="Resources\1663697697_28-phonoteka-org-p-golubo-zelenii-fon-vkontakte-30.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\транспорт.png" />
     <Resource Include="Views\teal-abstract-background.png" />
   </ItemGroup>
   <ItemGroup>
@@ -505,10 +506,37 @@
     <Resource Include="Resources\depositphotos_14048893-stock-photo-3d-small-with-clipboard-and.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\транспорт.png" />
+    <Resource Include="Resources\index11.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\index11.jpg" />
+    <Resource Include="Resources\чемодан.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\грузовик.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\настройки.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\для модели.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\для модели1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\часы5.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\список.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\календарь2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\чемодан2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\настройки2.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

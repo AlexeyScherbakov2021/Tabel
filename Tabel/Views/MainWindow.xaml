@@ -8,8 +8,8 @@
         xmlns:comp="clr-namespace:StartButton"
         xmlns:theme="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2"
         mc:Ignorable="d"
-        MinHeight="590" Height="594"
-        Width="980" MinWidth="957"
+        MinHeight="700" Height="700"
+        Width="1000" MinWidth="1000"
         WindowState="{Binding WinState, Mode=OneWayToSource}"
         Title="{Binding Title}"  WindowStartupLocation="CenterScreen">
     <Window.DataContext>
@@ -155,28 +155,28 @@
             <Button Content="Общие начисления"  Command="{Binding DataSummaryCommand}" Visibility="{Binding VisibleAdmin}"/>
             <Button Content="Отдельная форма" Command="{Binding ExecSeparCommand}" Visibility="{Binding VisibleSuper}"/>-->
 
-            <comp:ButtonT  ImageSource="/Resources/111.png" Command="{Binding ExecSmenaCommand}" >
+            <comp:ButtonT  ImageSource="/Resources/часы5.png" Command="{Binding ExecSmenaCommand}" >
                 <TextBlock Text="График сменной работы"/>
             </comp:ButtonT>
             <comp:ButtonT ImageSource="/Resources/транспорт.png" Command="{Binding ExecTranspCommand}" >
                 <TextBlock Text="График использования личного транспорта"/>
             </comp:ButtonT>
-            <comp:ButtonT ImageSource="/Resources/часы1.png" Command="{Binding ExecTabelCommand}" >
+            <comp:ButtonT ImageSource="/Resources/календарь2.png" Command="{Binding ExecTabelCommand}" >
                 <TextBlock Text="Табель рабочего времени"/>
             </comp:ButtonT>
-            <comp:ButtonT  ImageSource="/Resources/55555.png" Command="{Binding ExecOtpuskCommand}" >
+            <comp:ButtonT  ImageSource="/Resources/чемодан2.png" Command="{Binding ExecOtpuskCommand}" >
                 <TextBlock Text="График отпусков"/>
             </comp:ButtonT>
-            <comp:ButtonT ImageSource="/Resources/unnamed.png" Command="{Binding ExecModCommand}">
+            <comp:ButtonT ImageSource="/Resources/для модели1.png" Command="{Binding ExecModCommand}">
                 <TextBlock Text="Модель оплаты"/>
             </comp:ButtonT>
-            <comp:ButtonT ImageSource="/Resources/depositphotos_14048893-stock-photo-3d-small-with-clipboard-and.png" Command="{Binding DataSummaryCommand}" Visibility="{Binding VisibleAdmin}">
+            <comp:ButtonT ImageSource="/Resources/список.png" Command="{Binding DataSummaryCommand}" Visibility="{Binding VisibleAdmin}">
                 <TextBlock Text="Общие начисления"/>
             </comp:ButtonT>
             <comp:ButtonT  ImageSource="/Resources/директор.png" Command="{Binding ExecSeparCommand}"  Visibility="{Binding VisibleSuper}">
                 <TextBlock Text="Отдельная форма"/>
             </comp:ButtonT>
-            <comp:ButtonT ImageSource="/Resources/post-218619-1485371070.png" Command="{Binding ExecCalCommand}">
+            <comp:ButtonT ImageSource="/Resources/настройки2.png" Command="{Binding ExecCalCommand}">
                 <TextBlock Text="Настройки"/>
             </comp:ButtonT>
 
