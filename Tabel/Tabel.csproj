@@ -471,9 +471,44 @@
   <ItemGroup>
     <Resource Include="calendar.ico" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Resources\stripes-steal-turquoise-fade-chrome-os-stock.jpg" />
+  </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\post-218619-1485371070.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\1663697697_28-phonoteka-org-p-golubo-zelenii-fon-vkontakte-30.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Views\teal-abstract-background.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\8888.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\111.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\55555.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\директор.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\часы1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\unnamed.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\depositphotos_14048893-stock-photo-3d-small-with-clipboard-and.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\транспорт.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\index11.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

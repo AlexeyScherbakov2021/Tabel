@@ -362,7 +362,7 @@
             </TabItem>
 
 
-            <TabItem DataContext="{Binding premiaOtdelViewModel}">
+            <TabItem DataContext="{Binding premiaOtdelViewModel}" ToolTip="Для ИТР">
                 <TabItem.Header>
                     <TextBlock Text="Премия 3 (стимуляция)" Background="LightBlue" Padding="2"/>
                 </TabItem.Header>

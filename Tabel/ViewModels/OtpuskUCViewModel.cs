@@ -167,10 +167,13 @@ namespace Tabel.ViewModels
 
             FrameworkElement elem = ((p as RoutedEventArgs).Source) as FrameworkElement;
             Point pt = Mouse.GetPosition(elem);
-            pt = elem.PointToScreen(pt);
-            WinSelect.Top = pt.Y; // - WinSelect.Height / 2;
-            WinSelect.Left = pt.X; // - WinSelect.Width / 2;
 
+            var trans = PresentationSource.FromVisual(elem).CompositionTarget.TransformFromDevice;
+            Point pt2 = trans.Transform(elem.PointToScreen(pt));
+            //Point pt2 = elem.PointToScreen(pt);
+
+            WinSelect.Top = pt2.Y - WinSelect.Height / 2;
+            WinSelect.Left = pt2.X - WinSelect.Width / 2;
 
             WinSelect.cal.DisplayDate = new DateTime(_SelectYear, od.od_StartDate.Month, 1);
             WinSelect.cal.SelectedDates.AddRange(od.od_StartDate, od.od_EndDate);
@@ -206,6 +209,9 @@ namespace Tabel.ViewModels
         {
             OtpuskDays od = (p as RoutedEventArgs).OriginalSource as OtpuskDays;
             SelectedPerson.ListDays.Remove(od);
+
+            RepositoryMSSQL<OtpuskDays> repoDays = new RepositoryMSSQL<OtpuskDays>(db);
+            repoDays.Delete(od);
             IsModify = true;
             SelectedPerson.OnPropertyChanged(nameof(SelectedPerson.AllDays));
             //OnPropertyChanged(nameof(ListDays));
@@ -221,9 +227,12 @@ namespace Tabel.ViewModels
             SelectOtpuskWindow WinSelect = new SelectOtpuskWindow();
             FrameworkElement elem = ((p as RoutedEventArgs).OriginalSource) as FrameworkElement;
             Point pt = Mouse.GetPosition(elem);
-            pt = elem.PointToScreen(pt);
-            WinSelect.Top = pt.Y - WinSelect.Height / 2;
-            WinSelect.Left = pt.X - WinSelect.Width / 2;
+            var trans = PresentationSource.FromVisual(elem).CompositionTarget.TransformFromDevice;
+            Point pt2 = trans.Transform(elem.PointToScreen(pt));
+
+            //pt = elem.PointToScreen(pt);
+            WinSelect.Top = pt2.Y - WinSelect.Height / 2;
+            WinSelect.Left = pt2.X - WinSelect.Width / 2;
 
             int month = int.Parse(elem.Tag.ToString());
             if (month > 12) month--;

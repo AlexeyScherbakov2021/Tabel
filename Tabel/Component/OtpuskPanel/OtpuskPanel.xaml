@@ -106,7 +106,7 @@
             <TextBlock Text="янв"/>
         </Border>
 
-        <ItemsControl x:Name="lb" Grid.ColumnSpan="35" 
+        <ItemsControl x:Name="lb" Grid.ColumnSpan="13"
             ItemsSource="{Binding ItemsSource, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>

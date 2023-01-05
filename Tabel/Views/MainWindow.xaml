@@ -11,7 +11,7 @@
         MinHeight="590" Height="594"
         Width="980" MinWidth="957"
         WindowState="{Binding WinState, Mode=OneWayToSource}"
-        Title="{Binding Title}"  WindowStartupLocation="CenterScreen" Background="#FF537F82">
+        Title="{Binding Title}"  WindowStartupLocation="CenterScreen">
     <Window.DataContext>
         <vm:MainWindowViewModel/>
     </Window.DataContext>
@@ -50,13 +50,13 @@
                     <ControlTemplate TargetType="{x:Type Button}">
                         <Grid>
 
-                        <Border x:Name="border" SnapsToDevicePixels="true" 
+                            <Border x:Name="border" SnapsToDevicePixels="true" 
                                          CornerRadius="16" Margin="8" BorderBrush="#FF0A3E58" 
                                 BorderThickness="0">
-                                    <Border.Effect>
-                                        <DropShadowEffect Opacity="0.4" ShadowDepth="12" BlurRadius="15"/>
-                                    </Border.Effect>
-                                    <Border.Background>
+                                <Border.Effect>
+                                    <DropShadowEffect Opacity="0.4" ShadowDepth="12" BlurRadius="15"/>
+                                </Border.Effect>
+                                <Border.Background>
                                     <RadialGradientBrush>
                                         <GradientStop Color="#FFF9FDFF"/>
                                         <GradientStop Color="#FFD3D8DC" Offset="1"/>
@@ -128,6 +128,9 @@
             </Setter>
         </Style>
     </Window.Resources>
+    <Window.Background>
+        <ImageBrush ImageSource="/Views/teal-abstract-background.png"/>
+    </Window.Background>
 
     <DockPanel>
         <StatusBar DockPanel.Dock="Bottom">
@@ -152,25 +155,25 @@
             <Button Content="Общие начисления"  Command="{Binding DataSummaryCommand}" Visibility="{Binding VisibleAdmin}"/>
             <Button Content="Отдельная форма" Command="{Binding ExecSeparCommand}" Visibility="{Binding VisibleSuper}"/>-->
 
-            <comp:ButtonT  ImageSource="/Resources/post-218619-1485371070.png" Command="{Binding ExecSmenaCommand}" >
+            <comp:ButtonT  ImageSource="/Resources/111.png" Command="{Binding ExecSmenaCommand}" >
                 <TextBlock Text="График сменной работы"/>
             </comp:ButtonT>
-            <comp:ButtonT ImageSource="/Resources/post-218619-1485371070.png" Command="{Binding ExecTranspCommand}" >
+            <comp:ButtonT ImageSource="/Resources/транспорт.png" Command="{Binding ExecTranspCommand}" >
                 <TextBlock Text="График использования личного транспорта"/>
             </comp:ButtonT>
-            <comp:ButtonT ImageSource="/Resources/post-218619-1485371070.png" Command="{Binding ExecTabelCommand}" >
+            <comp:ButtonT ImageSource="/Resources/часы1.png" Command="{Binding ExecTabelCommand}" >
                 <TextBlock Text="Табель рабочего времени"/>
             </comp:ButtonT>
-            <comp:ButtonT  ImageSource="/Resources/post-218619-1485371070.png" Command="{Binding ExecOtpuskCommand}" >
+            <comp:ButtonT  ImageSource="/Resources/55555.png" Command="{Binding ExecOtpuskCommand}" >
                 <TextBlock Text="График отпусков"/>
             </comp:ButtonT>
-            <comp:ButtonT ImageSource="/Resources/post-218619-1485371070.png" Command="{Binding ExecModCommand}">
+            <comp:ButtonT ImageSource="/Resources/unnamed.png" Command="{Binding ExecModCommand}">
                 <TextBlock Text="Модель оплаты"/>
             </comp:ButtonT>
-            <comp:ButtonT ImageSource="/Resources/post-218619-1485371070.png" Command="{Binding DataSummaryCommand}" Visibility="{Binding VisibleAdmin}">
+            <comp:ButtonT ImageSource="/Resources/depositphotos_14048893-stock-photo-3d-small-with-clipboard-and.png" Command="{Binding DataSummaryCommand}" Visibility="{Binding VisibleAdmin}">
                 <TextBlock Text="Общие начисления"/>
             </comp:ButtonT>
-            <comp:ButtonT  ImageSource="/Resources/post-218619-1485371070.png" Command="{Binding ExecSeparCommand}"  Visibility="{Binding VisibleSuper}">
+            <comp:ButtonT  ImageSource="/Resources/директор.png" Command="{Binding ExecSeparCommand}"  Visibility="{Binding VisibleSuper}">
                 <TextBlock Text="Отдельная форма"/>
             </comp:ButtonT>
             <comp:ButtonT ImageSource="/Resources/post-218619-1485371070.png" Command="{Binding ExecCalCommand}">
