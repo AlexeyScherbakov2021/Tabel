@@ -58,8 +58,8 @@
                                     BorderBrush="Black" Margin="-2,0" IsHitTestVisible="False" Background="Gainsboro">
                                 <UniformGrid Rows="2" >
                                     <Border Background="LightSteelBlue" Width="24" CornerRadius="3">
-                                        <TextBlock Name="NumberDay" Text="{Binding td_Day}" HorizontalAlignment="Center" MinWidth="24" TextAlignment="Center" 
-                                               IsHitTestVisible="False"/>
+                                        <TextBlock Name="NumberDay" Text="{Binding td_Day}" HorizontalAlignment="Center" MinWidth="24" 
+                                                   TextAlignment="Center" IsHitTestVisible="False"/>
                                     </Border>
                                     <fa:ImageAwesome Icon="{Binding td_Kind, Converter={StaticResource TransImageConvert}}" Width="14" 
                                                      Height="16" IsHitTestVisible="False"/>

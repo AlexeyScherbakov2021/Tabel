@@ -346,7 +346,7 @@ namespace Tabel.ViewModels
         // Команда Добавить сотрудников
         //--------------------------------------------------------------------------------
         public ICommand AddPersonCommand => new LambdaCommand(OnAddPersonCommandExecuted, CanAddPersonCommand);
-        private bool CanAddPersonCommand(object p) => _SelectedOtdel != null;
+        private bool CanAddPersonCommand(object p) => _SelectedOtdel != null && CurrentSeparate != null;
         private void OnAddPersonCommandExecuted(object p)
         {
             RepositoryMSSQL<Personal> repoPersonal = new RepositoryMSSQL<Personal>(db);
@@ -430,7 +430,7 @@ namespace Tabel.ViewModels
         // Команда Печать
         //--------------------------------------------------------------------------------
         public ICommand PrintCommand => new LambdaCommand(OnPrintPersonCommandExecuted, CanPrintPersonCommand);
-        private bool CanPrintPersonCommand(object p) => true;
+        private bool CanPrintPersonCommand(object p) => CurrentSeparate != null;
         private void OnPrintPersonCommandExecuted(object p)
         {
             try

@@ -183,7 +183,9 @@ namespace Tabel.ViewModels
 
             if (WinSelect.ShowDialog() == true)
             {
-                DateTime StartDate = WinSelect.cal.SelectedDates.First();
+                var SelectedDates = WinSelect.cal.SelectedDates.OrderBy(it => it);
+
+                DateTime StartDate = SelectedDates.First();
                 if (StartDate.Year != _SelectYear)
                 {
                     MessageBox.Show($"Начальная дата должна быть в {_SelectYear} году", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Stop);
@@ -191,7 +193,7 @@ namespace Tabel.ViewModels
                 }
 
                 od.od_StartDate = StartDate;
-                od.od_EndDate = WinSelect.cal.SelectedDates.Last();
+                od.od_EndDate = SelectedDates.Last();
                 od.OnPropertyChanged(nameof(od.CountDay));
                 IsModify = true;
                 SelectedPerson.OnPropertyChanged(nameof(SelectedPerson.AllDays));
@@ -243,7 +245,8 @@ namespace Tabel.ViewModels
 
             if (WinSelect.ShowDialog() == true)
             {
-                DateTime StartDate = WinSelect.cal.SelectedDates.First();
+                var SelectedDates = WinSelect.cal.SelectedDates.OrderBy(it => it);
+                DateTime StartDate = SelectedDates.First();
                 if (StartDate.Year != _SelectYear )
                 {
                     MessageBox.Show($"Начальная дата должна быть в {_SelectYear} году", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Stop) ;
@@ -253,7 +256,7 @@ namespace Tabel.ViewModels
                 var NewOtpusk = new OtpuskDays()
                 {
                     od_StartDate = StartDate,
-                    od_EndDate = WinSelect.cal.SelectedDates.Last()
+                    od_EndDate = SelectedDates.Last()
                 };
                 IsModify = true;
                 SelectedPerson.ListDays.Add(NewOtpusk);
