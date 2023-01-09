@@ -95,9 +95,9 @@
                                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                                         <GradientStop Color="White" Offset="0.076"/>
                                         <GradientStop Color="Gray" Offset="1"/>
-                                        <GradientStop Color="#FFB6B6B6" Offset="0.256"/>
-                                        <GradientStop Color="#FF838383" Offset="0.621"/>
-                                        <GradientStop Color="#FF7E7E7E" Offset="0.918"/>
+                                        <GradientStop Color="#FFC1C1C1" Offset="0.256"/>
+                                        <GradientStop Color="#FF909090" Offset="0.621"/>
+                                        <GradientStop Color="#FF7D7D7D" Offset="0.918"/>
                                     </LinearGradientBrush>
                                 </Border.Background>
                             </Border>

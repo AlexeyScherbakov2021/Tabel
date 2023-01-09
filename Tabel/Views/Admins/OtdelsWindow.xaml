@@ -109,7 +109,7 @@
                 </UniformGrid>
 
                 <DataGrid x:Name="dg" ItemsSource="{Binding ListPersonalView}" SelectionMode="Single" Margin="4,0" SnapsToDevicePixels="True" 
-                          Style="{DynamicResource DataGridStyle}" SelectedItem="{Binding SelectedPerson}" AllowDrop="True">
+                          Style="{DynamicResource DataGridStyle}" SelectedItem="{Binding SelectedPerson}" >
                     <i:Interaction.Behaviors>
                         <b:DataGridBehavior/>
                     </i:Interaction.Behaviors>

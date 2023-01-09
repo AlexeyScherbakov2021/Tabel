@@ -351,23 +351,23 @@ namespace Tabel.ViewModels.Admins
 
             if(person != null)
             {
-                string NewOtdelName = (args.OriginalSource as TextBlock).Text;
-                RepositoryMSSQL<Otdel> repoOtdel = new RepositoryMSSQL<Otdel>();
-                var NewOtdel = repoOtdel.Items.FirstOrDefault(it => it.ot_name == NewOtdelName);
-                
-                if(NewOtdel != null)
+                if(args.OriginalSource is TextBlock tb)
                 {
-                    if (MessageBox.Show($"Переместить «{person.FIO}» в отдел «{NewOtdel.ot_name}»","Предупреждение", 
-                        MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+                    string NewOtdelName = tb.Text;
+                    RepositoryMSSQL<Otdel> repoOtdel = new RepositoryMSSQL<Otdel>();
+                    var NewOtdel = repoOtdel.Items.FirstOrDefault(it => it.ot_name == NewOtdelName);
+
+                    if (NewOtdel != null)
                     {
-                        person.p_otdel_id = NewOtdel.id;
-                        ListPersonal.Remove(person);
-                        OnPropertyChanged(nameof(ListPersonal));
+                        if (MessageBox.Show($"Переместить «{person.FIO}» в отдел «{NewOtdel.ot_name}»", "Предупреждение",
+                            MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+                        {
+                            person.p_otdel_id = NewOtdel.id;
+                            ListPersonal.Remove(person);
+                            OnPropertyChanged(nameof(ListPersonal));
+                        }
                     }
                 }
-
-
-
             }
         }
 

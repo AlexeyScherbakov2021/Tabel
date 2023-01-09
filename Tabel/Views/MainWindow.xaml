@@ -16,7 +16,7 @@
         <vm:MainWindowViewModel/>
     </Window.DataContext>
     <Window.Resources>
-        <Style x:Key="FocusVisual">
+        <!--<Style x:Key="FocusVisual">
             <Setter Property="Control.Template">
                 <Setter.Value>
                     <ControlTemplate>
@@ -62,13 +62,13 @@
                                         <GradientStop Color="#FFD3D8DC" Offset="1"/>
                                     </RadialGradientBrush>
                                 </Border.Background>
-                                <!--<TextBlock Text="{TemplateBinding Content}" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                --><!--<TextBlock Text="{TemplateBinding Content}" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
                                               Margin="{TemplateBinding Padding}"  
                                               SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" 
                                               VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                               TextWrapping="Wrap" FontSize="25" FontWeight="Bold"
                                               TextAlignment="Center" Foreground="Blue"
-                                       />-->
+                                       />--><!--
 
                                 <ContentPresenter x:Name="contentPresenter" Focusable="False" 
                                     HorizontalAlignment="Stretch" 
@@ -93,15 +93,15 @@
                                 <Setter Property="Background" TargetName="border" Value="{StaticResource Button.MouseOver.Background}"/>
                                 <Setter Property="BorderBrush" TargetName="borderOut" Value="#FF226080"/>
                                 <Setter Property="Effect" TargetName="borderOut" Value="{x:Null}">
-                                    <!--<Setter.Value>
+                                    --><!--<Setter.Value>
                                         <BlurEffect Radius="0"/>
-                                    </Setter.Value>-->
+                                    </Setter.Value>--><!--
                                 </Setter>
                             </Trigger>
                             <Trigger Property="IsPressed" Value="true">
                                 <Setter Property="Background" TargetName="border" Value="{StaticResource Button.Pressed.Background}"/>
                                 <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.Pressed.Border}"/>
-                                <!--<Setter Property="RenderTransform" TargetName="border">
+                                --><!--<Setter Property="RenderTransform" TargetName="border">
                                     <Setter.Value>
                                         <TransformGroup>
                                             <ScaleTransform ScaleX="1" ScaleY="1"/>
@@ -110,7 +110,7 @@
                                             <TranslateTransform/>
                                         </TransformGroup>
                                     </Setter.Value>
-                                </Setter>-->
+                                </Setter>--><!--
                                 <Setter Property="Effect" TargetName="border">
                                     <Setter.Value>
                                         <DropShadowEffect BlurRadius="7" Color="#FFCDCDCD" ShadowDepth="0"/>
@@ -120,13 +120,13 @@
                             <Trigger Property="IsEnabled" Value="false">
                                 <Setter Property="Background" TargetName="border" Value="{StaticResource Button.Disabled.Background}"/>
                                 <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.Disabled.Border}"/>
-                                <!--<Setter Property="TextElement.Foreground" TargetName="contentPresenter" Value="{StaticResource Button.Disabled.Foreground}"/>-->
+                                --><!--<Setter Property="TextElement.Foreground" TargetName="contentPresenter" Value="{StaticResource Button.Disabled.Foreground}"/>--><!--
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
-        </Style>
+        </Style>-->
     </Window.Resources>
     <Window.Background>
         <ImageBrush ImageSource="/Views/teal-abstract-background.png"/>
