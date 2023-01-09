@@ -27,11 +27,12 @@
             <TextBox Text="{Binding ot_name}"/>
         </HierarchicalDataTemplate>-->
     </UserControl.Resources>
-    <Grid>
+    <Grid x:Name="grid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="47*"/>
             <ColumnDefinition Width="113*"/>
         </Grid.ColumnDefinitions>
+
         <Border Padding="3" Margin="10" CornerRadius="4" Background="WhiteSmoke" BorderThickness="1" BorderBrush="Gray" >
             <Border.Effect>
                 <DropShadowEffect BlurRadius="10" ShadowDepth="0" Color="Black" Opacity="0.2"/>
@@ -111,7 +112,7 @@
                 <DataGrid x:Name="dg" ItemsSource="{Binding ListPersonalView}" SelectionMode="Single" Margin="4,0" SnapsToDevicePixels="True" 
                           Style="{DynamicResource DataGridStyle}" SelectedItem="{Binding SelectedPerson}" >
                     <i:Interaction.Behaviors>
-                        <b:DataGridBehavior/>
+                        <b:DataGridBehavior TB="{Binding ElementName=TXT}" DragGrid="{Binding ElementName=grid}"/>
                     </i:Interaction.Behaviors>
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Таб№" Binding="{Binding p_tab_number}"/>
@@ -192,6 +193,13 @@
                 </DataGrid>
             </DockPanel>
         </Border>
+
+        <TextBlock Text="Петров Петр" Name="TXT" FontSize="12" Background="#A0F9FF96"   Visibility="Hidden"
+                   VerticalAlignment="Top" HorizontalAlignment="Left" Margin="294,67,0,0" Panel.ZIndex="0" Grid.ColumnSpan="2" Padding="2,2,2,2">
+            <TextBlock.Effect>
+                <DropShadowEffect Opacity="0.3"/>
+            </TextBlock.Effect>
+        </TextBlock>
 
     </Grid>
 </UserControl>
