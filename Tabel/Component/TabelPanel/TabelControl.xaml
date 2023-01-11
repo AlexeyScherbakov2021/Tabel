@@ -147,74 +147,11 @@
 
             <ListBox.ItemContainerStyle>
                 <Style TargetType="{x:Type ListBoxItem}">
-                    <!--<Setter Property="Validation.ErrorTemplate">
-                        <Setter.Value>
-                            <ControlTemplate>
-                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                    <Border Background="Red" Margin="0,-2,3,3" CornerRadius="9" Width="18" Height="18" 
-                                    ToolTip="{Binding ElementName=placeholder, Path=AdornedElement.(Validation.Errors)[0].ErrorContent}"
-                                    ToolTipService.InitialShowDelay="0" VerticalAlignment="Center">
-                                        <TextBlock Text="!" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                    </Border>
-                                    <AdornedElementPlaceholder x:Name="placeholder"/>
-                                </StackPanel>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>-->
-                  
+                 
                   
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="{x:Type ListBoxItem}">
-                                <!--<Border x:Name="border" BorderThickness="0.5" BorderBrush="Gray" Padding="0" 
-                                        CornerRadius="2" Width="54" Height="40" Margin="4">
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition/>
-                                            <ColumnDefinition/>
-                                        </Grid.ColumnDefinitions>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="*"/>
-                                            <RowDefinition Height="*"/>
-                                        </Grid.RowDefinitions>
-
-                                        <DockPanel Grid.Row="1" Grid.ColumnSpan="2">
-                                            <TextBox Text="{Binding td_Hours2, Mode=TwoWay}" Visibility="{Binding VisibilityHours}" 
-                                                Padding="2,0" BorderThickness="0.6"
-                                                DockPanel.Dock="Right" Margin="1" FontSize="14"
-                                                HorizontalContentAlignment="Center" VerticalContentAlignment="Center" 
-                                                Foreground="Red"  />
-
-                                            <TextBox Text="{Binding td_Hours, Mode=TwoWay, StringFormat=0.#, Converter={StaticResource Convert0ToNull}}" 
-                                                 FontSize="14" Margin="0.5" FontWeight="Regular"
-                                                 HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
-                                        </DockPanel>
-                                        <ComboBox Width="28" HorizontalContentAlignment="Center" Focusable="False"
-                                                Style="{StaticResource SimpleComboBox}"
-                                                DisplayMemberPath="t_name"
-                                                ToolTip="{Binding SelectedItem.t_desc, RelativeSource={RelativeSource Self}}"
-                                                SelectedIndex="{Binding td_KindId, Mode=TwoWay}"
-                                                ItemsSource="{Binding ItemsKind, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}" 
-                                                GotFocus="ComboBox_GotFocus" SelectionChanged="ComboBox_SelectionChanged"
-                                                Grid.Column="1" >
-                                            <ComboBox.ItemTemplate>
-                                                <DataTemplate>
-                                                    <Border Background="Snow" Width="26" CornerRadius="3" BorderBrush="Gray" BorderThickness="1" ToolTip="{Binding t_desc}">
-                                                        <TextBlock HorizontalAlignment="Center" Text="{Binding t_name}" />
-                                                    </Border>
-                                                </DataTemplate>
-                                            </ComboBox.ItemTemplate>
-                                        </ComboBox>
-
-                                        <Border Width="28" Height="24" CornerRadius="8" Margin="-2,-3,0,0" Background="Lavender"
-                                             BorderBrush="Black" BorderThickness="1" Grid.RowSpan="2" HorizontalAlignment="Left" VerticalAlignment="Top">
-                                            <TextBlock x:Name="NumberDay" Text="{Binding td_Day}" TextAlignment="Center"  VerticalAlignment="Center"
-                                                   Foreground="Black" FontSize="18" SnapsToDevicePixels="True" Focusable="False"
-                                                  ToolTip="Рабочий день" FontWeight="Bold"
-                                                   />
-                                        </Border>
-                                    </Grid>
-                                </Border>-->
 
                                 <Border x:Name="border" BorderThickness="1" Padding="1.5" CornerRadius="2" Margin="2,0">
                                     <Border.Effect>
@@ -295,20 +232,7 @@
                 </Style>
             </ListBox.ItemContainerStyle>
             
-            
-            <!--<ListBoxItem Content="000"/>
-            <ListBoxItem Content="111"/>
-            <ListBoxItem Content="222"/>
-            <ListBoxItem Content="333"/>
-            <ListBoxItem Content="444"/>
-            <ListBoxItem Content="000"/>
-            <ListBoxItem Content="000"/>
-            <ListBoxItem Content="000"/>
-            <ListBoxItem Content="000"/>
-            <ListBoxItem Content="000"/>
-            <ListBoxItem Content="000"/>
-            <ListBoxItem Content="000"/>
-            <ListBoxItem Content="000"/>-->
+           
         </ListBox>
     </DockPanel>
 </UserControl>
