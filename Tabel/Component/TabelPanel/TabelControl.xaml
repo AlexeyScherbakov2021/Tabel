@@ -178,13 +178,13 @@
                                                       GotFocus="ComboBox_GotFocus" SelectionChanged="ComboBox_SelectionChanged">
                                                 <ComboBox.ItemTemplate>
                                                     <DataTemplate>
-                                                        <Border Background="Snow" Width="26" CornerRadius="3" BorderBrush="Gray" BorderThickness="1" ToolTip="{Binding t_desc}">
-                                                            <TextBlock HorizontalAlignment="Center" Text="{Binding t_name}" />
+                                                        <Border Tag="NoSelect" Background="Snow" Width="26" CornerRadius="3" BorderBrush="Gray" BorderThickness="1" ToolTip="{Binding t_desc}">
+                                                            <TextBlock Tag="NoSelect" HorizontalAlignment="Center" Text="{Binding t_name}" />
                                                         </Border>
                                                     </DataTemplate>
                                                 </ComboBox.ItemTemplate>
                                             </ComboBox>
-                                            <TextBox x:Name="TBHours" Text="{Binding td_Hours, Mode=TwoWay, StringFormat=0.#, Converter={StaticResource Convert0ToNull}}" 
+                                            <TextBox x:Name="TBHours" Tag="NoSelect" Text="{Binding td_Hours, Mode=TwoWay, StringFormat=0.#, Converter={StaticResource Convert0ToNull}}" 
                                                      Padding="2,0" MinWidth="24" 
                                                      HorizontalContentAlignment="Center" VerticalContentAlignment="Center" 
                                                      GotFocus="TextBox_GotFocus" KeyDown="TextBox_KeyDown" >

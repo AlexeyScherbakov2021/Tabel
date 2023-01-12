@@ -70,7 +70,7 @@ namespace Tabel.Component.TabelPanel
         {
             var Parent = ((sender as ComboBox).Parent as StackPanel).Parent as StackPanel;
             TextBlock tb = Parent.Children[0] as TextBlock;
-            int index = int.Parse(tb.Text.Substring(0,2));
+            int index = int.Parse(tb.Text.Substring(0, 2));
 
             if (!IsSelectInRange(index))
                 ListBoxDays.SelectedIndex = index - 1;
@@ -103,8 +103,8 @@ namespace Tabel.Component.TabelPanel
 
             var Parent = (tbox.Parent as StackPanel).Parent as StackPanel;
             TextBlock tb = Parent.Children[0] as TextBlock;
-            
-            int index = int.Parse(tb.Text.Substring(0,2));
+
+            int index = int.Parse(tb.Text.Substring(0, 2));
             if (!IsSelectInRange(index))
                 ListBoxDays.SelectedIndex = index - 1;
 
@@ -116,7 +116,7 @@ namespace Tabel.Component.TabelPanel
         //-----------------------------------------------------------------------------------------
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if(ListBoxDays.SelectedItems.Count > 1)
+            if (ListBoxDays.SelectedItems.Count > 1)
             {
                 ComboBox cb = sender as ComboBox;
 
@@ -133,7 +133,7 @@ namespace Tabel.Component.TabelPanel
         //-----------------------------------------------------------------------------------------
         private void TextBox_KeyDown(object sender, KeyEventArgs e)
         {
-            if(e.Key == Key.Enter)
+            if (e.Key == Key.Enter)
             {
                 TextBox tb = sender as TextBox;
                 decimal hours;
@@ -144,7 +144,8 @@ namespace Tabel.Component.TabelPanel
                 }
                 e.Handled = true;
 
-                MoveToNextDay(ListBoxDays.SelectedIndex + 1);
+                if(ListBoxDays.SelectedItems.Count <= 1 )
+                    MoveToNextDay(ListBoxDays.SelectedIndex + 1);
 
             }
 
@@ -152,8 +153,8 @@ namespace Tabel.Component.TabelPanel
             {
                 e.Handled = true;
 
-                int napr = (e.KeyboardDevice.Modifiers & ModifierKeys.Shift) == ModifierKeys.Shift 
-                    ? ListBoxDays.SelectedIndex - 1 
+                int napr = (e.KeyboardDevice.Modifiers & ModifierKeys.Shift) == ModifierKeys.Shift
+                    ? ListBoxDays.SelectedIndex - 1
                     : ListBoxDays.SelectedIndex + 1;
 
                 if (napr < 0) return;
@@ -166,7 +167,7 @@ namespace Tabel.Component.TabelPanel
 
                 //ListBoxItem listBoxItem = (ListBoxItem)ProcessElement(res, "ListBoxItem");
                 //var parent = VisualTreeHelper.GetParent(listBoxItem);
-                
+
                 //listBoxItem = (ListBoxItem)VisualTreeHelper.GetChild(parent, ListBoxDays.SelectedIndex);
 
                 //FrameworkElement elem =  (FrameworkElement)ProcessElement(listBoxItem, "TextBox");
@@ -235,6 +236,14 @@ namespace Tabel.Component.TabelPanel
         {
             ListBox lb = sender as ListBox;
 
+            string TypeName = e.OriginalSource.GetType().Name;
+
+            if (TypeName == "TextBoxView" 
+                || TypeName == "Border" 
+                || (e.OriginalSource as FrameworkElement).Tag?.ToString() == "NoSelect")
+                return;
+
+
             //Border border = e.OriginalSource as Border;
 
             //if (border != null && border.Name == "Bd")
@@ -294,7 +303,6 @@ namespace Tabel.Component.TabelPanel
         private void ListBoxDays_PreviewMouseMove(object sender, MouseEventArgs e)
         {
             ListBox lb = sender as ListBox;
-
 
             if (e.LeftButton == MouseButtonState.Pressed)
             {
