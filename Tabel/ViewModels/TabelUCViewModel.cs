@@ -382,7 +382,7 @@ namespace Tabel.ViewModels
                 List<OtpuskDays> OtpDays = repoOtpuskPerson
                     .Items
                     .AsNoTracking()
-                    .FirstOrDefault(it => it.person.id == item.id && it.otpusk.o_year == _SelectYear).ListDays.ToList();
+                    .FirstOrDefault(it => it.person.id == item.id && it.otpusk.o_year == _SelectYear)?.ListDays.ToList();
 
                 //tp.person = repoPersonal.Items.FirstOrDefault(it => it.id == item.id); 
                 tp.TabelDays = new ObservableCollection<TabelDay>();
@@ -409,7 +409,7 @@ namespace Tabel.ViewModels
                             break;
                     }
 
-                    if (OtpuskUCViewModel.IsOtpuskDay(new DateTime(_SelectYear, _SelectMonth, td.td_Day), OtpDays))
+                    if (OtpDays != null && OtpuskUCViewModel.IsOtpuskDay(new DateTime(_SelectYear, _SelectMonth, td.td_Day), OtpDays))
                     {
                         td.typeDay = repoTypeDay.Items.FirstOrDefault(it => it.t_name == "ОТ");
                         td.td_Hours = 0;

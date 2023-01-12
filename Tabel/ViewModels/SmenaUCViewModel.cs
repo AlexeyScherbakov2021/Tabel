@@ -161,7 +161,7 @@ namespace Tabel.ViewModels
                 List<OtpuskDays> OtpDays = repoOtpuskPerson
                     .Items
                     .AsNoTracking()
-                    .FirstOrDefault(it => it.person.id == item.id && it.otpusk.o_year == _SelectYear).ListDays.ToList();
+                    .FirstOrDefault(it => it.person.id == item.id && it.otpusk.o_year == _SelectYear)?.ListDays.ToList();
 
                 SmenaPerson sp = new SmenaPerson();
                 sp.sp_PersonId = item.id;
@@ -182,7 +182,7 @@ namespace Tabel.ViewModels
                         sd.OffDay = false;
                     }
 
-                    if (OtpuskUCViewModel.IsOtpuskDay(new DateTime(_SelectYear, _SelectMonth, sd.sd_Day), OtpDays))
+                    if (OtpDays != null && OtpuskUCViewModel.IsOtpuskDay(new DateTime(_SelectYear, _SelectMonth, sd.sd_Day), OtpDays))
                         sd.sd_Kind = SmenaKind.Otpusk;
 
                     sp.SmenaDays.Add(sd);
