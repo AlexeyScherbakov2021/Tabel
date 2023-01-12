@@ -1,4 +1,6 @@
-﻿using System;
+﻿//using DocumentFormat.OpenXml.Drawing;
+//using DocumentFormat.OpenXml.Spreadsheet;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +25,9 @@ namespace Tabel.Component.TabelPanel
     /// </summary>
     public partial class TabelControl : UserControl
     {
+
+        int StartIndex = -1;
+        ListBoxItem StartItem;
 
         public static readonly DependencyProperty SourceCollectionProperty =
         DependencyProperty.Register("SourceCollection", typeof(IEnumerable), typeof(TabelControl));
@@ -226,5 +231,78 @@ namespace Tabel.Component.TabelPanel
 
         }
 
+        private void ListBoxDays_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            ListBox lb = sender as ListBox;
+
+            //Border border = e.OriginalSource as Border;
+
+            //if (border != null && border.Name == "Bd")
+            //{
+                ListBoxItem CurrentListBoxItem = (ListBoxItem)lb.ContainerFromElement(e.OriginalSource as DependencyObject);
+
+                if ((Keyboard.Modifiers & ModifierKeys.Shift) == ModifierKeys.Shift)
+                {
+
+                    //ContentPresenter child = (ContentPresenter)border.Child;
+                    int EndIndex = lb.Items.IndexOf(CurrentListBoxItem.Content);
+
+                    int n = StartIndex < EndIndex ? 1 : -1;
+
+                    lb.SelectedItems.Clear();
+
+                    for (int i = StartIndex; i != EndIndex; i += n)
+                        lb.SelectedItems.Add(lb.Items[i]);
+
+                    lb.SelectedItems.Add(lb.Items[EndIndex]);
+
+                    e.Handled = true;
+                    return;
+                }
+
+                StartItem = CurrentListBoxItem;
+
+                if (StartItem != null)
+                {
+
+                    //ContentPresenter child = (ContentPresenter)border.Child;
+                    if ((Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
+                    {
+                        // добавдение выделенного элемента
+                        lb.SelectedItems.Add(StartItem.Content);
+                    }
+                    else
+                    {
+                        lb.SelectedItems.Clear();
+                        SelectedItem = StartItem.Content;
+                    }
+
+                    FocusManager.SetFocusedElement(this, StartItem);
+                    e.Handled = true;
+                }
+
+                StartIndex = lb.SelectedIndex;
+            //}
+            //else
+            //{
+            //    lb.SelectedItems.Clear();
+            //}
+
+
+        }
+
+        private void ListBoxDays_PreviewMouseMove(object sender, MouseEventArgs e)
+        {
+            ListBox lb = sender as ListBox;
+
+
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                ListBoxItem lbi = (ListBoxItem)lb.ContainerFromElement((DependencyObject)e.OriginalSource);
+                if (lbi != null)
+                    lbi.IsSelected = true;
+            }
+
+        }
     }
 }

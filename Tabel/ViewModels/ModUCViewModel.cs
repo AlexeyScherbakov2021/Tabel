@@ -503,7 +503,7 @@ namespace Tabel.ViewModels
                 using (XLWorkbook wb = new XLWorkbook(@"Отчеты\Модель.xlsx"))
                 {
 
-                    int NumPP = 1;
+                    //int NumPP = 1;
                     var ws = wb.Worksheets.Worksheet(1);
 
                     // Заполение шапки

@@ -123,7 +123,6 @@
                 <TextBlock Text="{Binding OverWork, Mode=OneWay, StringFormat=0.#}" FontWeight="Bold" Foreground="Red"/>
             </Label>
 
-
             <!--<Line X1="0" X2="180" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="6" Stroke="Black" StrokeThickness="0.1"/>
             <Line X1="0" X2="63" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="6" Stroke="Black" StrokeThickness="0.1"/>
             <Line X1="0" X2="63" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="6" Stroke="Black" StrokeThickness="0.1"/>
@@ -137,18 +136,23 @@
 
         <ListBox Padding="2" SelectionMode="Extended" ItemsSource="{Binding Path=SourceCollection , RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
                  SelectedItem="{Binding SelectedItem, Mode=TwoWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
-                 x:Name="ListBoxDays" BorderBrush="Transparent" 
-                 >
+                 x:Name="ListBoxDays" BorderBrush="Transparent" PreviewMouseLeftButtonDown="ListBoxDays_PreviewMouseLeftButtonDown" PreviewMouseMove="ListBoxDays_PreviewMouseMove"  >
+           
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
                     <local:TabelPanel/>
                 </ItemsPanelTemplate>
             </ListBox.ItemsPanel>
 
+            <!--<ListBox.ItemTemplate>
+                <DataTemplate>
+                    <local:TabelDayPanel/>
+                </DataTemplate>
+            </ListBox.ItemTemplate>-->
+            
             <ListBox.ItemContainerStyle>
                 <Style TargetType="{x:Type ListBoxItem}">
                  
-                  
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="{x:Type ListBoxItem}">
@@ -210,12 +214,12 @@
                                     </Trigger>
                                     <DataTrigger Binding="{Binding CalendarTypeDay}" Value="Holyday">
                                         <Setter Property="Background" Value="#E0C4DE" TargetName="NumberDay"/>
-                                        <!--<Setter Property="Foreground" Value="#cc0000" TargetName="NumberDay"/>-->
+                                        <Setter Property="Foreground" Value="#cc0000" TargetName="NumberDay"/>
                                         <Setter Property="ToolTip" Value="Выходной день" TargetName="NumberDay"/>
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding CalendarTypeDay}" Value="ShortWork">
                                         <Setter Property="Background" Value="#D0F0DE" TargetName="NumberDay"/>
-                                        <!--<Setter Property="Foreground" Value="DarkGreen" TargetName="NumberDay"/>-->
+                                        <Setter Property="Foreground" Value="DarkGreen" TargetName="NumberDay"/>
                                         <Setter Property="ToolTip" Value="Короткий день" TargetName="NumberDay"/>
                                     </DataTrigger>
                                 </ControlTemplate.Triggers>
@@ -224,7 +228,7 @@
                     </Setter>
                     <Style.Triggers>
                         <Trigger Property="Validation.HasError" Value="True">
-                            <!--<Setter Property="Background" Value="LightCoral"/>-->
+                            <Setter Property="Background" Value="LightCoral"/>
                             <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
                         </Trigger>
                     </Style.Triggers>

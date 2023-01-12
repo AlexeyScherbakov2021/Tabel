@@ -123,6 +123,9 @@
     <Compile Include="Component\StartButton\ButtonT.xaml.cs">
       <DependentUpon>ButtonT.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Component\TabelPanel\TabelDayPanel.xaml.cs">
+      <DependentUpon>TabelDayPanel.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Models\Otpusk.cs" />
     <Compile Include="Models\OtpuskDays.cs" />
     <Compile Include="Models\OtpuskPerson.cs" />
@@ -272,6 +275,10 @@
     <Page Include="Component\StartButton\ButtonT.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Component\TabelPanel\TabelDayPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\SelectOtpuskWindow.xaml">
       <SubType>Designer</SubType>

@@ -382,7 +382,7 @@ namespace Tabel.ViewModels
                 List<OtpuskDays> OtpDays = repoOtpuskPerson
                     .Items
                     .AsNoTracking()
-                    .FirstOrDefault(it => it.person.id == item.id && it.otpusk.o_year == _SelectYear).ListDays.ToList();
+                    .FirstOrDefault(it => it.person.id == item.id && it.otpusk.o_year == _SelectYear)?.ListDays.ToList();
 
                 //tp.person = repoPersonal.Items.FirstOrDefault(it => it.id == item.id); 
                 tp.TabelDays = new ObservableCollection<TabelDay>();

@@ -440,12 +440,15 @@ namespace Tabel.ViewModels
 
         public static bool IsOtpuskDay(DateTime date, List<OtpuskDays> OtpDays)
         {
-            foreach (var item in OtpDays)
-            {
-                if (date >= item.od_StartDate && date <= item.od_EndDate)
-                    return true;
-            }
 
+            if (OtpDays != null)
+            {
+                foreach (var item in OtpDays)
+                {
+                    if (date >= item.od_StartDate && date <= item.od_EndDate)
+                        return true;
+                }
+            }
             return false;
         }
 

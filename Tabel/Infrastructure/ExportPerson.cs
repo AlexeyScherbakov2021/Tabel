@@ -157,7 +157,7 @@ namespace Tabel.ViewModels
 
 
 
-            decimal summa = 0;
+            //decimal summa = 0;
             ListExportPerson.Clear();
             //foreach(var item in ListTabelPerson)
             //{
