@@ -489,7 +489,7 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\транспорт.png" />
-    <Resource Include="Views\teal-abstract-background.png" />
+    <Resource Include="Resources\teal-abstract-background.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\8888.png" />
@@ -546,7 +546,7 @@
     <Resource Include="Resources\настройки2.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Views\1663697697_28-phonoteka-org-p-golubo-zelenii-fon-vkontakte-30.jpg" />
+    <Resource Include="Views\teal-abstract-background.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Views\stripes-steal-turquoise-fade-chrome-os-stock.jpg" />

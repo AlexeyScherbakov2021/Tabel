@@ -409,7 +409,7 @@ namespace Tabel.ViewModels
                             break;
                     }
 
-                    if (OtpuskUCViewModel.IsOtpuskDay(new DateTime(_SelectYear, _SelectMonth, td.td_Day), OtpDays))
+                    if (OtpDays != null && OtpuskUCViewModel.IsOtpuskDay(new DateTime(_SelectYear, _SelectMonth, td.td_Day), OtpDays))
                     {
                         td.typeDay = repoTypeDay.Items.FirstOrDefault(it => it.t_name == "ОТ");
                         td.td_Hours = 0;
