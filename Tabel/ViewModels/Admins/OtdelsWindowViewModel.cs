@@ -275,6 +275,7 @@ namespace Tabel.ViewModels.Admins
 
             repoPerson.Add(NewPerson, true);
             ListPersonal.Add(NewPerson);
+            NewPerson.PropertyChanged += Item_PropertyChanged;
 
             ListPersonalView.MoveCurrentToLast();
 
@@ -325,6 +326,7 @@ namespace Tabel.ViewModels.Admins
                 }
 
                 repoPerson.Delete(SelectedPerson, true);
+                SelectedPerson.PropertyChanged -= Item_PropertyChanged;
                 ListPersonal.Remove(SelectedPerson);
             }
         }

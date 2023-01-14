@@ -293,6 +293,7 @@ namespace Tabel.ViewModels
                     newPerson.md_bonus_max = PrevModPerson.md_bonus_max;
                     newPerson.md_cat_prem_tarif = PrevModPerson.md_cat_prem_tarif;
                     newPerson.md_kvalif_proc = PrevModPerson.md_kvalif_proc;
+                    newPerson.md_person_achiev = PrevModPerson.md_person_achiev;
                 }
 
                 CurrentMod.ModPersons.Add(newPerson);

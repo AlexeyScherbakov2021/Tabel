@@ -244,7 +244,7 @@
                     </Grid>
                     <FrameworkElement x:Name="ProxyElement" Visibility="Collapsed" DataContext="{Binding}"/>
                     <DataGrid x:Name="dgDop" ItemsSource="{Binding ListModPerson}" Style="{StaticResource DataGridStyle}" IsReadOnly="False"
-                              SelectedItem="{Binding DataContext.SelectedModPerson, Mode=TwoWay, ElementName=userControl}"
+                              SelectedItem="{Binding SelectedPerson, Mode=TwoWay}"
                               >
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="ФИО" Binding="{Binding person.FIO}" IsReadOnly="True"/>
