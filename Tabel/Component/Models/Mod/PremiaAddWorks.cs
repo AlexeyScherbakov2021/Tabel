@@ -12,6 +12,7 @@ namespace Tabel.Component.Models.Mod
         //-------------------------------------------------------------------------------------------------------
         // Конструктор
         //-------------------------------------------------------------------------------------------------------
+
         public PremiaAddWorks(ModPerson person) : base(person)
         {
             model.PropertyChanged += Model_PropertyChanged;
@@ -39,6 +40,7 @@ namespace Tabel.Component.Models.Mod
             switch (e.PropertyName)
             {
                 case "ListAddWorks":
+                case "md_person_achiev":
                     Calculation();
                     break;
             }

@@ -129,6 +129,10 @@
     <Compile Include="Models\Otpusk.cs" />
     <Compile Include="Models\OtpuskDays.cs" />
     <Compile Include="Models\OtpuskPerson.cs" />
+    <Compile Include="ViewModels\SelectDateWindowViewModel.cs" />
+    <Compile Include="Views\SelectDateWindow.xaml.cs">
+      <DependentUpon>SelectDateWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\SelectOtpuskWindow.xaml.cs">
       <DependentUpon>SelectOtpuskWindow.xaml</DependentUpon>
     </Compile>
@@ -277,6 +281,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Component\TabelPanel\TabelDayPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SelectDateWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -544,12 +552,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\настройки2.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Views\teal-abstract-background.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Views\stripes-steal-turquoise-fade-chrome-os-stock.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,9 +1,11 @@
 ﻿//using DocumentFormat.OpenXml.Drawing.Charts;
+using ClosedXML.Excel;
 using DocumentFormat.OpenXml.Bibliography;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data.Entity;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices.ComTypes;
 using System.Text;
@@ -431,6 +433,58 @@ namespace Tabel.ViewModels
                 //IsModify = true;
             }
         }
+
+        //--------------------------------------------------------------------------------
+        // Команда Распечатать
+        //--------------------------------------------------------------------------------
+        public ICommand PrintCommand => new LambdaCommand(OnPrintCommandExecuted, CanPrintCommand);
+        private bool CanPrintCommand(object p) => ListOtpuskPerson?.Count > 0;
+        private void OnPrintCommandExecuted(object p)
+        {
+            try
+            {
+                using (XLWorkbook wb = new XLWorkbook(@"Отчеты\Отпуск.xlsx"))
+                {
+
+                    var ws = wb.Worksheets.Worksheet(1);
+
+                    // Заполение шапки
+                    ws.Cell("C3").Value = otpusk.o_number;
+                    ws.Cell("D3").Value = otpusk.o_DateCreate;
+                    ws.Cell("E3").Value = _SelectYear;
+
+                    int curRow = 7;
+
+                    foreach (var pers in ListOtpuskPerson)
+                    {
+                        foreach (var dates in pers.ListDays)
+                        {
+                            ws.Cell(curRow, 1).Value = pers.person.otdel.ot_name;
+                            ws.Cell(curRow, 2).Value = pers.person.p_profession;
+                            ws.Cell(curRow, 3).Value = pers.person.FIO;
+                            ws.Cell(curRow, 5).Value = pers.person.p_tab_number;
+                            ws.Cell(curRow, 6).Value = dates.CountDay;
+                            ws.Cell(curRow, 7).Value = dates.od_StartDate;
+                            ws.Row(curRow).InsertRowsBelow(1);
+                            curRow++;
+                        }
+                    }
+
+                    string TempFile = System.IO.Path.GetTempFileName();
+                    TempFile = System.IO.Path.ChangeExtension(TempFile, "xlsx");
+                    wb.SaveAs(TempFile);
+                    Process.Start(TempFile);
+                }
+
+            }
+            catch
+            {
+                MessageBox.Show("Не найден шаблон модели", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
+        }
+
+
 
 
 

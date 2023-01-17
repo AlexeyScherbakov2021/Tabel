@@ -21,6 +21,7 @@ using Tabel.Infrastructure;
 using Tabel.Models;
 using Tabel.Repository;
 using Tabel.ViewModels.Base;
+using Tabel.Views;
 using Tabel.Views.PrintForm;
 using Run = DocumentFormat.OpenXml.Wordprocessing.Run;
 
@@ -666,8 +667,47 @@ namespace Tabel.ViewModels
         private bool CanSZOffDayCommand(object p) => SelectedOtdel != null && Tabel != null;
         private void OnSZOffDayCommandExecuted(object p)
         {
+            List<int> listDays = new List<int>();
+            List<Models.Personal> listPerson = new List<Models.Personal>();
+
+            foreach(var pers in ListTabelPerson)
+            {
+                foreach(var day in pers.TabelDays)
+                {
+                    if(day.typeDay.t_name == "РВ" && day.CalendarTypeDay == TypeDays.Holyday )
+                    {
+                        listDays.Add(day.td_Day);
+                    }
+                }
+
+            }
+
+            listDays = listDays.Distinct().ToList();
+
+            SelectDateWindow win = new SelectDateWindow();
+            SelectDateWindowViewModel vm = new SelectDateWindowViewModel(listDays, _SelectMonth, _SelectYear);
+            win.DataContext = vm;
+
+            if(win.ShowDialog() == true)
+            {
+                foreach(var persMod in ListTabelPerson)
+                {
+                    foreach (var day in persMod.TabelDays)
+                    {
+                        if (day.typeDay.t_name == "РВ" && day.CalendarTypeDay == TypeDays.Holyday && day.td_Day == vm.SelectedDate.Day)
+                        {
+                            listPerson.Add(persMod.person);
+                        }
+
+                    }
+                }
+
+            }
+
+            listPerson = listPerson.Distinct().ToList();
+
             RepositoryWord repoWord = new RepositoryWord(@"Отчеты\СЗ выходные дни.docx");
-            repoWord.CreateWorkOffSZ(null, DateTime.Now);
+            repoWord.CreateWorkOffSZ(listPerson, new DateTime(2023, 1 , 21));
         }
 
         #endregion

@@ -536,8 +536,8 @@
                             <DataGridTextColumn Header="Должность" Binding="{Binding person.p_profession}" IsReadOnly="True"/>
                             <DataGridTextColumn Header="Премия 1(бонус)" Binding="{Binding premiaBonus.Summa, StringFormat=N2}" Width="80"  CellStyle="{StaticResource CellRight}"/>
                             <DataGridTextColumn Header="Премия 2(по выраб.)" Binding="{Binding premiaFP.Summa, StringFormat=N2}" Width="80" CellStyle="{StaticResource CellRight}"/>
-                            <DataGridTextColumn Header="Премия (доп.раб.)" Binding="{Binding premiaAddWorks.Summa, StringFormat=N2}" Width="80"  CellStyle="{StaticResource CellRight}"/>
-                            <DataGridTextColumn Header="Премия (доставка)" Binding="{Binding premiaTransport.Summa, StringFormat=N2}" Width="80"  CellStyle="{StaticResource CellRight}"/>
+                            <DataGridTextColumn Header="Доплата (доп.раб.)" Binding="{Binding premiaAddWorks.Summa, StringFormat=N2}" Width="80"  CellStyle="{StaticResource CellRight}"/>
+                            <DataGridTextColumn Header="Компенсация за доставку" Binding="{Binding premiaTransport.Summa, StringFormat=N2}" Width="80"  CellStyle="{StaticResource CellRight}"/>
                             <DataGridTextColumn Header="Премия 2(по отделу)" Binding="{Binding premiaKvalif.Summa, StringFormat=N2}" Width="80"  CellStyle="{StaticResource CellRight}"/>
                             <DataGridTextColumn Header="Премия 3(стимул.)" Binding="{Binding premiaOtdel.Summa, StringFormat=N2}" Width="80"  CellStyle="{StaticResource CellRight}"/>
                             <!--<DataGridTextColumn Header="Премия 4(качес.)" Binding="{Binding premiaQuality.Summa, StringFormat=N2}" Width="80"  CellStyle="{StaticResource CellRight}"/>-->

@@ -136,8 +136,7 @@
                 
                 <DataGridComboBoxColumn Header="Тариф"  IsReadOnly="False" 
                                         ItemsSource="{Binding DataContext.ListTarif, Source={x:Reference proxyElement}}"
-                                        SelectedValueBinding="{Binding tp_tarif}"
-                                        TextBinding="{Binding tp_tarif}"
+                                        SelectedItemBinding="{Binding tp_tarif}"
                                         CellStyle="{StaticResource CellRight}"/>
 
 

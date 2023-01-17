@@ -39,6 +39,23 @@ namespace Tabel
             new Months("Декабрь", 12),
         };
 
+        public static List<Months> ListMonthP = new List<Months>()
+        {
+            new Months("Января", 1),
+            new Months("Февраля", 2),
+            new Months("Марта", 3),
+            new Months("Апреля", 4),
+            new Months("Мая", 5),
+            new Months("Июня", 6),
+            new Months("Июля", 7),
+            new Months("Августа", 8),
+            new Months("Сентября", 9),
+            new Months("Октября", 10),
+            new Months("Ноября", 11),
+            new Months("Декабря", 12)
+        };
+
+
 
         public App()
         {

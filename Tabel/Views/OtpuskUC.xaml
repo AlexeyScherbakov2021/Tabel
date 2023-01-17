@@ -57,6 +57,7 @@
                   FrozenColumnCount="1" SelectionMode="Single">
 
             <DataGrid.Columns>
+                <DataGridTextColumn Header="Таб. №" Binding="{Binding person.p_tab_number}" CellStyle="{StaticResource CellRight}"/>
                 <DataGridTemplateColumn Header="Сотрудник" IsReadOnly="True" Width="130">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>

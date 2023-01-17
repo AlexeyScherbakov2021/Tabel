@@ -129,7 +129,7 @@
         </Style>-->
     </Window.Resources>
     <Window.Background>
-        <ImageBrush ImageSource="/Views/stripes-steal-turquoise-fade-chrome-os-stock.jpg"/>
+        <ImageBrush ImageSource="/Resources/stripes-steal-turquoise-fade-chrome-os-stock.jpg"/>
     </Window.Background>
 
     <DockPanel>

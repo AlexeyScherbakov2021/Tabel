@@ -13,6 +13,7 @@ using System.IO;
 using Text = DocumentFormat.OpenXml.Wordprocessing.Text;
 using Run = DocumentFormat.OpenXml.Wordprocessing.Run;
 using System.Diagnostics;
+using System.Windows.Documents;
 
 namespace Tabel.Repository
 {
@@ -23,7 +24,6 @@ namespace Tabel.Repository
 
         public RepositoryWord(string fileName)
         {
-            
             _FileName = fileName;
         }
 
@@ -40,12 +40,28 @@ namespace Tabel.Repository
 
                     foreach (var end in bookMarks)
                     {
-                        if (end.Key == "ДАТА")
+                        switch(end.Key)
                         {
-                            var textElement = new Text(dt.ToString("dd MMMM yyyy года"));
-                            var runElement = new Run(textElement);
-                            end.Value.InsertAfterSelf(runElement);
+                            case "ДАТА":
+                                var textElement = new Text(dt.ToString("dd MMMM yyyy года"));
+                                var runElement = new Run(textElement);
+                                end.Value.InsertAfterSelf(runElement);
+                                break;
+
+                            case "СПИСОК":
+                                foreach(var person in listPerson)
+                                {
+                                    var FIO = new Text(person.FIO);
+                                    var runFIO = new Run();
+                                    runFIO.AppendChild(FIO);
+                                    runFIO.AppendChild(new DocumentFormat.OpenXml.Wordprocessing.Break());
+                                    end.Value.InsertBeforeSelf(runFIO);
+
+                                }
+
+                                break;
                         }
+
                     }
                 }
             }

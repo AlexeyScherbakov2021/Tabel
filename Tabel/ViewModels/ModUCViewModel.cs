@@ -536,12 +536,12 @@ namespace Tabel.ViewModels
                         ws.Cell(RowNum, 5).Value = item.premiaFP.Summa;
                         ws.Cell(RowNum, 6).Value = item.premiaKvalif.Summa;
                         ws.Cell(RowNum, 7).Value = item.premiaOtdel.Summa;
-                        ws.Cell(RowNum, 8).Value = item.premiaQuality.Summa;
-                        ws.Cell(RowNum, 9).Value = item.premiaAddWorks.Summa;
-                        ws.Cell(RowNum, 10).Value = item.premiaTransport.Summa;
-                        ws.Cell(RowNum, 11).Value = item.premiaPrize.Summa;
-                        ws.Cell(RowNum, 12).Value = item.PremiaItogo;
-                        ws.Cell(RowNum, 13).Value = item.Itogo;
+                        //ws.Cell(RowNum, 8).Value = item.premiaQuality.Summa;
+                        ws.Cell(RowNum, 8).Value = item.premiaAddWorks.Summa;
+                        ws.Cell(RowNum, 9).Value = item.premiaTransport.Summa;
+                        ws.Cell(RowNum, 10).Value = item.premiaPrize.Summa;
+                        ws.Cell(RowNum, 11).Value = item.PremiaItogo;
+                        ws.Cell(RowNum, 12).Value = item.Itogo;
                         RowNum++;
                     }
 
@@ -608,14 +608,14 @@ namespace Tabel.ViewModels
                     if (SelectedModPerson.premiaAddWorks.Summa > 0)
                     {
                         ws.Row(curRow).InsertRowsBelow(1);
-                        ws.Cell(curRow, 1).Value = "Премия (доп.раб.)";
+                        ws.Cell(curRow, 1).Value = "Доплата (доп.раб.)";
                         ws.Cell(curRow++, 4).Value = SelectedModPerson.premiaAddWorks.Summa;
                     }
 
                     if (SelectedModPerson.premiaTransport.Summa > 0)
                     {
                         ws.Row(curRow).InsertRowsBelow(1);
-                        ws.Cell(curRow, 1).Value = "Премия (доставка)";
+                        ws.Cell(curRow, 1).Value = "компенс. за доставку";
                         ws.Cell(curRow++, 4).Value = SelectedModPerson.premiaTransport.Summa;
                     }
 
