@@ -35,7 +35,7 @@ namespace Tabel.ViewModels
         // Команда Печать
         //--------------------------------------------------------------------------------
         public ICommand PrintCommand => new LambdaCommand(OnPrintCommandExecuted, CanPrintCommand);
-        private bool CanPrintCommand(object p) => true;
+        private bool CanPrintCommand(object p) => listDates != null && listDates.Contains(SelectedDate);
         private void OnPrintCommandExecuted(object p)
         {
             SelectDateWindow win = App.Current.Windows.OfType<SelectDateWindow>().FirstOrDefault();
@@ -44,12 +44,12 @@ namespace Tabel.ViewModels
 
         }
 
-
         public ICommand CancelCommand => new LambdaCommand(OnCancelCommandExecuted, CanCancelCommand);
         private bool CanCancelCommand(object p) => true;
         private void OnCancelCommandExecuted(object p)
         {
             SelectDateWindow win =  App.Current.Windows.OfType<SelectDateWindow>().FirstOrDefault();
+            //win.DialogResult = false;
             win.Close();
         }
 

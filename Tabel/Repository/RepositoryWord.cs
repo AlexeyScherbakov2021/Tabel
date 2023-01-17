@@ -29,7 +29,10 @@ namespace Tabel.Repository
 
         public void CreateWorkOffSZ(IEnumerable<Models.Personal> listPerson, DateTime dt)
         {
-            string newFile = System.IO.Path.GetTempPath() + "СЗ на выходной день.docx";
+            string newFile = System.IO.Path.GetTempFileName();
+            newFile = System.IO.Path.ChangeExtension(newFile, "docx");
+
+            //string newFile = System.IO.Path.GetTempPath() + "СЗ на выходной день.docx";
             File.Copy(_FileName, newFile, true);
 
             try

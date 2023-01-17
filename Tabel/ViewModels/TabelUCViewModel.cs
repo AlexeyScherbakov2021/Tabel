@@ -698,16 +698,12 @@ namespace Tabel.ViewModels
                         {
                             listPerson.Add(persMod.person);
                         }
-
                     }
                 }
-
+                RepositoryWord repoWord = new RepositoryWord(@"Отчеты\СЗ выходные дни.docx");
+                repoWord.CreateWorkOffSZ(listPerson, vm.SelectedDate);
             }
 
-            listPerson = listPerson.Distinct().ToList();
-
-            RepositoryWord repoWord = new RepositoryWord(@"Отчеты\СЗ выходные дни.docx");
-            repoWord.CreateWorkOffSZ(listPerson, new DateTime(2023, 1 , 21));
         }
 
         #endregion
