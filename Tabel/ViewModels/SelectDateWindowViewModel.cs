@@ -49,10 +49,8 @@ namespace Tabel.ViewModels
         private void OnCancelCommandExecuted(object p)
         {
             SelectDateWindow win =  App.Current.Windows.OfType<SelectDateWindow>().FirstOrDefault();
-            //win.DialogResult = false;
             win.Close();
         }
-
 
 
         #endregion
