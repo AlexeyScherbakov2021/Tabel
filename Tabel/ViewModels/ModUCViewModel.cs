@@ -38,7 +38,7 @@ namespace Tabel.ViewModels
         public PremiaFPViewModel premiaFPViewModel { get; set; }
         public PremiaKvalifViewModel premiaKvalifViewModel { get; set; }
         public PremiaOtdelViewModel premiaOtdelViewModel { get; set; }
-        public PremiaQualityViewModel premiaQualityViewModel { get; set; }
+        //public PremiaQualityViewModel premiaQualityViewModel { get; set; }
         public PremiaAddWorksViewModel premiaAddWorksViewModel { get; set; }
         public PremiaTransportViewModel premiaTransportViewModel { get; set; }
         public PremiaPrizeViewModel premiaPrizeViewModel { get; set; }
@@ -52,6 +52,7 @@ namespace Tabel.ViewModels
 
         public Visibility IsVisibleITR { get; private set; }
         public Visibility IsVisibleNoITR { get; private set; }
+        public Visibility IsVisibleAdmin { get; set; } = App.CurrentUser.u_role == UserRoles.Admin ? Visibility.Visible : Visibility.Collapsed;
 
 
         public decimal SetProcPrem { get; set; }
@@ -110,7 +111,7 @@ namespace Tabel.ViewModels
             premiaFPViewModel = new PremiaFPViewModel(db);
             premiaKvalifViewModel = new PremiaKvalifViewModel(db);
             premiaOtdelViewModel = new PremiaOtdelViewModel(db);
-            premiaQualityViewModel = new PremiaQualityViewModel(db);
+            //premiaQualityViewModel = new PremiaQualityViewModel(db);
             premiaAddWorksViewModel = new PremiaAddWorksViewModel(db);
             premiaTransportViewModel = new PremiaTransportViewModel(db);
             premiaPrizeViewModel = new PremiaPrizeViewModel(db);
@@ -182,7 +183,7 @@ namespace Tabel.ViewModels
             premiaFPViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
             premiaKvalifViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
             premiaOtdelViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
-            premiaQualityViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
+            //premiaQualityViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
             premiaAddWorksViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
             premiaTransportViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
             premiaPrizeViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
@@ -313,7 +314,7 @@ namespace Tabel.ViewModels
             premiaFPViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
             premiaKvalifViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
             premiaOtdelViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
-            premiaQualityViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
+            //premiaQualityViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
             premiaAddWorksViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
             premiaTransportViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
             premiaPrizeViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
@@ -464,7 +465,7 @@ namespace Tabel.ViewModels
                 premiaFPViewModel.AddPersons(ListNewPerson);
                 premiaKvalifViewModel.AddPersons(ListNewPerson);
                 premiaOtdelViewModel.AddPersons(ListNewPerson);
-                premiaQualityViewModel.AddPersons(ListNewPerson);
+                //premiaQualityViewModel.AddPersons(ListNewPerson);
                 premiaAddWorksViewModel.AddPersons(ListNewPerson);
                 premiaTransportViewModel.AddPersons(ListNewPerson);
                 premiaPrizeViewModel.AddPersons(ListNewPerson);
@@ -499,50 +500,120 @@ namespace Tabel.ViewModels
         private bool CanPrintCommand(object p) => true;
         private void OnPrintCommandExecuted(object p)
         {
+
+            ICollection<ModPerson> ListAllModPerson = repoModPerson.Items
+                .AsNoTracking()
+                .Where(it => it.Mod.m_month == _SelectMonth && it.Mod.m_year == _SelectYear)
+                .OrderBy(o => o.person.p_lastname)
+                .ThenBy(o => o.person.p_name).ToList();
+
+
+            foreach(var item in ListAllModPerson)
+            {
+                item.premiaBonus.Calculation();
+                item.premiaAddWorks.Calculation();
+                item.premiaFP.Calculation();
+                item.premiaOtdel.Calculation();
+                item.premiaPrize.Calculation();
+                item.premiaNight.Calculation();
+                item.premiaKvalif.Calculation();
+                item.premiaTransport.Calculation();
+                item.premOffDays.Calculation();
+            }
+
+
+
             try
             {
                 using (XLWorkbook wb = new XLWorkbook(@"Отчеты\Модель.xlsx"))
                 {
-
-                    //int NumPP = 1;
                     var ws = wb.Worksheets.Worksheet(1);
+                    var ws2 = wb.Worksheets.Worksheet(2);
+                    var ws3 = wb.Worksheets.Worksheet(3);
 
                     // Заполение шапки
-                    ws.Cell("C1").Value = CurrentMod.otdel.ot_name;
+                    //ws.Cell("C1").Value = CurrentMod.otdel.ot_name;
 
-                    DateTime startDate = new DateTime(_SelectYear, CurrentMod.m_month, 1);
-                    ws.Cell("C2").Value = startDate.ToString("dd.MM.yyyy");
-                    DateTime endDate = startDate.AddMonths(1).AddDays(-1);
-                    ws.Cell("D2").Value = endDate.ToString("dd.MM.yyyy");
+                    //DateTime startDate = new DateTime(_SelectYear, CurrentMod.m_month, 1);
+                    //ws.Cell("C2").Value = startDate.ToString("dd.MM.yyyy");
+                    //DateTime endDate = startDate.AddMonths(1).AddDays(-1);
+                    //ws.Cell("D2").Value = endDate.ToString("dd.MM.yyyy");
                     //ws.Cell("AA15").Value = "Составил: " + App.CurrentUser.u_fio;
 
-                    int RowNum = 5;
-                    ws.Row(5).InsertRowsBelow(ListModPerson.Count() - 1 );
-                    var range = ws.Range(RowNum, 1, RowNum, 75);
+                    int RowNum = 6;
+                    int RowNum2 = 6;
+                    int RowNum3 = 6;
+                    //ws.Row(5).InsertRowsBelow(ListModPerson.Count() - 1 );
+                    //var range = ws.Range(RowNum, 1, RowNum, 75);
 
-                    for (int i = 0; i < ListModPerson.Count() - 1; i++)
-                    {
-                        RowNum++;
-                        range.CopyTo(ws.Cell(RowNum, 1));
-                    }
+                    //for (int i = 0; i < ListModPerson.Count() - 1; i++)
+                    //{
+                    //    RowNum++;
+                    //    range.CopyTo(ws.Cell(RowNum, 1));
+                    //}
+                    ws.Cell("A2").Value = "'" + App.ListMonth[_SelectMonth-1] .Name+ " " + _SelectYear;
+                    ws2.Cell("A2").Value = "'" + App.ListMonth[_SelectMonth-1].Name + " " + _SelectYear;
+                    ws3.Cell("A2").Value = "'" + App.ListMonth[_SelectMonth-1].Name + " " + _SelectYear;
 
-                    RowNum = 5;
-                    foreach (var item in ListModPerson)
+
+                    foreach (var item in ListAllModPerson)
                     {
-                        ws.Cell(RowNum, 1).Value = item.person.p_tab_number;
-                        ws.Cell(RowNum, 2).Value = item.person.FIO;
-                        ws.Cell(RowNum, 3).Value = item.person.p_profession;
-                        ws.Cell(RowNum, 4).Value = item.premiaBonus.Summa;
-                        ws.Cell(RowNum, 5).Value = item.premiaFP.Summa;
-                        ws.Cell(RowNum, 6).Value = item.premiaKvalif.Summa;
-                        ws.Cell(RowNum, 7).Value = item.premiaOtdel.Summa;
-                        //ws.Cell(RowNum, 8).Value = item.premiaQuality.Summa;
-                        ws.Cell(RowNum, 8).Value = item.premiaAddWorks.Summa;
-                        ws.Cell(RowNum, 9).Value = item.premiaTransport.Summa;
-                        ws.Cell(RowNum, 10).Value = item.premiaPrize.Summa;
-                        ws.Cell(RowNum, 11).Value = item.PremiaItogo;
-                        ws.Cell(RowNum, 12).Value = item.Itogo;
-                        RowNum++;
+                        if(item.person.p_tab_number == "ГПХ")
+                        {
+                            ws3.Cell(RowNum3, 1).Value = item.person.p_tab_number;
+                            ws3.Cell(RowNum3, 2).Value = item.person.otdel.parent?.ot_name ?? item.person.otdel.ot_name;
+                            ws3.Cell(RowNum3, 3).Value = item.person.FIO;
+                            ws3.Cell(RowNum3, 4).Value = item.person.p_profession;
+                            ws3.Cell(RowNum3, 5).Value = item.premiaBonus.Summa;
+                            ws3.Cell(RowNum3, 6).Value = item.premiaFP.Summa;
+                            ws3.Cell(RowNum3, 7).Value = item.premiaKvalif.Summa;
+                            ws3.Cell(RowNum3, 8).Value = item.premiaOtdel.Summa;
+                            if(item.premiaAddWorks.Summa != 0)
+                                ws3.Cell(RowNum3, 9).Value = item.premiaAddWorks.Summa;
+                            ws3.Cell(RowNum3, 10).Value = item.premiaTransport.Summa;
+                            ws3.Cell(RowNum3, 11).Value = item.premiaPrize.Summa;
+                            ws3.Cell(RowNum3, 12).Value = item.PremiaItogo;
+                            ws3.Cell(RowNum3, 13).Value = item.Itogo;
+                            ws3.Row(RowNum3).InsertRowsBelow(1);
+                            RowNum3++;
+                        }
+
+                        else if(!string.IsNullOrEmpty(item.person.p_tab_number))
+                        {
+                            ws.Cell(RowNum, 1).Value = item.person.p_tab_number;
+                            ws.Cell(RowNum, 2).Value = item.person.otdel.parent?.ot_name ?? item.person.otdel.ot_name;
+                            ws.Cell(RowNum, 3).Value = item.person.FIO;
+                            ws.Cell(RowNum, 4).Value = item.person.p_profession;
+                            ws.Cell(RowNum, 5).Value = item.premiaBonus.Summa;
+                            ws.Cell(RowNum, 6).Value = item.premiaFP.Summa;
+                            ws.Cell(RowNum, 7).Value = item.premiaKvalif.Summa;
+                            ws.Cell(RowNum, 8).Value = item.premiaOtdel.Summa;
+                            if (item.premiaAddWorks.Summa != 0)
+                                ws.Cell(RowNum, 9).Value = item.premiaAddWorks.Summa;
+                            ws.Cell(RowNum, 10).Value = item.premiaTransport.Summa;
+                            ws.Cell(RowNum, 11).Value = item.premiaPrize.Summa;
+                            ws.Cell(RowNum, 12).Value = item.PremiaItogo;
+                            ws.Cell(RowNum, 13).Value = item.Itogo;
+                            ws.Row(RowNum).InsertRowsBelow(1);
+                            RowNum++;
+                        }
+
+                        ws2.Cell(RowNum2, 1).Value = item.person.p_tab_number;
+                        ws2.Cell(RowNum2, 2).Value = item.person.otdel.parent?.ot_name ?? item.person.otdel.ot_name;
+                        ws2.Cell(RowNum2, 3).Value = item.person.FIO;
+                        ws2.Cell(RowNum2, 4).Value = item.person.p_profession;
+                        ws2.Cell(RowNum2, 5).Value = item.premiaBonus.Summa;
+                        ws2.Cell(RowNum2, 6).Value = item.premiaFP.Summa;
+                        ws2.Cell(RowNum2, 7).Value = item.premiaKvalif.Summa;
+                        ws2.Cell(RowNum2, 8).Value = item.premiaOtdel.Summa;
+                        if (item.premiaAddWorks.Summa != 0)
+                            ws2.Cell(RowNum2, 9).Value = item.premiaAddWorks.Summa;
+                        ws2.Cell(RowNum2, 10).Value = item.premiaTransport.Summa;
+                        ws2.Cell(RowNum2, 11).Value = item.premiaPrize.Summa;
+                        ws2.Cell(RowNum2, 12).Value = item.PremiaItogo;
+                        ws2.Cell(RowNum2, 13).Value = item.Itogo;
+                        ws2.Row(RowNum2).InsertRowsBelow(1);
+                        RowNum2++;
                     }
 
                     string TempFile = System.IO.Path.GetTempFileName();
@@ -570,7 +641,7 @@ namespace Tabel.ViewModels
                 using (XLWorkbook wb = new XLWorkbook(@"Отчеты\Расчетка.xlsx"))
                 {
 
-                    int NumPP = 1;
+                    //int NumPP = 1;
                     var ws = wb.Worksheets.Worksheet(1);
 
                     // Заполение шапки

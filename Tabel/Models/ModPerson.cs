@@ -125,8 +125,8 @@ namespace Tabel.Models
         [NotMapped]
         public PremiaPrize premiaPrize { get; set; }
 
-        [NotMapped]
-        public PremiaQuality premiaQuality { get; set; }
+        //[NotMapped]
+        //public PremiaQuality premiaQuality { get; set; }
 
         //[NotMapped]
         //public decimal? BonusForAll { get; set; }
@@ -147,7 +147,7 @@ namespace Tabel.Models
             premiaTransport = new PremiaTransport(this);
             premiaNight = new premiaNight(this);
             premiaPrize = new PremiaPrize(this);
-            premiaQuality = new PremiaQuality(this);
+            //premiaQuality = new PremiaQuality(this);
         }
 
 
@@ -178,7 +178,7 @@ namespace Tabel.Models
             + premiaOtdel.GetPremia()
             + premiaTransport.GetPremia()
             + premiaAddWorks.GetPremia()
-            + premiaQuality.GetPremia()
+            //+ premiaQuality.GetPremia()
             + premiaPrize.GetPremia();
 
 

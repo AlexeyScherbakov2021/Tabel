@@ -39,6 +39,13 @@ namespace Tabel.Repository
             {
                 using (var word = WordprocessingDocument.Open(newFile, true))
                 {
+
+                    RunFonts font1 = new RunFonts() { Ascii = "Times New Roman" };
+                    FontSize fontSize1 = new FontSize() { Val = "12" };
+                    StyleRunProperties styleRunProperties1 = new StyleRunProperties();
+                    styleRunProperties1.Append(fontSize1);
+                    styleRunProperties1.Append(font1);
+
                     var bookMarks = FindBookmarks(word.MainDocumentPart.Document);
 
                     foreach (var end in bookMarks)
@@ -54,12 +61,11 @@ namespace Tabel.Repository
                             case "СПИСОК":
                                 foreach(var person in listPerson)
                                 {
-                                    var FIO = new Text(person.FIO);
+                                    var FIO = new Text(person.p_profession + " " + person.FIO);
                                     var runFIO = new Run();
                                     runFIO.AppendChild(FIO);
                                     runFIO.AppendChild(new DocumentFormat.OpenXml.Wordprocessing.Break());
                                     end.Value.InsertBeforeSelf(runFIO);
-
                                 }
 
                                 break;
