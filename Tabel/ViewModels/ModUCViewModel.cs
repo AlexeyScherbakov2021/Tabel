@@ -521,8 +521,6 @@ namespace Tabel.ViewModels
                 item.premOffDays.Calculation();
             }
 
-
-
             try
             {
                 using (XLWorkbook wb = new XLWorkbook(@"Отчеты\Модель.xlsx"))
@@ -760,6 +758,15 @@ namespace Tabel.ViewModels
 
         }
 
+        //--------------------------------------------------------------------------------
+        // Команда кнопки Список Премии по отделу
+        //--------------------------------------------------------------------------------
+        public ICommand BtnPremiaOtdelCommand => new LambdaCommand(OnBtnPremiaOtdelCommandExecuted, CanBtnPremiaOtdelCommand);
+        private bool CanBtnPremiaOtdelCommand(object p) => SelectedModPerson != null;
+        private void OnBtnPremiaOtdelCommandExecuted(object p)
+        {
+
+        }
 
         #endregion
 

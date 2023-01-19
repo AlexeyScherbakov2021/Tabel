@@ -359,6 +359,16 @@
                             <DataGridTextColumn x:Name="colITR2" Header="ФИО" Binding="{Binding person.FIO}" IsReadOnly="True"/>
                             <DataGridTextColumn x:Name="colITR3" Header="Должность" Binding="{Binding person.p_profession}" IsReadOnly="True"/>
                             <DataGridTextColumn x:Name="colITR4" Header="Работа с ОР" Binding="{Binding md_kvalif_name}" Width="200" CellStyle="{StaticResource CellColor}"/>
+                            <!--<DataGridTemplateColumn x:Name="colITR4" Header="Работа с ОР" Width="240" CellStyle="{StaticResource CellColor}">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <DockPanel>
+                                            <Button Content="..." Width="20" DockPanel.Dock="Right" Command="{Binding DataContext.BtnPremiaOtdelCommand, ElementName=userControl}"/>
+                                            <TextBlock Text="{Binding md_kvalif_name}"/>
+                                        </DockPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>-->
                             <DataGridTextColumn x:Name="colITR5" Header="Прем.тариф" Binding="{Binding md_kvalif_tarif, Mode=TwoWay, StringFormat=N2}" CellStyle="{StaticResource CellRight}" IsReadOnly="True"/>
                             <DataGridTextColumn x:Name="colITR6" Header="от полн.%" Binding="{Binding md_kvalif_proc, StringFormat=N2}" CellStyle="{StaticResource CellRightColor}"/>
                             <DataGridTextColumn x:Name="colITR7" Header="% выполн." Binding="{Binding md_kvalif_prem, StringFormat=N2}" CellStyle="{StaticResource CellRightColor}"/>
