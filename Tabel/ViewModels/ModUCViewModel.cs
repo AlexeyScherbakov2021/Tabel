@@ -21,6 +21,7 @@ using Tabel.Models;
 using Tabel.Repository;
 using Tabel.ViewModels.Base;
 using Tabel.ViewModels.ModViewModel;
+using Tabel.Views;
 
 namespace Tabel.ViewModels
 {
@@ -160,6 +161,7 @@ namespace Tabel.ViewModels
                 if (CurrentMod != null)
                     ListModPerson = new ObservableCollection<ModPerson>(repoModPerson.Items
                         .Where(it => it.md_modId == CurrentMod.id)
+                        //.Include(inc => inc.ListTargetTask)
                         .OrderBy(o => o.person.p_lastname)
                         .ThenBy(o => o.person.p_name)
                         );
@@ -172,6 +174,7 @@ namespace Tabel.ViewModels
                 if (CurrentMod != null)
                     ListModPerson = new ObservableCollection<ModPerson>(repoModPerson.Items
                         .Where(it => it.md_modId == CurrentMod.id && it.person.p_otdel_id == _SelectedOtdel.id)
+                        //.Include(inc => inc.ListTargetTask)
                         .OrderBy(o => o.person.p_lastname)
                         .ThenBy(o => o.person.p_name)
                         );
@@ -766,6 +769,32 @@ namespace Tabel.ViewModels
         private void OnBtnPremiaOtdelCommandExecuted(object p)
         {
 
+            TasksPersonWindow win = new TasksPersonWindow();
+            TasksPersonWindowViewModel vm = new TasksPersonWindowViewModel(SelectedModPerson);
+            win.DataContext = vm;
+
+            FrameworkElement elem = p as FrameworkElement;
+            Point pt = Mouse.GetPosition(elem);
+            Point pt2 = elem.PointToScreen(pt);
+            win.Left = pt2.X - win.Width;
+            win.Top = pt2.Y - win.Height + 250;
+            if (win.Top < 0) win.Top = 0;
+            else if (win.Top + win.Height > SystemParameters.PrimaryScreenHeight)
+                win.Top -= (win.Top + win.Height) - SystemParameters.PrimaryScreenHeight;
+
+            if (win.ShowDialog() == true)
+            {
+                SelectedModPerson.ListTargetTask = vm.ListTarget;
+                decimal summa = 0;
+                string name = "";
+                foreach (var item in vm.ListTarget)
+                {
+                    summa += item.tt_proc_task;
+                    name += item.tt_name.Length > 15 ? item.tt_name.Substring(0, 15) + "...; " : item.tt_name + ";";
+                }
+                SelectedModPerson.md_kvalif_proc = summa;
+                SelectedModPerson.md_kvalif_name = name;
+            }
         }
 
         #endregion

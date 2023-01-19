@@ -64,9 +64,11 @@ namespace Tabel.Component.Models.Mod
             //    ? null 
             //    : model.md_bonus_max * BonusForAll / 100 * (model.TabelDays - model.TabelAbsent) / model.TabelDays;
 
+            decimal koef = model.TabelDays == 0 ? 1 : (decimal)(model.TabelDays - model.TabelAbsent) / (decimal)model.TabelDays;
+
             Summa = !model.md_bonus_exec
                 ? null
-                : model.md_bonus_max * BonusForAll / 100;
+                : model.md_bonus_max * BonusForAll / 100 * koef;
 
         }
     }

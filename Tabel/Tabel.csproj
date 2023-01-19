@@ -128,7 +128,9 @@
     <Compile Include="Models\Otpusk.cs" />
     <Compile Include="Models\OtpuskDays.cs" />
     <Compile Include="Models\OtpuskPerson.cs" />
+    <Compile Include="Models\TargetTask.cs" />
     <Compile Include="ViewModels\SelectDateWindowViewModel.cs" />
+    <Compile Include="ViewModels\TasksPersonWindowViewModel.cs" />
     <Compile Include="Views\SelectDateWindow.xaml.cs">
       <DependentUpon>SelectDateWindow.xaml</DependentUpon>
     </Compile>
@@ -262,6 +264,9 @@
     </Compile>
     <Compile Include="Views\TabelUC.xaml.cs">
       <DependentUpon>TabelUC.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TasksPersonWindow.xaml.cs">
+      <DependentUpon>TasksPersonWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\TransportUC.xaml.cs">
       <DependentUpon>TransportUC.xaml</DependentUpon>
@@ -443,6 +448,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\TabelUC.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\TasksPersonWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -1,0 +1,42 @@
+﻿<Window x:Class="Tabel.Views.TasksPersonWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Tabel.Views"
+        xmlns:vm="clr-namespace:Tabel.ViewModels"
+        mc:Ignorable="d"
+        Title="{Binding Title}" Height="400" Width="400">
+    <Window.DataContext>
+        <vm:TasksPersonWindowViewModel/>
+    </Window.DataContext>
+    <DockPanel>
+        <UniformGrid Columns="2" DockPanel.Dock="Bottom" Margin="10">
+            <Button Content="OK" Margin="4" Style="{DynamicResource ButtonStyleShadow}" Command="{Binding OkCommand}"/>
+            <Button Content="Отмена" Margin="4" Style="{DynamicResource ButtonStyleShadow}" Command="{Binding CancelCommand}"/>
+        </UniformGrid>
+        <Border Margin="8" Background="#FFEAEAEA">
+            <Border.Effect>
+                <DropShadowEffect ShadowDepth="2" BlurRadius="13" Opacity="0.4"/>
+            </Border.Effect>
+            <DockPanel Margin="8" >
+                <Grid DockPanel.Dock="Bottom" Margin="4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="5*"/>
+                        <ColumnDefinition Width="20*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="сумм %" Grid.Column="1"/>
+                    <TextBlock Text="100%" Grid.Column="2"/>
+                </Grid>
+                <DataGrid ItemsSource="{Binding ListTarget}" Style="{StaticResource DataGridStyle}"
+                          CanUserAddRows="True" CanUserDeleteRows="True">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Целевое указание" Binding="{Binding tt_name}" Width="*"/>
+                        <DataGridTextColumn Header="% выполн." Binding="{Binding tt_proc_task}" CellStyle="{StaticResource ResourceKey=CellRight}" Width="60"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </DockPanel>
+        </Border>
+    </DockPanel>
+</Window>

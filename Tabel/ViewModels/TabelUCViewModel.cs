@@ -490,7 +490,7 @@ namespace Tabel.ViewModels
                     //ws.Cell("AA15").Value = "Составил: " + App.CurrentUser.u_fio;
 
                     int RowNum = 24;
-                    ws.Row(27).InsertRowsBelow((ListTabelPerson.Count() - 1) * 4);
+                    ws.Row(27).InsertRowsBelow((SelectedListPerson.Count() - 1) * 4);
                     var range = ws.Range(RowNum, 1, RowNum + 3, 75);
 
                     for (int i = 0; i < SelectedListPerson.Count() - 1; i++)

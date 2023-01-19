@@ -20,6 +20,8 @@ namespace Tabel.ViewModels.ModViewModel
         public decimal? SetProcPrem { get; set; }
         public decimal? SetProcFull { get; set; }
 
+
+
         public PremiaKvalifViewModel(BaseModel db) : base(db)
         {
 
@@ -52,6 +54,7 @@ namespace Tabel.ViewModels.ModViewModel
             foreach (var item in listPerson)
             {
                 item.md_kvalif_tarif = item.TabelHours * item.person.p_premTarif;
+                item.PlanTarifKvalif = 162m * item.person.p_premTarif;
             }
         }
 

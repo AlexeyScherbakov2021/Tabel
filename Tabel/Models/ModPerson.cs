@@ -94,9 +94,11 @@ namespace Tabel.Models
         public virtual Personal person { get; set; }
 
         public virtual ICollection<AddWorks> ListAddWorks { get; set; }
+        public virtual ICollection<TargetTask> ListTargetTask { get; set; }
 
 
-
+        [NotMapped]
+        public decimal? PlanTarifKvalif { get; set; }
 
         [NotMapped]
         public PremiaFP premiaFP { get; set; }
@@ -137,6 +139,7 @@ namespace Tabel.Models
         public ModPerson()
         {
             ListAddWorks = new HashSet<AddWorks>();
+            ListTargetTask = new HashSet<TargetTask>();
 
             premiaFP = new PremiaFP(this);
             premiaBonus = new PremiaBonus(this);

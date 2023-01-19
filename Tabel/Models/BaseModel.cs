@@ -75,6 +75,7 @@ namespace Tabel.Models
         public virtual DbSet<Otpusk> Otpusk { get; set; }
         public virtual DbSet<OtpuskPerson> OtpuskPerson { get; set; }
         public virtual DbSet<OtpuskDays> OtpuskDays { get; set; }
+        public virtual DbSet<TargetTask> TargetTask { get; set; }
 
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -198,6 +199,11 @@ namespace Tabel.Models
                 .WithMany(e => e.ListModPerson)
                 .Map(m => m.ToTable("ModPersonAddWorks").MapLeftKey("mp_Id").MapRightKey("aw_Id"));
 
+            modelBuilder.Entity<ModPerson>()
+                .HasMany(e => e.ListTargetTask)
+                .WithRequired(e => e.ModPerson)
+                .HasForeignKey(e => e.tt_ModPersonId)
+                .WillCascadeOnDelete();
 
             modelBuilder.Entity<Personal>()
                 .Property(e => e.p_tab_number)

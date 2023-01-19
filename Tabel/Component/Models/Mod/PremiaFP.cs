@@ -40,11 +40,12 @@ namespace Tabel.Component.Models
         //-------------------------------------------------------------------------------------------------------
         public override void Calculation()
         {
+            decimal koef = model.TabelDays == 0 ? 1 : (decimal)(model.TabelDays - model.TabelAbsent) / (decimal)model.TabelDays;
+
             SummaHoursFP = model.md_sumFromFP * model.md_premFP / 100;
             Summa = model.TabelDays == 0
                 ? null
-                : SummaHoursFP * model.md_cat_prem_tarif * (model.TabelDays - model.TabelAbsent)
-                        / model.TabelDays;
+                : SummaHoursFP * model.md_cat_prem_tarif * koef;
         }
 
 

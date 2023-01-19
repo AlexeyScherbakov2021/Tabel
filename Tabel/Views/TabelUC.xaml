@@ -10,7 +10,7 @@
              xmlns:fa="http://schemas.fontawesome.com/icons/"
              xmlns:cmd="clr-namespace:Tabel.Commands"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="1000">
+             d:DesignHeight="450" d:DesignWidth="1300">
     <UserControl.DataContext>
         <vm:TabelUCViewModel/>
     </UserControl.DataContext>
@@ -30,7 +30,7 @@
             <Button Content="СЗ на выходной" Command="{Binding SZOffDayCommand}" Margin="3" Style="{StaticResource ButtonStyleShadow}"/>
             <Button Content="Добавить сотрудников" Command="{Binding AddPersonCommand}" Margin="3" Style="{StaticResource ButtonStyleShadow}"/>
             <Button Content="Удалить сотрудника" Command="{Binding DeletePersonCommand}" Margin="3" Style="{StaticResource ButtonStyleShadow}"/>
-            <Button Margin="3" Style="{StaticResource ButtonStyleShadow}" ToolTip="Экспорт в 1С" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=local:BasicWindow}}">
+            <Button Margin="3" Style="{StaticResource ButtonStyleShadow}" ToolTip="Закрыть окно" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=local:BasicWindow}}">
                 <StackPanel Orientation="Horizontal">
                     <fa:ImageAwesome Icon="Solid_DoorOpen" Width="24" Height="16" Foreground="#FF005AA0"/>
                     <TextBlock Text="Закрыть"/>

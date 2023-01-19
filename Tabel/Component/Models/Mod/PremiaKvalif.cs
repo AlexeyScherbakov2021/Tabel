@@ -40,6 +40,7 @@ namespace Tabel.Component.Models.Mod
                 case "md_kvalif_prem":
                 case "md_kvalif_tarif":
                 case "md_kvalif_proc":
+                case "":
                     Calculation();
                     break;
             }
@@ -50,7 +51,9 @@ namespace Tabel.Component.Models.Mod
         //-------------------------------------------------------------------------------------------------------
         public override void Calculation()
         {
-            Summa = (model.md_kvalif_prem * model.md_kvalif_tarif / 100) * model.md_kvalif_proc/100;
+            decimal koef = model.TabelDays == 0 ? 1 : (decimal)(model.TabelDays - model.TabelAbsent) / (decimal)model.TabelDays;
+
+            Summa = (model.md_kvalif_prem * model.md_kvalif_tarif / 100) * model.md_kvalif_proc/100 * koef;
         }
 
 
