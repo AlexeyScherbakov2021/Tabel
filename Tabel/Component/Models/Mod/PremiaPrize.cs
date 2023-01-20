@@ -22,7 +22,7 @@ namespace Tabel.Component.Models.Mod
             if (model.TabelHours == 0 || model.OverHours == 0)
                 return;
 
-            Summa = model.Oklad / model.TabelHours * model.OverHours * 2;
+            Summa = model.md_Oklad / model.TabelHours * model.OverHours * 2;
         }
 
     }

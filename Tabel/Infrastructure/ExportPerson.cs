@@ -97,7 +97,7 @@ namespace Tabel.ViewModels
                     mPerson.TabelDays= item.DaysMonth;
                     //mPerson.TabelAbsent = item.
                     mPerson.OverHours = item.OverWork.Value;
-                    mPerson.Oklad = mPerson.person.category is null 
+                    mPerson.md_Oklad = mPerson.person.category is null 
                         ? 0 
                         : mPerson.TabelHours * item.person.category.cat_tarif.Value * mPerson.person.p_stavka;
                     mPerson.TransportPremia = tPerson?.Summa;

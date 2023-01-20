@@ -16,7 +16,7 @@
     <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>x64</PlatformTarget>
+    <PlatformTarget>x86</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -26,7 +26,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>x64</PlatformTarget>
+    <PlatformTarget>x86</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -42,7 +42,7 @@
     <DefineConstants>TRACE;DEMO</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
+    <PlatformTarget>x86</PlatformTarget>
     <LangVersion>7.3</LangVersion>
     <ErrorReport>prompt</ErrorReport>
     <Prefer32Bit>true</Prefer32Bit>
@@ -129,8 +129,15 @@
     <Compile Include="Models\OtpuskDays.cs" />
     <Compile Include="Models\OtpuskPerson.cs" />
     <Compile Include="Models\TargetTask.cs" />
+    <Compile Include="ViewModels\Admins\ProfileUserUCViewModel.cs" />
     <Compile Include="ViewModels\SelectDateWindowViewModel.cs" />
     <Compile Include="ViewModels\TasksPersonWindowViewModel.cs" />
+    <Compile Include="Views\Admins\PassWindow.xaml.cs">
+      <DependentUpon>PassWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Admins\ProfileUserUC.xaml.cs">
+      <DependentUpon>ProfileUserUC.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\SelectDateWindow.xaml.cs">
       <DependentUpon>SelectDateWindow.xaml</DependentUpon>
     </Compile>
@@ -284,6 +291,14 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Component\TabelPanel\TabelDayPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Admins\PassWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Admins\ProfileUserUC.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

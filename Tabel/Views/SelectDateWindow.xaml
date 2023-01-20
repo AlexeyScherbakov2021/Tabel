@@ -6,7 +6,7 @@
         xmlns:vm="clr-namespace:Tabel.ViewModels"
         xmlns:local="clr-namespace:Tabel.Views"
         mc:Ignorable="d"
-        Title="Выбор даты для печати" Height="455" Width="298" WindowStartupLocation="CenterScreen">
+        Title="Выбор даты для печати" Height="455" Width="298" WindowStartupLocation="CenterScreen" Topmost="True" ResizeMode="NoResize" WindowStyle="ToolWindow">
     <Window.DataContext>
         <vm:SelectDateWindowViewModel/>
     </Window.DataContext>

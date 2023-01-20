@@ -477,6 +477,7 @@ namespace Tabel.ViewModels
 
                     int NumPP = 1;
                     var ws = wb.Worksheets.Worksheet(1);
+                    ws.Name = "ПР " + App.ListMonth[_SelectMonth - 1].Name;
 
                     // Заполение шапки
                     ws.Cell("A8").Value = Tabel.otdel.ot_name;
@@ -523,6 +524,7 @@ namespace Tabel.ViewModels
                         ws.Cell(RowNum + 3, 73).Value = item.WorkedOffHours;
 
                         int ColNum = 14;
+                        //bool IsFirstine = true;
                         foreach (var day in item.TabelDays)
                         {
                             ws.Cell(RowNum, ColNum).Value = day.typeDay.t_name;
@@ -530,13 +532,14 @@ namespace Tabel.ViewModels
                                 ws.Cell(RowNum + 1, ColNum).Value = day.WhiteHours;
 
                             ColNum++;
-                            if (ColNum >= 29)
+                            if (/*IsFirstine &&*/ day.td_Day == 15)
                             {
+                                //IsFirstine = false;
                                 ColNum = 14;
                                 RowNum += 2;
                             }
                         }
-                        //RowNum += 2;
+                        RowNum += 2;
                     }
 
                     string TempFile = System.IO.Path.GetTempFileName();

@@ -57,7 +57,8 @@ namespace Tabel.Models
         [Column(TypeName = "numeric")]
         public decimal? md_prem_otdel_proc { get => _md_prem_otdel_proc; set { Set(ref _md_prem_otdel_proc, value); } }
 
-        public string md_prem_stimul_name { get; set; }
+        private string _md_prem_stimul_name;
+        public string md_prem_stimul_name { get => _md_prem_stimul_name; set { Set(ref _md_prem_stimul_name, value); } }
 
         [Column(TypeName = "numeric")]
         private decimal? _md_tarif_offDay;
@@ -88,6 +89,19 @@ namespace Tabel.Models
 
         private decimal? _md_person_achiev;
         public decimal? md_person_achiev { get => _md_person_achiev; set { Set(ref _md_person_achiev, value); } }
+
+
+        public decimal? md_ItogPremia1 { get; set; }
+        public decimal? md_ItogPremia2vyr { get; set; }
+        
+        [Column(TypeName = "numeric")]
+        public decimal? md_ItogPremiaAddWork { get; set; }
+        public decimal? md_ItogPremiaTransport { get; set; }
+        public decimal? md_ItogPremia2Otdel { get; set; }
+        public decimal? md_ItogPremia3Stimul { get; set; }
+        public decimal? md_ItogPremiaPrize { get; set; }
+        public decimal? md_ItogPremiaNight { get; set; }
+        public decimal? md_ItogPremiaOffDays { get; set; }
 
 
         public virtual Mod Mod { get; set; }
@@ -154,14 +168,19 @@ namespace Tabel.Models
         }
 
 
+        private decimal _TabelHours;
         [NotMapped]
-        public decimal TabelHours { get; set; }
+        public decimal TabelHours { get => _TabelHours; set { Set(ref _TabelHours, value); } }
+        
         [NotMapped]
         public int TabelDays { get; set; }
+
+
+        private int _TabelAbsent = 0;
         [NotMapped]
-        public int TabelAbsent { get; set; } = 0;
-        [NotMapped]
-        public decimal Oklad { get; set; }
+        public int TabelAbsent { get => _TabelAbsent; set { Set(ref _TabelAbsent, value); } }
+        //[NotMapped]
+        public decimal? md_Oklad { get; set; }
         [NotMapped]
         public decimal OverHours;
 
@@ -186,7 +205,7 @@ namespace Tabel.Models
 
 
         public decimal? Itogo => 
-            Oklad
+            md_Oklad
             + premiaNight.GetPremia()
             + premOffDays.GetPremia()
             + PremiaItogo;

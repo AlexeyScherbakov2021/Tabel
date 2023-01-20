@@ -56,10 +56,21 @@ namespace Tabel.ViewModels.ModViewModel
             if (listPerson is null)
                 return;
 
-            RepositoryMSSQL<Transport> repoTransport = new RepositoryMSSQL<Transport>(db);
-            Transport Transp = repoTransport.Items.AsNoTracking().FirstOrDefault(it => it.tr_Year == _SelectYear
-                && it.tr_Month == _SelectMonth
-                && it.tr_OtdelId == (_SelectedOtdel.ot_parent ?? _SelectedOtdel.id));
+            Transport Transp;
+
+            if (_SelectedOtdel is null)
+            {
+                RepositoryMSSQL<Transport> repoTransport = new RepositoryMSSQL<Transport>(db);
+                Transp = repoTransport.Items.AsNoTracking().FirstOrDefault(it => it.tr_Year == _SelectYear
+                    && it.tr_Month == _SelectMonth);
+            }
+            else
+            {
+                RepositoryMSSQL<Transport> repoTransport = new RepositoryMSSQL<Transport>(db);
+                Transp = repoTransport.Items.AsNoTracking().FirstOrDefault(it => it.tr_Year == _SelectYear
+                    && it.tr_Month == _SelectMonth
+                    && it.tr_OtdelId == (_SelectedOtdel.ot_parent ?? _SelectedOtdel.id));
+            }
 
             if (Transp is null) return;
 
@@ -84,9 +95,20 @@ namespace Tabel.ViewModels.ModViewModel
                 return;
 
             RepositoryMSSQL<WorkTabel> repoTabel = new RepositoryMSSQL<WorkTabel>(db);
-            WorkTabel tabel = repoTabel.Items.AsNoTracking().FirstOrDefault(it => it.t_year == _SelectYear
-                && it.t_month == _SelectMonth
-                && it.t_otdel_id == (_SelectedOtdel.ot_parent ?? _SelectedOtdel.id));
+            WorkTabel tabel;
+
+            if (_SelectedOtdel is null)
+            {
+                tabel = repoTabel.Items.AsNoTracking().FirstOrDefault(it => it.t_year == _SelectYear
+                    && it.t_month == _SelectMonth);
+            }
+            else
+            {
+                tabel = repoTabel.Items.AsNoTracking().FirstOrDefault(it => it.t_year == _SelectYear
+                    && it.t_month == _SelectMonth
+                    && it.t_otdel_id == (_SelectedOtdel.ot_parent ?? _SelectedOtdel.id));
+            }
+
 
             if (listPerson is null || tabel is null) return;
 
@@ -112,7 +134,7 @@ namespace Tabel.ViewModels.ModViewModel
 
 
                     item.OverHours = pers.OverWork ?? 0;
-                    item.Oklad = item.person.category is null ? 0 : item.TabelHours * item.person.category.cat_tarif.Value * item.person.p_stavka;
+                    item.md_Oklad = item.person.category is null ? 0 : item.TabelHours * item.person.category.cat_tarif.Value * item.person.p_stavka;
 
                     int CountWorkDaysPerson = pers.TabelDays.Count(it => it.td_KindId == 1);
                     item.TabelAbsent = CountWorkDays - CountWorkDaysPerson;
@@ -131,9 +153,20 @@ namespace Tabel.ViewModels.ModViewModel
                 return;
 
             RepositoryMSSQL<Smena> repoSmena = new RepositoryMSSQL<Smena>(db);
-            var smena = repoSmena.Items.AsNoTracking().FirstOrDefault(it => it.sm_Year == _SelectYear
-                && it.sm_Month == _SelectMonth
-                && it.sm_OtdelId == (_SelectedOtdel.ot_parent ?? _SelectedOtdel.id));
+            Smena smena;
+
+
+            if (_SelectedOtdel is null)
+            {
+                smena = repoSmena.Items.AsNoTracking().FirstOrDefault(it => it.sm_Year == _SelectYear
+                    && it.sm_Month == _SelectMonth);
+            }
+            else
+            {
+                smena = repoSmena.Items.AsNoTracking().FirstOrDefault(it => it.sm_Year == _SelectYear
+                    && it.sm_Month == _SelectMonth
+                    && it.sm_OtdelId == (_SelectedOtdel.ot_parent ?? _SelectedOtdel.id));
+            }
 
             if (listPerson is null || smena is null) return;
 

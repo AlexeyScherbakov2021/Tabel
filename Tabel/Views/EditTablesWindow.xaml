@@ -47,6 +47,9 @@
                 <ContentPresenter Content="{Binding ViewUser}"/>
                 <!--<view:UsersWindow />-->
             </TabItem>
+            <TabItem Header="Профиль">
+                <view:ProfileUserUC/>
+            </TabItem>
         </TabControl>
 
     </Grid>

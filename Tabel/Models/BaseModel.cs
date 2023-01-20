@@ -354,6 +354,17 @@ namespace Tabel.Models
                 .WithRequired(e => e.user)
                 .HasForeignKey(e => e.tr_UserId)
                 .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<ModPerson>().Property(e => e.md_ItogPremia1).HasPrecision(18,4);
+            modelBuilder.Entity<ModPerson>().Property(e => e.md_ItogPremia2vyr).HasPrecision(18,4);
+            modelBuilder.Entity<ModPerson>().Property(e => e.md_ItogPremiaAddWork).HasPrecision(18,4);
+            modelBuilder.Entity<ModPerson>().Property(e => e.md_ItogPremiaTransport).HasPrecision(18,4);
+            modelBuilder.Entity<ModPerson>().Property(e => e.md_ItogPremia2Otdel).HasPrecision(18,4);
+            modelBuilder.Entity<ModPerson>().Property(e => e.md_ItogPremia3Stimul).HasPrecision(18,4);
+            modelBuilder.Entity<ModPerson>().Property(e => e.md_ItogPremiaPrize).HasPrecision(18,4);
+            modelBuilder.Entity<ModPerson>().Property(e => e.md_ItogPremiaNight).HasPrecision(18,4);
+            modelBuilder.Entity<ModPerson>().Property(e => e.md_ItogPremiaOffDays).HasPrecision(18,4);
+
         }
     }
 }

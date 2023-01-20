@@ -109,7 +109,7 @@
                             <DataGridTextColumn Header="Часы" Binding="{Binding TabelHours, StringFormat=0.#}" CellStyle="{StaticResource CellRight}"/>
                             <DataGridTextColumn Header="Отсут." Binding="{Binding TabelAbsent}" CellStyle="{StaticResource CellRight}"/>
                             <DataGridTextColumn Header="Дни" Binding="{Binding TabelDays}" CellStyle="{StaticResource CellRight}"/>
-                            <DataGridTextColumn Header="Оклад" Binding="{Binding Oklad, StringFormat=N2}" Width="70" CellStyle="{StaticResource CellRight}"/>
+                            <DataGridTextColumn Header="Оклад" Binding="{Binding md_Oklad, StringFormat=N2}" Width="70" CellStyle="{StaticResource CellRight}"/>
                             <DataGridTextColumn Header="Веч. 20%" Binding="{Binding premiaNight.NightOklad, StringFormat=0.#}" IsReadOnly="True" CellStyle="{StaticResource CellRight}"/>
                             <DataGridTextColumn Header="Веч.часы" Binding="{Binding premiaNight.NightHours, Mode=TwoWay, StringFormat=0.#}"  CellStyle="{StaticResource CellRight}"  IsReadOnly="True"/>
                             <DataGridTextColumn Header="Веч.премия" Binding="{Binding premiaNight.Summa, StringFormat=N2}" IsReadOnly="True" CellStyle="{StaticResource CellRight}"/>
@@ -320,13 +320,13 @@
                             <ColumnDefinition Width="{Binding ActualWidth, ElementName=colITR8}"/>
                         </Grid.ColumnDefinitions>
 
-                        <DockPanel Grid.Column="6" Margin="2,4">
+                        <!--<DockPanel Grid.Column="6" Margin="2,4">
                             <Button DockPanel.Dock="Right" Command="{Binding SetProcFullCommand}" Padding="0" 
                                     CommandParameter="{Binding ElementName=dgOt}" Style="{StaticResource ButtonStyleShadow}">
                                 <fa:ImageAwesome Icon="Solid_CheckCircle" Foreground="Green" Width="18" Height="16"/>
                             </Button>
                             <TextBox Text="{Binding SetProcFull, FallbackValue=0}" />
-                        </DockPanel>
+                        </DockPanel>-->
 
                         <DockPanel Grid.Column="7" Margin="2,4">
                             <Button DockPanel.Dock="Right" Command="{Binding SetProcPremCommand}" Padding="0" 
@@ -373,7 +373,7 @@
                             </DataGridTemplateColumn>
                             <DataGridTextColumn x:Name="colITR5" Header="План.тариф" Binding="{Binding PlanTarifKvalif, Mode=TwoWay, StringFormat=N2}" CellStyle="{StaticResource CellRight}" IsReadOnly="True"/>
                             <DataGridTextColumn x:Name="colITR6" Header="Прем.тариф" Binding="{Binding md_kvalif_tarif, Mode=TwoWay, StringFormat=N2}" CellStyle="{StaticResource CellRight}" IsReadOnly="True"/>
-                            <DataGridTextColumn x:Name="colITR7" Header="от полн.%" Binding="{Binding md_kvalif_proc, StringFormat=N2}" CellStyle="{StaticResource CellRightColor}"/>
+                            <DataGridTextColumn x:Name="colITR7" Header="от полн.%" Binding="{Binding md_kvalif_proc, StringFormat=N2}" CellStyle="{StaticResource CellRight}" IsReadOnly="True"/>
                             <DataGridTextColumn x:Name="colITR8" Header="% выполн." Binding="{Binding md_kvalif_prem, StringFormat=N2}" CellStyle="{StaticResource CellRightColor}"/>
                             <DataGridTextColumn x:Name="colITR9" Header="Премия" Binding="{Binding premiaKvalif.Summa, StringFormat=N2}" FontWeight="Bold" Width="90" IsReadOnly="True" CellStyle="{StaticResource CellRight}"/>
                         </DataGrid.Columns>
@@ -423,8 +423,8 @@
                             <DataGridTextColumn x:Name="colS3" Header="Должность" Binding="{Binding person.p_profession}" IsReadOnly="True" Width="350"/>
                             <DataGridTextColumn x:Name="colS4" Header="Макс. премия" Binding="{Binding md_prem_otdel, Mode=TwoWay, StringFormat=N0}" CellStyle="{StaticResource CellRight}"  IsReadOnly="True"/>
                             <DataGridTextColumn x:Name="colS5" Header="от полн.%" Binding="{Binding premiaOtdel.OstPrem, StringFormat=N2}" IsReadOnly="True" CellStyle="{StaticResource CellRight}"/>
-                            <DataGridTextColumn x:Name="colS6" Header="Целевое указание" Binding="{Binding md_prem_stimul_name}" IsReadOnly="False" CellStyle="{StaticResource CellColor}" />
-                            <DataGridTextColumn x:Name="colS7" Header="% выполнения" Binding="{Binding md_prem_otdel_proc, Mode=TwoWay, StringFormat=0.#}"  CellStyle="{StaticResource CellRightColor}"/>
+                            <DataGridTextColumn x:Name="colS6" Header="Целевое указание" Binding="{Binding md_prem_stimul_name}" IsReadOnly="False" CellStyle="{StaticResource CellColor}" Width="200"/>
+                            <DataGridTextColumn x:Name="colS7" Header="% выполн." Binding="{Binding md_prem_otdel_proc, Mode=TwoWay, StringFormat=0.#}"  CellStyle="{StaticResource CellRightColor}"/>
                             <DataGridTextColumn x:Name="colS8" Header="Премия" Binding="{Binding premiaOtdel.Summa, StringFormat=N2}" FontWeight="Bold" Width="90" IsReadOnly="True" CellStyle="{StaticResource CellRight}"/>
                         </DataGrid.Columns>
                     </DataGrid>

@@ -30,8 +30,13 @@ namespace Tabel.Component.Models.Mod
         {
             decimal koef = model.TabelDays == 0 ? 1 : (decimal)(model.TabelDays - model.TabelAbsent) / (decimal)model.TabelDays;
 
-            Summa = model.ListAddWorks is null ? 0 : model.ListAddWorks.Sum(it => it.aw_Tarif) + (model.md_person_achiev ?? 0)
-                * koef;
+            //Summa = model.ListAddWorks is null 
+            //    ? 0 
+            //    : model.ListAddWorks.Sum(it => it.aw_Tarif) + (model.md_person_achiev ?? 0);
+
+            Summa = (model.ListAddWorks?.Sum(it => it.aw_Tarif) + (model.md_person_achiev ?? 0)) * koef;
+
+            //Summa *= koef;
         }
 
 
@@ -44,6 +49,8 @@ namespace Tabel.Component.Models.Mod
             {
                 case "ListAddWorks":
                 case "md_person_achiev":
+                case "TabelAbsent":
+                case "TabelHours":
                     Calculation();
                     break;
             }

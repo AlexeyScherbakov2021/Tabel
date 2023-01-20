@@ -21,6 +21,7 @@ namespace Tabel.ViewModels.ModViewModel
             db = ctx;
         }
         public abstract void ChangeListPerson(ICollection<ModPerson> listPerson, int Year, int Month, Otdel Otdel);
+        //public abstract void GetListAllPerson(ICollection<ModPerson> listPerson, int Year, int Month);
         public abstract void AddPersons(ICollection<ModPerson> listPerson);
 
     }
