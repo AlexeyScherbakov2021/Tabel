@@ -10,41 +10,45 @@ using Tabel.ViewModels.Base;
 using System.Security.Policy;
 using System.Security;
 using Tabel.Views.Admins;
+using System.Security.Cryptography;
+using Tabel.Repository;
+using Tabel.Models;
 
 namespace Tabel.ViewModels.Admins
 {
     internal class ProfileUserUCViewModel : ViewModel
     {
+        RepositoryMSSQL<User> RepoUser;
 
         public string OldPass { get; set; } = "123";
         public string NewPass1 { get; set; } = "12345";
         public string NewPass2 { get; set; } = "12345";
 
 
+        public ProfileUserUCViewModel()
+        {
+            RepoUser = new RepositoryMSSQL<User>();
+        }
+
         #region Команды
         //--------------------------------------------------------------------------------
-        // Команда Добавить 
+        // Команда Изменить пароль 
         //--------------------------------------------------------------------------------
         public ICommand ChangeCommand => new LambdaCommand(OnChangeCommandExecuted, CanChangeCommand);
         private bool CanChangeCommand(object p) => true;
         private void OnChangeCommandExecuted(object p)
         {
             PassWindow win = new PassWindow();
-            win.ShowDialog();
-
-
-            if(NewPass1 != NewPass2)
+            if(win.ShowDialog() == true)
             {
-                MessageBox.Show("Пароль не одинаковы. Повторите.","Ошибка", MessageBoxButton.OK, MessageBoxImage.Stop);
-                return;
+                PassWindowViewModel vm = win.DataContext as PassWindowViewModel;
+                User user = RepoUser.Items.FirstOrDefault(it => it.id == App.CurrentUser.id);
+                if (user != null)
+                {
+                    user.u_pass2 = vm.HashPass;
+                    RepoUser.Save();
+                }
             }
-
-            if(App.CurrentUser.u_pass != OldPass)
-            {
-                MessageBox.Show("Неверный старый пароль", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Stop);
-                return;
-            }
-
 
         }
         #endregion

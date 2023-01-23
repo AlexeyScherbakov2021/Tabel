@@ -4,27 +4,54 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Tabel.Views.Admins"
+        xmlns:fa="http://schemas.fontawesome.com/icons/"
+        xmlns:vm="clr-namespace:Tabel.ViewModels.Admins"
         mc:Ignorable="d"
-        Title="PassWindow" Height="200" Width="400" WindowStartupLocation="CenterScreen">
-    <Grid >
-        <Grid.RowDefinitions>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="1*"/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="2*"/>
-            <ColumnDefinition Width="3*"/>
-        </Grid.ColumnDefinitions>
-        <TextBlock HorizontalAlignment="Right" Grid.Row="1" Text="Старый пароль" VerticalAlignment="Center"/>
-        <TextBlock HorizontalAlignment="Right" Grid.Row="2" Text="Новый пароль" VerticalAlignment="Center"/>
-        <TextBlock HorizontalAlignment="Right" Grid.Row="3" Text="Повтор нового  пароля" VerticalAlignment="Center"/>
+        Title="Установка нового пароля" Height="200" Width="300" WindowStartupLocation="CenterScreen" Background="#FFD7D7D7" WindowStyle="ToolWindow" Topmost="True">
+    <Window.DataContext>
+        <vm:PassWindowViewModel/>
+    </Window.DataContext>
+    <DockPanel>
+        <UniformGrid Columns="2" DockPanel.Dock="Bottom" Margin="3">
+            <Button Content="OK" Margin="10,4" Style="{DynamicResource ButtonStyleShadow}" Command="{Binding ChangeCommand}"/>
+            <Button Content="Отменить" Margin="10,4" Style="{DynamicResource ButtonStyleShadow}" Command="{Binding CancelCommand}"/>
+        </UniformGrid>
+        <Grid >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="21*"/>
+                <RowDefinition Height="37*"/>
+                <RowDefinition Height="37*"/>
+                <RowDefinition Height="37*"/>
+                <RowDefinition Height="37*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="30*"/>
+                <ColumnDefinition Width="30*"/>
+                <ColumnDefinition Width="5*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock HorizontalAlignment="Right" Grid.Row="1" Text="Старый пароль" VerticalAlignment="Center" Height="16" Margin="0" Width="84"/>
+            <TextBlock HorizontalAlignment="Right" Grid.Row="2" Text="Новый пароль" VerticalAlignment="Center" Height="16" Margin="0" Width="80"/>
+            <TextBlock HorizontalAlignment="Right" Grid.Row="3" Text="Повтор нового  пароля" VerticalAlignment="Center" Height="16" Margin="0" Width="129"/>
 
-        <TextBox Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Margin="15,0" InputScope="Password"/>
-        <PasswordBox Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" Margin="15,0"/>
-        <PasswordBox Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" Margin="15,0"/>
+            <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding OldPass}" VerticalAlignment="Center" Margin="10,0,0,0" InputScope="Password" Height="18"/>
+            <PasswordBox Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" Margin="10,0,0,0" Height="18"
+                         PasswordChanged="PasswordToTag" Tag="{Binding NewPass1, Mode=OneWayToSource}"/>
+            <PasswordBox Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" Margin="10,0,0,0" Height="18"
+                         PasswordChanged="PasswordToTag" Tag="{Binding NewPass2, Mode=OneWayToSource}"/>
+            <x:Code>
+                <![CDATA[
+                    private void PasswordToTag(object sender, RoutedEventArgs e)
+                    {
+                        PasswordBox passwordBox = (PasswordBox)sender;
+                        passwordBox.Tag = passwordBox.Password;
+                    }
+                ]]>
+            </x:Code>
 
-    </Grid>
+            <ToggleButton Grid.Row="2" Grid.Column="3" Width="20" Height="18" HorizontalAlignment="Left" Visibility="Hidden">
+                <fa:ImageAwesome Icon="Regular_EyeSlash" Width="14"/>
+            </ToggleButton>
+
+        </Grid>
+    </DockPanel>
 </Window>

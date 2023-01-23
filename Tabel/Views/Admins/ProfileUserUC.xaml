@@ -14,10 +14,10 @@
     <Border Background="WhiteSmoke" CornerRadius="3">
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="19*"/>
-                <RowDefinition Height="131*"/>
+                <RowDefinition Height="90"/>
+                <RowDefinition/>
             </Grid.RowDefinitions>
-            <Button Content="Сменить пароль" Margin="100,10" Command="{Binding ChangeCommand}"/>
+            <Button Content="Сменить пароль" Width="300" Margin="100,20" Command="{Binding ChangeCommand}" FontSize="16" Style="{StaticResource ButtonStyleShadow}"/>
         </Grid>
     </Border>
 </UserControl>

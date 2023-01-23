@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Tabel.Commands;
+using Tabel.Infrastructure;
 using Tabel.Models;
 using Tabel.Repository;
 using Tabel.ViewModels.Base;
@@ -35,26 +36,37 @@ namespace Tabel.ViewModels
         {
             if(p is PasswordBox pass )
             {
-                // если праоль неверный, то ничего не делаем - возврат
-                if (pass.Password != SelectUser?.u_pass)
-                    return;
+                if(SelectUser?.u_pass2 != null)
+                {
+                    string hash = Encrypt.Crypt(pass.Password);
+                    if (hash != SelectUser?.u_pass2)
+                    {
+                        // если праоль неверный, то ничего не делаем - возврат
+                        return;
+                    }
+                }
+                else
+                {
+                    if (pass.Password != SelectUser?.u_pass)
+                        // если праоль неверный, то ничего не делаем - возврат
+                        return;
+                }
 
                 App.CurrentUser = SelectUser;
 
 
-                    // записываем в реестр
-                    RegistryKey SoftKey = Registry.CurrentUser.OpenSubKey("SOFTWARE", true);
-                    RegistryKey ProgKey = SoftKey.CreateSubKey("TabelNGK");
-                    ProgKey.SetValue("login", SelectUser.u_login);
-                    ProgKey.Close();
-                    SoftKey.Close();
+                // записываем в реестр
+                RegistryKey SoftKey = Registry.CurrentUser.OpenSubKey("SOFTWARE", true);
+                RegistryKey ProgKey = SoftKey.CreateSubKey("TabelNGK");
+                ProgKey.SetValue("login", SelectUser.u_login);
+                ProgKey.Close();
+                SoftKey.Close();
 
 
-                    // если пользователь, то запускаем табель
-                    MainWindow win = new MainWindow();
-                    win.Show();
-                    App.Current.MainWindow = win;
-
+                // если пользователь, то запускаем табель
+                MainWindow win = new MainWindow();
+                win.Show();
+                App.Current.MainWindow = win;
 
             }
 

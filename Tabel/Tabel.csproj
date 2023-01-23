@@ -125,10 +125,12 @@
     <Compile Include="Component\TabelPanel\TabelDayPanel.xaml.cs">
       <DependentUpon>TabelDayPanel.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Infrastructure\Encrypt.cs" />
     <Compile Include="Models\Otpusk.cs" />
     <Compile Include="Models\OtpuskDays.cs" />
     <Compile Include="Models\OtpuskPerson.cs" />
     <Compile Include="Models\TargetTask.cs" />
+    <Compile Include="ViewModels\Admins\PassWindowViewModel.cs" />
     <Compile Include="ViewModels\Admins\ProfileUserUCViewModel.cs" />
     <Compile Include="ViewModels\SelectDateWindowViewModel.cs" />
     <Compile Include="ViewModels\TasksPersonWindowViewModel.cs" />

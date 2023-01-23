@@ -29,6 +29,9 @@ namespace Tabel.Models
         [StringLength(50)]
         public string u_pass { get; set; }
 
+        [StringLength(50)]
+        public string u_pass2 { get; set; }
+
         public UserRoles u_role { get; set; }
 
         //public int? u_otdel_id { get; set; }
