@@ -81,7 +81,6 @@
             </Button>
         </ToolBarPanel>
 
-
         <TabControl x:Name="tab" >
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="SelectionChanged">
@@ -123,7 +122,7 @@
                 </DockPanel>
             </TabItem>
 
-            <TabItem Header="Премия 1 (бонус)" DataContext="{Binding premiaBonusViewModel}">
+            <TabItem Header="Премия 1 (бонус)" DataContext="{Binding premiaBonusViewModel}" >
                 <DockPanel  Background="Gainsboro">
                     <Grid DockPanel.Dock="Top" Margin="8,0" Height="30">
                         <Grid.ColumnDefinitions>
@@ -172,8 +171,9 @@
             </TabItem>
 
 
-            <TabItem Visibility="Visible" Header="Премия 2 (по выработке)" DataContext="{Binding premiaFPViewModel}"
-                     ToolTip="Для рабочего персонала">
+            <TabItem x:Name="tabFP" Header="Премия 2 (по выработке)" DataContext="{Binding premiaFPViewModel}"
+                     ToolTip="Для рабочего персонала" Visibility="{Binding DataContext.IsVisibleITR, ElementName=userControl}">
+                    
                 <!--<TabItem.Header>
                     <TextBlock Text="Премия 2 (по выработке)"  Background="LightGreen" Padding="2"/>
                 </TabItem.Header>-->
@@ -549,7 +549,9 @@
                             <ColumnDefinition Width="100"/>
                         </Grid.ColumnDefinitions>
                     </Grid>
-                    <DataGrid ItemsSource="{Binding ListModPerson}" 
+                    
+                    <FrameworkElement x:Name="ProxyElement3" Visibility="Collapsed" DataContext="{Binding}"/>
+                    <DataGrid ItemsSource="{Binding ListModPerson}" IsReadOnly="True"
                               SelectedItem="{Binding DataContext.SelectedModPerson, Mode=TwoWay, ElementName=userControl}"
                               Style="{StaticResource DataGridStyle}" >
                         <DataGrid.Columns>
@@ -557,7 +559,9 @@
                             <DataGridTextColumn Header="ФИО" Binding="{Binding person.FIO}" IsReadOnly="True"/>
                             <DataGridTextColumn Header="Должность" Binding="{Binding person.p_profession}" IsReadOnly="True" Width="350"/>
                             <DataGridTextColumn Header="Премия 1(бонус)" Binding="{Binding premiaBonus.Summa, StringFormat=N2}" Width="80"  CellStyle="{StaticResource CellRight}"/>
-                            <DataGridTextColumn Header="Премия 2(по выраб.)" Binding="{Binding premiaFP.Summa, StringFormat=N2}" Width="80" CellStyle="{StaticResource CellRight}"/>
+                            <DataGridTextColumn x:Name="columnFP" Header="Премия 2(по выраб.)" Binding="{Binding premiaFP.Summa, StringFormat=N2}" 
+                                                Visibility="{Binding DataContext.IsVisibleITR, Source={x:Reference ProxyElement3}}"
+                                                Width="80" CellStyle="{StaticResource CellRight}"/>
                             <DataGridTextColumn Header="Доплата (доп.раб.)" Binding="{Binding premiaAddWorks.Summa, StringFormat=N2}" Width="80"  CellStyle="{StaticResource CellRight}"/>
                             <DataGridTextColumn Header="Компенсация за доставку" Binding="{Binding premiaTransport.Summa, StringFormat=N2}" Width="80"  CellStyle="{StaticResource CellRight}"/>
                             <DataGridTextColumn Header="Премия 2(по отделу)" Binding="{Binding premiaKvalif.Summa, StringFormat=N2}" Width="80"  CellStyle="{StaticResource CellRight}"/>

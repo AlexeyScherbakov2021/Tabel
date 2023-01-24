@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Tabel.Commands;
@@ -16,6 +17,7 @@ namespace Tabel.ViewModels.ModViewModel
     internal class PremiaFPViewModel : ModViewModel
     {
         public ICollection<ModPerson> ListModPerson { get; set; }
+        //public Visibility IsVisibleITR { get; set; }
 
         public decimal? SetProcPrem { get; set; }
         public decimal? SetTarif { get; set; }
@@ -29,6 +31,8 @@ namespace Tabel.ViewModels.ModViewModel
 
         public override void ChangeListPerson(ICollection<ModPerson> listPerson, int Year, int Month, Otdel Otdel)
         {
+
+            //IsVisibleITR = Otdel.ot_itr == 2 ? Visibility.Collapsed : Visibility.Visible;
 
             //_SelectedOtdel = Otdel;
             _SelectMonth = Month;

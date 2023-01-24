@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using Tabel.Infrastructure;
 using Tabel.Models;
 using Tabel.Repository;
@@ -49,13 +50,14 @@ namespace Tabel.ViewModels.ModViewModel
 
 
         public bool IsNotAdmin => App.CurrentUser.u_role != UserRoles.Admin;
-//        {
-//            get
-//            {
-//                return App.CurrentUser.u_role != UserRoles.Admin;
-//            }
-//}
+        //        {
+        //            get
+        //            {
+        //                return App.CurrentUser.u_role != UserRoles.Admin;
+        //            }
+        //}
 
+        public Visibility IsVisible { get; set; } = App.CurrentUser.u_role == UserRoles.Admin ? Visibility.Visible : Visibility.Collapsed;
 
 public PremiaAddWorksViewModel(BaseModel db) : base(db)
         {

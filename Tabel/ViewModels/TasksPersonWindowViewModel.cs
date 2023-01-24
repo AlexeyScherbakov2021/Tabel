@@ -17,12 +17,40 @@ namespace Tabel.ViewModels
     {
         public string Title { get; set; } = "Выполненные задания для сотрудника";
         public ObservableCollection<TargetTask> ListTarget { get; set; }
+        
+        private decimal _proc100;
+        public decimal proc100 { get => _proc100; set { Set(ref _proc100, value); } }
 
         public TasksPersonWindowViewModel() { }
 
         public TasksPersonWindowViewModel(ModPerson person)
         {
             ListTarget = new ObservableCollection<TargetTask>( person.ListTargetTask);
+            foreach (TargetTask item in ListTarget)
+                item.PropertyChanged += Item_PropertyChanged;
+            ListTarget.CollectionChanged += ListTarget_CollectionChanged;
+            proc100 = ListTarget.Sum(it => it.tt_proc_task);
+        }
+
+        private void ListTarget_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            if (e.NewItems?.Count > 0)
+            {
+                foreach (TargetTask item in e.NewItems)
+                    item.PropertyChanged += Item_PropertyChanged;
+            }
+
+            if (e.OldItems?.Count > 0)
+            {
+                foreach (TargetTask item in e.OldItems)
+                    item.PropertyChanged -= Item_PropertyChanged;
+                proc100 = ListTarget.Sum(it => it.tt_proc_task);
+            }
+        }
+
+        private void Item_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            proc100 = ListTarget.Sum(it => it.tt_proc_task);
         }
 
         #region Команды =================================

@@ -130,6 +130,7 @@
     <Compile Include="Models\OtpuskDays.cs" />
     <Compile Include="Models\OtpuskPerson.cs" />
     <Compile Include="Models\TargetTask.cs" />
+    <Compile Include="Repository\RepositoryExcel.cs" />
     <Compile Include="ViewModels\Admins\PassWindowViewModel.cs" />
     <Compile Include="ViewModels\Admins\ProfileUserUCViewModel.cs" />
     <Compile Include="ViewModels\SelectDateWindowViewModel.cs" />

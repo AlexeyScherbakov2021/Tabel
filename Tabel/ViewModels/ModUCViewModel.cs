@@ -45,14 +45,13 @@ namespace Tabel.ViewModels
         public PremiaPrizeViewModel premiaPrizeViewModel { get; set; }
         public PremiaItogoViewModel premiaItogoViewModel { get; set; }
 
-
         private Otdel _SelectedOtdel;
         private int _SelectMonth;
         private int _SelectYear;
         private bool IsModify;
 
         public Visibility IsVisibleITR { get; private set; }
-        public Visibility IsVisibleNoITR { get; private set; }
+        //public Visibility IsVisibleNoITR { get; private set; }
         public Visibility IsVisibleAdmin { get; set; } = App.CurrentUser.u_role == UserRoles.Admin ? Visibility.Visible : Visibility.Collapsed;
 
 
@@ -151,6 +150,10 @@ namespace Tabel.ViewModels
             _SelectedOtdel = SelectOtdel;
 
             if (SelectOtdel is null) return;
+
+            IsVisibleITR = SelectOtdel.ot_itr == 2 ? Visibility.Collapsed : Visibility.Visible;
+            OnPropertyChanged(nameof(IsVisibleITR));
+
 
             ListModPerson = null;
 

@@ -145,14 +145,14 @@ namespace Tabel.ViewModels
             User = repoUser.Items.FirstOrDefault(it => it.id == App.CurrentUser.id);
 
 
-            int level = User.u_role == UserRoles.Внетарифный ? 1 : 0;
+            int level = User.u_role == UserRoles.Внетарифный ? 10 : 2;
 
 
             ListOtdel = repo.GetTreeOtdelsNoTracking(User.otdels, level).ToList();
 
             if(forma == 1)
             {
-                ListOtdel = ListOtdel.Where(it => it.ot_itr == 1).ToList();
+                ListOtdel = ListOtdel.Where(it => it.ot_itr == 10).ToList();
             }
 
 

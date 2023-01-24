@@ -131,7 +131,7 @@ namespace Tabel.ViewModels.Admins
             repoPerson = new RepositoryMSSQL<Personal>(db);
             repoCat = new RepositoryMSSQL<Category>(db);
 
-            int level = App.CurrentUser.u_role == UserRoles.Внетарифный ? 1 : 0;
+            int level = App.CurrentUser.u_role == UserRoles.Внетарифный ? 10 : 2;
 
 
             if (App.CurrentUser.u_role == UserRoles.Admin)

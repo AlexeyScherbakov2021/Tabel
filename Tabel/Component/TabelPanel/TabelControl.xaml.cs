@@ -238,8 +238,23 @@ namespace Tabel.Component.TabelPanel
 
             string TypeName = e.OriginalSource.GetType().Name;
 
-            if (TypeName == "TextBoxView" 
-                || TypeName == "Border" 
+
+            //if(TypeName == "Border")
+            //{
+            //    ListBoxItem CurrentListBoxItem2 = (ListBoxItem)lb.ContainerFromElement(e.OriginalSource as DependencyObject);
+            //    StartItem = CurrentListBoxItem2;
+            //    StartIndex = lb.SelectedIndex;
+            //    if (lb.SelectedItems.Count < 2)
+            //    {
+            //        lb.SelectedItems.Clear();
+            //        SelectedItem = StartItem.Content;
+            //    }
+            //    return;
+            //}
+
+
+            if (TypeName == "TextBoxView"
+                //|| TypeName == "Border"
                 || (e.OriginalSource as FrameworkElement).Tag?.ToString() == "NoSelect")
                 return;
 
@@ -273,12 +288,18 @@ namespace Tabel.Component.TabelPanel
 
                 if (StartItem != null)
                 {
-
                     //ContentPresenter child = (ContentPresenter)border.Child;
                     if ((Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
                     {
-                        // добавдение выделенного элемента
+                        // добавление выделенного элемента
                         lb.SelectedItems.Add(StartItem.Content);
+                    }
+                    else if(TypeName == "Border" || TypeName == "ComboBox")
+                    {
+                        FocusManager.SetFocusedElement(this, StartItem);
+                        if(lb.SelectedItems.Count < 2)
+                            lb.SelectedItems.Clear();
+                        return;
                     }
                     else
                     {

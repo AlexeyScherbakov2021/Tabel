@@ -65,7 +65,7 @@ namespace Tabel.ViewModels
             RepositoryMSSQL<TabelPerson> repoTabelPerson = new RepositoryMSSQL<TabelPerson>();
             IEnumerable<TabelPerson> ListTabelPerson = repoTabelPerson.Items
                 .AsNoTracking()
-                .Where(it => it.tabel.t_year == SelectYear && it.tabel.t_month == SelectMonth && it.tabel.otdel.ot_itr == 0)
+                .Where(it => it.tabel.t_year == SelectYear && it.tabel.t_month == SelectMonth && it.tabel.otdel.ot_itr < 10)
                 .OrderBy(o => o.person.p_lastname)
                 .ThenBy(o => o.person.p_name);
 
@@ -143,7 +143,7 @@ namespace Tabel.ViewModels
             RepositoryMSSQL<TabelPerson> repoTabelPerson = new RepositoryMSSQL<TabelPerson>();
             IEnumerable<TabelPerson> ListTabelPerson = repoTabelPerson.Items
                 .AsNoTracking()
-                .Where(it => it.tabel.t_year == SelectYear && it.tabel.t_month == SelectMonth && it.tabel.otdel.ot_itr == 1)
+                .Where(it => it.tabel.t_year == SelectYear && it.tabel.t_month == SelectMonth && it.tabel.otdel.ot_itr == 10)
                 .OrderBy(o => o.person.p_lastname)
                 .ThenBy(o => o.person.p_name);
 

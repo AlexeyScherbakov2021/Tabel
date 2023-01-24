@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using Tabel.Models;
 using Tabel.ViewModels.Base;
 
@@ -11,6 +12,9 @@ namespace Tabel.ViewModels.ModViewModel
     internal class PremiaItogoViewModel : ModViewModel
     {
         public ICollection<ModPerson> ListModPerson { get; set; }
+        
+        public Visibility IsVisibleITR { get; set; }
+
 
         public PremiaItogoViewModel(BaseModel db) : base(db)
         {
@@ -30,6 +34,9 @@ namespace Tabel.ViewModels.ModViewModel
             //    foreach (var item in ListModPerson)
             //        item.premiaPrize.Calculation();
             //}
+
+            IsVisibleITR = Otdel.ot_itr == 2 ? Visibility.Collapsed : Visibility.Visible;
+            OnPropertyChanged(nameof(IsVisibleITR));
 
             OnPropertyChanged(nameof(ListModPerson));
         }

@@ -27,7 +27,7 @@
                         <ColumnDefinition Width="20*"/>
                     </Grid.ColumnDefinitions>
                     <TextBlock Text="сумм %" Grid.Column="1"/>
-                    <TextBlock Text="100%" Grid.Column="2"/>
+                    <TextBlock Text="{Binding proc100}" Grid.Column="2"/>
                 </Grid>
                 <DataGrid ItemsSource="{Binding ListTarget}" Style="{StaticResource DataGridStyle}"
                           CanUserAddRows="True" CanUserDeleteRows="True">

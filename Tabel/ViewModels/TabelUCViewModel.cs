@@ -468,91 +468,13 @@ namespace Tabel.ViewModels
         private bool CanPrintCommand(object p) => Tabel != null && SelectedOtdel != null;
         private void OnPrintCommandExecuted(object p)
         {
-            try
-            {
-                using (XLWorkbook wb = new XLWorkbook(@"Отчеты\Табель.xlsx"))
-                {
-                    IEnumerable<TabelPerson> SelectedListPerson = ListTabelPerson
-                        .Where(it => !string.IsNullOrEmpty(it.person.p_tab_number) && it.person.p_tab_number != "ГПХ");
+            bool IsAllPrint = p is null;
 
-                    int NumPP = 1;
-                    var ws = wb.Worksheets.Worksheet(1);
-                    ws.Name = "ПР " + App.ListMonth[_SelectMonth - 1].Name;
+            IEnumerable<TabelPerson> SelectedListPerson = ListTabelPerson
+                .Where(it => !string.IsNullOrEmpty(it.person.p_tab_number) && it.person.p_tab_number != "ГПХ");
 
-                    // Заполение шапки
-                    ws.Cell("A8").Value = Tabel.otdel.ot_name;
-                    ws.Cell("AJ12").Value = Tabel.t_number;
-                    ws.Cell("AP12").Value = Tabel.t_date_create.Value.ToString("dd.MM.yyyy");
+            RepositoryExcel.PrintTabel(ListTabelPerson, IsAllPrint, Tabel, _SelectYear, _SelectMonth);
 
-                    DateTime startDate = new DateTime(_SelectYear, Tabel.t_month, 1);
-                    ws.Cell("AY12").Value = startDate.ToString("dd.MM.yyyy");
-                    DateTime endDate = startDate.AddMonths(1).AddDays(-1);
-                    ws.Cell("BB12").Value = endDate.ToString("dd.MM.yyyy");
-                    //ws.Cell("AA15").Value = "Составил: " + App.CurrentUser.u_fio;
-
-                    int RowNum = 24;
-                    ws.Row(27).InsertRowsBelow((SelectedListPerson.Count() - 1) * 4);
-                    var range = ws.Range(RowNum, 1, RowNum + 3, 75);
-
-                    for (int i = 0; i < SelectedListPerson.Count() - 1; i++)
-                    {
-                        RowNum += 4;
-                        range.CopyTo(ws.Cell(RowNum, 1));
-                    }
-
-                    RowNum = 24;
-                    foreach (var item in SelectedListPerson)
-                    {
-                        ws.Cell(RowNum, 1).Value = NumPP++;
-                        ws.Cell(RowNum, 3).Value = item.person.FIO;
-                        ws.Cell(RowNum, 11).Value = item.person.p_tab_number;
-
-                        // отработано за половину месяца
-                        ws.Cell(RowNum, 30).Value = item.DaysWeek1;
-                        ws.Cell(RowNum + 1, 30).Value = item.HoursWeek1;
-                        ws.Cell(RowNum + 2, 30).Value = item.DaysWeek2;
-                        ws.Cell(RowNum + 3, 30).Value = item.HoursWeek2;
-
-                        // отработано за месяц
-                        ws.Cell(RowNum, 33).Value = item.DaysMonth;
-                        ws.Cell(RowNum + 2, 33).Value = item.HoursMonth;
-
-                        // правая часть
-                        ws.Cell(RowNum, 73).Value = item.WorkedHours1;
-                        ws.Cell(RowNum + 1, 73).Value = item.WorkedHours15;
-                        ws.Cell(RowNum + 2, 73).Value = item.WorkedHours2;
-                        ws.Cell(RowNum + 3, 73).Value = item.WorkedOffHours;
-
-                        int ColNum = 14;
-                        //bool IsFirstine = true;
-                        foreach (var day in item.TabelDays)
-                        {
-                            ws.Cell(RowNum, ColNum).Value = day.typeDay.t_name;
-                            if (day.WhiteHours != 0)
-                                ws.Cell(RowNum + 1, ColNum).Value = day.WhiteHours;
-
-                            ColNum++;
-                            if (/*IsFirstine &&*/ day.td_Day == 15)
-                            {
-                                //IsFirstine = false;
-                                ColNum = 14;
-                                RowNum += 2;
-                            }
-                        }
-                        RowNum += 2;
-                    }
-
-                    string TempFile = System.IO.Path.GetTempFileName();
-                    TempFile = System.IO.Path.ChangeExtension(TempFile, "xlsx");
-                    //string TempFile = FileOperation.GenerateTempFileNameWithDelete("TempTabel.xlsx");
-                    wb.SaveAs(TempFile);
-                    Process.Start(TempFile);
-                }
-            }
-            catch
-            {
-                MessageBox.Show("Не найден шаблон табеля", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
         }
 
         //--------------------------------------------------------------------------------
