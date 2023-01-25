@@ -19,14 +19,14 @@ namespace Tabel.ViewModels.Admins.Behavior
         private bool IsDragEnabled = true;
         private Point StartPoint;
 
-        public static readonly DependencyProperty TBProperty =
-        DependencyProperty.Register("TB", typeof(TextBlock), typeof(DataGridBehavior));
+        //public static readonly DependencyProperty TBProperty =
+        //DependencyProperty.Register("TB", typeof(TextBlock), typeof(DataGridBehavior));
 
-        public TextBlock TB
-        {
-            get { return (TextBlock)GetValue(TBProperty); }
-            set { SetValue(TBProperty, value); }
-        }
+        //public TextBlock TB
+        //{
+        //    get { return (TextBlock)GetValue(TBProperty); }
+        //    set { SetValue(TBProperty, value); }
+        //}
 
         public static readonly DependencyProperty DragGridProperty =
         DependencyProperty.Register("DragGrid", typeof(Grid), typeof(DataGridBehavior));
@@ -41,34 +41,34 @@ namespace Tabel.ViewModels.Admins.Behavior
         protected override void OnAttached()
         {
             AssociatedObject.PreviewMouseLeftButtonDown += AssociatedObject_PreviewMouseLeftButtonDown;
-            AssociatedObject.PreviewMouseLeftButtonUp += AssociatedObject_PreviewMouseLeftButtonUp;
+            //AssociatedObject.PreviewMouseLeftButtonUp += AssociatedObject_PreviewMouseLeftButtonUp;
             AssociatedObject.PreviewMouseMove += AssociatedObject_PreviewMouseMove;
             AssociatedObject.BeginningEdit += AssociatedObject_BeginningEdit;
             AssociatedObject.CellEditEnding += AssociatedObject_CellEditEnding;
-            AssociatedObject.QueryContinueDrag += AssociatedObject_QueryContinueDrag; 
+            //AssociatedObject.QueryContinueDrag += AssociatedObject_QueryContinueDrag; 
             //base.OnAttached();
         }
 
-        private void AssociatedObject_QueryContinueDrag(object sender, QueryContinueDragEventArgs e)
-        {
-            Point pt = Mouse.GetPosition(AssociatedObject);
+        //private void AssociatedObject_QueryContinueDrag(object sender, QueryContinueDragEventArgs e)
+        //{
+        //    Point pt = Mouse.GetPosition(AssociatedObject);
 
-        }
+        //}
 
-        private void AssociatedObject_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            if (IsDrag)
-            {
-                IsDrag = false;
-                DragDropEffects ddEffect = DragDropEffects.Move;
-                var data = (AssociatedObject.Items[AssociatedObject.SelectedIndex] as Personal);
-                DataObject data2 = new DataObject("Person", data, false);
-                DragDrop.DoDragDrop(AssociatedObject, data2, ddEffect);
+        //private void AssociatedObject_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        //{
+        //    if (IsDrag)
+        //    {
+        //        IsDrag = false;
+        //        DragDropEffects ddEffect = DragDropEffects.Move;
+        //        var data = (AssociatedObject.Items[AssociatedObject.SelectedIndex] as Personal);
+        //        DataObject data2 = new DataObject("Person", data, false);
+        //        //DragDrop.DoDragDrop(AssociatedObject, data2, ddEffect);
 
-                AssociatedObject.ReleaseMouseCapture();
-                TB.Visibility = Visibility.Hidden;
-            }
-        }
+        //        AssociatedObject.ReleaseMouseCapture();
+        //        //TB.Visibility = Visibility.Hidden;
+        //    }
+        //}
 
         //private void AssociatedObject_GiveFeedback(object sender, GiveFeedbackEventArgs e)
         //{
@@ -96,48 +96,55 @@ namespace Tabel.ViewModels.Admins.Behavior
             IsDragEnabled = false;
         }
 
-
         private void AssociatedObject_PreviewMouseMove(object sender, System.Windows.Input.MouseEventArgs e)
         {
-            if(IsDrag)
+            Point pt = e.GetPosition(AssociatedObject);
+            var diff = StartPoint - pt;
+
+            if (e.LeftButton == MouseButtonState.Pressed && (diff.X > 5 || diff.Y > 5))
             {
-                Point pt = e.GetPosition(AssociatedObject);
-                pt = AssociatedObject.PointToScreen(pt);
-                pt = DragGrid.PointFromScreen(pt);
-                TB.Margin = new Thickness(pt.X, pt.Y, 0, 0);
-                e.Handled= true;
+                DragDropEffects ddEffect = DragDropEffects.Move;
+                var data = (AssociatedObject.Items[AssociatedObject.SelectedIndex] as Personal);
+                DataObject data2 = new DataObject("Person", data, false);
+                DragDrop.DoDragDrop(AssociatedObject, data2, ddEffect);
             }
 
+            //if (IsDrag)
+            //{
+            //    Point pt = e.GetPosition(AssociatedObject);
+            //    pt = AssociatedObject.PointToScreen(pt);
+            //    pt = DragGrid.PointFromScreen(pt);
+            //    //TB.Margin = new Thickness(pt.X, pt.Y, 0, 0);
+            //    e.Handled= true;
+            //}
 
+            //if (e.LeftButton == MouseButtonState.Pressed && !IsDrag && IsDragEnabled)
+            //{
+            //    //DataGrid dg = sender as DataGrid;
+            //    Point pt = e.GetPosition(AssociatedObject);
 
-            if (e.LeftButton == MouseButtonState.Pressed && !IsDrag && IsDragEnabled)
-            {
-                //DataGrid dg = sender as DataGrid;
-                Point pt = e.GetPosition(AssociatedObject);
+            //    var diff = pt - StartPoint;
+            //    if (diff.X < 5 && diff.Y < 5)
+            //        return;
 
-                var diff = pt - StartPoint;
-                if (diff.X < 5 && diff.Y < 5)
-                    return;
+            //    var hit = VisualTreeHelper.HitTest(AssociatedObject, e.GetPosition(AssociatedObject));
+            //    var typ = hit?.VisualHit.GetType();
+            //    if (typ.Name == "TextBlock" && pt.Y > 24 && AssociatedObject.SelectedIndex >= 0)
+            //    {
+            //        var data = (AssociatedObject.Items[AssociatedObject.SelectedIndex] as Personal);
+            //        DataObject data2 = new DataObject("Person", data, false);
 
-                var hit = VisualTreeHelper.HitTest(AssociatedObject, e.GetPosition(AssociatedObject));
-                var typ = hit?.VisualHit.GetType();
-                if (typ.Name == "TextBlock" && pt.Y > 24 && AssociatedObject.SelectedIndex >= 0)
-                {
-                    var data = (AssociatedObject.Items[AssociatedObject.SelectedIndex] as Personal);
-                    DataObject data2 = new DataObject("Person", data, false);
-
-                    TB.Visibility = Visibility.Visible;
-                    TB.Text = data.FIO;
+            //        TB.Visibility = Visibility.Visible;
+            //        TB.Text = data.FIO;
                     
-                    IsDrag = true;
-                    AssociatedObject.CaptureMouse();
-                    //IsDrag = false;
-                    //TB.Visibility = Visibility.Hidden;
+            //        IsDrag = true;
+            //        AssociatedObject.CaptureMouse();
+            //        //IsDrag = false;
+            //        //TB.Visibility = Visibility.Hidden;
 
-                }
-            }
+            //    }
+            //}
         }
-
 
 
         private void AssociatedObject_PreviewMouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)

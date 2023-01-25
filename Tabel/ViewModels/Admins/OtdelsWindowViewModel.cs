@@ -248,7 +248,7 @@ namespace Tabel.ViewModels.Admins
                     int id = SelectedOtdel.id;
                     list.Remove(SelectedOtdel);
                     repoOtdel.Delete(id, true);
-                    repoOtdel.Save();
+                    //repoOtdel.Save();
                 }
                 catch
                 {

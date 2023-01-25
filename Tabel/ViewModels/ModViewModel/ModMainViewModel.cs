@@ -94,23 +94,35 @@ namespace Tabel.ViewModels.ModViewModel
             if (listPerson is null)
                 return;
 
-            RepositoryMSSQL<WorkTabel> repoTabel = new RepositoryMSSQL<WorkTabel>(db);
-            WorkTabel tabel;
+            //RepositoryMSSQL<WorkTabel> repoTabel = new RepositoryMSSQL<WorkTabel>(db);
+            RepositoryMSSQL<TabelPerson> repoTabPerson = new RepositoryMSSQL<TabelPerson>(db);
+            IEnumerable<TabelPerson> ListTabelPerson;
+            //WorkTabel tabel;
 
             if (_SelectedOtdel is null)
             {
-                tabel = repoTabel.Items.AsNoTracking().FirstOrDefault(it => it.t_year == _SelectYear
-                    && it.t_month == _SelectMonth);
+                ListTabelPerson = repoTabPerson.Items
+                    .AsNoTracking()
+                    .Where(it => it.tabel.t_year == _SelectYear && it.tabel.t_month == _SelectMonth);
+
+                //tabel = repoTabel.Items.AsNoTracking().FirstOrDefault(it => it.t_year == _SelectYear
+                //    && it.t_month == _SelectMonth);
             }
             else
             {
-                tabel = repoTabel.Items.AsNoTracking().FirstOrDefault(it => it.t_year == _SelectYear
-                    && it.t_month == _SelectMonth
-                    && it.t_otdel_id == (_SelectedOtdel.ot_parent ?? _SelectedOtdel.id));
+                ListTabelPerson = repoTabPerson.Items
+                    .AsNoTracking()
+                    .Where(it => it.tabel.t_year == _SelectYear && it.tabel.t_month == _SelectMonth 
+                        && it.tabel.t_otdel_id == (_SelectedOtdel.ot_parent ?? _SelectedOtdel.id));
+
+                //tabel = repoTabel.Items.AsNoTracking().FirstOrDefault(it => it.t_year == _SelectYear
+                //    && it.t_month == _SelectMonth
+                //    && it.t_otdel_id == (_SelectedOtdel.ot_parent ?? _SelectedOtdel.id));
             }
 
 
-            if (listPerson is null || tabel is null) return;
+            //if (listPerson is null || tabel is null) return;
+            if (listPerson is null || ListTabelPerson is null) return;
 
             // получение количества рабочих дней в указанном месяце
             RepositoryCalendar repoCal = new RepositoryCalendar(db);// AllRepo.GetRepoCalendar();
@@ -119,7 +131,8 @@ namespace Tabel.ViewModels.ModViewModel
 
             foreach (var item in listPerson)
             {
-                var pers = tabel.tabelPersons.FirstOrDefault(it => it.tp_person_id == item.md_personalId);
+                //var pers = tabel.tabelPersons.FirstOrDefault(it => it.tp_person_id == item.md_personalId);
+                var pers = ListTabelPerson.FirstOrDefault(it => it.tp_person_id == item.md_personalId);
                 if (pers != null)
                 {
                     item.TabelDays = listDays.Count;

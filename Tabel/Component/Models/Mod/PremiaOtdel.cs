@@ -48,7 +48,7 @@ namespace Tabel.Component.Models.Mod
         //-------------------------------------------------------------------------------------------------------
         public override void Calculation()
         {
-            OstPrem = 100 - model.md_kvalif_proc;
+            OstPrem = 100 - model.md_kvalif_proc ?? 100;
             Summa = (model.md_prem_otdel * model.md_prem_otdel_proc / 100) * OstPrem / 100;
             OnPropertyChanged(nameof(OstPrem));
         }
