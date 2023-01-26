@@ -4,50 +4,29 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Tabel.Models;
+using Tabel.ViewModels;
 
 namespace Tabel.Component.Models.Mod
 {
-    public class PremiaBonus : BasePremia, IDisposable
+    public class PremiaBonus : BasePremia
     {
-        private decimal? _BonusForAll;
-        public decimal? BonusForAll
-        { 
-            get => _BonusForAll; 
-            set
-            {
-                if (_BonusForAll == value) return;
-                _BonusForAll = value;
-                Calculation();
-            }
-        }
-
 
         //-------------------------------------------------------------------------------------------------------
         // Конструктор
         //-------------------------------------------------------------------------------------------------------
         public PremiaBonus(ModPerson person) : base(person)
         {
-            model.PropertyChanged += Model_PropertyChanged;
-        }
-
-        //-------------------------------------------------------------------------------------------------------
-        // Деструктор
-        //-------------------------------------------------------------------------------------------------------
-        public void Dispose()
-        {
-            model.PropertyChanged -= Model_PropertyChanged;
         }
 
 
         //-------------------------------------------------------------------------------------------------------
         // Событие изменения полей
         //-------------------------------------------------------------------------------------------------------
-        private void Model_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        protected override void PremiaPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             switch (e.PropertyName)
             {
                 case "md_bonus_exec":
-                //case "BonusForAll":
                 case "md_bonus_max":
                     Calculation();
                     break;
@@ -60,15 +39,9 @@ namespace Tabel.Component.Models.Mod
         //-------------------------------------------------------------------------------------------------------
         public override void Calculation()
         {
-            //Summa = (model.TabelDays == 0 || !model.md_bonus_exec) 
-            //    ? null 
-            //    : model.md_bonus_max * BonusForAll / 100 * (model.TabelDays - model.TabelAbsent) / model.TabelDays;
-
-            decimal koef = model.TabelDays == 0 ? 1 : (decimal)(model.TabelDays - model.TabelAbsent) / (decimal)model.TabelDays;
-
             Summa = !model.md_bonus_exec
                 ? null
-                : model.md_bonus_max * BonusForAll / 100 * koef;
+                : model.md_bonus_max * ModUCViewModel.BonusProc / 100 * koef;
 
         }
     }

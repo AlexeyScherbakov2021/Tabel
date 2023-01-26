@@ -22,6 +22,7 @@ namespace Tabel.Models
 
         //public int td_KindId { get; set; }
         private int _td_KindId;
+
         public int td_KindId
         {
             get => _td_KindId;

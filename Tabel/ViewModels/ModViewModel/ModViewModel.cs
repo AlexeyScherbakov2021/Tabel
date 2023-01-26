@@ -16,13 +16,26 @@ namespace Tabel.ViewModels.ModViewModel
         protected int _SelectYear;
         protected readonly BaseModel db;
 
+        //-------------------------------------------------------------------------------------------------------
+        // Конструктор
+        //-------------------------------------------------------------------------------------------------------
         public ModViewModel(BaseModel ctx)
         {
             db = ctx;
         }
+
+
+
+        //-------------------------------------------------------------------------------------------------------
+        // Изменение списка сотрудников
+        //-------------------------------------------------------------------------------------------------------
         public abstract void ChangeListPerson(ICollection<ModPerson> listPerson, int Year, int Month, Otdel Otdel);
-        //public abstract void GetListAllPerson(ICollection<ModPerson> listPerson, int Year, int Month);
+
+        //-------------------------------------------------------------------------------------------------------
+        // Добавление сотрудника
+        //-------------------------------------------------------------------------------------------------------
         public abstract void AddPersons(ICollection<ModPerson> listPerson);
+
 
     }
 }

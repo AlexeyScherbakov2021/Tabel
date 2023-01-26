@@ -397,15 +397,15 @@ namespace Tabel.ViewModels
                     switch (td.CalendarTypeDay)
                     {
                         case TypeDays.Holyday:
-                            td.td_KindId = 2;
+                            td.td_KindId = (int)TabelKindDays.OffDay;
                             td.td_Hours = 0;
                             break;
                         case TypeDays.Work:
-                            td.td_KindId = 1;
+                            td.td_KindId = (int)TabelKindDays.Worked;
                             td.td_Hours = 8;
                             break;
                         case TypeDays.ShortWork:
-                            td.td_KindId = 1;
+                            td.td_KindId = (int)TabelKindDays.Worked;
                             td.td_Hours = 7;
                             break;
                     }
@@ -537,22 +537,22 @@ namespace Tabel.ViewModels
                         switch (td.CalendarTypeDay)
                         {
                             case TypeDays.Holyday:
-                                td.td_KindId = 2;
+                                td.td_KindId = (int)TabelKindDays.OffDay;
                                 td.td_Hours = 0;
                                 break;
                             case TypeDays.Work:
-                                td.td_KindId = 1;
+                                td.td_KindId = (int)TabelKindDays.Worked;
                                 td.td_Hours = 8;
                                 break;
                             case TypeDays.ShortWork:
-                                td.td_KindId = 1;
+                                td.td_KindId = (int)TabelKindDays.Worked;
                                 td.td_Hours = 7;
                                 break;
                         }
 
                         if (OtpDays != null && OtpuskUCViewModel.IsOtpuskDay(new DateTime(_SelectYear, _SelectMonth, td.td_Day), OtpDays))
                         {
-                            td.typeDay = repoTypeDay.Items.FirstOrDefault(it => it.t_name == "ОТ");
+                            td.typeDay = repoTypeDay.Items.FirstOrDefault(it => it.id == (int)TabelKindDays.Otpusk);
                             td.td_Hours = 0;
                         }
                         tp.TabelDays.Add(td);

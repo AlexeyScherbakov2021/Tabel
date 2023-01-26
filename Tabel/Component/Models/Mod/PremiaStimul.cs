@@ -7,25 +7,17 @@ using Tabel.Models;
 
 namespace Tabel.Component.Models.Mod
 {
-    public class PremOffDays : BasePremia
+    public class PremiaStimul : BasePremia
     {
+        public decimal? _OstPrem;
+        public decimal? OstPrem { get => _OstPrem; set { Set(ref _OstPrem, value); } }
 
         //-------------------------------------------------------------------------------------------------------
         // Конструктор
         //-------------------------------------------------------------------------------------------------------
-        public PremOffDays(ModPerson person) : base(person)
+        public PremiaStimul(ModPerson person) : base(person)
         {
         }
-
-
-        //-------------------------------------------------------------------------------------------------------
-        // расчет премии
-        //-------------------------------------------------------------------------------------------------------
-        public override void Calculation()
-        {
-            Summa = model.TabelWorkOffDay * model.md_tarif_offDay;
-        }
-
 
         //-------------------------------------------------------------------------------------------------------
         // Событие изменения полей
@@ -34,12 +26,25 @@ namespace Tabel.Component.Models.Mod
         {
             switch (e.PropertyName)
             {
-                case "md_tarif_offDay":
-                case "TabelWorkOffDay":
+                case "md_prem_otdel":
+                case "md_prem_otdel_proc":
+                case "md_kvalif_proc":
                     Calculation();
                     break;
             }
         }
+
+
+        //-------------------------------------------------------------------------------------------------------
+        // расчет премии
+        //-------------------------------------------------------------------------------------------------------
+        public override void Calculation()
+        {
+            OstPrem = 100 - model.md_kvalif_proc ?? 100;
+            Summa = (model.md_prem_otdel * model.md_prem_otdel_proc / 100) * OstPrem / 100;
+            //OnPropertyChanged(nameof(OstPrem));
+        }
+
 
     }
 }

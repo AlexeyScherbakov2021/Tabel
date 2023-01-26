@@ -101,9 +101,9 @@
     <Compile Include="Component\Models\Mod\BasePremia.cs" />
     <Compile Include="Component\Models\Mod\PremiaAddWorks.cs" />
     <Compile Include="Component\Models\Mod\PremiaBonus.cs" />
-    <Compile Include="Component\Models\Mod\PremiaKvalif.cs" />
-    <Compile Include="Component\Models\Mod\premiaNight.cs" />
     <Compile Include="Component\Models\Mod\PremiaOtdel.cs" />
+    <Compile Include="Component\Models\Mod\premiaNight.cs" />
+    <Compile Include="Component\Models\Mod\PremiaStimul.cs" />
     <Compile Include="Component\Models\Mod\PremiaPrize.cs" />
     <Compile Include="Component\Models\Mod\PremiaTransport.cs" />
     <Compile Include="Component\Models\Mod\PremOffDays.cs" />
@@ -126,6 +126,7 @@
       <DependentUpon>TabelDayPanel.xaml</DependentUpon>
     </Compile>
     <Compile Include="Infrastructure\Encrypt.cs" />
+    <Compile Include="Infrastructure\ModFunction.cs" />
     <Compile Include="Models\Otpusk.cs" />
     <Compile Include="Models\OtpuskDays.cs" />
     <Compile Include="Models\OtpuskPerson.cs" />
@@ -215,8 +216,8 @@
     <Compile Include="ViewModels\ModViewModel\PremiaBonusViewModel.cs" />
     <Compile Include="ViewModels\ModViewModel\PremiaFPViewModel.cs" />
     <Compile Include="ViewModels\ModViewModel\PremiaItogoViewModel.cs" />
-    <Compile Include="ViewModels\ModViewModel\PremiaKvalifViewModel.cs" />
     <Compile Include="ViewModels\ModViewModel\PremiaOtdelViewModel.cs" />
+    <Compile Include="ViewModels\ModViewModel\PremiaStimulViewModel.cs" />
     <Compile Include="ViewModels\ModViewModel\PremiaPrizeViewModel.cs" />
     <Compile Include="ViewModels\ModViewModel\PremiaTransportViewModel.cs" />
     <Compile Include="ViewModels\OtpuskUCViewModel.cs" />

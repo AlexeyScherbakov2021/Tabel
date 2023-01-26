@@ -8,11 +8,13 @@ using Tabel.Models;
 
 namespace Tabel.Component.Models.Mod
 {
-    public abstract class BasePremia : Observable
+    public abstract class BasePremia : Observable, IDisposable
     {
+        protected decimal koef;
+
         //protected readonly BaseModel db;
         private decimal? _Summa;
-        public decimal? Summa { get => _Summa; set { Set(ref _Summa, value); } }
+        public decimal? Summa { get => _Summa; set { if(Set(ref _Summa, value)) OnPropertyChanged(nameof(model.PremiaItogo)); } }
 
         protected ModPerson model;
 
@@ -22,24 +24,41 @@ namespace Tabel.Component.Models.Mod
         public BasePremia(ModPerson person)
         {
             model = person;
-            //this.db = db;
+            koef = model.TabelDays == 0 ? 1 : (decimal)(model.TabelDays - model.TabelAbsent) / (decimal)model.TabelDays;
+            model.PropertyChanged += PremiaPropertyChanged;
+
         }
+
+        //-------------------------------------------------------------------------------------------------------
+        // Деструктор
+        //-------------------------------------------------------------------------------------------------------
+        public void Dispose()
+        {
+            model.PropertyChanged -= PremiaPropertyChanged;
+        }
+
+        //-------------------------------------------------------------------------------------------------------
+        // Событие изменения влияющих полей
+        //-------------------------------------------------------------------------------------------------------
+        protected virtual void PremiaPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        { }
+
 
         //-------------------------------------------------------------------------------------------------------
         // Инициализация
         //-------------------------------------------------------------------------------------------------------
-        public virtual void Initialize(int id)
-        {
+        //public virtual void Initialize(int id)
+        //{
 
-        }
+        //}
 
 
         //-------------------------------------------------------------------------------------------------------
         // Получение итоговой премии
         //-------------------------------------------------------------------------------------------------------
-        public virtual decimal? GetPremia()
+        public virtual decimal GetPremia()
         {
-            Calculation();
+            //Calculation();
             return Summa ?? 0;
         }
 

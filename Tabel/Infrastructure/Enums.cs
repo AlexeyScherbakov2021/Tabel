@@ -13,6 +13,9 @@ namespace Tabel.Infrastructure
 
     public enum TabelKind : int { None, Work, DayOff, Komandir, Otpusk, WorkDayOff, DopOtpusk, Bolen, Obuchenie, NotWork };
 
+    public enum TabelKindDays : int { None, Worked, OffDay, Komandir, Otpusk, WorkInOffDay, OtpuskNoMoney, 
+        Bolnich, DopOtpusk, BolnichNoMoney, DistWork };
+
 
 
     public enum UserRoles : int { Admin, Управление, Пользователь, Внетарифный };

@@ -85,23 +85,25 @@ namespace Tabel.Models
         public bool md_quality_check { get => _md_quality_check; set { Set(ref _md_quality_check, value); } }
 
         private decimal? _md_kvalif_proc;
+
+        [Column("md_kvalif_proc")]
         public decimal? md_kvalif_proc { get => _md_kvalif_proc; set { Set(ref _md_kvalif_proc, value); } }
 
         private decimal? _md_person_achiev;
         public decimal? md_person_achiev { get => _md_person_achiev; set { Set(ref _md_person_achiev, value); } }
 
 
-        public decimal? md_ItogPremia1 { get; set; }
-        public decimal? md_ItogPremia2vyr { get; set; }
+        //public decimal? md_ItogPremia1 { get; set; }
+        //public decimal? md_ItogPremia2vyr { get; set; }
         
-        [Column(TypeName = "numeric")]
-        public decimal? md_ItogPremiaAddWork { get; set; }
-        public decimal? md_ItogPremiaTransport { get; set; }
-        public decimal? md_ItogPremia2Otdel { get; set; }
-        public decimal? md_ItogPremia3Stimul { get; set; }
-        public decimal? md_ItogPremiaPrize { get; set; }
-        public decimal? md_ItogPremiaNight { get; set; }
-        public decimal? md_ItogPremiaOffDays { get; set; }
+        //[Column(TypeName = "numeric")]
+        //public decimal? md_ItogPremiaAddWork { get; set; }
+        //public decimal? md_ItogPremiaTransport { get; set; }
+        //public decimal? md_ItogPremia2Otdel { get; set; }
+        //public decimal? md_ItogPremia3Stimul { get; set; }
+        //public decimal? md_ItogPremiaPrize { get; set; }
+        //public decimal? md_ItogPremiaNight { get; set; }
+        //public decimal? md_ItogPremiaOffDays { get; set; }
 
 
         public virtual Mod Mod { get; set; }
@@ -112,7 +114,7 @@ namespace Tabel.Models
 
 
         [NotMapped]
-        public decimal? PlanTarifKvalif { get; set; }
+        public decimal? PlanTarifOtdel { get; set; }
 
         [NotMapped]
         public PremiaFP premiaFP { get; set; }
@@ -121,10 +123,10 @@ namespace Tabel.Models
         public PremiaBonus premiaBonus { get; set; }
 
         [NotMapped]
-        public PremiaKvalif premiaKvalif { get; set; }
+        public PremiaOtdel premiaOtdel { get; set; }
 
         [NotMapped]
-        public PremiaOtdel premiaOtdel { get; set; }
+        public PremiaStimul premiStimul { get; set; }
 
         [NotMapped]
         public PremOffDays premOffDays { get; set; }
@@ -155,16 +157,15 @@ namespace Tabel.Models
             ListAddWorks = new HashSet<AddWorks>();
             ListTargetTask = new HashSet<TargetTask>();
 
-            premiaFP = new PremiaFP(this);
-            premiaBonus = new PremiaBonus(this);
-            premiaKvalif = new PremiaKvalif(this);
-            premiaOtdel = new PremiaOtdel(this);
-            premOffDays = new PremOffDays(this);
-            premiaAddWorks = new PremiaAddWorks(this);
-            premiaTransport = new PremiaTransport(this);
-            premiaNight = new premiaNight(this);
-            premiaPrize = new PremiaPrize(this);
-            //premiaQuality = new PremiaQuality(this);
+            //premiaFP = new PremiaFP(this);
+            //premiaBonus = new PremiaBonus(this);
+            //premiaOtdel = new PremiaKvalif(this);
+            //premiStimul = new PremiaOtdel(this);
+            //premOffDays = new PremOffDays(this);
+            //premiaAddWorks = new PremiaAddWorks(this);
+            //premiaTransport = new PremiaTransport(this);
+            //premiaNight = new premiaNight(this);
+            //premiaPrize = new PremiaPrize(this);
         }
 
 
@@ -196,11 +197,10 @@ namespace Tabel.Models
         public decimal? PremiaItogo =>
             premiaFP.GetPremia()
             + premiaBonus.GetPremia()
-            + premiaKvalif.GetPremia()
             + premiaOtdel.GetPremia()
+            + premiStimul.GetPremia()
             + premiaTransport.GetPremia()
             + premiaAddWorks.GetPremia()
-            //+ premiaQuality.GetPremia()
             + premiaPrize.GetPremia();
 
 

@@ -13,37 +13,35 @@ using Tabel.ViewModels.Base;
 
 namespace Tabel.ViewModels.ModViewModel
 {
-    internal class PremiaKvalifViewModel : ModViewModel
+    internal class PremiaStimulViewModel : ModViewModel
     {
         public ICollection<ModPerson> ListModPerson { get; set; }
-
         public decimal? SetProcPrem { get; set; }
-        public decimal? SetProcFull { get; set; }
 
-
-
-        public PremiaKvalifViewModel(BaseModel db) : base(db)
+        public PremiaStimulViewModel(BaseModel db) : base(db)
         {
-
+                
         }
 
         public override void ChangeListPerson(ICollection<ModPerson> listPerson, int Year, int Month, Otdel Otdel)
         {
             _SelectMonth = Month;
             _SelectYear = Year;
-
-
             ListModPerson = listPerson?.Where(it => it.person.p_type_id == SpecType.ИТР).ToList(); ;
 
-            LoadFromCategory(listPerson);
+            LoadFromCategory(ListModPerson);
+
 
             OnPropertyChanged(nameof(ListModPerson));
         }
 
+
         public override void AddPersons(ICollection<ModPerson> listPerson)
         {
             LoadFromCategory(listPerson);
+
             OnPropertyChanged(nameof(ListModPerson));
+
         }
 
         private void LoadFromCategory(ICollection<ModPerson> listPerson)
@@ -53,11 +51,9 @@ namespace Tabel.ViewModels.ModViewModel
 
             foreach (var item in listPerson)
             {
-                item.md_kvalif_tarif = item.TabelHours * item.person.p_premTarif;
-                item.PlanTarifKvalif = 162m * item.person.p_premTarif;
+                item.md_prem_otdel = item.TabelHours * item.person.p_premTarif;
             }
         }
-
 
         #region Команды
 
@@ -72,26 +68,8 @@ namespace Tabel.ViewModels.ModViewModel
             {
                 foreach (ModPerson item in dg.SelectedItems)
                 {
-                    item.md_kvalif_prem = SetProcPrem;
-                    item.OnPropertyChanged(nameof(item.md_kvalif_prem));
-                }
-            }
-
-        }
-
-        //--------------------------------------------------------------------------------
-        // Команда Применить % от полной к выбранным
-        //--------------------------------------------------------------------------------
-        public ICommand SetProcFullCommand => new LambdaCommand(OnSetProcFullCommandExecuted, CanSetProcFullCommand);
-        private bool CanSetProcFullCommand(object p) => true;
-        private void OnSetProcFullCommandExecuted(object p)
-        {
-            if (p is DataGrid dg)
-            {
-                foreach (ModPerson item in dg.SelectedItems)
-                {
-                    item.md_kvalif_proc = SetProcFull;
-                    item.OnPropertyChanged(nameof(item.md_kvalif_proc));
+                    item.md_prem_otdel_proc = SetProcPrem;
+                    item.OnPropertyChanged(nameof(item.md_prem_otdel_proc));
                 }
             }
 

@@ -16,7 +16,6 @@ namespace Tabel.Repository
     {
         private static readonly int FirstMonthDays = 20;
 
-
         public static void PrintTabel(IEnumerable<TabelPerson> ListTabelPerson, bool IsAllMonth 
             , WorkTabel Tabel, int SelectYear, int SelectMonth)
         {

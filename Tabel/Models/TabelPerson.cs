@@ -35,9 +35,9 @@ namespace Tabel.Models
 
 
 
-        public int DaysWeek1 => ((IEnumerable<TabelDay>)TabelDays).Count(s => s.td_KindId == 1 && s.td_Day <= 15);
+        public int DaysWeek1 => ((IEnumerable<TabelDay>)TabelDays).Count(s => s.td_KindId == (int)TabelKindDays.Worked && s.td_Day <= 15);
 
-        public int DaysWeek2 => ((IEnumerable<TabelDay>)TabelDays).Count(s => s.td_KindId == 1 && s.td_Day > 15);
+        public int DaysWeek2 => ((IEnumerable<TabelDay>)TabelDays).Count(s => s.td_KindId == (int)TabelKindDays.Worked && s.td_Day > 15);
 
         public decimal HoursWeek1 => ((IEnumerable<TabelDay>)TabelDays).Where(it => it.td_Day <= 15).Sum(s => s.WhiteHours);
 
@@ -92,9 +92,9 @@ namespace Tabel.Models
 
 
         [NotMapped]
-        public decimal? WorkedOffDays => ((IEnumerable<TabelDay>)TabelDays).Count(it => it.td_KindId == 5);
+        public decimal? WorkedOffDays => ((IEnumerable<TabelDay>)TabelDays).Count(it => it.td_KindId == (int)TabelKindDays.WorkInOffDay);
         public decimal? WorkedOffHours => ((IEnumerable<TabelDay>)TabelDays)
-            .Where(it => it.td_KindId == 5)
+            .Where(it => it.td_KindId == (int)TabelKindDays.WorkInOffDay)
             .Sum(s => s.WhiteHours);
 
         [NotMapped]

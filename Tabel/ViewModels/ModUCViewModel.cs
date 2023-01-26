@@ -33,13 +33,15 @@ namespace Tabel.ViewModels
         private RepositoryMSSQL<Personal> repoPersonal;
         private readonly RepositoryMSSQL<WorkTabel> repoTabel;
         private readonly RepositoryMSSQL<Mod> repoModel;
-        private decimal? BonusProc;
+
+        //private decimal? _BonusProc;
+        public static decimal? BonusProc;
 
         public PremiaBonusViewModel premiaBonusViewModel { get; set; }
         public ModMainViewModel modMainViewModel { get; set; }
         public PremiaFPViewModel premiaFPViewModel { get; set; }
-        public PremiaKvalifViewModel premiaKvalifViewModel { get; set; }
         public PremiaOtdelViewModel premiaOtdelViewModel { get; set; }
+        public PremiaStimulViewModel premiaStimulViewModel { get; set; }
         //public PremiaQualityViewModel premiaQualityViewModel { get; set; }
         public PremiaAddWorksViewModel premiaAddWorksViewModel { get; set; }
         public PremiaTransportViewModel premiaTransportViewModel { get; set; }
@@ -112,11 +114,10 @@ namespace Tabel.ViewModels
             repoModel = new RepositoryMSSQL<Mod>(db);
 
             modMainViewModel = new ModMainViewModel(db);
-            premiaBonusViewModel = new PremiaBonusViewModel(db, BonusProc);
+            premiaBonusViewModel = new PremiaBonusViewModel(db);
             premiaFPViewModel = new PremiaFPViewModel(db);
-            premiaKvalifViewModel = new PremiaKvalifViewModel(db);
             premiaOtdelViewModel = new PremiaOtdelViewModel(db);
-            //premiaQualityViewModel = new PremiaQualityViewModel(db);
+            premiaStimulViewModel = new PremiaStimulViewModel(db);
             premiaAddWorksViewModel = new PremiaAddWorksViewModel(db);
             premiaTransportViewModel = new PremiaTransportViewModel(db);
             premiaPrizeViewModel = new PremiaPrizeViewModel(db);
@@ -137,6 +138,7 @@ namespace Tabel.ViewModels
             BonusProc = repoGetAll.Items
                 .FirstOrDefault(it => it.gm_Year == _SelectYear && it.gm_Month == _SelectMonth && it.gm_GenId == (int)EnumKind.BonusProc)?.gm_Value;
 
+            premiaBonusViewModel.SetBonusProc(BonusProc);
         }
 
 
@@ -160,7 +162,7 @@ namespace Tabel.ViewModels
 
             LoadBonusProcent();
 
-            premiaBonusViewModel.SetBonus(BonusProc);
+            //premiaBonusViewModel.SetBonus(BonusProc);
 
             if (_SelectedOtdel.ot_parent is null)
             {
@@ -189,13 +191,20 @@ namespace Tabel.ViewModels
                         );
             }
 
+            //OnPropertyChanged(nameof(ListModPerson));
+
+            if (ListModPerson != null)
+            {
+                // подгрузка из табеля, смен и транспорта
+                ModFunction ModFunc = new ModFunction(db, _SelectYear, _SelectMonth);
+                ModFunc.ModPersonFilling(ListModPerson);
+            }
 
             modMainViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
             premiaBonusViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
             premiaFPViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
-            premiaKvalifViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
             premiaOtdelViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
-            //premiaQualityViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
+            premiaStimulViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
             premiaAddWorksViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
             premiaTransportViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
             premiaPrizeViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
@@ -321,12 +330,16 @@ namespace Tabel.ViewModels
 
             ListModPerson = new ObservableCollection<ModPerson>(CurrentMod.ModPersons);
 
+            // подгрузка из табеля, смен и транспорта
+            ModFunction ModFunc = new ModFunction(db, _SelectYear, _SelectMonth);
+            ModFunc.ModPersonFilling(ListModPerson);
+
+
             modMainViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
             premiaBonusViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
             premiaFPViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
-            premiaKvalifViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
             premiaOtdelViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
-            //premiaQualityViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
+            premiaStimulViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
             premiaAddWorksViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
             premiaTransportViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
             premiaPrizeViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
@@ -341,18 +354,18 @@ namespace Tabel.ViewModels
         private bool CanSaveCommand(object p) => /*CurrentMod != null && _SelectedOtdel != null &&*/ IsModify;
         private void OnSaveCommandExecuted(object p)
         {
-            foreach(var item in  ListModPerson)
-            {
-                item.md_ItogPremia1 = item.premiaBonus.Summa;
-                item.md_ItogPremia2vyr = item.premiaFP.Summa;
-                item.md_ItogPremiaAddWork = item.premiaAddWorks.Summa;
-                item.md_ItogPremiaTransport = item.premiaTransport.Summa;
-                item.md_ItogPremia2Otdel = item.premiaKvalif.Summa;
-                item.md_ItogPremia3Stimul = item.premiaOtdel.Summa;
-                item.md_ItogPremiaPrize = item.premiaPrize.Summa;
-                item.md_ItogPremiaNight = item.premiaNight.Summa;
-                item.md_ItogPremiaOffDays = item.premOffDays.Summa;
-            }
+            //foreach(var item in  ListModPerson)
+            //{
+            //    item.md_ItogPremia1 = item.premiaBonus.Summa;
+            //    item.md_ItogPremia2vyr = item.premiaFP.Summa;
+            //    item.md_ItogPremiaAddWork = item.premiaAddWorks.Summa;
+            //    item.md_ItogPremiaTransport = item.premiaTransport.Summa;
+            //    item.md_ItogPremia2Otdel = item.premiaOtdel.Summa;
+            //    item.md_ItogPremia3Stimul = item.premiStimul.Summa;
+            //    item.md_ItogPremiaPrize = item.premiaPrize.Summa;
+            //    item.md_ItogPremiaNight = item.premiaNight.Summa;
+            //    item.md_ItogPremiaOffDays = item.premOffDays.Summa;
+            //}
 
             SaveForm();
         }
@@ -488,8 +501,8 @@ namespace Tabel.ViewModels
                 modMainViewModel.AddPersons(ListNewPerson);
                 premiaBonusViewModel.AddPersons(ListNewPerson);
                 premiaFPViewModel.AddPersons(ListNewPerson);
-                premiaKvalifViewModel.AddPersons(ListNewPerson);
                 premiaOtdelViewModel.AddPersons(ListNewPerson);
+                premiaStimulViewModel.AddPersons(ListNewPerson);
                 //premiaQualityViewModel.AddPersons(ListNewPerson);
                 premiaAddWorksViewModel.AddPersons(ListNewPerson);
                 premiaTransportViewModel.AddPersons(ListNewPerson);
@@ -526,7 +539,6 @@ namespace Tabel.ViewModels
         private void OnPrintCommandExecuted(object p)
         {
 
-            //RepositoryMSSQL<ModPerson> repoModPerson = new RepositoryMSSQL<ModPerson>();
             var db = repoModPerson.GetDB();
             List<ModPerson> ListAllModPerson = repoModPerson.Items
                 .AsNoTracking()
@@ -534,39 +546,9 @@ namespace Tabel.ViewModels
                 .OrderBy(o => o.person.p_lastname)
                 .ToList();
 
-            RepositoryMSSQL<TransPerson> repoTransPerson = new RepositoryMSSQL<TransPerson>(db);
-            RepositoryMSSQL<SmenaPerson> repoSmenaPerson = new RepositoryMSSQL<SmenaPerson>(db);
+            ModFunction mf = new ModFunction(db, _SelectYear, _SelectMonth);
+            mf.ModPersonFilling(ListAllModPerson);
 
-
-            ModMainViewModel modMainViewModel = new ModMainViewModel(db);
-            modMainViewModel.ChangeListPerson(ListAllModPerson, _SelectYear, _SelectMonth, null);
-
-            //decimal? summa = 0;
-
-            //ICollection<ModPerson> ListAllModPerson = repoModPerson.Items
-            //    .AsNoTracking()
-            //    .Where(it => it.Mod.m_month == _SelectMonth && it.Mod.m_year == _SelectYear)
-            //    .OrderBy(o => o.person.p_lastname)
-            //    .ThenBy(o => o.person.p_name).ToList();
-
-
-            //ListAllModPerson = ListModPerson;
-
-
-            //foreach (var item in ListAllModPerson)
-            //{
-            //    modMainViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
-            //    premiaBonusViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
-            //    premiaFPViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
-            //    premiaKvalifViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
-            //    premiaOtdelViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
-            //    //premiaQualityViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
-            //    premiaAddWorksViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
-            //    premiaTransportViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
-            //    premiaPrizeViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
-            //    premiaItogoViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
-
-            //}
 
             try
             {
@@ -576,26 +558,11 @@ namespace Tabel.ViewModels
                     var ws2 = wb.Worksheets.Worksheet(2);
                     var ws3 = wb.Worksheets.Worksheet(3);
 
-                    // Заполение шапки
-                    //ws.Cell("C1").Value = CurrentMod.otdel.ot_name;
-
-                    //DateTime startDate = new DateTime(_SelectYear, CurrentMod.m_month, 1);
-                    //ws.Cell("C2").Value = startDate.ToString("dd.MM.yyyy");
-                    //DateTime endDate = startDate.AddMonths(1).AddDays(-1);
-                    //ws.Cell("D2").Value = endDate.ToString("dd.MM.yyyy");
-                    //ws.Cell("AA15").Value = "Составил: " + App.CurrentUser.u_fio;
 
                     int RowNum = 6;
                     int RowNum2 = 6;
                     int RowNum3 = 6;
-                    //ws.Row(5).InsertRowsBelow(ListModPerson.Count() - 1 );
-                    //var range = ws.Range(RowNum, 1, RowNum, 75);
 
-                    //for (int i = 0; i < ListModPerson.Count() - 1; i++)
-                    //{
-                    //    RowNum++;
-                    //    range.CopyTo(ws.Cell(RowNum, 1));
-                    //}
                     ws.Cell("A2").Value = "'" + App.ListMonth[_SelectMonth-1] .Name+ " " + _SelectYear;
                     ws2.Cell("A2").Value = "'" + App.ListMonth[_SelectMonth-1].Name + " " + _SelectYear;
                     ws3.Cell("A2").Value = "'" + App.ListMonth[_SelectMonth-1].Name + " " + _SelectYear;
@@ -603,51 +570,17 @@ namespace Tabel.ViewModels
 
                     foreach (var item in ListAllModPerson)
                     {
-                        item.premiaBonus.BonusForAll = BonusProc;
-                        item.premiaBonus.Calculation();
-                        item.premiaFP.Calculation();
-                        item.premiaAddWorks.Calculation();
-                        item.md_kvalif_tarif = item.person.p_premTarif * item.TabelHours;
-                        item.premiaKvalif.Calculation();
-                        item.md_prem_otdel = item.md_kvalif_tarif;
-                        item.premiaOtdel.Calculation();
-                        item.TransportPremia = repoTransPerson.Items
-                            .AsNoTracking()
-                            .FirstOrDefault(it => it.Transport.tr_Year == _SelectYear
-                                && it.Transport.tr_Month == _SelectMonth
-                                && it.person.id == item.person.id)?.Summa;
-                        item.premiaTransport.Calculation();
-                        item.premiaPrize.Calculation();
+                        //decimal? PremiaItogo = (item.premiaBonus.Summa ?? 0)
+                        //    + (item.premiaFP.Summa ?? 0)
+                        //    + (item.premiaOtdel.Summa ?? 0)
+                        //    + (item.premiStimul.Summa ?? 0)
+                        //    + (item.premiaAddWorks.Summa ?? 0)
+                        //    + (item.premiaTransport.Summa ?? 0)
+                        //    + (item.premiaPrize.Summa ?? 0);
 
-
-                        var persSmena = repoSmenaPerson.Items
-                            .AsNoTracking()
-                            .FirstOrDefault(it => it.smena.sm_Year == _SelectYear
-                                && it.smena.sm_Month == _SelectMonth
-                                && it.personal.id == item.person.id);
-
-                        decimal NightSumma = 0;
-                        if (persSmena != null)
-                        {
-                            decimal NightHours = persSmena.SmenaDays.Count(s => s.sd_Kind == SmenaKind.Second) * 4.5m;
-                            decimal NightOklad = persSmena.personal.category.cat_tarif.Value * 0.2m;
-                            NightSumma = NightOklad * NightHours;
-                        }
-                        item.premOffDays.Calculation();
-                        //var sumOff = item.TabelWorkOffDay * item.md_tarif_offDay;
-
-
-                        decimal? PremiaItogo = (item.premiaBonus.Summa ?? 0)
-                            + (item.premiaFP.Summa ?? 0)
-                            + (item.premiaKvalif.Summa ?? 0)
-                            + (item.premiaOtdel.Summa ?? 0)
-                            + (item.premiaAddWorks.Summa ?? 0)
-                            + (item.premiaTransport.Summa ?? 0)
-                            + (item.premiaPrize.Summa ?? 0);
-
-                        decimal? Itogo = (PremiaItogo ?? 0) + item.md_Oklad
-                            + (item.premOffDays.Summa ?? 0)
-                            + NightSumma;
+                        //decimal? Itogo = (PremiaItogo ?? 0) + item.md_Oklad
+                        //    + (item.premOffDays.Summa ?? 0)
+                        //    + (item.premiaNight.Summa ?? 0);
 
 
                         if (item.person.p_tab_number == "ГПХ")
@@ -658,14 +591,14 @@ namespace Tabel.ViewModels
                             ws3.Cell(RowNum3, 4).Value = item.person.p_profession;
                             ws3.Cell(RowNum3, 5).Value = item.premiaBonus.Summa;
                             ws3.Cell(RowNum3, 6).Value = item.premiaFP.Summa;
-                            ws3.Cell(RowNum3, 7).Value = item.premiaKvalif.Summa;
-                            ws3.Cell(RowNum3, 8).Value = item.premiaOtdel.Summa;
+                            ws3.Cell(RowNum3, 7).Value = item.premiaOtdel.Summa;
+                            ws3.Cell(RowNum3, 8).Value = item.premiStimul.Summa;
                             if(item.premiaAddWorks.Summa != 0)
                                 ws3.Cell(RowNum3, 9).Value = item.premiaAddWorks.Summa;
                             ws3.Cell(RowNum3, 10).Value = item.premiaTransport.Summa;
                             ws3.Cell(RowNum3, 11).Value = item.premiaPrize.Summa;
-                            ws3.Cell(RowNum3, 12).Value = PremiaItogo;
-                            ws3.Cell(RowNum3, 13).Value = Itogo;
+                            ws3.Cell(RowNum3, 12).Value = item.PremiaItogo;
+                            ws3.Cell(RowNum3, 13).Value = item.Itogo;
                             ws3.Row(RowNum3).InsertRowsBelow(1);
                             RowNum3++;
                         }
@@ -678,14 +611,14 @@ namespace Tabel.ViewModels
                             ws.Cell(RowNum, 4).Value = item.person.p_profession;
                             ws.Cell(RowNum, 5).Value = item.premiaBonus.Summa;
                             ws.Cell(RowNum, 6).Value = item.premiaFP.Summa;
-                            ws.Cell(RowNum, 7).Value = item.premiaKvalif.Summa;
-                            ws.Cell(RowNum, 8).Value = item.premiaOtdel.Summa;
+                            ws.Cell(RowNum, 7).Value = item.premiaOtdel.Summa;
+                            ws.Cell(RowNum, 8).Value = item.premiStimul.Summa;
                             if (item.premiaAddWorks.Summa != 0)
                                 ws.Cell(RowNum, 9).Value = item.premiaAddWorks.Summa;
                             ws.Cell(RowNum, 10).Value = item.premiaTransport.Summa;
                             ws.Cell(RowNum, 11).Value = item.premiaPrize.Summa;
-                            ws.Cell(RowNum, 12).Value = PremiaItogo;
-                            ws.Cell(RowNum, 13).Value = Itogo;
+                            ws.Cell(RowNum, 12).Value = item.PremiaItogo;
+                            ws.Cell(RowNum, 13).Value = item.Itogo;
                             ws.Row(RowNum).InsertRowsBelow(1);
                             RowNum++;
                         }
@@ -696,14 +629,14 @@ namespace Tabel.ViewModels
                         ws2.Cell(RowNum2, 4).Value = item.person.p_profession;
                         ws2.Cell(RowNum2, 5).Value = item.premiaBonus.Summa;
                         ws2.Cell(RowNum2, 6).Value = item.premiaFP.Summa;
-                        ws2.Cell(RowNum2, 7).Value = item.premiaKvalif.Summa;
-                        ws2.Cell(RowNum2, 8).Value = item.premiaOtdel.Summa;
+                        ws2.Cell(RowNum2, 7).Value = item.premiaOtdel.Summa;
+                        ws2.Cell(RowNum2, 8).Value = item.premiStimul.Summa;
                         if (item.premiaAddWorks.Summa != 0)
                             ws2.Cell(RowNum2, 9).Value = item.premiaAddWorks.Summa;
                         ws2.Cell(RowNum2, 10).Value = item.premiaTransport.Summa;
                         ws2.Cell(RowNum2, 11).Value = item.premiaPrize.Summa;
-                        ws2.Cell(RowNum2, 12).Value = PremiaItogo;
-                        ws2.Cell(RowNum2, 13).Value = Itogo;
+                        ws2.Cell(RowNum2, 12).Value = item.PremiaItogo;
+                        ws2.Cell(RowNum2, 13).Value = item.Itogo;
                         ws2.Row(RowNum2).InsertRowsBelow(1);
                         RowNum2++;
                     }
@@ -782,18 +715,18 @@ namespace Tabel.ViewModels
                         ws.Cell(curRow++, 4).Value = SelectedModPerson.premiaTransport.Summa;
                     }
 
-                    if (SelectedModPerson.premiaKvalif.Summa > 0)
-                    {
-                        ws.Row(curRow).InsertRowsBelow(1);
-                        ws.Cell(curRow, 1).Value = "Премия (по отделу)";
-                        ws.Cell(curRow++, 4).Value = SelectedModPerson.premiaKvalif.Summa;
-                    }
-
                     if (SelectedModPerson.premiaOtdel.Summa > 0)
                     {
                         ws.Row(curRow).InsertRowsBelow(1);
-                        ws.Cell(curRow, 1).Value = "Премия (стимул.)";
+                        ws.Cell(curRow, 1).Value = "Премия (по отделу)";
                         ws.Cell(curRow++, 4).Value = SelectedModPerson.premiaOtdel.Summa;
+                    }
+
+                    if (SelectedModPerson.premiStimul.Summa > 0)
+                    {
+                        ws.Row(curRow).InsertRowsBelow(1);
+                        ws.Cell(curRow, 1).Value = "Премия (стимул.)";
+                        ws.Cell(curRow++, 4).Value = SelectedModPerson.premiStimul.Summa;
                     }
 
                     if (SelectedModPerson.premiaPrize.Summa > 0)

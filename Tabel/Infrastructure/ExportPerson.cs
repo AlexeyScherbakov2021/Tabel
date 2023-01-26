@@ -8,6 +8,7 @@ using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using Tabel.Component.Models.Mod;
+using Tabel.Infrastructure;
 using Tabel.Models;
 using Tabel.Repository;
 using Tabel.ViewModels.ModViewModel;
@@ -63,12 +64,6 @@ namespace Tabel.ViewModels
         //------------------------------------------------------------------------------------------
         public void ListPersonToListExport( int SelectYear, int SelectMonth, decimal? bonusProc )
         {
-            //RepositoryMSSQL<ModPerson> repoModPerson = new RepositoryMSSQL<ModPerson>();
-            //ICollection<ModPerson> ListAllModPerson = repoModPerson.Items
-            //  .AsNoTracking()
-            //  .Where(it => it.Mod.m_month == SelectMonth && it.Mod.m_year == SelectYear)
-            //  .OrderBy(o => o.person.p_lastname)
-            //  .ThenBy(o => o.person.p_name).ToList();
 
             RepositoryMSSQL<ModPerson> repoModPerson = new RepositoryMSSQL<ModPerson>();
             var db = repoModPerson.GetDB();
@@ -78,91 +73,29 @@ namespace Tabel.ViewModels
                 .OrderBy(o => o.person.p_lastname)
                 .ToList();
 
-            //RepositoryMSSQL<TabelPerson> repoTabelPerson = new RepositoryMSSQL<TabelPerson>(db);
-            //IEnumerable<TabelPerson> ListTabelPerson = repoTabelPerson.Items
-            //    .AsNoTracking()
-            //    .Where(it => it.tabel.t_year == SelectYear && it.tabel.t_month == SelectMonth && it.tabel.otdel.ot_itr < 10)
-            //    .OrderBy(o => o.person.p_lastname)
-            //    .ThenBy(o => o.person.p_name);
+            ModFunction mf = new ModFunction(db, SelectYear, SelectMonth);
+            mf.ModPersonFilling(ListModPerson);
 
-            RepositoryMSSQL<TransPerson> repoTransPerson = new RepositoryMSSQL<TransPerson>(db);
-            //List<TransPerson> ListTransPerson = repoTransPerson.Items
-            //    .AsNoTracking()
-            //    .Where(it => it.Transport.tr_Year == SelectYear && it.Transport.tr_Month == SelectMonth)
-            //.ToList();
-
-            ModMainViewModel modMainViewModel = new ModMainViewModel(db);
-            modMainViewModel.ChangeListPerson(ListModPerson, SelectYear, SelectMonth, null);
-
-            decimal? summa = 0;
             ListExportPerson.Clear();
 
             foreach(var item in ListModPerson)
             {
-                item.premiaBonus.BonusForAll = bonusProc;
-                item.premiaBonus.Calculation();
-                item.premiaFP.Calculation();
-                item.premiaAddWorks.Calculation();
-                item.md_kvalif_tarif = item.person.p_premTarif * item.TabelHours;
-                item.premiaKvalif.Calculation();
-                item.md_prem_otdel = item.md_kvalif_tarif;
-                item.premiaOtdel.Calculation();
-                item.TransportPremia = repoTransPerson.Items
-                    .AsNoTracking()
-                    .FirstOrDefault(it => it.Transport.tr_Year == SelectYear 
-                        && it.Transport.tr_Month == SelectMonth
-                        && it.person.id == item.person.id)?.Summa;
-                item.premiaTransport.Calculation();
-                item.premiaPrize.Calculation();
+                //decimal PremiaItogo = item.premiaBonus.GetPremia()
+                //    + item.premiaFP.GetPremia()
+                //    + item.premiaAddWorks.GetPremia()
+                //    + item.premiStimul.GetPremia()
+                //    + item.premiaOtdel.GetPremia()
+                //    + item.premiaTransport.GetPremia()
+                //    + item.premiaPrize.GetPremia();
 
-                decimal PremiaItogo = (item.premiaBonus.Summa ?? 0)
-                    + (item.premiaFP.Summa ?? 0)
-                    + (item.premiaAddWorks.Summa ?? 0)
-                    + (item.premiaOtdel.Summa ?? 0)
-                    + (item.premiaKvalif.Summa ?? 0)
-                    + (item.premiaTransport.Summa ?? 0)
-                    + (item.premiaPrize.Summa ?? 0);
-
-                if (PremiaItogo > 0
+                if (item.PremiaItogo > 0
                     && !String.IsNullOrEmpty(item.person.p_tab_number)
                     && IsAllDigits(item.person.p_tab_number))
                 {
-                    ExportPerson p = new ExportPerson(item, PremiaItogo);
+                    ExportPerson p = new ExportPerson(item, item.PremiaItogo.Value);
                     ListExportPerson.Add(p);
                 }
             }
-
-            //foreach (var item in ListTabelPerson)
-            //{
-            //    ModPerson mPerson = ListModPerson.FirstOrDefault(it => it.person.id == item.person.id);
-            //    TransPerson tPerson = ListTransPerson.FirstOrDefault(it => it.person.id == item.person.id);
-
-            //    if (mPerson != null)
-            //    {
-            //        mPerson.TabelHours = item.HoursMonth;
-            //        mPerson.TabelDays= item.DaysMonth;
-            //        //mPerson.TabelAbsent = 
-            //        mPerson.OverHours = item.OverWork.Value;
-            //        mPerson.md_Oklad = mPerson.person.category is null 
-            //            ? 0 
-            //            : mPerson.TabelHours * item.person.category.cat_tarif.Value * mPerson.person.p_stavka;
-            //        mPerson.TransportPremia = tPerson?.Summa;
-            //        mPerson.premiaBonus.BonusForAll = bonusProc;
-            //        summa = mPerson.PremiaItogo.Value;
-
-            //        //summa = mPerson.Oklad / item.HoursMonth * (item.OverWork ?? 0) * 2;
-
-            //        if (summa > 0 
-            //            && !String.IsNullOrEmpty( mPerson.person.p_tab_number) 
-            //            && IsAllDigits(mPerson.person.p_tab_number))
-            //        {
-            //            ExportPerson p = new ExportPerson(item, summa);
-            //            ListExportPerson.Add(p);
-            //        }
-            //    }
-
-            //}
-
         }
 
 

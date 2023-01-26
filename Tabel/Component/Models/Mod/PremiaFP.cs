@@ -8,7 +8,7 @@ using Tabel.Models;
 
 namespace Tabel.Component.Models
 {
-    public class PremiaFP : BasePremia, IDisposable
+    public class PremiaFP : BasePremia
     {
         static bool lockPropertyChanged = false;
 
@@ -26,12 +26,6 @@ namespace Tabel.Component.Models
         //-------------------------------------------------------------------------------------------------------
         public PremiaFP(ModPerson person) : base(person)
         {
-            model.PropertyChanged += PremiaFPPropertyChanged;
-        }
-
-        public void Dispose()
-        {
-            model.PropertyChanged -= PremiaFPPropertyChanged;
         }
 
 
@@ -40,8 +34,6 @@ namespace Tabel.Component.Models
         //-------------------------------------------------------------------------------------------------------
         public override void Calculation()
         {
-            decimal koef = model.TabelDays == 0 ? 1 : (decimal)(model.TabelDays - model.TabelAbsent) / (decimal)model.TabelDays;
-
             SummaHoursFP = model.md_sumFromFP * model.md_premFP / 100;
             Summa = model.TabelDays == 0
                 ? null
@@ -90,7 +82,7 @@ namespace Tabel.Component.Models
         //-------------------------------------------------------------------------------------------------------
         // Событие изменения влияющих полей
         //-------------------------------------------------------------------------------------------------------
-        private void PremiaFPPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        protected override void PremiaPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             switch (e.PropertyName)
             {
@@ -104,12 +96,6 @@ namespace Tabel.Component.Models
                     if (model.person?.category != null && model.md_cat_prem_tarif > model.person?.category.cat_max_level)
                         model.md_cat_prem_tarif = model.person.category.cat_max_level;
                     
-                    //if (model.person?.category is null)
-                    //    ;//model.md_cat_prem_tarif = 0;
-
-                    //else if (model.md_cat_prem_tarif > model.person?.category.cat_max_level)
-                    //    model.md_cat_prem_tarif = model.person.category.cat_max_level;
-
                     Calculation();
                     CalcChangeProcent();
                     break;

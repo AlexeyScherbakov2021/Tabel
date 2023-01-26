@@ -19,15 +19,16 @@ namespace Tabel.ViewModels.ModViewModel
         public bool IsCheckBonus { get; set; }
         public decimal? SetMaxPrem { get; set; }
 
-        private decimal? BonusProc;
+        private decimal? _BonusProc;
+        public decimal? BonusProc { get => _BonusProc; set { Set(ref _BonusProc, value); } }
 
-        public PremiaBonusViewModel(BaseModel db, decimal? bonusProc) : base(db)
+        public PremiaBonusViewModel(BaseModel db) : base(db)
         {
-            BonusProc = bonusProc;
+            //BonusProc = bonusProc;
         }
 
 
-        public void SetBonus(decimal? bonusProc)
+        public void SetBonusProc(decimal? bonusProc)
         {
             BonusProc = bonusProc;
         }
@@ -39,6 +40,7 @@ namespace Tabel.ViewModels.ModViewModel
             _SelectMonth= Month;
             _SelectYear = Year;
             ListModPerson = listPerson;
+
             SetPersonBonusProc(ListModPerson);
             OnPropertyChanged(nameof(ListModPerson));
         }
@@ -64,12 +66,11 @@ namespace Tabel.ViewModels.ModViewModel
 
             foreach (var modPerson in listPerson)
             {
-                modPerson.premiaBonus.BonusForAll = BonusProc;
+                //modPerson.premiaBonus.BonusForAll = BonusProc;
                 modPerson.md_bonus_exec = (BonusProc != null && BonusProc > 0);
             }
 
         }
-
 
         #region Команды
 

@@ -15,8 +15,8 @@ namespace Tabel.ViewModels.Admins.Behavior
 {
     internal class DataGridBehavior : Behavior<DataGrid>
     {
-        private bool IsDrag = false;
-        private bool IsDragEnabled = true;
+        //private bool IsDrag = false;
+        //private bool IsDragEnabled = true;
         private Point StartPoint;
 
         //public static readonly DependencyProperty TBProperty =
@@ -43,8 +43,8 @@ namespace Tabel.ViewModels.Admins.Behavior
             AssociatedObject.PreviewMouseLeftButtonDown += AssociatedObject_PreviewMouseLeftButtonDown;
             //AssociatedObject.PreviewMouseLeftButtonUp += AssociatedObject_PreviewMouseLeftButtonUp;
             AssociatedObject.PreviewMouseMove += AssociatedObject_PreviewMouseMove;
-            AssociatedObject.BeginningEdit += AssociatedObject_BeginningEdit;
-            AssociatedObject.CellEditEnding += AssociatedObject_CellEditEnding;
+            //AssociatedObject.BeginningEdit += AssociatedObject_BeginningEdit;
+            //AssociatedObject.CellEditEnding += AssociatedObject_CellEditEnding;
             //AssociatedObject.QueryContinueDrag += AssociatedObject_QueryContinueDrag; 
             //base.OnAttached();
         }
@@ -82,19 +82,19 @@ namespace Tabel.ViewModels.Admins.Behavior
         {
             AssociatedObject.PreviewMouseLeftButtonDown -= AssociatedObject_PreviewMouseLeftButtonDown;
             AssociatedObject.PreviewMouseMove -= AssociatedObject_PreviewMouseMove;
-            AssociatedObject.BeginningEdit -= AssociatedObject_BeginningEdit;
-            AssociatedObject.CellEditEnding -= AssociatedObject_CellEditEnding;
+            //AssociatedObject.BeginningEdit -= AssociatedObject_BeginningEdit;
+            //AssociatedObject.CellEditEnding -= AssociatedObject_CellEditEnding;
         }
 
-        private void AssociatedObject_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
-        {
-            IsDragEnabled = true;
-        }
+        //private void AssociatedObject_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
+        //{
+        //    IsDragEnabled = true;
+        //}
 
-        private void AssociatedObject_BeginningEdit(object sender, DataGridBeginningEditEventArgs e)
-        {
-            IsDragEnabled = false;
-        }
+        //private void AssociatedObject_BeginningEdit(object sender, DataGridBeginningEditEventArgs e)
+        //{
+        //    IsDragEnabled = false;
+        //}
 
         private void AssociatedObject_PreviewMouseMove(object sender, System.Windows.Input.MouseEventArgs e)
         {
