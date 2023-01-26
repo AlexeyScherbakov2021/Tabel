@@ -23,11 +23,25 @@ namespace Tabel.Component.Models.Mod
         }
 
         //-------------------------------------------------------------------------------------------------------
+        // Событие изменения полей
+        //-------------------------------------------------------------------------------------------------------
+        protected override void PremiaPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case "md_person_achiev":
+                    Calculation();
+                    break;
+            }
+        }
+
+
+        //-------------------------------------------------------------------------------------------------------
         // расчет премии
         //-------------------------------------------------------------------------------------------------------
         public override void Calculation()
         {
-            Summa = NightOklad * NightHours;
+            Summa = (NightOklad + (model.md_person_achiev / 162 * 0.2m ?? 0)) * NightHours;
         }
 
 

@@ -130,19 +130,24 @@ namespace Tabel.Infrastructure
             mPerson.TabelDays = listDays.Count;                     // дни из табеля
             mPerson.TabelHours = TabPerson.HoursMonth;              // часы из табеля
             mPerson.TabelWorkOffDay = TabPerson.WorkedOffDays;      // отработанные выходные дни
-            if (mPerson.TabelWorkOffDay > 0)
-            {
-                // установка тарифа за выходной день
-                mPerson.md_tarif_offDay = TabPerson.person.category?.cat_tarif * 8;
-                // не меньше установленного тарифа
-                if (mPerson.md_tarif_offDay < MinTarifOffDay)
-                    mPerson.md_tarif_offDay = MinTarifOffDay;
-            }
+            
+            SetTarifOffDay(mPerson);
+            //if (mPerson.TabelWorkOffDay > 0)
+            //{
+            //    // установка тарифа за выходной день
+            //    mPerson.md_tarif_offDay = TabPerson.person.category?.cat_tarif * 8;
+            //    // не меньше установленного тарифа
+            //    if (mPerson.md_tarif_offDay < MinTarifOffDay)
+            //        mPerson.md_tarif_offDay = MinTarifOffDay;
+            //}
 
             mPerson.OverHours = TabPerson.OverWork ?? 0;            // часы переработки
-            mPerson.md_Oklad = mPerson.person.category is null      // установка оклада по часам из тарифа грейда
-                ? 0 
-                : mPerson.TabelHours * mPerson.person.category.cat_tarif.Value * mPerson.person.p_stavka;
+
+            SetOklad(mPerson);
+            
+            //mPerson.md_Oklad = mPerson.person.category is null      // установка оклада по часам из тарифа грейда
+            //    ? 0 
+            //    : mPerson.TabelHours * mPerson.person.category.cat_tarif.Value * mPerson.person.p_stavka;
 
             int CountWorkDaysPerson = TabPerson.TabelDays.Count(it => it.td_KindId == (int)TabelKindDays.Worked);   // количество отработанных дней
             mPerson.TabelAbsent = CountWorkDays - CountWorkDaysPerson;                      // получение количества дней отсутствия
@@ -174,5 +179,31 @@ namespace Tabel.Infrastructure
             mPerson.premiaNight.NightHours = HightHours; //SmenaPerson.SmenaDays.Count(s => s.sd_Kind == SmenaKind.Second) * 4.5m;
 
         }
+
+
+
+        //--------------------------------------------------------------------------------------------------------
+        // установка тарифа выходного дня
+        //--------------------------------------------------------------------------------------------------------
+        public static void SetTarifOffDay(ModPerson mPerson)
+        {
+            if (mPerson.TabelWorkOffDay > 0)
+            {
+                // установка тарифа за выходной день
+                mPerson.md_tarif_offDay = (mPerson.person.category?.cat_tarif + (mPerson.md_person_achiev / 162 ?? 0)) * 8;
+                // не меньше установленного тарифа
+                if (mPerson.md_tarif_offDay < MinTarifOffDay)
+                    mPerson.md_tarif_offDay = MinTarifOffDay;
+            }
+        }
+
+        public static void SetOklad(ModPerson mPerson)
+        {
+            mPerson.md_Oklad = mPerson.person.category is null      // установка оклада по часам из тарифа грейда
+                ? 0
+                : (mPerson.TabelHours * mPerson.person.category.cat_tarif.Value /*+ (mPerson.md_person_achiev / 162 ?? 0)*/) * mPerson.person.p_stavka;
+
+        }
+
     }
 }

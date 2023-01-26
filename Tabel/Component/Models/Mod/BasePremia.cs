@@ -14,7 +14,15 @@ namespace Tabel.Component.Models.Mod
 
         //protected readonly BaseModel db;
         private decimal? _Summa;
-        public decimal? Summa { get => _Summa; set { if(Set(ref _Summa, value)) OnPropertyChanged(nameof(model.PremiaItogo)); } }
+        public decimal? Summa { get => _Summa; 
+            set {
+                if (Set(ref _Summa, value))
+                {
+                    model.OnPropertyChanged(nameof(model.PremiaItogo));
+                    model.OnPropertyChanged(nameof(model.Itogo));
+                }
+
+            } }
 
         protected ModPerson model;
 

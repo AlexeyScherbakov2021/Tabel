@@ -143,12 +143,6 @@ namespace Tabel.Models
         [NotMapped]
         public PremiaPrize premiaPrize { get; set; }
 
-        //[NotMapped]
-        //public PremiaQuality premiaQuality { get; set; }
-
-        //[NotMapped]
-        //public decimal? BonusForAll { get; set; }
-
         [NotMapped]
         public decimal? QualityTarif { get; set; } = 1000;
 
@@ -181,7 +175,10 @@ namespace Tabel.Models
         [NotMapped]
         public int TabelAbsent { get => _TabelAbsent; set { Set(ref _TabelAbsent, value); } }
         //[NotMapped]
-        public decimal? md_Oklad { get; set; }
+
+        private decimal? _md_Oklad;
+        public decimal? md_Oklad { get => _md_Oklad; set { Set(ref _md_Oklad, value); } }
+        
         [NotMapped]
         public decimal OverHours;
 

@@ -54,7 +54,6 @@ namespace Tabel.ViewModels
         private bool IsModify;
 
         public Visibility IsVisibleITR { get; private set; }
-        //public Visibility IsVisibleNoITR { get; private set; }
         public Visibility IsVisibleAdmin { get; set; } = App.CurrentUser.u_role == UserRoles.Admin ? Visibility.Visible : Visibility.Collapsed;
 
 
@@ -152,14 +151,12 @@ namespace Tabel.ViewModels
             _SelectYear = Year;
             _SelectedOtdel = SelectOtdel;
 
-            if (SelectOtdel is null) return;
+            if (SelectOtdel is null || Year == 0 || Month == 0) return;
 
             IsVisibleITR = SelectOtdel.ot_itr == 2 ? Visibility.Collapsed : Visibility.Visible;
             OnPropertyChanged(nameof(IsVisibleITR));
 
-
             ListModPerson = null;
-
             LoadBonusProcent();
 
             //premiaBonusViewModel.SetBonus(BonusProc);
@@ -234,17 +231,17 @@ namespace Tabel.ViewModels
         private bool CanTabChangedCommand(object p) => true;
         private void OnTabChangedCommandExecuted(object p)
         {
-            if(p is int index)
-            {
-                if(index == 6 && ListModPerson != null)
-                {
-                    foreach (var item in ListModPerson)
-                    {
-                        item.OnPropertyChanged(nameof(item.Itogo));
-                        item.OnPropertyChanged(nameof(item.PremiaItogo));
-                    }
-                }
-            }    
+            //if(p is int index)
+            //{
+            //    if(index == 6 && ListModPerson != null)
+            //    {
+            //        foreach (var item in ListModPerson)
+            //        {
+            //            item.OnPropertyChanged(nameof(item.Itogo));
+            //            item.OnPropertyChanged(nameof(item.PremiaItogo));
+            //        }
+            //    }
+            //}    
         }
 
 
@@ -286,14 +283,6 @@ namespace Tabel.ViewModels
                 ModPerson newPerson = new ModPerson();
                 newPerson.md_group = pers.p_otdel_id.ToString();
                 newPerson.md_personalId = pers.id;
-
-                //if (newPerson.TabelWorkOffDay > 0)
-                //{
-                //    newPerson.md_tarif_offDay = pers.category?.cat_tarif * 8;
-                //    if (newPerson.md_tarif_offDay < 1500)
-                //        newPerson.md_tarif_offDay = 1500;
-                //}
-
 
                 // получение этого сотрудника из предыдущей существующей модели
                 ModPerson PrevModPerson = repoModPerson.Items
@@ -354,19 +343,6 @@ namespace Tabel.ViewModels
         private bool CanSaveCommand(object p) => /*CurrentMod != null && _SelectedOtdel != null &&*/ IsModify;
         private void OnSaveCommandExecuted(object p)
         {
-            //foreach(var item in  ListModPerson)
-            //{
-            //    item.md_ItogPremia1 = item.premiaBonus.Summa;
-            //    item.md_ItogPremia2vyr = item.premiaFP.Summa;
-            //    item.md_ItogPremiaAddWork = item.premiaAddWorks.Summa;
-            //    item.md_ItogPremiaTransport = item.premiaTransport.Summa;
-            //    item.md_ItogPremia2Otdel = item.premiaOtdel.Summa;
-            //    item.md_ItogPremia3Stimul = item.premiStimul.Summa;
-            //    item.md_ItogPremiaPrize = item.premiaPrize.Summa;
-            //    item.md_ItogPremiaNight = item.premiaNight.Summa;
-            //    item.md_ItogPremiaOffDays = item.premOffDays.Summa;
-            //}
-
             SaveForm();
         }
 
@@ -382,53 +358,11 @@ namespace Tabel.ViewModels
             // берем часы переработки
             FormExport fomExport = new FormExport();
 
-            //fomExport.ListPersonToListExport(ListTabelPerson, ListModAllPerson,  BonusProc);
             fomExport.ListPersonToListExport(_SelectYear, _SelectMonth, BonusProc);
 
             RepositoryCSV repoFile = new RepositoryCSV(fomExport);
             repoFile.SaveFile(_SelectYear, _SelectMonth);
 
-            //return;
-
-            //IEnumerable<WorkTabel> ListTabel = repoTabel.Items.Where(it => it.t_year == _SelectYear
-            //        && it.t_month == _SelectMonth);
-
-
-            //if (ListTabel != null)
-            //{
-            //    RepositoryMSSQL<TabelPerson> repoTabelPerson = new RepositoryMSSQL<TabelPerson>(db);
-            //    List<TabelPerson> ListTabelPerson = new List<TabelPerson>();
-
-            //    foreach (var tabel in ListTabel)
-            //    {
-            //        List<TabelPerson> listPerson = repoTabelPerson.Items
-            //            .AsNoTracking()
-            //            .Where(it => it.tp_tabel_id == tabel.id)
-            //            .OrderBy(o => o.person.p_lastname)
-            //            .ThenBy(o => o.person.p_name).ToList();
-
-            //        ListTabelPerson.AddRange(listPerson);
-            //    }
-
-            //    ListTabelPerson.Sort((item1, item2) =>
-            //    {
-            //        return item1.person.p_lastname.CompareTo(item2.person.p_lastname);
-            //    });
-
-            //    List<ModPerson> ListModAllPerson = repoModPerson.Items
-            //        .AsNoTracking()
-            //        .Where(it => it.Mod.m_year == _SelectYear && it.Mod.m_month == _SelectMonth)
-            //        .ToList();
-
-            //    // берем часы переработки
-            //    FormExport fromExport = new FormExport();
-
-            //    //fomExport.ListPersonToListExport(ListTabelPerson, ListModAllPerson,  BonusProc);
-            //    fomExport.ListPersonToListExport(_SelectYear, _SelectMonth, BonusProc);
-
-            //    RepositoryCSV repoFile = new RepositoryCSV(fomExport);
-            //    repoFile.SaveFile(_SelectYear, _SelectMonth);
-            //}
         }
 
         //--------------------------------------------------------------------------------
@@ -465,11 +399,7 @@ namespace Tabel.ViewModels
                     ModPerson newPerson = new ModPerson();
                     newPerson.md_group = pers.p_otdel_id.ToString();
                     newPerson.md_modId = CurrentMod.id;
-                    //newPerson.md_personalId = pers.id;
                     newPerson.person = pers;
-                    //newPerson.md_tarif_offDay = pers.category?.cat_tarif * 8;
-                    //if (newPerson.md_tarif_offDay < 1500)
-                    //    newPerson.md_tarif_offDay = 1500;
 
                     // получение этого сотрудника из предыдущей существующей модели
                     ModPerson PrevModPerson = repoModPerson.Items
@@ -503,7 +433,6 @@ namespace Tabel.ViewModels
                 premiaFPViewModel.AddPersons(ListNewPerson);
                 premiaOtdelViewModel.AddPersons(ListNewPerson);
                 premiaStimulViewModel.AddPersons(ListNewPerson);
-                //premiaQualityViewModel.AddPersons(ListNewPerson);
                 premiaAddWorksViewModel.AddPersons(ListNewPerson);
                 premiaTransportViewModel.AddPersons(ListNewPerson);
                 premiaPrizeViewModel.AddPersons(ListNewPerson);

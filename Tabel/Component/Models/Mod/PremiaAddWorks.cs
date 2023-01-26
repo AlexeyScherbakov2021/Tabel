@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Tabel.Infrastructure;
 using Tabel.Models;
 
 namespace Tabel.Component.Models.Mod
@@ -30,8 +31,13 @@ namespace Tabel.Component.Models.Mod
         {
             switch (e.PropertyName)
             {
-                case "ListAddWorks":
                 case "md_person_achiev":
+                    ModFunction.SetTarifOffDay(model);
+                    ModFunction.SetOklad(model);
+                    Calculation();
+                    break;
+
+                case "ListAddWorks":
                 case "TabelAbsent":
                 case "TabelHours":
                     Calculation();
