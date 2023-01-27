@@ -10,7 +10,7 @@ namespace Tabel.Component.Models.Mod
 {
     public abstract class BasePremia : Observable, IDisposable
     {
-        protected decimal koef;
+        //protected decimal koef;
 
         //protected readonly BaseModel db;
         private decimal? _Summa;
@@ -32,7 +32,6 @@ namespace Tabel.Component.Models.Mod
         public BasePremia(ModPerson person)
         {
             model = person;
-            koef = model.TabelDays == 0 ? 1 : (decimal)(model.TabelDays - model.TabelAbsent) / (decimal)model.TabelDays;
             model.PropertyChanged += PremiaPropertyChanged;
 
         }

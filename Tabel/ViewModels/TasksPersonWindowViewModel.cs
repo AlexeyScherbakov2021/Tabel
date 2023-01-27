@@ -18,8 +18,11 @@ namespace Tabel.ViewModels
         public string Title { get; set; } = "Выполненные задания для сотрудника";
         public ObservableCollection<TargetTask> ListTarget { get; set; }
         
-        private decimal _proc100;
-        public decimal proc100 { get => _proc100; set { Set(ref _proc100, value); } }
+        private decimal? _proc100;
+        public decimal? proc100 { get => _proc100; set { Set(ref _proc100, value); } }
+
+        private decimal? _proc100fact;
+        public decimal? proc100fact { get => _proc100fact; set { Set(ref _proc100fact, value); } }
 
         public TasksPersonWindowViewModel() { }
 
@@ -30,6 +33,7 @@ namespace Tabel.ViewModels
                 item.PropertyChanged += Item_PropertyChanged;
             ListTarget.CollectionChanged += ListTarget_CollectionChanged;
             proc100 = ListTarget.Sum(it => it.tt_proc_task);
+            proc100fact = ListTarget.Sum(it => it.tt_proc_fact);
         }
 
         private void ListTarget_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -45,12 +49,14 @@ namespace Tabel.ViewModels
                 foreach (TargetTask item in e.OldItems)
                     item.PropertyChanged -= Item_PropertyChanged;
                 proc100 = ListTarget.Sum(it => it.tt_proc_task);
+                proc100fact = ListTarget.Sum(it => it.tt_proc_fact);
             }
         }
 
         private void Item_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             proc100 = ListTarget.Sum(it => it.tt_proc_task);
+            proc100fact = ListTarget.Sum(it => it.tt_proc_fact);
         }
 
         #region Команды =================================

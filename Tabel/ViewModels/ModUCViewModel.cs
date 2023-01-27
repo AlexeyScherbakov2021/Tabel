@@ -222,6 +222,69 @@ namespace Tabel.ViewModels
         }
 
 
+        //--------------------------------------------------------------------------------
+        // Перенос данных из предыдущией формы
+        //--------------------------------------------------------------------------------
+        private void GetPrevModPerson(ModPerson newPerson)
+        {
+
+            //int mod = repoModel.Items
+            //    .AsNoTracking()
+            //    .Where(it => it.m_otdelId == _SelectedOtdel.id &&
+            //                (it.m_year == _SelectYear && it.m_month < _SelectMonth)
+            //                || it.m_year < _SelectYear
+            //               )
+            //    .OrderByDescending(o => o.m_year)
+            //    .ThenByDescending(o => o.m_month)
+            //    .Select(s => s.id)
+            //    .FirstOrDefault();
+
+
+            //ModPerson PrevModPerson = repoModPerson.Items
+            //    .AsNoTracking()
+            //    .FirstOrDefault(it => it.md_personalId == newPerson.md_personalId && it.md_modId == mod);
+
+
+           // получение этого сотрудника из предыдущей существующей модели
+           ModPerson PrevModPerson = repoModPerson.Items
+               .AsNoTracking()
+               .Where(it => it.md_personalId == newPerson.md_personalId
+                        && it.Mod.m_otdelId == _SelectedOtdel.id
+                        && (
+                           (it.Mod.m_year == _SelectYear && it.Mod.m_month < _SelectMonth)
+                           || it.Mod.m_year < _SelectYear
+                          ))
+               //.Include(inc => inc.ListTargetTask)
+               .OrderByDescending(o => o.Mod.m_year)
+               .ThenByDescending(o => o.Mod.m_month)
+               .FirstOrDefault();
+
+
+            // если был предыдущий месяц, то копируем нужные тарифы
+            if (PrevModPerson != null)
+            {
+                // копирование тарифа бонусов
+                newPerson.md_bonus_max = PrevModPerson.md_bonus_max;
+                newPerson.md_cat_prem_tarif = PrevModPerson.md_cat_prem_tarif;
+                newPerson.md_person_achiev = PrevModPerson.md_person_achiev;
+                decimal? summa = 0;
+                foreach(var item in PrevModPerson.ListTargetTask)
+                {
+                    TargetTask tt = new TargetTask() 
+                    { 
+                        tt_name = item.tt_name, 
+                        tt_proc_task = item.tt_proc_task,
+                    };
+                    newPerson.ListTargetTask.Add(tt);
+                    summa += item.tt_proc_task;
+                }
+                newPerson.md_kvalif_proc = summa;
+                newPerson.md_kvalif_name = PrevModPerson.md_kvalif_name;
+
+            }
+
+        }
+
         #region Команды
 
         //--------------------------------------------------------------------------------
@@ -284,28 +347,30 @@ namespace Tabel.ViewModels
                 newPerson.md_group = pers.p_otdel_id.ToString();
                 newPerson.md_personalId = pers.id;
 
+                GetPrevModPerson(newPerson);
+
                 // получение этого сотрудника из предыдущей существующей модели
-                ModPerson PrevModPerson = repoModPerson.Items
-                    .AsNoTracking()
-                    .Where(it => it.md_personalId == newPerson.md_personalId 
-                            && (
-                                ( it.Mod.m_year == _SelectYear && it.Mod.m_month < _SelectMonth)
-                                || it.Mod.m_year < _SelectYear 
-                               ))
-                    .OrderByDescending(o => o.Mod.m_year)
-                    .ThenByDescending(o => o.Mod.m_month)
-                    .FirstOrDefault();
+                //ModPerson PrevModPerson = repoModPerson.Items
+                //    .AsNoTracking()
+                //    .Where(it => it.md_personalId == newPerson.md_personalId 
+                //            && (
+                //                ( it.Mod.m_year == _SelectYear && it.Mod.m_month < _SelectMonth)
+                //                || it.Mod.m_year < _SelectYear 
+                //               ))
+                //    .OrderByDescending(o => o.Mod.m_year)
+                //    .ThenByDescending(o => o.Mod.m_month)
+                //    .FirstOrDefault();
 
 
-                // если был предыдущий месяц, то копируем нужные тарифы
-                if(PrevModPerson != null)
-                {
-                    // копирование тарифа бонусов
-                    newPerson.md_bonus_max = PrevModPerson.md_bonus_max;
-                    newPerson.md_cat_prem_tarif = PrevModPerson.md_cat_prem_tarif;
-                    newPerson.md_kvalif_proc = PrevModPerson.md_kvalif_proc;
-                    newPerson.md_person_achiev = PrevModPerson.md_person_achiev;
-                }
+                //// если был предыдущий месяц, то копируем нужные тарифы
+                //if(PrevModPerson != null)
+                //{
+                //    // копирование тарифа бонусов
+                //    newPerson.md_bonus_max = PrevModPerson.md_bonus_max;
+                //    newPerson.md_cat_prem_tarif = PrevModPerson.md_cat_prem_tarif;
+                //    newPerson.md_kvalif_proc = PrevModPerson.md_kvalif_proc;
+                //    newPerson.md_person_achiev = PrevModPerson.md_person_achiev;
+                //}
 
                 CurrentMod.ModPersons.Add(newPerson);
             }
@@ -401,26 +466,29 @@ namespace Tabel.ViewModels
                     newPerson.md_modId = CurrentMod.id;
                     newPerson.person = pers;
 
+
+                    GetPrevModPerson(newPerson);
+
                     // получение этого сотрудника из предыдущей существующей модели
-                    ModPerson PrevModPerson = repoModPerson.Items
-                        .AsNoTracking()
-                        .Where(it => it.md_personalId == newPerson.md_personalId
-                                && (
-                                    (it.Mod.m_year == _SelectYear && it.Mod.m_month < _SelectMonth)
-                                    || it.Mod.m_year < _SelectYear
-                                   ))
-                        .OrderByDescending(o => o.Mod.m_year)
-                        .ThenByDescending(o => o.Mod.m_month)
-                        .FirstOrDefault();
+                    //ModPerson PrevModPerson = repoModPerson.Items
+                    //    .AsNoTracking()
+                    //    .Where(it => it.md_personalId == newPerson.md_personalId
+                    //            && (
+                    //                (it.Mod.m_year == _SelectYear && it.Mod.m_month < _SelectMonth)
+                    //                || it.Mod.m_year < _SelectYear
+                    //               ))
+                    //    .OrderByDescending(o => o.Mod.m_year)
+                    //    .ThenByDescending(o => o.Mod.m_month)
+                    //    .FirstOrDefault();
 
 
-                    // если был предыдущий месяц, то копируем нужные тарифы
-                    if (PrevModPerson != null)
-                    {
-                        // копирование тарифа бонусов
-                        newPerson.md_bonus_max = PrevModPerson.md_bonus_max;
-                        newPerson.md_cat_prem_tarif = PrevModPerson.md_cat_prem_tarif;
-                    }
+                    //// если был предыдущий месяц, то копируем нужные тарифы
+                    //if (PrevModPerson != null)
+                    //{
+                    //    // копирование тарифа бонусов
+                    //    newPerson.md_bonus_max = PrevModPerson.md_bonus_max;
+                    //    newPerson.md_cat_prem_tarif = PrevModPerson.md_cat_prem_tarif;
+                    //}
 
                     repoModPerson.Add(newPerson, true);
                     ListModPerson.Add(newPerson);
@@ -467,6 +535,16 @@ namespace Tabel.ViewModels
         private bool CanPrintCommand(object p) => true;
         private void OnPrintCommandExecuted(object p)
         {
+            RepositoryExcel.PrintModel(ListModPerson, _SelectYear, _SelectMonth);
+        }
+
+        //--------------------------------------------------------------------------------
+        // Команда Печать
+        //--------------------------------------------------------------------------------
+        public ICommand PrintAllCommand => new LambdaCommand(OnPrintAllCommandExecuted, CanPrintAllCommand);
+        private bool CanPrintAllCommand(object p) => true;
+        private void OnPrintAllCommandExecuted(object p)
+        {
 
             var db = repoModPerson.GetDB();
             List<ModPerson> ListAllModPerson = repoModPerson.Items
@@ -478,108 +556,7 @@ namespace Tabel.ViewModels
             ModFunction mf = new ModFunction(db, _SelectYear, _SelectMonth);
             mf.ModPersonFilling(ListAllModPerson);
 
-
-            try
-            {
-                using (XLWorkbook wb = new XLWorkbook(@"Отчеты\Модель.xlsx"))
-                {
-                    var ws = wb.Worksheets.Worksheet(1);
-                    var ws2 = wb.Worksheets.Worksheet(2);
-                    var ws3 = wb.Worksheets.Worksheet(3);
-
-
-                    int RowNum = 6;
-                    int RowNum2 = 6;
-                    int RowNum3 = 6;
-
-                    ws.Cell("A2").Value = "'" + App.ListMonth[_SelectMonth-1] .Name+ " " + _SelectYear;
-                    ws2.Cell("A2").Value = "'" + App.ListMonth[_SelectMonth-1].Name + " " + _SelectYear;
-                    ws3.Cell("A2").Value = "'" + App.ListMonth[_SelectMonth-1].Name + " " + _SelectYear;
-
-
-                    foreach (var item in ListAllModPerson)
-                    {
-                        //decimal? PremiaItogo = (item.premiaBonus.Summa ?? 0)
-                        //    + (item.premiaFP.Summa ?? 0)
-                        //    + (item.premiaOtdel.Summa ?? 0)
-                        //    + (item.premiStimul.Summa ?? 0)
-                        //    + (item.premiaAddWorks.Summa ?? 0)
-                        //    + (item.premiaTransport.Summa ?? 0)
-                        //    + (item.premiaPrize.Summa ?? 0);
-
-                        //decimal? Itogo = (PremiaItogo ?? 0) + item.md_Oklad
-                        //    + (item.premOffDays.Summa ?? 0)
-                        //    + (item.premiaNight.Summa ?? 0);
-
-
-                        if (item.person.p_tab_number == "ГПХ")
-                        {
-                            ws3.Cell(RowNum3, 1).Value = item.person.p_tab_number;
-                            ws3.Cell(RowNum3, 2).Value = item.person.otdel.parent?.ot_name ?? item.person.otdel.ot_name;
-                            ws3.Cell(RowNum3, 3).Value = item.person.FIO;
-                            ws3.Cell(RowNum3, 4).Value = item.person.p_profession;
-                            ws3.Cell(RowNum3, 5).Value = item.premiaBonus.Summa;
-                            ws3.Cell(RowNum3, 6).Value = item.premiaFP.Summa;
-                            ws3.Cell(RowNum3, 7).Value = item.premiaOtdel.Summa;
-                            ws3.Cell(RowNum3, 8).Value = item.premiStimul.Summa;
-                            if(item.premiaAddWorks.Summa != 0)
-                                ws3.Cell(RowNum3, 9).Value = item.premiaAddWorks.Summa;
-                            ws3.Cell(RowNum3, 10).Value = item.premiaTransport.Summa;
-                            ws3.Cell(RowNum3, 11).Value = item.premiaPrize.Summa;
-                            ws3.Cell(RowNum3, 12).Value = item.PremiaItogo;
-                            ws3.Cell(RowNum3, 13).Value = item.Itogo;
-                            ws3.Row(RowNum3).InsertRowsBelow(1);
-                            RowNum3++;
-                        }
-
-                        else if(!string.IsNullOrEmpty(item.person.p_tab_number))
-                        {
-                            ws.Cell(RowNum, 1).Value = item.person.p_tab_number;
-                            ws.Cell(RowNum, 2).Value = item.person.otdel?.parent?.ot_name ?? item.person.otdel.ot_name;
-                            ws.Cell(RowNum, 3).Value = item.person.FIO;
-                            ws.Cell(RowNum, 4).Value = item.person.p_profession;
-                            ws.Cell(RowNum, 5).Value = item.premiaBonus.Summa;
-                            ws.Cell(RowNum, 6).Value = item.premiaFP.Summa;
-                            ws.Cell(RowNum, 7).Value = item.premiaOtdel.Summa;
-                            ws.Cell(RowNum, 8).Value = item.premiStimul.Summa;
-                            if (item.premiaAddWorks.Summa != 0)
-                                ws.Cell(RowNum, 9).Value = item.premiaAddWorks.Summa;
-                            ws.Cell(RowNum, 10).Value = item.premiaTransport.Summa;
-                            ws.Cell(RowNum, 11).Value = item.premiaPrize.Summa;
-                            ws.Cell(RowNum, 12).Value = item.PremiaItogo;
-                            ws.Cell(RowNum, 13).Value = item.Itogo;
-                            ws.Row(RowNum).InsertRowsBelow(1);
-                            RowNum++;
-                        }
-
-                        ws2.Cell(RowNum2, 1).Value = item.person.p_tab_number;
-                        ws2.Cell(RowNum2, 2).Value = item.person.otdel.parent?.ot_name ?? item.person.otdel.ot_name;
-                        ws2.Cell(RowNum2, 3).Value = item.person.FIO;
-                        ws2.Cell(RowNum2, 4).Value = item.person.p_profession;
-                        ws2.Cell(RowNum2, 5).Value = item.premiaBonus.Summa;
-                        ws2.Cell(RowNum2, 6).Value = item.premiaFP.Summa;
-                        ws2.Cell(RowNum2, 7).Value = item.premiaOtdel.Summa;
-                        ws2.Cell(RowNum2, 8).Value = item.premiStimul.Summa;
-                        if (item.premiaAddWorks.Summa != 0)
-                            ws2.Cell(RowNum2, 9).Value = item.premiaAddWorks.Summa;
-                        ws2.Cell(RowNum2, 10).Value = item.premiaTransport.Summa;
-                        ws2.Cell(RowNum2, 11).Value = item.premiaPrize.Summa;
-                        ws2.Cell(RowNum2, 12).Value = item.PremiaItogo;
-                        ws2.Cell(RowNum2, 13).Value = item.Itogo;
-                        ws2.Row(RowNum2).InsertRowsBelow(1);
-                        RowNum2++;
-                    }
-
-                    string TempFile = System.IO.Path.GetTempFileName();
-                    TempFile = System.IO.Path.ChangeExtension(TempFile, "xlsx");
-                    wb.SaveAs(TempFile);
-                    Process.Start(TempFile);
-                }
-            }
-            catch
-            {
-                MessageBox.Show("Не найден шаблон модели", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+            RepositoryExcel.PrintModel(ListAllModPerson, _SelectYear, _SelectMonth);
 
         }
 
@@ -738,14 +715,15 @@ namespace Tabel.ViewModels
             if (win.ShowDialog() == true)
             {
                 SelectedModPerson.ListTargetTask = vm.ListTarget;
-                decimal summa = 0;
+                //decimal summa = 0;
                 string name = "";
                 foreach (var item in vm.ListTarget)
                 {
-                    summa += item.tt_proc_task;
+                    //summa += item.tt_proc_task;
                     name += item.tt_name.Length > 15 ? item.tt_name.Substring(0, 15) + "...; " : item.tt_name + ";";
                 }
-                SelectedModPerson.md_kvalif_proc = summa;
+                SelectedModPerson.md_kvalif_proc = vm.proc100;
+                SelectedModPerson.md_kvalif_prem = vm.proc100fact;
                 SelectedModPerson.md_kvalif_name = name;
             }
         }

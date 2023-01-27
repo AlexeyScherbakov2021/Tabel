@@ -39,7 +39,8 @@
                         </Button>
                     </UniformGrid>
                     <Grid >
-                        <DataGrid x:Name="dataGrid" ItemsSource="{Binding ListAddWorks}" AutoGenerateColumns="False" SelectedItem="{Binding SelectedWork}"
+                        <DataGrid x:Name="dataGrid" ItemsSource="{Binding ListAddWorks}" AutoGenerateColumns="False" 
+                                  SelectedItem="{Binding SelectedWork}"
                     Style="{StaticResource DataGridStyle}" Margin="0,0,0,0" >
                             <DataGrid.ContextMenu>
                                 <ContextMenu>
@@ -48,7 +49,7 @@
                                 </ContextMenu>
                             </DataGrid.ContextMenu>
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="Доп. Работа" Binding="{Binding aw_Name}" Width="300" />
+                                <DataGridTextColumn Header="Доп. Работа" Binding="{Binding aw_Name}" Width="700" />
                                 <DataGridTextColumn Header="Тариф" Binding="{Binding aw_Tarif}" Width="90" CellStyle="{StaticResource CellRight}"/>
                             </DataGrid.Columns>
                         </DataGrid>

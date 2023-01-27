@@ -154,5 +154,100 @@ namespace Tabel.Repository
             }
 
 }
+
+
+        public static void PrintModel(IEnumerable<ModPerson> ListModPerson,  int SelectYear, int SelectMonth)
+        {
+            try
+            {
+                using (XLWorkbook wb = new XLWorkbook(@"Отчеты\Модель.xlsx"))
+                {
+                    var ws = wb.Worksheets.Worksheet(1);
+                    var ws2 = wb.Worksheets.Worksheet(2);
+                    var ws3 = wb.Worksheets.Worksheet(3);
+
+
+                    int RowNum = 6;
+                    int RowNum2 = 6;
+                    int RowNum3 = 6;
+
+                    ws.Cell("A2").Value = "'" + App.ListMonth[SelectMonth - 1].Name + " " + SelectYear;
+                    ws2.Cell("A2").Value = "'" + App.ListMonth[SelectMonth - 1].Name + " " + SelectYear;
+                    ws3.Cell("A2").Value = "'" + App.ListMonth[SelectMonth - 1].Name + " " + SelectYear;
+
+
+                    foreach (var item in ListModPerson)
+                    {
+
+                        if (item.person.p_tab_number == "ГПХ")
+                        {
+                            ws3.Cell(RowNum3, 1).Value = item.person.p_tab_number;
+                            ws3.Cell(RowNum3, 2).Value = item.person.otdel.parent?.ot_name ?? item.person.otdel.ot_name;
+                            ws3.Cell(RowNum3, 3).Value = item.person.FIO;
+                            ws3.Cell(RowNum3, 4).Value = item.person.p_profession;
+                            ws3.Cell(RowNum3, 5).Value = item.premiaBonus.Summa;
+                            ws3.Cell(RowNum3, 6).Value = item.premiaFP.Summa;
+                            ws3.Cell(RowNum3, 7).Value = item.premiaOtdel.Summa;
+                            ws3.Cell(RowNum3, 8).Value = item.premiStimul.Summa;
+                            if (item.premiaAddWorks.Summa != 0)
+                                ws3.Cell(RowNum3, 9).Value = item.premiaAddWorks.Summa;
+                            ws3.Cell(RowNum3, 10).Value = item.premiaTransport.Summa;
+                            ws3.Cell(RowNum3, 11).Value = item.premiaPrize.Summa;
+                            ws3.Cell(RowNum3, 12).Value = item.PremiaItogo;
+                            ws3.Cell(RowNum3, 13).Value = item.Itogo;
+                            ws3.Row(RowNum3).InsertRowsBelow(1);
+                            RowNum3++;
+                        }
+
+                        else if (!string.IsNullOrEmpty(item.person.p_tab_number))
+                        {
+                            ws.Cell(RowNum, 1).Value = item.person.p_tab_number;
+                            ws.Cell(RowNum, 2).Value = item.person.otdel?.parent?.ot_name ?? item.person.otdel.ot_name;
+                            ws.Cell(RowNum, 3).Value = item.person.FIO;
+                            ws.Cell(RowNum, 4).Value = item.person.p_profession;
+                            ws.Cell(RowNum, 5).Value = item.premiaBonus.Summa;
+                            ws.Cell(RowNum, 6).Value = item.premiaFP.Summa;
+                            ws.Cell(RowNum, 7).Value = item.premiaOtdel.Summa;
+                            ws.Cell(RowNum, 8).Value = item.premiStimul.Summa;
+                            if (item.premiaAddWorks.Summa != 0)
+                                ws.Cell(RowNum, 9).Value = item.premiaAddWorks.Summa;
+                            ws.Cell(RowNum, 10).Value = item.premiaTransport.Summa;
+                            ws.Cell(RowNum, 11).Value = item.premiaPrize.Summa;
+                            ws.Cell(RowNum, 12).Value = item.PremiaItogo;
+                            ws.Cell(RowNum, 13).Value = item.Itogo;
+                            ws.Row(RowNum).InsertRowsBelow(1);
+                            RowNum++;
+                        }
+
+                        ws2.Cell(RowNum2, 1).Value = item.person.p_tab_number;
+                        ws2.Cell(RowNum2, 2).Value = item.person.otdel.parent?.ot_name ?? item.person.otdel.ot_name;
+                        ws2.Cell(RowNum2, 3).Value = item.person.FIO;
+                        ws2.Cell(RowNum2, 4).Value = item.person.p_profession;
+                        ws2.Cell(RowNum2, 5).Value = item.premiaBonus.Summa;
+                        ws2.Cell(RowNum2, 6).Value = item.premiaFP.Summa;
+                        ws2.Cell(RowNum2, 7).Value = item.premiaOtdel.Summa;
+                        ws2.Cell(RowNum2, 8).Value = item.premiStimul.Summa;
+                        if (item.premiaAddWorks.Summa != 0)
+                            ws2.Cell(RowNum2, 9).Value = item.premiaAddWorks.Summa;
+                        ws2.Cell(RowNum2, 10).Value = item.premiaTransport.Summa;
+                        ws2.Cell(RowNum2, 11).Value = item.premiaPrize.Summa;
+                        ws2.Cell(RowNum2, 12).Value = item.PremiaItogo;
+                        ws2.Cell(RowNum2, 13).Value = item.Itogo;
+                        ws2.Row(RowNum2).InsertRowsBelow(1);
+                        RowNum2++;
+                    }
+
+                    string TempFile = System.IO.Path.GetTempFileName();
+                    TempFile = System.IO.Path.ChangeExtension(TempFile, "xlsx");
+                    wb.SaveAs(TempFile);
+                    Process.Start(TempFile);
+                }
+            }
+            catch
+            {
+                MessageBox.Show("Не найден шаблон модели", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
+        }
     }
 }

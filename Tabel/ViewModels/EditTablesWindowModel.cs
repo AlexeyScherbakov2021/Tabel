@@ -24,7 +24,14 @@ namespace Tabel.ViewModels
 
         public UsersWindow ViewUser { get; set; }
 
-        public Visibility VisibleAdmin => App.CurrentUser.u_role == Infrastructure.UserRoles.Admin ? Visibility.Visible : Visibility.Collapsed;
+        public Visibility VisibleAdmin => App.CurrentUser.u_role == Infrastructure.UserRoles.Admin 
+            ? Visibility.Visible 
+            : Visibility.Collapsed;
+
+
+        public Visibility VisibleLesnyak => (App.CurrentUser.u_role == Infrastructure.UserRoles.Admin || App.CurrentUser.id == 37)
+            ? Visibility.Visible
+            : Visibility.Collapsed;
 
         public EditTablesWindowModel()
         {

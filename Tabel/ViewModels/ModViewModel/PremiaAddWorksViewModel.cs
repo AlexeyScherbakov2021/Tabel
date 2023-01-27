@@ -49,7 +49,7 @@ namespace Tabel.ViewModels.ModViewModel
         }
 
 
-        public bool IsNotAdmin => App.CurrentUser.u_role != UserRoles.Admin;
+        public bool IsNotAdmin => App.CurrentUser.u_role != UserRoles.Admin && App.CurrentUser.id != 37;
         //        {
         //            get
         //            {

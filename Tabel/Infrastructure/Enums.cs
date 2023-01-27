@@ -7,6 +7,7 @@ using System.Windows.Markup;
 
 namespace Tabel.Infrastructure
 {
+
     public enum SmenaKind : int { None, First, Second, DayOff, Otpusk };
 
     public enum KindTrans : int { None, Used };

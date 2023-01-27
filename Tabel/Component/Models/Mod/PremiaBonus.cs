@@ -39,6 +39,7 @@ namespace Tabel.Component.Models.Mod
         //-------------------------------------------------------------------------------------------------------
         public override void Calculation()
         {
+            decimal koef = model.TabelDays == 0 ? 1 : (decimal)(model.TabelDays - model.TabelAbsent) / (decimal)model.TabelDays;
             Summa = !model.md_bonus_exec
                 ? null
                 : model.md_bonus_max * ModUCViewModel.BonusProc / 100 * koef;

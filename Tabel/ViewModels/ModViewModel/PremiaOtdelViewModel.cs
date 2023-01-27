@@ -55,6 +55,8 @@ namespace Tabel.ViewModels.ModViewModel
             {
                 item.md_kvalif_tarif = item.TabelHours * item.person.p_premTarif;
                 item.PlanTarifOtdel = 162m * item.person.p_premTarif;
+                if (item.md_kvalif_tarif > item.PlanTarifOtdel)
+                    item.md_kvalif_tarif = item.PlanTarifOtdel;
             }
         }
 

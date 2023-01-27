@@ -343,13 +343,20 @@ namespace Tabel.ViewModels.Admins
         }
 
 
+
+        //--------------------------------------------------------------------------------
+        // Команда Переместить сорудника
+        //--------------------------------------------------------------------------------
         public ICommand DropToOtdelCommand => new LambdaCommand(OnDropToOtdelPersonCommandExecuted, CanDropToOtdelPersonCommand);
         private bool CanDropToOtdelPersonCommand(object p) => true;
         private void OnDropToOtdelPersonCommandExecuted(object p)
         {
             DragEventArgs args = p as DragEventArgs;
-
             Personal person = args.Data.GetData("Person") as Personal;
+
+            return;
+
+            // TODO Сделать перенос с переносом в формах
 
             if(person != null)
             {

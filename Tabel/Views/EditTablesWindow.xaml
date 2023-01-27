@@ -37,7 +37,7 @@
             <TabItem Header="Грейды" Visibility="{Binding VisibleAdmin}">
                 <view:CategoryUC HorizontalAlignment="Left" Margin="20,23,0,0"/>
             </TabItem>
-            <TabItem Header="Дополнительные работы" Visibility="{Binding VisibleAdmin}">
+            <TabItem Header="Дополнительные работы" Visibility="{Binding VisibleLesnyak}">
                 <view:AddWorksUC HorizontalAlignment="Left" Margin="20,23,0,0"/>
             </TabItem>
             <TabItem Header="Производственный календарь">

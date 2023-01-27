@@ -58,10 +58,16 @@
                     <TextBlock Text="Экспорт в 1С"/>
                 </StackPanel>
             </Button>
-            <Button Command="{Binding PrintCommand}" Margin="3" Style="{StaticResource ButtonStyleShadow}" ToolTip="Печать формы" Visibility="{Binding IsVisibleAdmin}">
+            <Button Command="{Binding PrintCommand}" Margin="3" Style="{StaticResource ButtonStyleShadow}" ToolTip="Печать формы">
                 <StackPanel Orientation="Horizontal">
                     <fa:ImageAwesome Icon="Solid_Print" Width="24" Height="16" Foreground="#FF005AA0"/>
                     <TextBlock Text="Печать"/>
+                </StackPanel>
+            </Button>
+            <Button Command="{Binding PrintAllCommand}" Margin="3" Style="{StaticResource ButtonStyleShadow}" ToolTip="Печать формы" Visibility="{Binding IsVisibleAdmin}">
+                <StackPanel Orientation="Horizontal">
+                    <fa:ImageAwesome Icon="Solid_Print" Width="24" Height="16" Foreground="#FF005AA0"/>
+                    <TextBlock Text="Печать всех"/>
                 </StackPanel>
             </Button>
             <Button Command="{Binding PrintPersonCommand}" Margin="3" Style="{StaticResource ButtonStyleShadow}" ToolTip="Печать расчетки">
@@ -223,8 +229,8 @@
                             <DataGridTextColumn x:Name="colFP2" Header="ФИО" Binding="{Binding person.FIO}" IsReadOnly="True"/>
                             <DataGridTextColumn x:Name="colFP3" Header="Должность" Binding="{Binding person.p_profession}" IsReadOnly="True" Width="350"/>
                             <DataGridTextColumn x:Name="colFP4" Header="% премии" Binding="{Binding md_premFP, Mode=TwoWay, StringFormat=N2}" CellStyle="{StaticResource CellRightColor}"/>
-                            <DataGridTextColumn x:Name="colFP5" Header="Часы из ФП" Binding="{Binding md_sumFromFP, StringFormat=N2}" CellStyle="{StaticResource CellRightColor}"/>
-                            <DataGridTextColumn x:Name="colFP6" Header="Расчетные часы" Binding="{Binding premiaFP.SummaHoursFP, StringFormat=N2}" IsReadOnly="True" CellStyle="{StaticResource CellRight}"/>
+                            <DataGridTextColumn x:Name="colFP5" Header="Часы из ФП/кол-во операций" Binding="{Binding md_sumFromFP, StringFormat=N2}" CellStyle="{StaticResource CellRightColor}" Width="90"/>
+                            <DataGridTextColumn x:Name="colFP6" Header="Расч.часы/расч.опер." Binding="{Binding premiaFP.SummaHoursFP, StringFormat=N2}" IsReadOnly="True" CellStyle="{StaticResource CellRight}" Width="100"/>
                             <DataGridTextColumn x:Name="colFP7" Header="Премиальный тариф" Binding="{Binding md_cat_prem_tarif, StringFormat=N2}" CellStyle="{StaticResource CellRightColor}"/>
                             <DataGridTextColumn x:Name="colFP8" Header="Премия" Binding="{Binding premiaFP.Summa, StringFormat=N2}" FontWeight="Bold" Width="90" IsReadOnly="True" CellStyle="{StaticResource CellRight}"/>
                             <DataGridTextColumn x:Name="colFP9" Header="Группа" Binding="{Binding md_group}" CellStyle="{StaticResource CellRightColor}" MinWidth="60"/>
@@ -302,8 +308,7 @@
             </TabItem>
 
 
-            <TabItem Visibility="Visible" Background="LightBlue" DataContext="{Binding premiaOtdelViewModel}"
-                     ToolTip="Для ИТР">
+            <TabItem Visibility="Visible" Background="LightBlue" DataContext="{Binding premiaOtdelViewModel}">
                 <TabItem.Header>
                     <TextBlock Text="Премия 2 (по отделу)" Background="LightBlue" Padding="2"/>
                 </TabItem.Header>
@@ -374,7 +379,7 @@
                             <DataGridTextColumn x:Name="colITR5" Header="План.тариф" Binding="{Binding PlanTarifOtdel, Mode=TwoWay, StringFormat=N2}" CellStyle="{StaticResource CellRight}" IsReadOnly="True"/>
                             <DataGridTextColumn x:Name="colITR6" Header="Прем.тариф" Binding="{Binding md_kvalif_tarif, Mode=TwoWay, StringFormat=N2}" CellStyle="{StaticResource CellRight}" IsReadOnly="True"/>
                             <DataGridTextColumn x:Name="colITR7" Header="от полн.%" Binding="{Binding md_kvalif_proc, StringFormat=N2}" CellStyle="{StaticResource CellRight}" IsReadOnly="True"/>
-                            <DataGridTextColumn x:Name="colITR8" Header="% выполн." Binding="{Binding md_kvalif_prem, StringFormat=N2}" CellStyle="{StaticResource CellRightColor}"/>
+                            <DataGridTextColumn x:Name="colITR8" Header="% выполн." Binding="{Binding md_kvalif_prem, StringFormat=N2}" CellStyle="{StaticResource CellRight}" IsReadOnly="True"/>
                             <DataGridTextColumn x:Name="colITR9" Header="Премия" Binding="{Binding premiaOtdel.Summa, StringFormat=N2}" FontWeight="Bold" Width="90" IsReadOnly="True" CellStyle="{StaticResource CellRight}"/>
                         </DataGrid.Columns>
                     </DataGrid>
@@ -382,7 +387,7 @@
             </TabItem>
 
 
-            <TabItem DataContext="{Binding premiaStimulViewModel}" ToolTip="Для ИТР">
+            <TabItem DataContext="{Binding premiaStimulViewModel}" >
                 <TabItem.Header>
                     <TextBlock Text="Премия 3 (стимуляция)" Background="LightBlue" Padding="2"/>
                 </TabItem.Header>
