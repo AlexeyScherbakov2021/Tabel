@@ -448,7 +448,6 @@ namespace Tabel.ViewModels
 
                 }
 
-
                 Tabel.tabelPersons.Add(tp);
             }
 

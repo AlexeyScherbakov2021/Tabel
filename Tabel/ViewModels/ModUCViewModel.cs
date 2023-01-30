@@ -8,6 +8,7 @@ using System.Collections.ObjectModel;
 using System.Data.Entity;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -145,14 +146,22 @@ namespace Tabel.ViewModels
         //-------------------------------------------------------------------------------------------------------
         // загрузка выбранных данных
         //-------------------------------------------------------------------------------------------------------
+
+        //private bool IsLoad = false;
+        
         public async void OtdelChanged(Otdel SelectOtdel, int Year, int Month)
         {
+            //if (IsLoad) return;
 
             _SelectMonth = Month;
             _SelectYear = Year;
             _SelectedOtdel = SelectOtdel;
 
             if (SelectOtdel is null || Year == 0 || Month == 0) return;
+
+            //IsLoad = true;
+            Mouse.OverrideCursor = Cursors.Wait;
+
 
             IsVisibleITR = SelectOtdel.ot_itr == 2 ? Visibility.Collapsed : Visibility.Visible;
             OnPropertyChanged(nameof(IsVisibleITR));
@@ -191,8 +200,9 @@ namespace Tabel.ViewModels
 
             //OnPropertyChanged(nameof(ListModPerson));
 
-            Mouse.OverrideCursor = Cursors.Wait;
-            await Task.Run( () =>  LoadPersonAsync());
+
+            LoadPersonAsync();
+            //await Task.Run( () =>  LoadPersonAsync());
             Mouse.OverrideCursor = null;
 
             //if (ListModPerson != null)
@@ -211,6 +221,8 @@ namespace Tabel.ViewModels
             //premiaTransportViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
             //premiaPrizeViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
             //premiaItogoViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
+
+            //IsLoad = false;
 
         }
 
