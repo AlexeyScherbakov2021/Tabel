@@ -24,7 +24,27 @@
 
             <TextBlock Text="Дата создания" Margin="5,0" VerticalAlignment="Center"/>
             <TextBox Text="{Binding Tabel.t_date_create, StringFormat=dd.MM.yyyy}" Width="100" VerticalAlignment="Center" Margin="5,0"/>
-            <Button Content="Создать табель" Command="{Binding CreateCommand}" Margin="3" Style="{StaticResource ButtonStyleShadow}"/>
+            <Button Command="{Binding CreateCommand}" Margin="3" Style="{StaticResource ButtonStyleShadow}">
+                <DockPanel>
+                    <Menu DockPanel.Dock="Right" Width="20">
+                        <MenuItem Padding="0,4,0,0">
+                            <MenuItem.Header>
+                                <Polygon Fill="Black" Height="10">
+                                    <Polygon.Points>
+                                        <Point X="2" Y="0"/>
+                                        <Point X="18" Y="0"/>
+                                        <Point X="10" Y="8"/>
+                                    </Polygon.Points>
+                                </Polygon>
+                            </MenuItem.Header>
+                            <MenuItem Header="С установленными часами" IsChecked="True" Command="{Binding CreateCommand}"/>
+                            <MenuItem Header="С пустыми часами" Command="{Binding CreateCommand}" CommandParameter="0"/>
+                        </MenuItem>
+                    </Menu>
+                    <Line DockPanel.Dock="Right" Y2="16" StrokeThickness="1" Stroke="Black" Margin="4,0,0,0" />
+                    <TextBlock Text="Создать табель" />
+                </DockPanel>
+            </Button>
             <Button Content="Сохранить" Command="{Binding SaveCommand}" Margin="3" Style="{StaticResource ButtonStyleShadow}"/>
             <Button Content="Печать 1ч." Command="{Binding PrintCommand}" Margin="3" CommandParameter="1" Style="{StaticResource ButtonStyleShadow}"/>
             <Button Content="Печать" Command="{Binding PrintCommand}" Margin="3" Style="{StaticResource ButtonStyleShadow}"/>

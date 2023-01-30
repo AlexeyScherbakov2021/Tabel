@@ -1,6 +1,7 @@
 ﻿using ClosedXML.Excel;
 using DocumentFormat.OpenXml.Bibliography;
 using DocumentFormat.OpenXml.EMMA;
+//using DocumentFormat.OpenXml.Wordprocessing;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -144,7 +145,7 @@ namespace Tabel.ViewModels
         //-------------------------------------------------------------------------------------------------------
         // загрузка выбранных данных
         //-------------------------------------------------------------------------------------------------------
-        public void OtdelChanged(Otdel SelectOtdel, int Year, int Month)
+        public async void OtdelChanged(Otdel SelectOtdel, int Year, int Month)
         {
 
             _SelectMonth = Month;
@@ -190,6 +191,31 @@ namespace Tabel.ViewModels
 
             //OnPropertyChanged(nameof(ListModPerson));
 
+            Mouse.OverrideCursor = Cursors.Wait;
+            await Task.Run( () =>  LoadPersonAsync());
+            Mouse.OverrideCursor = null;
+
+            //if (ListModPerson != null)
+            //{
+            //    // подгрузка из табеля, смен и транспорта
+            //    ModFunction ModFunc = new ModFunction(db, _SelectYear, _SelectMonth);
+            //    ModFunc.ModPersonFilling(ListModPerson);
+            //}
+
+            //modMainViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
+            //premiaBonusViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
+            //premiaFPViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
+            //premiaOtdelViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
+            //premiaStimulViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
+            //premiaAddWorksViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
+            //premiaTransportViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
+            //premiaPrizeViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
+            //premiaItogoViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
+
+        }
+
+        private void LoadPersonAsync()
+        {
             if (ListModPerson != null)
             {
                 // подгрузка из табеля, смен и транспорта
@@ -208,6 +234,8 @@ namespace Tabel.ViewModels
             premiaItogoViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
 
         }
+
+
 
         public bool ClosingFrom()
         {
@@ -528,23 +556,34 @@ namespace Tabel.ViewModels
             }
         }
 
+        private bool IsPrint = false;
+
+
         //--------------------------------------------------------------------------------
         // Команда Печать
         //--------------------------------------------------------------------------------
         public ICommand PrintCommand => new LambdaCommand(OnPrintCommandExecuted, CanPrintCommand);
-        private bool CanPrintCommand(object p) => true;
-        private void OnPrintCommandExecuted(object p)
+        private bool CanPrintCommand(object p) => !IsPrint;
+        private async void OnPrintCommandExecuted(object p)
         {
-            RepositoryExcel.PrintModel(ListModPerson, _SelectYear, _SelectMonth);
+            IsPrint = true;
+
+            //RepositoryExcel.PrintModel(ListModPerson, _SelectYear, _SelectMonth);
+
+            await Task.Run(() => PrintAll(ListModPerson));
+
+            IsPrint = false;
         }
+
 
         //--------------------------------------------------------------------------------
         // Команда Печать
         //--------------------------------------------------------------------------------
         public ICommand PrintAllCommand => new LambdaCommand(OnPrintAllCommandExecuted, CanPrintAllCommand);
-        private bool CanPrintAllCommand(object p) => true;
-        private void OnPrintAllCommandExecuted(object p)
+        private bool CanPrintAllCommand(object p) => !IsPrint;
+        private async void OnPrintAllCommandExecuted(object p)
         {
+            IsPrint = true;
 
             var db = repoModPerson.GetDB();
             List<ModPerson> ListAllModPerson = repoModPerson.Items
@@ -553,6 +592,14 @@ namespace Tabel.ViewModels
                 .OrderBy(o => o.person.p_lastname)
                 .ToList();
 
+            await Task.Run(() => PrintAll(ListAllModPerson));
+            IsPrint = false;
+
+        }
+
+
+        private void PrintAll(IEnumerable<ModPerson> ListAllModPerson)
+        {
             ModFunction mf = new ModFunction(db, _SelectYear, _SelectMonth);
             mf.ModPersonFilling(ListAllModPerson);
 

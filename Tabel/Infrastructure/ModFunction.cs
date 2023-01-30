@@ -15,21 +15,29 @@ namespace Tabel.Infrastructure
 {
     internal class ModFunction
     {
-        private readonly BaseModel _db;
+        //private readonly BaseModel _db;
         private readonly int _year;
         private readonly int _month;
 
         private static readonly decimal MinTarifOffDay = 1500;
-
+        
+        RepositoryMSSQL<TransPerson> repoTransPerson;
+        RepositoryMSSQL<TabelPerson> repoTabPerson;
+        RepositoryMSSQL<SmenaPerson> repoSmenaPerson;
+        RepositoryCalendar repoCal;
 
         //--------------------------------------------------------------------------------------------------------
         // Конструктор
         //--------------------------------------------------------------------------------------------------------
         public ModFunction(BaseModel db, int year,int month)
         {
-            _db = db;
+            //_db = db;
             _year = year;
             _month = month;
+            repoTransPerson = new RepositoryMSSQL<TransPerson>(db);
+            repoTabPerson = new RepositoryMSSQL<TabelPerson>(db);
+            repoSmenaPerson = new RepositoryMSSQL<SmenaPerson>(db);
+            repoCal = new RepositoryCalendar(db);
         }
 
 
@@ -77,7 +85,7 @@ namespace Tabel.Infrastructure
         private void LoadFromTransport(ModPerson mPerson)
         {
             // получение соответствующего сотрудника
-            RepositoryMSSQL<TransPerson> repoTransPerson = new RepositoryMSSQL<TransPerson>(_db);
+            //RepositoryMSSQL<TransPerson> repoTransPerson = new RepositoryMSSQL<TransPerson>(_db);
             TransPerson TranspPerson = repoTransPerson.Items
                 .AsNoTracking()
                 .FirstOrDefault(it => it.person.id == mPerson.person.id && it.Transport.tr_Year == _year && it.Transport.tr_Month == _month);
@@ -115,7 +123,7 @@ namespace Tabel.Infrastructure
         private void LoadFromTabel(ModPerson mPerson)
         {
             // получение соответствующего сотрудника из табеля
-            RepositoryMSSQL<TabelPerson> repoTabPerson = new RepositoryMSSQL<TabelPerson>(_db);
+            //RepositoryMSSQL<TabelPerson> repoTabPerson = new RepositoryMSSQL<TabelPerson>(_db);
             TabelPerson TabPerson = repoTabPerson.Items
                 .AsNoTracking()
                 .FirstOrDefault(it => it.person.id == mPerson.person.id && it.tabel.t_year == _year && it.tabel.t_month == _month);
@@ -123,7 +131,7 @@ namespace Tabel.Infrastructure
             if (TabPerson is null) return;
 
             // получение количества рабочих дней в указанном месяце
-            RepositoryCalendar repoCal = new RepositoryCalendar(_db);// AllRepo.GetRepoCalendar();
+            //RepositoryCalendar repoCal = new RepositoryCalendar(_db);// AllRepo.GetRepoCalendar();
             var listDays = repoCal.GetListDays(_year, _month);
             int CountWorkDays = listDays.Count(it => it.KindDay != TypeDays.Holyday);   // число рабочих дней из календаря
 
@@ -155,7 +163,7 @@ namespace Tabel.Infrastructure
 
 
             // получение соответствующего сотрудника из графика смен
-            RepositoryMSSQL<SmenaPerson> repoSmenaPerson = new RepositoryMSSQL<SmenaPerson>(_db);
+            //RepositoryMSSQL<SmenaPerson> repoSmenaPerson = new RepositoryMSSQL<SmenaPerson>(_db);
             SmenaPerson SmenaPerson = repoSmenaPerson.Items
                 .AsNoTracking()
                 .FirstOrDefault(it => it.personal.id == mPerson.person.id && it.smena.sm_Year == _year && it.smena.sm_Month == _month);

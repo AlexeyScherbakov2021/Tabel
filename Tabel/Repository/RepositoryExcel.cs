@@ -156,6 +156,15 @@ namespace Tabel.Repository
 }
 
 
+
+
+        public static async void PrintModelAsync(IEnumerable<ModPerson> ListModPerson, int SelectYear, int SelectMonth)
+        {
+            await Task.Run(() => PrintModel(ListModPerson, SelectYear, SelectMonth));
+
+        }
+
+
         public static void PrintModel(IEnumerable<ModPerson> ListModPerson,  int SelectYear, int SelectMonth)
         {
             try

@@ -116,20 +116,21 @@ namespace Tabel.ViewModels
                         );
             }
 
-            SetTypeDays();
+            //SetTypeDays();
+            SetTypeDaysAsync();
 
-            if (ListTabelPerson != null)
-            {
-                foreach (var item in ListTabelPerson)
-                {
-                    foreach (var day in item.TabelDays)
-                        day.PropertyChanged += ListPerson_PropertyChanged;
+            //if (ListTabelPerson != null)
+            //{
+            //    foreach (var item in ListTabelPerson)
+            //    {
+            //        foreach (var day in item.TabelDays)
+            //            day.PropertyChanged += ListPerson_PropertyChanged;
 
-                }
-            }
+            //    }
+            //}
 
-            OnPropertyChanged(nameof(ListTabelPerson));
-            OnPropertyChanged(nameof(Tabel));
+            //OnPropertyChanged(nameof(ListTabelPerson));
+            //OnPropertyChanged(nameof(Tabel));
         }
 
         //--------------------------------------------------------------------------------------
@@ -205,6 +206,29 @@ namespace Tabel.ViewModels
                 nCntPermDays++;
             }
             person.OnPropertyChanged(nameof(person.OverWork));
+        }
+
+
+        private async void SetTypeDaysAsync()
+        {
+            Mouse.OverrideCursor = Cursors.Wait;
+
+            await Task.Run(() => SetTypeDays());
+            
+            if (ListTabelPerson != null)
+            {
+                foreach (var item in ListTabelPerson)
+                {
+                    foreach (var day in item.TabelDays)
+                        day.PropertyChanged += ListPerson_PropertyChanged;
+
+                }
+            }
+
+            OnPropertyChanged(nameof(ListTabelPerson));
+            OnPropertyChanged(nameof(Tabel));
+
+            Mouse.OverrideCursor = null;
         }
 
         //--------------------------------------------------------------------------------------
@@ -343,6 +367,7 @@ namespace Tabel.ViewModels
                 repoTabel.Remove(Tabel);
             }
 
+
             // получение данных производственного календаря
             RepositoryCalendar repo = new RepositoryCalendar(db); // AllRepo.GetRepoCalendar();
             var ListDays = repo.GetListDays(_SelectYear, _SelectMonth);
@@ -415,6 +440,9 @@ namespace Tabel.ViewModels
                         td.typeDay = repoTypeDay.Items.FirstOrDefault(it => it.t_name == "ОТ");
                         td.td_Hours = 0;
                     }
+
+                    if(p != null)
+                        td.td_Hours = 0;
 
                     tp.TabelDays.Add(td);
 
@@ -607,7 +635,7 @@ namespace Tabel.ViewModels
 
             }
 
-            listDays = listDays.Distinct().ToList();
+            listDays = listDays.Distinct().OrderBy(o => o).ToList();
 
             SelectDateWindow win = new SelectDateWindow();
             SelectDateWindowViewModel vm = new SelectDateWindowViewModel(listDays, _SelectMonth, _SelectYear);

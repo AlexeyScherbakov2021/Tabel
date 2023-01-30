@@ -358,26 +358,26 @@ namespace Tabel.ViewModels.Admins
 
             // TODO Сделать перенос с переносом в формах
 
-            if(person != null)
-            {
-                if(args.OriginalSource is TextBlock tb)
-                {
-                    string NewOtdelName = tb.Text;
-                    RepositoryMSSQL<Otdel> repoOtdel = new RepositoryMSSQL<Otdel>();
-                    var NewOtdel = repoOtdel.Items.FirstOrDefault(it => it.ot_name == NewOtdelName);
+            //if(person != null)
+            //{
+            //    if(args.OriginalSource is TextBlock tb)
+            //    {
+            //        string NewOtdelName = tb.Text;
+            //        RepositoryMSSQL<Otdel> repoOtdel = new RepositoryMSSQL<Otdel>();
+            //        var NewOtdel = repoOtdel.Items.FirstOrDefault(it => it.ot_name == NewOtdelName);
 
-                    if (NewOtdel != null)
-                    {
-                        if (MessageBox.Show($"Переместить «{person.FIO}» в отдел «{NewOtdel.ot_name}»", "Предупреждение",
-                            MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
-                        {
-                            person.p_otdel_id = NewOtdel.id;
-                            ListPersonal.Remove(person);
-                            OnPropertyChanged(nameof(ListPersonal));
-                        }
-                    }
-                }
-            }
+            //        if (NewOtdel != null)
+            //        {
+            //            if (MessageBox.Show($"Переместить «{person.FIO}» в отдел «{NewOtdel.ot_name}»", "Предупреждение",
+            //                MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+            //            {
+            //                person.p_otdel_id = NewOtdel.id;
+            //                ListPersonal.Remove(person);
+            //                OnPropertyChanged(nameof(ListPersonal));
+            //            }
+            //        }
+            //    }
+            //}
         }
 
 
