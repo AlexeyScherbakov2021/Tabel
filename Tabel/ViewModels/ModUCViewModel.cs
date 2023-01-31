@@ -10,6 +10,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -147,9 +148,11 @@ namespace Tabel.ViewModels
         // загрузка выбранных данных
         //-------------------------------------------------------------------------------------------------------
 
+        //readonly object lockObject = new object();
+        ManualResetEvent ev = new ManualResetEvent(true);
         //private bool IsLoad = false;
         
-        public async void OtdelChanged(Otdel SelectOtdel, int Year, int Month)
+        public void OtdelChanged(Otdel SelectOtdel, int Year, int Month)
         {
             //if (IsLoad) return;
 
@@ -162,88 +165,112 @@ namespace Tabel.ViewModels
             //IsLoad = true;
             Mouse.OverrideCursor = Cursors.Wait;
 
+            //Cancellation?.Cancel();
 
-            IsVisibleITR = SelectOtdel.ot_itr == 2 ? Visibility.Collapsed : Visibility.Visible;
-            OnPropertyChanged(nameof(IsVisibleITR));
+            //ev.WaitOne();
+            
+            //ev.Reset();
+            //Cancellation?.Dispose();
+            //Cancellation = new CancellationTokenSource();
 
-            ListModPerson = null;
-            LoadBonusProcent();
+                IsVisibleITR = SelectOtdel.ot_itr == 2 ? Visibility.Collapsed : Visibility.Visible;
+                OnPropertyChanged(nameof(IsVisibleITR));
 
-            //premiaBonusViewModel.SetBonus(BonusProc);
+                ListModPerson = null;
+                LoadBonusProcent();
 
-            if (_SelectedOtdel.ot_parent is null)
-            {
-                CurrentMod = repoModel.Items.FirstOrDefault(it => it.m_year == Year
-                    && it.m_month == Month
-                    && it.m_otdelId == _SelectedOtdel.id);
-                if (CurrentMod != null)
-                    ListModPerson = new ObservableCollection<ModPerson>(repoModPerson.Items
-                        .Where(it => it.md_modId == CurrentMod.id)
-                        //.Include(inc => inc.ListTargetTask)
-                        .OrderBy(o => o.person.p_lastname)
-                        .ThenBy(o => o.person.p_name)
-                        );
-            }
-            else
-            {
-                CurrentMod = repoModel.Items.FirstOrDefault(it => it.m_year == Year
-                    && it.m_month == Month
-                    && it.m_otdelId == _SelectedOtdel.ot_parent);
-                if (CurrentMod != null)
-                    ListModPerson = new ObservableCollection<ModPerson>(repoModPerson.Items
-                        .Where(it => it.md_modId == CurrentMod.id && it.person.p_otdel_id == _SelectedOtdel.id)
-                        //.Include(inc => inc.ListTargetTask)
-                        .OrderBy(o => o.person.p_lastname)
-                        .ThenBy(o => o.person.p_name)
-                        );
-            }
+                //premiaBonusViewModel.SetBonus(BonusProc);
 
-            //OnPropertyChanged(nameof(ListModPerson));
+                if (_SelectedOtdel.ot_parent is null)
+                {
+                    CurrentMod = repoModel.Items.FirstOrDefault(it => it.m_year == Year
+                        && it.m_month == Month
+                        && it.m_otdelId == _SelectedOtdel.id);
+                    if (CurrentMod != null)
+                        ListModPerson = new ObservableCollection<ModPerson>(repoModPerson.Items
+                            .Where(it => it.md_modId == CurrentMod.id)
+                            //.Include(inc => inc.ListTargetTask)
+                            .OrderBy(o => o.person.p_lastname)
+                            .ThenBy(o => o.person.p_name)
+                            );
+                }
+                else
+                {
+                    CurrentMod = repoModel.Items.FirstOrDefault(it => it.m_year == Year
+                        && it.m_month == Month
+                        && it.m_otdelId == _SelectedOtdel.ot_parent);
+                    if (CurrentMod != null)
+                        ListModPerson = new ObservableCollection<ModPerson>(repoModPerson.Items
+                            .Where(it => it.md_modId == CurrentMod.id && it.person.p_otdel_id == _SelectedOtdel.id)
+                            //.Include(inc => inc.ListTargetTask)
+                            .OrderBy(o => o.person.p_lastname)
+                            .ThenBy(o => o.person.p_name)
+                            );
+                }
+
+                //OnPropertyChanged(nameof(ListModPerson));
 
 
-            LoadPersonAsync();
-            //await Task.Run( () =>  LoadPersonAsync());
-            Mouse.OverrideCursor = null;
+                LoadPersonAsync();
+                //await Task.Run(() => LoadPersonAsync());
+                Mouse.OverrideCursor = null;
+            //    Cancellation?.Dispose();
+            //    Cancellation = null;
 
-            //if (ListModPerson != null)
-            //{
-            //    // подгрузка из табеля, смен и транспорта
-            //    ModFunction ModFunc = new ModFunction(db, _SelectYear, _SelectMonth);
-            //    ModFunc.ModPersonFilling(ListModPerson);
-            //}
+            //ev.Set();
 
-            //modMainViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
-            //premiaBonusViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
-            //premiaFPViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
-            //premiaOtdelViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
-            //premiaStimulViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
-            //premiaAddWorksViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
-            //premiaTransportViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
-            //premiaPrizeViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
-            //premiaItogoViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
+                //if (ListModPerson != null)
+                //{
+                //    // подгрузка из табеля, смен и транспорта
+                //    ModFunction ModFunc = new ModFunction(db, _SelectYear, _SelectMonth);
+                //    ModFunc.ModPersonFilling(ListModPerson);
+                //}
 
-            //IsLoad = false;
+                //modMainViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
+                //premiaBonusViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
+                //premiaFPViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
+                //premiaOtdelViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
+                //premiaStimulViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
+                //premiaAddWorksViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
+                //premiaTransportViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
+                //premiaPrizeViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
+                //premiaItogoViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
+
+                //IsLoad = false;
 
         }
 
+        //CancellationTokenSource Cancellation = null;
+
         private void LoadPersonAsync()
         {
-            if (ListModPerson != null)
+            try
             {
-                // подгрузка из табеля, смен и транспорта
-                ModFunction ModFunc = new ModFunction(db, _SelectYear, _SelectMonth);
-                ModFunc.ModPersonFilling(ListModPerson);
+
+                if (ListModPerson != null)
+                {
+                    // подгрузка из табеля, смен и транспорта
+                    ModFunction ModFunc = new ModFunction(db, _SelectYear, _SelectMonth);
+                    ModFunc.ModPersonFilling(ListModPerson);
+                }
+
+                modMainViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
+                premiaBonusViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
+                premiaFPViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
+                premiaOtdelViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
+                premiaStimulViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
+                premiaAddWorksViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
+                premiaTransportViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
+                premiaPrizeViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
+                premiaItogoViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
+            }
+            catch (OperationCanceledException)
+            {
+
             }
 
-            modMainViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
-            premiaBonusViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
-            premiaFPViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
-            premiaOtdelViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
-            premiaStimulViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
-            premiaAddWorksViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
-            premiaTransportViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
-            premiaPrizeViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
-            premiaItogoViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
+            //Thread.Sleep(3000);
+
 
         }
 
@@ -387,31 +414,8 @@ namespace Tabel.ViewModels
                 newPerson.md_group = pers.p_otdel_id.ToString();
                 newPerson.md_personalId = pers.id;
 
-                GetPrevModPerson(newPerson);
-
                 // получение этого сотрудника из предыдущей существующей модели
-                //ModPerson PrevModPerson = repoModPerson.Items
-                //    .AsNoTracking()
-                //    .Where(it => it.md_personalId == newPerson.md_personalId 
-                //            && (
-                //                ( it.Mod.m_year == _SelectYear && it.Mod.m_month < _SelectMonth)
-                //                || it.Mod.m_year < _SelectYear 
-                //               ))
-                //    .OrderByDescending(o => o.Mod.m_year)
-                //    .ThenByDescending(o => o.Mod.m_month)
-                //    .FirstOrDefault();
-
-
-                //// если был предыдущий месяц, то копируем нужные тарифы
-                //if(PrevModPerson != null)
-                //{
-                //    // копирование тарифа бонусов
-                //    newPerson.md_bonus_max = PrevModPerson.md_bonus_max;
-                //    newPerson.md_cat_prem_tarif = PrevModPerson.md_cat_prem_tarif;
-                //    newPerson.md_kvalif_proc = PrevModPerson.md_kvalif_proc;
-                //    newPerson.md_person_achiev = PrevModPerson.md_person_achiev;
-                //}
-
+                GetPrevModPerson(newPerson);
                 CurrentMod.ModPersons.Add(newPerson);
             }
 
@@ -506,35 +510,17 @@ namespace Tabel.ViewModels
                     newPerson.md_modId = CurrentMod.id;
                     newPerson.person = pers;
 
-
                     GetPrevModPerson(newPerson);
-
-                    // получение этого сотрудника из предыдущей существующей модели
-                    //ModPerson PrevModPerson = repoModPerson.Items
-                    //    .AsNoTracking()
-                    //    .Where(it => it.md_personalId == newPerson.md_personalId
-                    //            && (
-                    //                (it.Mod.m_year == _SelectYear && it.Mod.m_month < _SelectMonth)
-                    //                || it.Mod.m_year < _SelectYear
-                    //               ))
-                    //    .OrderByDescending(o => o.Mod.m_year)
-                    //    .ThenByDescending(o => o.Mod.m_month)
-                    //    .FirstOrDefault();
-
-
-                    //// если был предыдущий месяц, то копируем нужные тарифы
-                    //if (PrevModPerson != null)
-                    //{
-                    //    // копирование тарифа бонусов
-                    //    newPerson.md_bonus_max = PrevModPerson.md_bonus_max;
-                    //    newPerson.md_cat_prem_tarif = PrevModPerson.md_cat_prem_tarif;
-                    //}
 
                     repoModPerson.Add(newPerson, true);
                     ListModPerson.Add(newPerson);
                     ListNewPerson.Add(newPerson);
 
                 }
+
+                // подгрузка из табеля, смен и транспорта
+                ModFunction ModFunc = new ModFunction(db, _SelectYear, _SelectMonth);
+                ModFunc.ModPersonFilling(ListNewPerson);
 
                 modMainViewModel.AddPersons(ListNewPerson);
                 premiaBonusViewModel.AddPersons(ListNewPerson);

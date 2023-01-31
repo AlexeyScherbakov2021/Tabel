@@ -300,8 +300,9 @@
                             <DataGridTextColumn Header="Перс.доплата за уник.проф." Binding="{Binding md_person_achiev, StringFormat=N2}" 
                                                 IsReadOnly="{Binding DataContext.IsNotAdmin, Source={x:Reference ProxyElement}}"
                                                 Width="100"  CellStyle="{StaticResource CellRightColor}"/>
-                            <DataGridTextColumn Header="Тариф" Binding="{Binding premiaAddWorks.Summa, StringFormat=N2}" FontWeight="Bold" Width="90"  CellStyle="{StaticResource CellRight}" IsReadOnly="True"/>
-                            
+                            <DataGridTextColumn Header="Итого" Binding="{Binding premiaAddWorks.Summa, StringFormat=N2}" FontWeight="Bold" Width="90"  CellStyle="{StaticResource CellRight}" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="комп.больничного" Binding="{Binding md_bolnich, StringFormat=N2}" Width="90"  CellStyle="{StaticResource CellRightColor}"/>
+
                         </DataGrid.Columns>
                     </DataGrid>
                 </DockPanel>
@@ -455,6 +456,7 @@
                             <DataGridTextColumn Header="Премия 2(по отделу)" Binding="{Binding premiaOtdel.Summa, StringFormat=N2}" Width="80"  CellStyle="{StaticResource CellRight}"/>
                             <DataGridTextColumn Header="Премия 3(стимул.)" Binding="{Binding premiStimul.Summa, StringFormat=N2}" Width="80"  CellStyle="{StaticResource CellRight}"/>
                             <DataGridTextColumn Header="Премия (добр.труд)" Binding="{Binding premiaPrize.Summa, StringFormat=N2}" Width="80"  CellStyle="{StaticResource CellRight}"/>
+                            <DataGridTextColumn Header="Комп.больнич." Binding="{Binding md_bolnich, StringFormat=N2}" Width="80"  CellStyle="{StaticResource CellRight}"/>
                             <DataGridTextColumn Header="Премия всего" Binding="{Binding PremiaItogo, StringFormat=N2}" Width="80" FontWeight="Bold" CellStyle="{StaticResource CellRight}"/>
                             <DataGridTextColumn Header="Итого" Binding="{Binding Itogo, StringFormat=N2}" Width="80" FontWeight="Bold" CellStyle="{StaticResource CellRight}"/>
                         </DataGrid.Columns>

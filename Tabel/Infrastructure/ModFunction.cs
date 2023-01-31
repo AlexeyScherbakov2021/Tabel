@@ -10,6 +10,7 @@ using Tabel.Component.MonthPanel;
 using Tabel.Models;
 using Tabel.Repository;
 using DocumentFormat.OpenXml.EMMA;
+using System.Threading;
 
 namespace Tabel.Infrastructure
 {
@@ -20,7 +21,7 @@ namespace Tabel.Infrastructure
         private readonly int _month;
 
         private static readonly decimal MinTarifOffDay = 1500;
-        
+
         RepositoryMSSQL<TransPerson> repoTransPerson;
         RepositoryMSSQL<TabelPerson> repoTabPerson;
         RepositoryMSSQL<SmenaPerson> repoSmenaPerson;
@@ -29,7 +30,7 @@ namespace Tabel.Infrastructure
         //--------------------------------------------------------------------------------------------------------
         // Конструктор
         //--------------------------------------------------------------------------------------------------------
-        public ModFunction(BaseModel db, int year,int month)
+        public ModFunction(BaseModel db, int year, int month)
         {
             //_db = db;
             _year = year;
@@ -44,8 +45,10 @@ namespace Tabel.Infrastructure
         //--------------------------------------------------------------------------------------------------------
         // получение всех связанных данных
         //--------------------------------------------------------------------------------------------------------
-        public void ModPersonFilling(IEnumerable<ModPerson> ListModPerson)
+        public void ModPersonFilling(IEnumerable<ModPerson> ListModPerson, CancellationToken token = default)
         {
+            //try
+            //{
             foreach (var mPerson in ListModPerson)
             {
 
@@ -75,8 +78,24 @@ namespace Tabel.Infrastructure
                 mPerson.premiaPrize.Calculation();
                 mPerson.premOffDays.Calculation();
                 mPerson.premiaNight.Calculation();
+
+                if (token.IsCancellationRequested)
+                {
+                    //token.ThrowIfCancellationRequested();
+                    break;
+                }
+
             }
         }
+        //    catch(OperationCanceledException)
+        //    {
+
+        //    }
+        //    catch
+        //    {
+
+        //    }
+    //}
 
 
         //--------------------------------------------------------------------------------------------------------

@@ -84,22 +84,25 @@ namespace Tabel.Repository
                             if (!IsAllMonth && day.td_Day > FirstMonthDays)
                                 break;
 
+                            decimal hours = day.WhiteHours * item.person.p_stavka;
+
                             ws.Cell(RowHours, ColNum).Value = day.typeDay.t_name;
                             if (day.WhiteHours != 0)
                             {
-                                ws.Cell(RowHours + 1, ColNum).Value = day.WhiteHours;
-                                Hours += day.WhiteHours;
+
+                                ws.Cell(RowHours + 1, ColNum).Value = hours;
+                                Hours += hours;
                                 if (day.td_Day <= 15)
-                                    Hours1 += day.WhiteHours;
+                                    Hours1 += hours;
                                 else
-                                    Hours2 += day.WhiteHours;
+                                    Hours2 += hours;
 
-                                if (day.WhiteHours > 8)
+                                if (hours > 8)
                                 {
-                                    if (day.WhiteHours > 10)
-                                        hours20 += day.WhiteHours - 10;
+                                    if (hours > 10)
+                                        hours20 += hours - 10;
 
-                                    hours15 += day.WhiteHours > 9 ? 2 : 1;
+                                    hours15 += hours > 9 ? 2 : 1;
                                 }
                             }
 
@@ -113,7 +116,7 @@ namespace Tabel.Repository
                             }
 
                             if (day.typeDay.t_name == "РВ")
-                                OffHours += day.WhiteHours;
+                                OffHours += hours;
 
                             ColNum++;
                             if (day.td_Day == 15)
@@ -202,8 +205,9 @@ namespace Tabel.Repository
                                 ws3.Cell(RowNum3, 9).Value = item.premiaAddWorks.Summa;
                             ws3.Cell(RowNum3, 10).Value = item.premiaTransport.Summa;
                             ws3.Cell(RowNum3, 11).Value = item.premiaPrize.Summa;
-                            ws3.Cell(RowNum3, 12).Value = item.PremiaItogo;
-                            ws3.Cell(RowNum3, 13).Value = item.Itogo;
+                            ws3.Cell(RowNum3, 12).Value = item.md_bolnich;
+                            ws3.Cell(RowNum3, 13).Value = item.PremiaItogo;
+                            ws3.Cell(RowNum3, 14).Value = item.Itogo;
                             ws3.Row(RowNum3).InsertRowsBelow(1);
                             RowNum3++;
                         }
@@ -222,8 +226,9 @@ namespace Tabel.Repository
                                 ws.Cell(RowNum, 9).Value = item.premiaAddWorks.Summa;
                             ws.Cell(RowNum, 10).Value = item.premiaTransport.Summa;
                             ws.Cell(RowNum, 11).Value = item.premiaPrize.Summa;
-                            ws.Cell(RowNum, 12).Value = item.PremiaItogo;
-                            ws.Cell(RowNum, 13).Value = item.Itogo;
+                            ws.Cell(RowNum, 12).Value = item.md_bolnich;
+                            ws.Cell(RowNum, 13).Value = item.PremiaItogo;
+                            ws.Cell(RowNum, 14).Value = item.Itogo;
                             ws.Row(RowNum).InsertRowsBelow(1);
                             RowNum++;
                         }
@@ -240,8 +245,9 @@ namespace Tabel.Repository
                             ws2.Cell(RowNum2, 9).Value = item.premiaAddWorks.Summa;
                         ws2.Cell(RowNum2, 10).Value = item.premiaTransport.Summa;
                         ws2.Cell(RowNum2, 11).Value = item.premiaPrize.Summa;
-                        ws2.Cell(RowNum2, 12).Value = item.PremiaItogo;
-                        ws2.Cell(RowNum2, 13).Value = item.Itogo;
+                        ws2.Cell(RowNum2, 12).Value = item.md_bolnich;
+                        ws2.Cell(RowNum2, 13).Value = item.PremiaItogo;
+                        ws2.Cell(RowNum2, 14).Value = item.Itogo;
                         ws2.Row(RowNum2).InsertRowsBelow(1);
                         RowNum2++;
                     }

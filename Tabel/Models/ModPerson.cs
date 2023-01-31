@@ -8,6 +8,7 @@ namespace Tabel.Models
     using Tabel.Component.Models.Mod;
     using Tabel.Component.Models;
     using Tabel.Infrastructure;
+    using DocumentFormat.OpenXml.EMMA;
 
     [Table("ModPerson")]
     public partial class ModPerson : Observable, IEntity
@@ -92,10 +93,23 @@ namespace Tabel.Models
         private decimal? _md_person_achiev;
         public decimal? md_person_achiev { get => _md_person_achiev; set { Set(ref _md_person_achiev, value); } }
 
+        private decimal? _md_bolnich;
+        public decimal? md_bolnich 
+        { 
+            get => _md_bolnich; 
+            set 
+            {
+                if (Set(ref _md_bolnich, value))
+                {
+                    OnPropertyChanged(nameof(PremiaItogo));
+                    OnPropertyChanged(nameof(Itogo));
+                }
+            } 
+        }
 
         //public decimal? md_ItogPremia1 { get; set; }
         //public decimal? md_ItogPremia2vyr { get; set; }
-        
+
         //[Column(TypeName = "numeric")]
         //public decimal? md_ItogPremiaAddWork { get; set; }
         //public decimal? md_ItogPremiaTransport { get; set; }
@@ -205,7 +219,8 @@ namespace Tabel.Models
             md_Oklad
             + premiaNight.GetPremia()
             + premOffDays.GetPremia()
-            + PremiaItogo;
+            + PremiaItogo
+            + (md_bolnich ?? 0);
 
     }
 }
