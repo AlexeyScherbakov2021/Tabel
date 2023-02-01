@@ -81,21 +81,12 @@ namespace Tabel.Infrastructure
 
                 if (token.IsCancellationRequested)
                 {
-                    //token.ThrowIfCancellationRequested();
                     break;
                 }
 
             }
         }
-        //    catch(OperationCanceledException)
-        //    {
-
-        //    }
-        //    catch
-        //    {
-
-        //    }
-    //}
+  
 
 
         //--------------------------------------------------------------------------------------------------------
