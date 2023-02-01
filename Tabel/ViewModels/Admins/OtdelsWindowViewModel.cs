@@ -136,7 +136,9 @@ namespace Tabel.ViewModels.Admins
 
             if (App.CurrentUser.u_role == UserRoles.Admin)
             {
-                ListOtdel = new ObservableCollection<Otdel>(repoOtdel.Items.Where(it => it.ot_parent == null && it.ot_itr <= level));
+                ListOtdel = new ObservableCollection<Otdel>(repoOtdel.Items
+                    .Where(it => it.ot_parent == null && it.ot_itr <= level)
+                    .OrderBy(o => o.ot_sort));
             }
             else
             {

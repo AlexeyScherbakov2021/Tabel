@@ -176,7 +176,8 @@ namespace Tabel.Infrastructure
             //    ? 0 
             //    : mPerson.TabelHours * mPerson.person.category.cat_tarif.Value * mPerson.person.p_stavka;
 
-            int CountWorkDaysPerson = TabPerson.TabelDays.Count(it => it.td_KindId == (int)TabelKindDays.Worked);   // количество отработанных дней
+            int CountWorkDaysPerson = TabPerson.TabelDays.Count(it => it.td_KindId == (int)TabelKindDays.Worked
+              || it.td_KindId == (int)TabelKindDays.DistWork);   // количество отработанных дней
             mPerson.TabelAbsent = CountWorkDays - CountWorkDaysPerson;                      // получение количества дней отсутствия
             if (mPerson.TabelAbsent < 0) mPerson.TabelAbsent = 0;
 

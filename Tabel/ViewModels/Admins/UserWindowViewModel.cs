@@ -67,7 +67,7 @@ namespace Tabel.ViewModels
             db = repoUser.GetDB();
             ListUser = new ObservableCollection<User>(repoUser.Items);
             repoOtdel = new RepositoryOtdel(db);
-            ListOtdel = new ObservableCollection<Otdel>(repoOtdel.Items);
+            ListOtdel = new ObservableCollection<Otdel>(repoOtdel.Items.OrderBy(o => o.ot_sort));
         }
 
 
@@ -218,7 +218,7 @@ namespace Tabel.ViewModels
 
         public void RefreshModel()
         {
-            ListOtdel = new ObservableCollection<Otdel>(repoOtdel.Items);
+            ListOtdel = new ObservableCollection<Otdel>(repoOtdel.Items.OrderBy(o => o.ot_sort));
             OnPropertyChanged(nameof(ListOtdel));
         }
 

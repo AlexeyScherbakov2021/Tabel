@@ -51,7 +51,7 @@ namespace Tabel.Repository
             ICollection<Otdel> ListOtdels = new Collection<Otdel>();
 
             // получение корневых отделов
-            IEnumerable<Otdel> ListRootOtdels = Items.AsNoTracking().Where(it => it.ot_itr <= level);
+            IEnumerable<Otdel> ListRootOtdels = Items.AsNoTracking().Where(it => it.ot_itr <= level).OrderBy(o => o.ot_sort);
 
             // удаление ненужных отделов
             foreach (var item in ListRootOtdels)
@@ -62,7 +62,7 @@ namespace Tabel.Repository
 
             // добавлеие подотделов, которых еще не добавлены
             RepositoryMSSQL<Otdel> repo1 = new RepositoryMSSQL<Otdel>(db); // AllRepo.GetRepoAllOtdels();
-            IEnumerable<Otdel> AllOtdels = repo1.Items.AsNoTracking().Where(it => it.parent != null && it.ot_itr <= level);
+            IEnumerable<Otdel> AllOtdels = repo1.Items.AsNoTracking().Where(it => it.parent != null && it.ot_itr <= level).OrderBy(o => o.ot_sort);
             CombaineOtdels(ListUserOtdels, ListOtdels, AllOtdels);
             return ListOtdels;
 
@@ -75,7 +75,7 @@ namespace Tabel.Repository
             ICollection<Otdel> ListOtdels = new Collection<Otdel>();
 
             // получение корневых отделов
-            IEnumerable<Otdel> ListRootOtdels = Items.Where(it => it.ot_itr <= level);
+            IEnumerable<Otdel> ListRootOtdels = Items.Where(it => it.ot_itr <= level).OrderBy(o => o.ot_sort);
 
             // удаление ненужных отделов
             foreach (var item in ListRootOtdels)
@@ -86,7 +86,7 @@ namespace Tabel.Repository
 
             // добавлеие подотделов, которых еще не добавлены
             RepositoryMSSQL<Otdel> repo1 = new RepositoryMSSQL<Otdel>(db);
-            IEnumerable<Otdel> AllOtdels = repo1.Items.Where(it => it.parent != null && it.ot_itr <= level);
+            IEnumerable<Otdel> AllOtdels = repo1.Items.Where(it => it.parent != null && it.ot_itr <= level).OrderBy(o => o.ot_sort);
             CombaineOtdels(ListUserOtdels, ListOtdels, AllOtdels);
 
             return ListOtdels;
