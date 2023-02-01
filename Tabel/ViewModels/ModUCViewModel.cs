@@ -152,7 +152,7 @@ namespace Tabel.ViewModels
         ManualResetEvent ev = new ManualResetEvent(true);
         //private bool IsLoad = false;
         
-        public void OtdelChanged(Otdel SelectOtdel, int Year, int Month)
+        public async void OtdelChanged(Otdel SelectOtdel, int Year, int Month)
         {
             //if (IsLoad) return;
 
@@ -163,15 +163,15 @@ namespace Tabel.ViewModels
             if (SelectOtdel is null || Year == 0 || Month == 0) return;
 
             //IsLoad = true;
-            Mouse.OverrideCursor = Cursors.Wait;
+            //Mouse.OverrideCursor = Cursors.Wait;
 
-            //Cancellation?.Cancel();
+            Cancellation?.Cancel();
 
-            //ev.WaitOne();
+            ev.WaitOne();
             
-            //ev.Reset();
-            //Cancellation?.Dispose();
-            //Cancellation = new CancellationTokenSource();
+            ev.Reset();
+            Cancellation?.Dispose();
+            Cancellation = new CancellationTokenSource();
 
                 IsVisibleITR = SelectOtdel.ot_itr == 2 ? Visibility.Collapsed : Visibility.Visible;
                 OnPropertyChanged(nameof(IsVisibleITR));
@@ -211,13 +211,13 @@ namespace Tabel.ViewModels
                 //OnPropertyChanged(nameof(ListModPerson));
 
 
-                LoadPersonAsync();
-                //await Task.Run(() => LoadPersonAsync());
-                Mouse.OverrideCursor = null;
-            //    Cancellation?.Dispose();
-            //    Cancellation = null;
+                //LoadPersonAsync();
+                await Task.Run(() => LoadPersonAsync(Cancellation.Token));
+                //Mouse.OverrideCursor = null;
+                Cancellation?.Dispose();
+                Cancellation = null;
 
-            //ev.Set();
+            ev.Set();
 
                 //if (ListModPerson != null)
                 //{
@@ -240,9 +240,9 @@ namespace Tabel.ViewModels
 
         }
 
-        //CancellationTokenSource Cancellation = null;
+        CancellationTokenSource Cancellation = null;
 
-        private void LoadPersonAsync()
+        private void LoadPersonAsync(CancellationToken token)
         {
             try
             {
@@ -251,18 +251,22 @@ namespace Tabel.ViewModels
                 {
                     // подгрузка из табеля, смен и транспорта
                     ModFunction ModFunc = new ModFunction(db, _SelectYear, _SelectMonth);
-                    ModFunc.ModPersonFilling(ListModPerson);
+                    ModFunc.ModPersonFilling(ListModPerson, token);
                 }
 
-                modMainViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
-                premiaBonusViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
-                premiaFPViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
-                premiaOtdelViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
-                premiaStimulViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
-                premiaAddWorksViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
-                premiaTransportViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
-                premiaPrizeViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
-                premiaItogoViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
+                if (!token.IsCancellationRequested)
+                {
+
+                    modMainViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
+                    premiaBonusViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
+                    premiaFPViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
+                    premiaOtdelViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
+                    premiaStimulViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
+                    premiaAddWorksViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
+                    premiaTransportViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
+                    premiaPrizeViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
+                    premiaItogoViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
+                }
             }
             catch (OperationCanceledException)
             {
@@ -271,6 +275,7 @@ namespace Tabel.ViewModels
 
             //Thread.Sleep(3000);
 
+            ev.Set();
 
         }
 
