@@ -15,7 +15,7 @@
         <Label Content="Пароль" HorizontalAlignment="Left" Margin="45,72,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.02,-0.115"/>
         <PasswordBox Name="pwd" HorizontalAlignment="Left" Height="23" Margin="101,75,0,0" VerticalAlignment="Top" Width="211" TabIndex="1"/>
         <Button Content="OK" Command="{Binding OkCommand}" CommandParameter="{Binding ElementName=pwd}" HorizontalAlignment="Left" Margin="72,134,0,0" VerticalAlignment="Top" Width="75" Height="31" IsDefault="True"/>
-        <Button Content="Отмена" Command="{Binding OkCommand}" CommandParameter="cancel" HorizontalAlignment="Left" Margin="196,134,0,0" VerticalAlignment="Top" Width="75" Height="31" IsCancel="True"/>
+        <Button Content="Отмена" Command="{Binding CancelCommand}" HorizontalAlignment="Left" Margin="196,134,0,0" VerticalAlignment="Top" Width="75" Height="31" IsCancel="True"/>
         <Grid HorizontalAlignment="Left" Margin="119,110,0,0" VerticalAlignment="Top">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>

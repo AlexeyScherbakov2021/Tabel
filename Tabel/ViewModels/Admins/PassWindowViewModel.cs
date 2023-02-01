@@ -42,7 +42,19 @@ namespace Tabel.ViewModels.Admins
                 return;
             }
 
-            if (App.CurrentUser.u_pass != OldPass)
+
+            bool res = false;
+
+            if (App.CurrentUser?.u_pass2 != null)
+            {
+                string hash = Encrypt.Crypt(OldPass);
+                res = hash == App.CurrentUser?.u_pass2;
+            }
+            else
+                res = OldPass == App.CurrentUser?.u_pass;
+
+
+            if (!res)
             {
                 MessageBox.Show("Неверный старый пароль", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Stop);
                 return;

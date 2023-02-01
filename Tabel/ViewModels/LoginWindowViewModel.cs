@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Tabel.Commands;
@@ -31,48 +32,55 @@ namespace Tabel.ViewModels
         //--------------------------------------------------------------------------------
         //private readonly ICommand _OkCommand = null;
         public ICommand OkCommand => new LambdaCommand(OnOkCommandExecuted, CanOkCommand);
-        private bool CanOkCommand(object p) => true;
+        private bool CanOkCommand(object p) => p != null && !string.IsNullOrEmpty( (p as PasswordBox).Password);
         private void OnOkCommandExecuted(object p)
         {
             if(p is PasswordBox pass )
             {
-                if(SelectUser?.u_pass2 != null)
+                bool res = false;
+
+                if (SelectUser?.u_pass2 != null)
                 {
                     string hash = Encrypt.Crypt(pass.Password);
-                    if (hash != SelectUser?.u_pass2)
-                    {
-                        // если праоль неверный, то ничего не делаем - возврат
-                        return;
-                    }
+                    res = hash == SelectUser?.u_pass2;
                 }
                 else
+                    res = pass.Password == SelectUser?.u_pass;
+
+                if (res)
                 {
-                    if (pass.Password != SelectUser?.u_pass)
-                        // если праоль неверный, то ничего не делаем - возврат
-                        return;
+                    App.CurrentUser = SelectUser;
+
+                    // записываем в реестр
+                    RegistryKey SoftKey = Registry.CurrentUser.OpenSubKey("SOFTWARE", true);
+                    RegistryKey ProgKey = SoftKey.CreateSubKey("TabelNGK");
+                    ProgKey.SetValue("login", SelectUser.u_login);
+                    ProgKey.Close();
+                    SoftKey.Close();
+
+
+                    // если пользователь, то запускаем табель
+                    MainWindow win = new MainWindow();
+                    win.Show();
+                    App.Current.MainWindow = win;
+                    winLogin.Close();
                 }
-
-                App.CurrentUser = SelectUser;
-
-
-                // записываем в реестр
-                RegistryKey SoftKey = Registry.CurrentUser.OpenSubKey("SOFTWARE", true);
-                RegistryKey ProgKey = SoftKey.CreateSubKey("TabelNGK");
-                ProgKey.SetValue("login", SelectUser.u_login);
-                ProgKey.Close();
-                SoftKey.Close();
-
-
-                // если пользователь, то запускаем табель
-                MainWindow win = new MainWindow();
-                win.Show();
-                App.Current.MainWindow = win;
+                else
+                    MessageBox.Show("Неверный пароль", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
 
             }
-
-            winLogin.Close();
         }
 
+        //--------------------------------------------------------------------------------
+        // Команда 
+        //--------------------------------------------------------------------------------
+        //private readonly ICommand _OkCommand = null;
+        public ICommand CancelCommand => new LambdaCommand(OnCancelCommandExecuted, CanCancelCommand);
+        private bool CanCancelCommand(object p) =>  true;
+        private void OnCancelCommandExecuted(object p)
+        {
+            winLogin.Close();
+        }
         #endregion
 
 
