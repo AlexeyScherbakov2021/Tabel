@@ -214,7 +214,7 @@ namespace Tabel.ViewModels
 
         private void LoadPersonAsync(CancellationToken token)
         {
-            ObservableCollection<ModPerson> localListPerson = null;
+            //ObservableCollection<ModPerson> localListPerson = null;
             ListModPerson = new ObservableCollection<ModPerson>();
 
             try
@@ -228,7 +228,7 @@ namespace Tabel.ViewModels
                         && it.m_month == _SelectMonth
                         && it.m_otdelId == _SelectedOtdel.id);
                     if (CurrentMod != null)
-                        localListPerson = new ObservableCollection<ModPerson>(repoModPerson.Items
+                        ListModPerson = new ObservableCollection<ModPerson>(repoModPerson.Items
                             .Where(it => it.md_modId == CurrentMod.id)
                             //.Include(inc => inc.ListTargetTask)
                             .OrderBy(o => o.person.p_lastname)
@@ -241,7 +241,7 @@ namespace Tabel.ViewModels
                         && it.m_month == _SelectMonth
                         && it.m_otdelId == _SelectedOtdel.ot_parent);
                     if (CurrentMod != null)
-                        localListPerson = new ObservableCollection<ModPerson>(repoModPerson.Items
+                        ListModPerson = new ObservableCollection<ModPerson>(repoModPerson.Items
                             .Where(it => it.md_modId == CurrentMod.id && it.person.p_otdel_id == _SelectedOtdel.id)
                             //.Include(inc => inc.ListTargetTask)
                             .OrderBy(o => o.person.p_lastname)
@@ -251,16 +251,16 @@ namespace Tabel.ViewModels
 
 
 
-                if (localListPerson != null)
+                if (ListModPerson != null)
                 {
                     // подгрузка из табеля, смен и транспорта
                     ModFunction ModFunc = new ModFunction(db, _SelectYear, _SelectMonth);
-                    
-                    foreach(var item in ModFunc.ModPersonFilling(localListPerson, token))
-                    {
-                        ListModPerson.Add(item);
-                        //OnPropertyChanged(nameof(ListModPerson));
-                    }
+                    ModFunc.ModPersonFilling(ListModPerson, token);
+
+                    //foreach (var item in ModFunc.ModPersonFilling(ListModPerson, token))
+                    //{
+                    //    ListModPerson.Add(item);
+                    //}
 
                 }
 

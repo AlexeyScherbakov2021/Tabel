@@ -47,7 +47,7 @@ namespace Tabel.Infrastructure
         //--------------------------------------------------------------------------------------------------------
         // получение всех связанных данных
         //--------------------------------------------------------------------------------------------------------
-        public IEnumerable<ModPerson> ModPersonFilling(IEnumerable<ModPerson> ListModPerson, CancellationToken token = default)
+        public void ModPersonFilling(IEnumerable<ModPerson> ListModPerson, CancellationToken token = default)
         {
             //try
             //{
@@ -86,7 +86,7 @@ namespace Tabel.Infrastructure
                     break;
                 }
 
-                yield return mPerson;
+                //yield return mPerson;
             }
         }
   
