@@ -36,6 +36,8 @@ namespace Tabel.ViewModels
         private RepositoryMSSQL<Personal> repoPersonal;
         private readonly RepositoryMSSQL<WorkTabel> repoTabel;
         private readonly RepositoryMSSQL<Mod> repoModel;
+        
+        public Visibility VisibleGrid { get; set; } = Visibility.Visible;
 
         //private decimal? _BonusProc;
         public static decimal? BonusProc;
@@ -82,6 +84,7 @@ namespace Tabel.ViewModels
                 foreach (var item in _ListModPerson)
                     item.PropertyChanged += Item_PropertyChanged;
 
+                OnPropertyChanged(nameof(ListModPerson));
             }
         }
 
@@ -148,11 +151,10 @@ namespace Tabel.ViewModels
         // загрузка выбранных данных
         //-------------------------------------------------------------------------------------------------------
 
-        //readonly object lockObject = new object();
         ManualResetEvent ev = new ManualResetEvent(true);
-        //private bool IsLoad = false;
-        
-        public async void OtdelChanged(Otdel SelectOtdel, int Year, int Month)
+        CancellationTokenSource Cancellation = null;
+
+        public void OtdelChanged(Otdel SelectOtdel, int Year, int Month)
         {
             //if (IsLoad) return;
 
@@ -162,7 +164,6 @@ namespace Tabel.ViewModels
 
             if (SelectOtdel is null || Year == 0 || Month == 0) return;
 
-            //IsLoad = true;
             //Mouse.OverrideCursor = Cursors.Wait;
 
             Cancellation?.Cancel();
@@ -173,51 +174,21 @@ namespace Tabel.ViewModels
             Cancellation?.Dispose();
             Cancellation = new CancellationTokenSource();
 
-                IsVisibleITR = SelectOtdel.ot_itr == 2 ? Visibility.Collapsed : Visibility.Visible;
-                OnPropertyChanged(nameof(IsVisibleITR));
+            IsVisibleITR = SelectOtdel.ot_itr == 2 ? Visibility.Collapsed : Visibility.Visible;
+            OnPropertyChanged(nameof(IsVisibleITR));
 
-                ListModPerson = null;
-                LoadBonusProcent();
+            ListModPerson = null;
 
-                //premiaBonusViewModel.SetBonus(BonusProc);
+            VisibleGrid = Visibility.Hidden;
+            OnPropertyChanged(nameof(VisibleGrid));
 
-                if (_SelectedOtdel.ot_parent is null)
-                {
-                    CurrentMod = repoModel.Items.FirstOrDefault(it => it.m_year == Year
-                        && it.m_month == Month
-                        && it.m_otdelId == _SelectedOtdel.id);
-                    if (CurrentMod != null)
-                        ListModPerson = new ObservableCollection<ModPerson>(repoModPerson.Items
-                            .Where(it => it.md_modId == CurrentMod.id)
-                            //.Include(inc => inc.ListTargetTask)
-                            .OrderBy(o => o.person.p_lastname)
-                            .ThenBy(o => o.person.p_name)
-                            );
-                }
-                else
-                {
-                    CurrentMod = repoModel.Items.FirstOrDefault(it => it.m_year == Year
-                        && it.m_month == Month
-                        && it.m_otdelId == _SelectedOtdel.ot_parent);
-                    if (CurrentMod != null)
-                        ListModPerson = new ObservableCollection<ModPerson>(repoModPerson.Items
-                            .Where(it => it.md_modId == CurrentMod.id && it.person.p_otdel_id == _SelectedOtdel.id)
-                            //.Include(inc => inc.ListTargetTask)
-                            .OrderBy(o => o.person.p_lastname)
-                            .ThenBy(o => o.person.p_name)
-                            );
-                }
+            //await Task.Run(() => OnPropertyChanged(nameof(ListModPerson))).ConfigureAwait(false);
+            //Mouse.OverrideCursor = Cursors.Wait;
 
-                //OnPropertyChanged(nameof(ListModPerson));
-
-
-                //LoadPersonAsync();
-                await Task.Run(() => LoadPersonAsync(Cancellation.Token));
-                //Mouse.OverrideCursor = null;
-                Cancellation?.Dispose();
-                Cancellation = null;
-
-            ev.Set();
+            //LoadPersonAsync();
+            Task.Run(() => LoadPersonAsync(Cancellation.Token)).ConfigureAwait(true);
+                
+            //Mouse.OverrideCursor = null;
 
                 //if (ListModPerson != null)
                 //{
@@ -240,18 +211,57 @@ namespace Tabel.ViewModels
 
         }
 
-        CancellationTokenSource Cancellation = null;
 
         private void LoadPersonAsync(CancellationToken token)
         {
+            ObservableCollection<ModPerson> localListPerson = null;
+            ListModPerson = new ObservableCollection<ModPerson>();
+
             try
             {
 
-                if (ListModPerson != null)
+                LoadBonusProcent();
+
+                if (_SelectedOtdel.ot_parent is null)
+                {
+                    CurrentMod = repoModel.Items.FirstOrDefault(it => it.m_year == _SelectYear
+                        && it.m_month == _SelectMonth
+                        && it.m_otdelId == _SelectedOtdel.id);
+                    if (CurrentMod != null)
+                        localListPerson = new ObservableCollection<ModPerson>(repoModPerson.Items
+                            .Where(it => it.md_modId == CurrentMod.id)
+                            //.Include(inc => inc.ListTargetTask)
+                            .OrderBy(o => o.person.p_lastname)
+                            .ThenBy(o => o.person.p_name)
+                            );
+                }
+                else
+                {
+                    CurrentMod = repoModel.Items.FirstOrDefault(it => it.m_year == _SelectYear
+                        && it.m_month == _SelectMonth
+                        && it.m_otdelId == _SelectedOtdel.ot_parent);
+                    if (CurrentMod != null)
+                        localListPerson = new ObservableCollection<ModPerson>(repoModPerson.Items
+                            .Where(it => it.md_modId == CurrentMod.id && it.person.p_otdel_id == _SelectedOtdel.id)
+                            //.Include(inc => inc.ListTargetTask)
+                            .OrderBy(o => o.person.p_lastname)
+                            .ThenBy(o => o.person.p_name)
+                            );
+                }
+
+
+
+                if (localListPerson != null)
                 {
                     // подгрузка из табеля, смен и транспорта
                     ModFunction ModFunc = new ModFunction(db, _SelectYear, _SelectMonth);
-                    ModFunc.ModPersonFilling(ListModPerson, token);
+                    
+                    foreach(var item in ModFunc.ModPersonFilling(localListPerson, token))
+                    {
+                        ListModPerson.Add(item);
+                        //OnPropertyChanged(nameof(ListModPerson));
+                    }
+
                 }
 
                 if (!token.IsCancellationRequested)
@@ -272,10 +282,19 @@ namespace Tabel.ViewModels
             {
 
             }
+            finally
+            {
+                Cancellation?.Dispose();
+                Cancellation = null;
+                VisibleGrid = Visibility.Visible;
+                OnPropertyChanged(nameof(VisibleGrid));
+
+                ev.Set();
+
+            }
 
             //Thread.Sleep(3000);
 
-            ev.Set();
 
         }
 
