@@ -38,7 +38,7 @@ namespace Tabel.ViewModels.ModViewModel
             _SelectMonth = Month;
             _SelectYear = Year;
 
-            ListModPerson = listPerson?.Where(it => it.person.p_type_id == SpecType.Рабочий).ToList();
+            ListModPerson = listPerson?.Where(it => it.person?.p_type_id == SpecType.Рабочий).ToList();
 
             if (ListModPerson != null)
             {

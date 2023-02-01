@@ -22,6 +22,15 @@
 
         <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource StyleCheckComboBox}"/>
 
+
+        <!--<Storyboard x:Key="StorySpinner" Duration="Forever">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="spinner" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(RotateTransform.Angle)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0"/>
+                <EasingDoubleKeyFrame KeyTime="00:00:02" Value="360"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>-->
+
+
     </UserControl.Resources>
     <UserControl.DataContext>
         <vm:ModUCViewModel/>
@@ -86,13 +95,15 @@
                 </Button.Command>
             </Button>
         </ToolBarPanel>
+        <Grid >
+            <TextBlock Text="Загрузка..." HorizontalAlignment="Center" Margin="0,100" FontSize="25"/>
 
-        <TabControl x:Name="tab" >
-            <i:Interaction.Triggers>
-                <i:EventTrigger EventName="SelectionChanged">
-                    <i:InvokeCommandAction Command="{Binding TabChangedCommand}" CommandParameter="{Binding SelectedIndex, ElementName=tab}"/>
-                </i:EventTrigger>
-            </i:Interaction.Triggers>
+            <TabControl x:Name="tab"  Visibility="{Binding VisibleGrid}" >
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="SelectionChanged">
+                        <i:InvokeCommandAction Command="{Binding TabChangedCommand}" CommandParameter="{Binding SelectedIndex, ElementName=tab}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
 
             <TabItem Header="По табелю" DataContext="{Binding modMainViewModel}">
                 <DockPanel  Background="Gainsboro">
@@ -155,145 +166,145 @@
 
                             <!--<DataGridTextColumn Header="Премия" Binding="{Binding PremiaItogo, StringFormat=N2}" Width="80" FontWeight="Bold" CellStyle="{StaticResource CellRight}"/>
                             <DataGridTextColumn Header="Итого" Binding="{Binding Itogo, StringFormat=N2}" Width="80" FontWeight="Bold" CellStyle="{StaticResource CellRight}"/>-->
-                        </DataGrid.Columns>
-                    </DataGrid>
-                </DockPanel>
-            </TabItem>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </DockPanel>
+                </TabItem>
 
-            <TabItem x:Name="tabBonus" Header="Премия 1 (бонус)" DataContext="{Binding premiaBonusViewModel}" >
-                <DockPanel  Background="Gainsboro">
-                    <Grid DockPanel.Dock="Top" Margin="8,0" Height="30">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="{Binding ActualWidth, ElementName=col1}"/>
-                            <ColumnDefinition Width="{Binding ActualWidth, ElementName=col2}"/>
-                            <ColumnDefinition Width="{Binding ActualWidth, ElementName=col3}"/>
-                            <ColumnDefinition Width="{Binding ActualWidth, ElementName=col4}"/>
-                            <ColumnDefinition Width="{Binding ActualWidth, ElementName=col5}"/>
-                            <ColumnDefinition Width="{Binding ActualWidth, ElementName=col6}"/>
-                        </Grid.ColumnDefinitions>
+                <TabItem x:Name="tabBonus" Header="Премия 1 (бонус)" DataContext="{Binding premiaBonusViewModel}" >
+                    <DockPanel  Background="Gainsboro">
+                        <Grid DockPanel.Dock="Top" Margin="8,0" Height="30">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="{Binding ActualWidth, ElementName=col1}"/>
+                                <ColumnDefinition Width="{Binding ActualWidth, ElementName=col2}"/>
+                                <ColumnDefinition Width="{Binding ActualWidth, ElementName=col3}"/>
+                                <ColumnDefinition Width="{Binding ActualWidth, ElementName=col4}"/>
+                                <ColumnDefinition Width="{Binding ActualWidth, ElementName=col5}"/>
+                                <ColumnDefinition Width="{Binding ActualWidth, ElementName=col6}"/>
+                            </Grid.ColumnDefinitions>
 
 
-                        <DockPanel Grid.Column="3" Margin="2,4">
-                            <Button DockPanel.Dock="Right" Command="{Binding CheckCommand}" Padding="0" 
+                            <DockPanel Grid.Column="3" Margin="2,4">
+                                <Button DockPanel.Dock="Right" Command="{Binding CheckCommand}" Padding="0" 
                                     CommandParameter="{Binding ElementName=dgBonus}" Style="{StaticResource ButtonStyleShadow}">
-                                <fa:ImageAwesome Icon="Solid_CheckCircle" Foreground="Green" Width="18" Height="16"/>
-                            </Button>
-                            <Border Background="Snow" BorderBrush="Gray" BorderThickness="0.5">
-                                <CheckBox IsChecked="{Binding IsCheckBonus}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                            </Border>
-                        </DockPanel>
+                                    <fa:ImageAwesome Icon="Solid_CheckCircle" Foreground="Green" Width="18" Height="16"/>
+                                </Button>
+                                <Border Background="Snow" BorderBrush="Gray" BorderThickness="0.5">
+                                    <CheckBox IsChecked="{Binding IsCheckBonus}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                            </DockPanel>
 
-                        <DockPanel Grid.Column="5" Margin="2,4">
-                            <Button DockPanel.Dock="Right" Command="{Binding SetMaxSummaCommand}" Padding="0" 
+                            <DockPanel Grid.Column="5" Margin="2,4">
+                                <Button DockPanel.Dock="Right" Command="{Binding SetMaxSummaCommand}" Padding="0" 
                                     CommandParameter="{Binding ElementName=dgBonus}" Style="{StaticResource ButtonStyleShadow}">
-                                <fa:ImageAwesome Icon="Solid_CheckCircle" Foreground="Green" Width="18" Height="16"/>
-                            </Button>
-                            <TextBox Text="{Binding SetMaxPrem, FallbackValue=0}" />
-                        </DockPanel>
+                                    <fa:ImageAwesome Icon="Solid_CheckCircle" Foreground="Green" Width="18" Height="16"/>
+                                </Button>
+                                <TextBox Text="{Binding SetMaxPrem, FallbackValue=0}" />
+                            </DockPanel>
 
-                    </Grid>
-                    <DataGrid x:Name="dgBonus" ItemsSource="{Binding ListModPerson}" 
-                              SelectedItem="{Binding DataContext.SelectedModPerson, Mode=TwoWay, ElementName=userControl}"
-                              Style="{StaticResource DataGridStyle}" >
-                        <DataGrid.Columns>
-                            <DataGridTextColumn x:Name="col1"  Header="Таб.№" Binding="{Binding person.p_tab_number}" IsReadOnly="True"/>
-                            <DataGridTextColumn x:Name="col2" Header="ФИО" Binding="{Binding person.FIO}" IsReadOnly="True"/>
-                            <DataGridTextColumn x:Name="col3" Header="Должность" Binding="{Binding person.p_profession}" IsReadOnly="True" Width="350"/>
-                            <DataGridCheckBoxColumn x:Name="col4" Header="Выполнено" Binding="{Binding md_bonus_exec, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" CellStyle="{StaticResource CellColor}"/>
-                            <DataGridTextColumn x:Name="col5" Header="%" MinWidth="80" Binding="{Binding DataContext.BonusProc, ElementName=tabBonus, StringFormat=0.#}" IsReadOnly="True"  Width="50" CellStyle="{StaticResource CellRight}"/>
-                            <DataGridTextColumn x:Name="col6" MinWidth="100" Header="Макс. бонус" Binding="{Binding md_bonus_max, Mode=TwoWay, StringFormat=N0}"  CellStyle="{StaticResource CellRightColor}"/>
-                            <DataGridTextColumn Header="Премия" Binding="{Binding premiaBonus.Summa, StringFormat=N2}" FontWeight="Bold" Width="80" IsReadOnly="True" CellStyle="{StaticResource CellRight}"/>
-                        </DataGrid.Columns>
-                    </DataGrid>
-                </DockPanel>
-            </TabItem>
+                        </Grid>
+                        <DataGrid x:Name="dgBonus" ItemsSource="{Binding ListModPerson}" 
+                            SelectedItem="{Binding DataContext.SelectedModPerson, ElementName=userControl, Mode=TwoWay}"
+                            Style="{StaticResource DataGridStyle}" >
+                            <DataGrid.Columns>
+                                <DataGridTextColumn x:Name="col1"  Header="Таб.№" Binding="{Binding person.p_tab_number}" IsReadOnly="True"/>
+                                <DataGridTextColumn x:Name="col2" Header="ФИО" Binding="{Binding person.FIO}" IsReadOnly="True"/>
+                                <DataGridTextColumn x:Name="col3" Header="Должность" Binding="{Binding person.p_profession}" IsReadOnly="True" Width="350"/>
+                                <DataGridCheckBoxColumn x:Name="col4" Header="Выполнено" Binding="{Binding md_bonus_exec, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" CellStyle="{StaticResource CellColor}"/>
+                                <DataGridTextColumn x:Name="col5" Header="%" MinWidth="80" Binding="{Binding DataContext.BonusProc, ElementName=tabBonus, StringFormat=0.#}" IsReadOnly="True"  Width="50" CellStyle="{StaticResource CellRight}"/>
+                                <DataGridTextColumn x:Name="col6" MinWidth="100" Header="Макс. бонус" Binding="{Binding md_bonus_max, Mode=TwoWay, StringFormat=N0}"  CellStyle="{StaticResource CellRightColor}"/>
+                                <DataGridTextColumn Header="Премия" Binding="{Binding premiaBonus.Summa, StringFormat=N2}" FontWeight="Bold" Width="80" IsReadOnly="True" CellStyle="{StaticResource CellRight}"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </DockPanel>
+                </TabItem>
 
 
-            <TabItem x:Name="tabFP" Header="Премия 2 (по выработке)" DataContext="{Binding premiaFPViewModel}"
-                     ToolTip="Для рабочего персонала" Visibility="{Binding DataContext.IsVisibleITR, ElementName=userControl}">
-                    
-                <!--<TabItem.Header>
+                <TabItem x:Name="tabFP" Header="Премия 2 (по выработке)" DataContext="{Binding premiaFPViewModel}"
+                    ToolTip="Для рабочего персонала" Visibility="{Binding DataContext.IsVisibleITR, ElementName=userControl}">
+
+                    <!--<TabItem.Header>
                     <TextBlock Text="Премия 2 (по выработке)"  Background="LightGreen" Padding="2"/>
                 </TabItem.Header>-->
-                <DockPanel  Background="Gainsboro">
-                    <Grid DockPanel.Dock="Top" Margin="8,0" Height="30">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="{Binding ActualWidth, ElementName=colFP1}"/>
-                            <ColumnDefinition Width="{Binding ActualWidth, ElementName=colFP2}"/>
-                            <ColumnDefinition Width="{Binding ActualWidth, ElementName=colFP3}"/>
-                            <ColumnDefinition Width="{Binding ActualWidth, ElementName=colFP4}"/>
-                            <ColumnDefinition Width="{Binding ActualWidth, ElementName=colFP5}"/>
-                            <ColumnDefinition Width="{Binding ActualWidth, ElementName=colFP6}"/>
-                            <ColumnDefinition Width="{Binding ActualWidth, ElementName=colFP7}"/>
-                            <ColumnDefinition Width="{Binding ActualWidth, ElementName=colFP8}"/>
-                            <ColumnDefinition Width="{Binding ActualWidth, ElementName=colFP9}"/>
-                        </Grid.ColumnDefinitions>
-                        <DockPanel Grid.Column="3" Margin="2,4">
-                            <Button DockPanel.Dock="Right" Command="{Binding SetProcPremCommand}" Padding="0" 
+                    <DockPanel  Background="Gainsboro">
+                        <Grid DockPanel.Dock="Top" Margin="8,0" Height="30">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="{Binding ActualWidth, ElementName=colFP1}"/>
+                                <ColumnDefinition Width="{Binding ActualWidth, ElementName=colFP2}"/>
+                                <ColumnDefinition Width="{Binding ActualWidth, ElementName=colFP3}"/>
+                                <ColumnDefinition Width="{Binding ActualWidth, ElementName=colFP4}"/>
+                                <ColumnDefinition Width="{Binding ActualWidth, ElementName=colFP5}"/>
+                                <ColumnDefinition Width="{Binding ActualWidth, ElementName=colFP6}"/>
+                                <ColumnDefinition Width="{Binding ActualWidth, ElementName=colFP7}"/>
+                                <ColumnDefinition Width="{Binding ActualWidth, ElementName=colFP8}"/>
+                                <ColumnDefinition Width="{Binding ActualWidth, ElementName=colFP9}"/>
+                            </Grid.ColumnDefinitions>
+                            <DockPanel Grid.Column="3" Margin="2,4">
+                                <Button DockPanel.Dock="Right" Command="{Binding SetProcPremCommand}" Padding="0" 
                                     CommandParameter="{Binding ElementName=dgFP}" Style="{StaticResource ButtonStyleShadow}">
-                                <fa:ImageAwesome Icon="Solid_CheckCircle" Foreground="Green" Width="18" Height="16"/>
-                            </Button>
-                            <TextBox Text="{Binding SetProcPrem, FallbackValue=0}" />
-                        </DockPanel>
-                        
-                        <DockPanel Grid.Column="6" Margin="2,4">
-                            <Button DockPanel.Dock="Right" Command="{Binding SetTarifPremCommand}" Padding="0" 
-                                    CommandParameter="{Binding ElementName=dgFP}" Style="{StaticResource ButtonStyleShadow}">
-                                <fa:ImageAwesome Icon="Solid_CheckCircle" Foreground="Green" Width="18" Height="16"/>
-                            </Button>
-                            <TextBox Text="{Binding SetTarif, FallbackValue=0}" />
-                        </DockPanel>
-                        
-                        <DockPanel Grid.Column="8" Margin="2,4">
-                            <Button DockPanel.Dock="Right" Command="{Binding SetGroupCommand}" Padding="0" 
-                                    CommandParameter="{Binding ElementName=dgFP}" Style="{StaticResource ButtonStyleShadow}">
-                                <fa:ImageAwesome Icon="Solid_CheckCircle" Foreground="Green" Width="18" Height="16"/>
-                            </Button>
-                            <TextBox Text="{Binding SetGroupName, Mode=OneWayToSource}" />
-                        </DockPanel>
-                        
-                    </Grid>
-                    <DataGrid x:Name="dgFP" ItemsSource="{Binding ListModPerson}" 
-                              SelectedItem="{Binding DataContext.SelectedModPerson, Mode=TwoWay, ElementName=userControl}"
-                              Style="{StaticResource DataGridStyle}" >
-                        <DataGrid.Columns>
-                            <DataGridTextColumn x:Name="colFP1" Header="Таб.№" Binding="{Binding person.p_tab_number}" IsReadOnly="True"/>
-                            <DataGridTextColumn x:Name="colFP2" Header="ФИО" Binding="{Binding person.FIO}" IsReadOnly="True"/>
-                            <DataGridTextColumn x:Name="colFP3" Header="Должность" Binding="{Binding person.p_profession}" IsReadOnly="True" Width="350"/>
-                            <DataGridTextColumn x:Name="colFP4" Header="% премии" Binding="{Binding md_premFP, Mode=TwoWay, StringFormat=N2}" CellStyle="{StaticResource CellRightColor}"/>
-                            <DataGridTextColumn x:Name="colFP5" Header="Часы из ФП/кол-во операций" Binding="{Binding md_sumFromFP, StringFormat=N2}" CellStyle="{StaticResource CellRightColor}" Width="90"/>
-                            <DataGridTextColumn x:Name="colFP6" Header="Расч.часы/расч.опер." Binding="{Binding premiaFP.SummaHoursFP, StringFormat=N2}" IsReadOnly="True" CellStyle="{StaticResource CellRight}" Width="100"/>
-                            <DataGridTextColumn x:Name="colFP7" Header="Премиальный тариф" Binding="{Binding md_cat_prem_tarif, StringFormat=N2}" CellStyle="{StaticResource CellRightColor}"/>
-                            <DataGridTextColumn x:Name="colFP8" Header="Премия" Binding="{Binding premiaFP.Summa, StringFormat=N2}" FontWeight="Bold" Width="90" IsReadOnly="True" CellStyle="{StaticResource CellRight}"/>
-                            <DataGridTextColumn x:Name="colFP9" Header="Группа" Binding="{Binding md_group}" CellStyle="{StaticResource CellRightColor}" MinWidth="60"/>
-                            <DataGridTextColumn Header="% группы" Binding="{Binding premiaFP.ProcGroup, StringFormat=0.##%}" CellStyle="{StaticResource CellRight}" IsReadOnly="True"/>
-                        </DataGrid.Columns>
-                    </DataGrid>
-                </DockPanel>
-            </TabItem>
+                                    <fa:ImageAwesome Icon="Solid_CheckCircle" Foreground="Green" Width="18" Height="16"/>
+                                </Button>
+                                <TextBox Text="{Binding SetProcPrem, FallbackValue=0}" />
+                            </DockPanel>
 
-            <TabItem Visibility="Visible" Header="Доп. работы" DataContext="{Binding premiaAddWorksViewModel}" >
-                <!--<TabItem.Header>
+                            <DockPanel Grid.Column="6" Margin="2,4">
+                                <Button DockPanel.Dock="Right" Command="{Binding SetTarifPremCommand}" Padding="0" 
+                                    CommandParameter="{Binding ElementName=dgFP}" Style="{StaticResource ButtonStyleShadow}">
+                                    <fa:ImageAwesome Icon="Solid_CheckCircle" Foreground="Green" Width="18" Height="16"/>
+                                </Button>
+                                <TextBox Text="{Binding SetTarif, FallbackValue=0}" />
+                            </DockPanel>
+
+                            <DockPanel Grid.Column="8" Margin="2,4">
+                                <Button DockPanel.Dock="Right" Command="{Binding SetGroupCommand}" Padding="0" 
+                                    CommandParameter="{Binding ElementName=dgFP}" Style="{StaticResource ButtonStyleShadow}">
+                                    <fa:ImageAwesome Icon="Solid_CheckCircle" Foreground="Green" Width="18" Height="16"/>
+                                </Button>
+                                <TextBox Text="{Binding SetGroupName, Mode=OneWayToSource}" />
+                            </DockPanel>
+
+                        </Grid>
+                        <DataGrid x:Name="dgFP" ItemsSource="{Binding ListModPerson}" 
+                            SelectedItem="{Binding DataContext.SelectedModPerson, ElementName=userControl, Mode=TwoWay}"
+                            Style="{StaticResource DataGridStyle}" >
+                            <DataGrid.Columns>
+                                <DataGridTextColumn x:Name="colFP1" Header="Таб.№" Binding="{Binding person.p_tab_number}" IsReadOnly="True"/>
+                                <DataGridTextColumn x:Name="colFP2" Header="ФИО" Binding="{Binding person.FIO}" IsReadOnly="True"/>
+                                <DataGridTextColumn x:Name="colFP3" Header="Должность" Binding="{Binding person.p_profession}" IsReadOnly="True" Width="350"/>
+                                <DataGridTextColumn x:Name="colFP4" Header="% премии" Binding="{Binding md_premFP, Mode=TwoWay, StringFormat=N2}" CellStyle="{StaticResource CellRightColor}"/>
+                                <DataGridTextColumn x:Name="colFP5" Header="Часы из ФП/кол-во операций" Binding="{Binding md_sumFromFP, StringFormat=N2}" CellStyle="{StaticResource CellRightColor}" Width="90"/>
+                                <DataGridTextColumn x:Name="colFP6" Header="Расч.часы/расч.опер." Binding="{Binding premiaFP.SummaHoursFP, StringFormat=N2}" IsReadOnly="True" CellStyle="{StaticResource CellRight}" Width="100"/>
+                                <DataGridTextColumn x:Name="colFP7" Header="Премиальный тариф" Binding="{Binding md_cat_prem_tarif, StringFormat=N2}" CellStyle="{StaticResource CellRightColor}"/>
+                                <DataGridTextColumn x:Name="colFP8" Header="Премия" Binding="{Binding premiaFP.Summa, StringFormat=N2}" FontWeight="Bold" Width="90" IsReadOnly="True" CellStyle="{StaticResource CellRight}"/>
+                                <DataGridTextColumn x:Name="colFP9" Header="Группа" Binding="{Binding md_group}" CellStyle="{StaticResource CellRightColor}" MinWidth="60"/>
+                                <DataGridTextColumn Header="% группы" Binding="{Binding premiaFP.ProcGroup, StringFormat=0.##%}" CellStyle="{StaticResource CellRight}" IsReadOnly="True"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </DockPanel>
+                </TabItem>
+
+                <TabItem Visibility="Visible" Header="Доп. работы" DataContext="{Binding premiaAddWorksViewModel}" >
+                    <!--<TabItem.Header>
                     <TextBlock Text="Доп. работы" Background="LightGreen" Padding="2"/>
                 </TabItem.Header>-->
 
-                <DockPanel  Background="Gainsboro">
-                    <Grid DockPanel.Dock="Top" Margin="8,0" Height="30">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="100"/>
-                            <ColumnDefinition Width="100"/>
-                        </Grid.ColumnDefinitions>
-                    </Grid>
-                    <FrameworkElement x:Name="ProxyElement" Visibility="Collapsed" DataContext="{Binding}"/>
-                    <DataGrid x:Name="dgDop" ItemsSource="{Binding ListModPerson}" Style="{StaticResource DataGridStyle}" IsReadOnly="False"
-                              SelectedItem="{Binding SelectedPerson, Mode=TwoWay}"
+                    <DockPanel  Background="Gainsboro">
+                        <Grid DockPanel.Dock="Top" Margin="8,0" Height="30">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="100"/>
+                            </Grid.ColumnDefinitions>
+                        </Grid>
+                        <FrameworkElement x:Name="ProxyElement" Visibility="Collapsed" DataContext="{Binding}"/>
+                        <DataGrid x:Name="dgDop" ItemsSource="{Binding ListModPerson}" Style="{StaticResource DataGridStyle}" IsReadOnly="False"
+                            SelectedItem="{Binding SelectedPerson, Mode=TwoWay}"
                               >
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="Таб.№" Binding="{Binding person.p_tab_number}" IsReadOnly="True"/>
-                            <DataGridTextColumn Header="ФИО" Binding="{Binding person.FIO}" IsReadOnly="True"/>
-                            <DataGridTextColumn Header="Должность" Binding="{Binding person.p_profession}"  IsReadOnly="True" Width="350"/>
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Таб.№" Binding="{Binding person.p_tab_number}" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="ФИО" Binding="{Binding person.FIO}" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Должность" Binding="{Binding person.p_profession}"  IsReadOnly="True" Width="350"/>
 
-                            <!--<DataGridComboBoxColumn Header="Доп. работа" 
+                                <!--<DataGridComboBoxColumn Header="Доп. работа" 
                                 ItemsSource="{Binding DataContext.ListWorks, ElementName=userControl}" ElementStyle="{Binding Mode=OneWay, Source={StaticResource StyleCheckComboBox}}"
                              />-->
 
@@ -334,30 +345,30 @@
                                                 Width="100"  CellStyle="{StaticResource CellRightColor}"/>
                             <DataGridTextColumn Header="Итого" Binding="{Binding premiaAddWorks.Summa, StringFormat=N2}" FontWeight="Bold" Width="90"  CellStyle="{StaticResource CellRight}" IsReadOnly="True"/>
 
-                        </DataGrid.Columns>
-                    </DataGrid>
-                </DockPanel>
-            </TabItem>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </DockPanel>
+                </TabItem>
 
 
-            <TabItem Visibility="Visible" Background="LightBlue" DataContext="{Binding premiaOtdelViewModel}">
-                <TabItem.Header>
-                    <TextBlock Text="Премия 2 (по отделу)" Background="LightBlue" Padding="2"/>
-                </TabItem.Header>
-                <DockPanel  Background="Gainsboro">
-                    <Grid DockPanel.Dock="Top" Margin="8,0" Height="30">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="{Binding ActualWidth, ElementName=colITR1}"/>
-                            <ColumnDefinition Width="{Binding ActualWidth, ElementName=colITR2}"/>
-                            <ColumnDefinition Width="{Binding ActualWidth, ElementName=colITR3}"/>
-                            <ColumnDefinition Width="{Binding ActualWidth, ElementName=colITR4}"/>
-                            <ColumnDefinition Width="{Binding ActualWidth, ElementName=colITR5}"/>
-                            <ColumnDefinition Width="{Binding ActualWidth, ElementName=colITR6}"/>
-                            <ColumnDefinition Width="{Binding ActualWidth, ElementName=colITR7}"/>
-                            <ColumnDefinition Width="{Binding ActualWidth, ElementName=colITR8}"/>
-                        </Grid.ColumnDefinitions>
+                <TabItem Visibility="Visible" Background="LightBlue" DataContext="{Binding premiaOtdelViewModel}">
+                    <TabItem.Header>
+                        <TextBlock Text="Премия 2 (по отделу)" Background="LightBlue" Padding="2"/>
+                    </TabItem.Header>
+                    <DockPanel  Background="Gainsboro">
+                        <Grid DockPanel.Dock="Top" Margin="8,0" Height="30">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="{Binding ActualWidth, ElementName=colITR1}"/>
+                                <ColumnDefinition Width="{Binding ActualWidth, ElementName=colITR2}"/>
+                                <ColumnDefinition Width="{Binding ActualWidth, ElementName=colITR3}"/>
+                                <ColumnDefinition Width="{Binding ActualWidth, ElementName=colITR4}"/>
+                                <ColumnDefinition Width="{Binding ActualWidth, ElementName=colITR5}"/>
+                                <ColumnDefinition Width="{Binding ActualWidth, ElementName=colITR6}"/>
+                                <ColumnDefinition Width="{Binding ActualWidth, ElementName=colITR7}"/>
+                                <ColumnDefinition Width="{Binding ActualWidth, ElementName=colITR8}"/>
+                            </Grid.ColumnDefinitions>
 
-                        <!--<DockPanel Grid.Column="6" Margin="2,4">
+                            <!--<DockPanel Grid.Column="6" Margin="2,4">
                             <Button DockPanel.Dock="Right" Command="{Binding SetProcFullCommand}" Padding="0" 
                                     CommandParameter="{Binding ElementName=dgOt}" Style="{StaticResource ButtonStyleShadow}">
                                 <fa:ImageAwesome Icon="Solid_CheckCircle" Foreground="Green" Width="18" Height="16"/>
@@ -365,7 +376,7 @@
                             <TextBox Text="{Binding SetProcFull, FallbackValue=0}" />
                         </DockPanel>-->
 
-                        <!--<DockPanel Grid.Column="7" Margin="2,4">
+                            <!--<DockPanel Grid.Column="7" Margin="2,4">
                             <Button DockPanel.Dock="Right" Command="{Binding SetProcPremCommand}" Padding="0" 
                                     CommandParameter="{Binding ElementName=dgOt}" Style="{StaticResource ButtonStyleShadow}">
                                 <fa:ImageAwesome Icon="Solid_CheckCircle" Foreground="Green" Width="18" Height="16"/>
@@ -374,127 +385,139 @@
                         </DockPanel>-->
 
 
-                        <!--<Button  Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Center" Width="60" 
+                            <!--<Button  Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Center" Width="60" 
                                  HorizontalContentAlignment="Left"
                                  Command="{Binding SetProcPremCommand}" CommandParameter="{Binding ElementName=dgOt}"
                                  Style="{StaticResource ButtonStyleShadow}">
                             <TextBox Text="{Binding SetProcPrem, Mode=OneWayToSource}" Width="40"/>
                         </Button>-->
 
-                        <!--<Button  Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Center" Width="60" 
+                            <!--<Button  Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Center" Width="60" 
                                  HorizontalContentAlignment="Left"
                                  Command="{Binding SetProcFullCommand}" CommandParameter="{Binding ElementName=dgOt}"
                                  Style="{StaticResource ButtonStyleShadow}">
                             <TextBox Text="{Binding SetProcFull, Mode=OneWayToSource}" Width="40"/>
                         </Button>-->
-                    </Grid>
-                    <DataGrid x:Name="dgOt" ItemsSource="{Binding ListModPerson}" 
-                              SelectedItem="{Binding DataContext.SelectedModPerson, Mode=TwoWay, ElementName=userControl}"
-                              Style="{StaticResource DataGridStyle}" >
-                        <DataGrid.Columns>
-                            <DataGridTextColumn x:Name="colITR1" Header="Таб.№" Binding="{Binding person.p_tab_number}" IsReadOnly="True"/>
-                            <DataGridTextColumn x:Name="colITR2" Header="ФИО" Binding="{Binding person.FIO}" IsReadOnly="True"/>
-                            <DataGridTextColumn x:Name="colITR3" Header="Должность" Binding="{Binding person.p_profession}" IsReadOnly="True" Width="350"/>
-                            <!--<DataGridTextColumn x:Name="colITR4" Header="Работа с ОР" Binding="{Binding md_kvalif_name}" Width="200" CellStyle="{StaticResource CellColor}"/>-->
-                            <DataGridTemplateColumn x:Name="colITR4" Header="Целевые указания" Width="240" CellStyle="{StaticResource CellColor}">
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <DockPanel>
-                                            <Button x:Name="btn" Content="..." Width="20" DockPanel.Dock="Right" 
+                        </Grid>
+                        <DataGrid x:Name="dgOt" ItemsSource="{Binding ListModPerson}"  
+                            SelectedItem="{Binding DataContext.SelectedModPerson, ElementName=userControl, Mode=TwoWay}"
+                            Style="{StaticResource DataGridStyle}" >
+                            <DataGrid.Columns>
+                                <DataGridTextColumn x:Name="colITR1" Header="Таб.№" Binding="{Binding person.p_tab_number}" IsReadOnly="True"/>
+                                <DataGridTextColumn x:Name="colITR2" Header="ФИО" Binding="{Binding person.FIO}" IsReadOnly="True"/>
+                                <DataGridTextColumn x:Name="colITR3" Header="Должность" Binding="{Binding person.p_profession}" IsReadOnly="True" Width="350"/>
+                                <!--<DataGridTextColumn x:Name="colITR4" Header="Работа с ОР" Binding="{Binding md_kvalif_name}" Width="200" CellStyle="{StaticResource CellColor}"/>-->
+                                <DataGridTemplateColumn x:Name="colITR4" Header="Целевые указания" Width="240" CellStyle="{StaticResource CellColor}">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <DockPanel>
+                                                <Button x:Name="btn" Content="..." Width="20" DockPanel.Dock="Right" 
                                                     CommandParameter="{Binding ElementName=btn}"
                                                     Command="{Binding DataContext.BtnPremiaOtdelCommand, ElementName=userControl}"/>
-                                            <TextBlock Text="{Binding md_kvalif_name}"/>
-                                        </DockPanel>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                            </DataGridTemplateColumn>
-                            <DataGridTextColumn x:Name="colITR5" Header="План.тариф" Binding="{Binding PlanTarifOtdel, Mode=TwoWay, StringFormat=N2}" CellStyle="{StaticResource CellRight}" IsReadOnly="True"/>
-                            <DataGridTextColumn x:Name="colITR6" Header="Прем.тариф" Binding="{Binding md_kvalif_tarif, Mode=TwoWay, StringFormat=N2}" CellStyle="{StaticResource CellRight}" IsReadOnly="True"/>
-                            <DataGridTextColumn x:Name="colITR7" Header="от полн.%" Binding="{Binding md_kvalif_proc, StringFormat=N2}" CellStyle="{StaticResource CellRight}" IsReadOnly="True"/>
-                            <DataGridTextColumn x:Name="colITR8" Header="% выполн." Binding="{Binding md_kvalif_prem, StringFormat=N2}" CellStyle="{StaticResource CellRight}" IsReadOnly="True"/>
-                            <DataGridTextColumn x:Name="colITR9" Header="Премия" Binding="{Binding premiaOtdel.Summa, StringFormat=N2}" FontWeight="Bold" Width="90" IsReadOnly="True" CellStyle="{StaticResource CellRight}"/>
-                        </DataGrid.Columns>
-                    </DataGrid>
-                </DockPanel>
-            </TabItem>
+                                                <TextBlock Text="{Binding md_kvalif_name}"/>
+                                            </DockPanel>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTextColumn x:Name="colITR5" Header="План.тариф" Binding="{Binding PlanTarifOtdel, Mode=TwoWay, StringFormat=N2}" CellStyle="{StaticResource CellRight}" IsReadOnly="True"/>
+                                <DataGridTextColumn x:Name="colITR6" Header="Прем.тариф" Binding="{Binding md_kvalif_tarif, Mode=TwoWay, StringFormat=N2}" CellStyle="{StaticResource CellRight}" IsReadOnly="True"/>
+                                <DataGridTextColumn x:Name="colITR7" Header="от полн.%" Binding="{Binding md_kvalif_proc, StringFormat=N2}" CellStyle="{StaticResource CellRight}" IsReadOnly="True"/>
+                                <DataGridTextColumn x:Name="colITR8" Header="% выполн." Binding="{Binding md_kvalif_prem, StringFormat=N2}" CellStyle="{StaticResource CellRight}" IsReadOnly="True"/>
+                                <DataGridTextColumn x:Name="colITR9" Header="Премия" Binding="{Binding premiaOtdel.Summa, StringFormat=N2}" FontWeight="Bold" Width="90" IsReadOnly="True" CellStyle="{StaticResource CellRight}"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </DockPanel>
+                </TabItem>
 
 
-            <TabItem DataContext="{Binding premiaStimulViewModel}" >
-                <TabItem.Header>
-                    <TextBlock Text="Премия 3 (стимуляция)" Background="LightBlue" Padding="2"/>
-                </TabItem.Header>
-                <DockPanel  Background="Gainsboro">
-                    <Grid DockPanel.Dock="Top" Margin="8,0" Height="30">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="{Binding ActualWidth, ElementName=colS1}"/>
-                            <ColumnDefinition Width="{Binding ActualWidth, ElementName=colS2}"/>
-                            <ColumnDefinition Width="{Binding ActualWidth, ElementName=colS3}"/>
-                            <ColumnDefinition Width="{Binding ActualWidth, ElementName=colS4}"/>
-                            <ColumnDefinition Width="{Binding ActualWidth, ElementName=colS5}"/>
-                            <ColumnDefinition Width="{Binding ActualWidth, ElementName=colS6}"/>
-                            <ColumnDefinition Width="{Binding ActualWidth, ElementName=colS7}"/>
-                        </Grid.ColumnDefinitions>
+                <TabItem DataContext="{Binding premiaStimulViewModel}" >
+                    <TabItem.Header>
+                        <TextBlock Text="Премия 3 (стимуляция)" Background="LightBlue" Padding="2"/>
+                    </TabItem.Header>
+                    <DockPanel  Background="Gainsboro">
+                        <Grid DockPanel.Dock="Top" Margin="8,0" Height="30">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="{Binding ActualWidth, ElementName=colS1}"/>
+                                <ColumnDefinition Width="{Binding ActualWidth, ElementName=colS2}"/>
+                                <ColumnDefinition Width="{Binding ActualWidth, ElementName=colS3}"/>
+                                <ColumnDefinition Width="{Binding ActualWidth, ElementName=colS4}"/>
+                                <ColumnDefinition Width="{Binding ActualWidth, ElementName=colS5}"/>
+                                <ColumnDefinition Width="{Binding ActualWidth, ElementName=colS6}"/>
+                                <ColumnDefinition Width="{Binding ActualWidth, ElementName=colS7}"/>
+                            </Grid.ColumnDefinitions>
 
-                        <DockPanel Grid.Column="6" Margin="2,4">
-                            <Button DockPanel.Dock="Right" Command="{Binding SetProcPremCommand}" Padding="0" 
+                            <DockPanel Grid.Column="6" Margin="2,4">
+                                <Button DockPanel.Dock="Right" Command="{Binding SetProcPremCommand}" Padding="0" 
                                     CommandParameter="{Binding ElementName=dgStim}" Style="{StaticResource ButtonStyleShadow}">
-                                <fa:ImageAwesome Icon="Solid_CheckCircle" Foreground="Green" Width="18" Height="16"/>
-                            </Button>
-                            <TextBox Text="{Binding SetProcPrem, FallbackValue=0}" />
-                        </DockPanel>
-                    </Grid>
-                    <DataGrid x:Name="dgStim" ItemsSource="{Binding ListModPerson}" 
-                              SelectedItem="{Binding DataContext.SelectedModPerson, Mode=TwoWay, ElementName=userControl}"
-                              Style="{StaticResource DataGridStyle}" >
-                        <DataGrid.Columns>
-                            <DataGridTextColumn x:Name="colS1" Header="Таб.№" Binding="{Binding person.p_tab_number}" IsReadOnly="True"/>
-                            <DataGridTextColumn x:Name="colS2" Header="ФИО" Binding="{Binding person.FIO}" IsReadOnly="True"/>
-                            <DataGridTextColumn x:Name="colS3" Header="Должность" Binding="{Binding person.p_profession}" IsReadOnly="True" Width="350"/>
-                            <DataGridTextColumn x:Name="colS4" Header="Макс. премия" Binding="{Binding md_prem_otdel, Mode=TwoWay, StringFormat=N0}" CellStyle="{StaticResource CellRight}"  IsReadOnly="True"/>
-                            <DataGridTextColumn x:Name="colS5" Header="от полн.%" Binding="{Binding premiStimul.OstPrem, StringFormat=N2}" IsReadOnly="True" CellStyle="{StaticResource CellRight}"/>
-                            <DataGridTextColumn x:Name="colS6" Header="Целевое указание" Binding="{Binding md_prem_stimul_name}" IsReadOnly="False" CellStyle="{StaticResource CellColor}" Width="200"/>
-                            <DataGridTextColumn x:Name="colS7" Header="% выполн." Binding="{Binding md_prem_otdel_proc, Mode=TwoWay, StringFormat=0.#}"  CellStyle="{StaticResource CellRightColor}"/>
-                            <DataGridTextColumn x:Name="colS8" Header="Премия" Binding="{Binding premiStimul.Summa, StringFormat=N2}" FontWeight="Bold" Width="90" IsReadOnly="True" CellStyle="{StaticResource CellRight}"/>
-                        </DataGrid.Columns>
-                    </DataGrid>
-                </DockPanel>
-            </TabItem>
+                                    <fa:ImageAwesome Icon="Solid_CheckCircle" Foreground="Green" Width="18" Height="16"/>
+                                </Button>
+                                <TextBox Text="{Binding SetProcPrem, FallbackValue=0}" />
+                            </DockPanel>
+                        </Grid>
+                        <DataGrid x:Name="dgStim" ItemsSource="{Binding ListModPerson}" 
+                            SelectedItem="{Binding DataContext.SelectedModPerson, ElementName=userControl, Mode=TwoWay}"
+                            Style="{StaticResource DataGridStyle}" >
+                            <DataGrid.Columns>
+                                <DataGridTextColumn x:Name="colS1" Header="Таб.№" Binding="{Binding person.p_tab_number}" IsReadOnly="True"/>
+                                <DataGridTextColumn x:Name="colS2" Header="ФИО" Binding="{Binding person.FIO}" IsReadOnly="True"/>
+                                <DataGridTextColumn x:Name="colS3" Header="Должность" Binding="{Binding person.p_profession}" IsReadOnly="True" Width="350"/>
+                                <DataGridTextColumn x:Name="colS4" Header="Макс. премия" Binding="{Binding md_prem_otdel, Mode=TwoWay, StringFormat=N0}" CellStyle="{StaticResource CellRight}"  IsReadOnly="True"/>
+                                <DataGridTextColumn x:Name="colS5" Header="от полн.%" Binding="{Binding premiStimul.OstPrem, StringFormat=N2}" IsReadOnly="True" CellStyle="{StaticResource CellRight}"/>
+                                <DataGridTextColumn x:Name="colS6" Header="Целевое указание" Binding="{Binding md_prem_stimul_name}" IsReadOnly="False" CellStyle="{StaticResource CellColor}" Width="200"/>
+                                <DataGridTextColumn x:Name="colS7" Header="% выполн." Binding="{Binding md_prem_otdel_proc, Mode=TwoWay, StringFormat=0.#}"  CellStyle="{StaticResource CellRightColor}"/>
+                                <DataGridTextColumn x:Name="colS8" Header="Премия" Binding="{Binding premiStimul.Summa, StringFormat=N2}" FontWeight="Bold" Width="90" IsReadOnly="True" CellStyle="{StaticResource CellRight}"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </DockPanel>
+                </TabItem>
 
-            
-            <TabItem Header="Итого" DataContext="{Binding premiaItogoViewModel}">
-                <DockPanel  Background="Gainsboro">
-                    <Grid DockPanel.Dock="Top" Margin="8,0" Height="30">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="100"/>
-                            <ColumnDefinition Width="100"/>
-                        </Grid.ColumnDefinitions>
-                    </Grid>
-                    
-                    <FrameworkElement x:Name="ProxyElement3" Visibility="Collapsed" DataContext="{Binding}"/>
-                    <DataGrid ItemsSource="{Binding ListModPerson}" IsReadOnly="True"
-                              SelectedItem="{Binding DataContext.SelectedModPerson, Mode=TwoWay, ElementName=userControl}"
-                              Style="{StaticResource DataGridStyle}" >
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="Таб.№" Binding="{Binding person.p_tab_number}" IsReadOnly="True"/>
-                            <DataGridTextColumn Header="ФИО" Binding="{Binding person.FIO}" IsReadOnly="True"/>
-                            <DataGridTextColumn Header="Должность" Binding="{Binding person.p_profession}" IsReadOnly="True" Width="350"/>
-                            <DataGridTextColumn Header="Премия 1(бонус)" Binding="{Binding premiaBonus.Summa, StringFormat=N2}" Width="80"  CellStyle="{StaticResource CellRight}"/>
-                            <DataGridTextColumn x:Name="columnFP" Header="Премия 2(по выраб.)" Binding="{Binding premiaFP.Summa, StringFormat=N2}" 
-                                                Visibility="{Binding DataContext.IsVisibleITR, Source={x:Reference ProxyElement3}}"
-                                                Width="80" CellStyle="{StaticResource CellRight}"/>
-                            <DataGridTextColumn Header="Доплата (доп.раб.)" Binding="{Binding premiaAddWorks.Summa, StringFormat=N2}" Width="80"  CellStyle="{StaticResource CellRight}"/>
-                            <DataGridTextColumn Header="Компенсация за доставку" Binding="{Binding premiaTransport.Summa, StringFormat=N2}" Width="80"  CellStyle="{StaticResource CellRight}"/>
-                            <DataGridTextColumn Header="Премия 2(по отделу)" Binding="{Binding premiaOtdel.Summa, StringFormat=N2}" Width="80"  CellStyle="{StaticResource CellRight}"/>
-                            <DataGridTextColumn Header="Премия 3(стимул.)" Binding="{Binding premiStimul.Summa, StringFormat=N2}" Width="80"  CellStyle="{StaticResource CellRight}"/>
-                            <DataGridTextColumn Header="Премия (добр.труд)" Binding="{Binding premiaPrize.Summa, StringFormat=N2}" Width="80"  CellStyle="{StaticResource CellRight}"/>
-                            <DataGridTextColumn Header="Комп.больнич." Binding="{Binding md_bolnich, StringFormat=N2}" Width="80"  CellStyle="{StaticResource CellRight}"/>
-                            <DataGridTextColumn Header="Премия всего" Binding="{Binding PremiaItogo, StringFormat=N2}" Width="80" FontWeight="Bold" CellStyle="{StaticResource CellRight}"/>
-                            <DataGridTextColumn Header="Итого" Binding="{Binding Itogo, StringFormat=N2}" Width="80" FontWeight="Bold" CellStyle="{StaticResource CellRight}"/>
-                        </DataGrid.Columns>
-                    </DataGrid>
-                </DockPanel>
-            </TabItem>
-        </TabControl>
+
+                <TabItem Header="Итого" DataContext="{Binding premiaItogoViewModel}">
+                    <DockPanel  Background="Gainsboro">
+                        <Grid DockPanel.Dock="Top" Margin="8,0" Height="30">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="100"/>
+                            </Grid.ColumnDefinitions>
+                        </Grid>
+
+                        <FrameworkElement x:Name="ProxyElement3" Visibility="Collapsed" DataContext="{Binding}"/>
+                        <DataGrid ItemsSource="{Binding ListModPerson}" IsReadOnly="True"
+                            SelectedItem="{Binding DataContext.SelectedModPerson, ElementName=userControl, Mode=TwoWay}"
+                            Style="{StaticResource DataGridStyle}" >
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Таб.№" Binding="{Binding person.p_tab_number}" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="ФИО" Binding="{Binding person.FIO}" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Должность" Binding="{Binding person.p_profession}" IsReadOnly="True" Width="350"/>
+                                <DataGridTextColumn Header="Премия 1(бонус)" Binding="{Binding premiaBonus.Summa, StringFormat=N2}" Width="80"  CellStyle="{StaticResource CellRight}"/>
+                                <DataGridTextColumn x:Name="columnFP" Header="Премия 2(по выраб.)" Binding="{Binding premiaFP.Summa, StringFormat=N2}" 
+                                    Visibility="{Binding DataContext.IsVisibleITR, Source={x:Reference ProxyElement3}}"
+                                    Width="80" CellStyle="{StaticResource CellRight}"/>
+                                <DataGridTextColumn Header="Доплата (доп.раб.)" Binding="{Binding premiaAddWorks.Summa, StringFormat=N2}" Width="80"  CellStyle="{StaticResource CellRight}"/>
+                                <DataGridTextColumn Header="Компенсация за доставку" Binding="{Binding premiaTransport.Summa, StringFormat=N2}" Width="80"  CellStyle="{StaticResource CellRight}"/>
+                                <DataGridTextColumn Header="Премия 2(по отделу)" Binding="{Binding premiaOtdel.Summa, StringFormat=N2}" Width="80"  CellStyle="{StaticResource CellRight}"/>
+                                <DataGridTextColumn Header="Премия 3(стимул.)" Binding="{Binding premiStimul.Summa, StringFormat=N2}" Width="80"  CellStyle="{StaticResource CellRight}"/>
+                                <DataGridTextColumn Header="Премия (добр.труд)" Binding="{Binding premiaPrize.Summa, StringFormat=N2}" Width="80"  CellStyle="{StaticResource CellRight}"/>
+                                <DataGridTextColumn Header="Комп.больнич." Binding="{Binding md_bolnich, StringFormat=N2}" Width="80"  CellStyle="{StaticResource CellRight}"/>
+                                <DataGridTextColumn Header="Премия всего" Binding="{Binding PremiaItogo, StringFormat=N2}" Width="80" FontWeight="Bold" CellStyle="{StaticResource CellRight}"/>
+                                <DataGridTextColumn Header="Итого" Binding="{Binding Itogo, StringFormat=N2}" Width="80" FontWeight="Bold" CellStyle="{StaticResource CellRight}"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </DockPanel>
+                </TabItem>
+            </TabControl>
+
+        </Grid>
+        <!--<Image x:Name="spinner" DockPanel.Dock="Top" Source="/Resources/spinner.gif" Width="60" Margin="0,100,0,0" RenderTransformOrigin="0.5,0.5">
+            <Image.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Image.RenderTransform>
+        </Image>-->
 
     </DockPanel>
 </UserControl>

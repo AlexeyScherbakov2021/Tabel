@@ -11,6 +11,8 @@ using Tabel.Models;
 using Tabel.Repository;
 using DocumentFormat.OpenXml.EMMA;
 using System.Threading;
+using DocumentFormat.OpenXml.Office.CustomUI;
+using System.Collections.ObjectModel;
 
 namespace Tabel.Infrastructure
 {
@@ -45,7 +47,7 @@ namespace Tabel.Infrastructure
         //--------------------------------------------------------------------------------------------------------
         // получение всех связанных данных
         //--------------------------------------------------------------------------------------------------------
-        public void ModPersonFilling(IEnumerable<ModPerson> ListModPerson, CancellationToken token = default)
+        public IEnumerable<ModPerson> ModPersonFilling(IEnumerable<ModPerson> ListModPerson, CancellationToken token = default)
         {
             //try
             //{
@@ -84,6 +86,7 @@ namespace Tabel.Infrastructure
                     break;
                 }
 
+                yield return mPerson;
             }
         }
   

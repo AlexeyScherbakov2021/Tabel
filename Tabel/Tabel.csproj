@@ -579,5 +579,8 @@
   <ItemGroup>
     <Resource Include="Resources\настройки2.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\spinner.gif" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
