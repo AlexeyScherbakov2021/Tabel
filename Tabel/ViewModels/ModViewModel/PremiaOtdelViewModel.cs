@@ -60,26 +60,25 @@ namespace Tabel.ViewModels.ModViewModel
             }
         }
 
-
         #region Команды
 
         //--------------------------------------------------------------------------------
         // Команда Применить % премии к выбранным
         //--------------------------------------------------------------------------------
-        public ICommand SetProcPremCommand => new LambdaCommand(OnSetProcPremCommandExecuted, CanSetProcPremCommand);
-        private bool CanSetProcPremCommand(object p) => true;
-        private void OnSetProcPremCommandExecuted(object p)
-        {
-            if (p is DataGrid dg)
-            {
-                foreach (ModPerson item in dg.SelectedItems)
-                {
-                    item.md_kvalif_prem = SetProcPrem;
-                    item.OnPropertyChanged(nameof(item.md_kvalif_prem));
-                }
-            }
+        //public ICommand SetProcPremCommand => new LambdaCommand(OnSetProcPremCommandExecuted, CanSetProcPremCommand);
+        //private bool CanSetProcPremCommand(object p) => true;
+        //private void OnSetProcPremCommandExecuted(object p)
+        //{
+        //    if (p is DataGrid dg)
+        //    {
+        //        foreach (ModPerson item in dg.SelectedItems)
+        //        {
+        //            item.md_kvalif_prem = SetProcPrem;
+        //            item.OnPropertyChanged(nameof(item.md_kvalif_prem));
+        //        }
+        //    }
 
-        }
+        //}
 
         //--------------------------------------------------------------------------------
         // Команда Применить % от полной к выбранным

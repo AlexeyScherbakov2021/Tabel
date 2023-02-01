@@ -41,13 +41,13 @@ namespace Tabel.ViewModels.ModViewModel
             _SelectYear = Year;
             ListModPerson = listPerson;
 
-            SetPersonBonusProc(ListModPerson);
+            //SetPersonBonusProc(ListModPerson);
             OnPropertyChanged(nameof(ListModPerson));
         }
 
         public override void AddPersons(ICollection<ModPerson> listPerson)
         {
-            SetPersonBonusProc(listPerson);
+            //SetPersonBonusProc(listPerson);
             OnPropertyChanged(nameof(ListModPerson));
 
         }
@@ -56,21 +56,21 @@ namespace Tabel.ViewModels.ModViewModel
         //-------------------------------------------------------------------------------------------------------
         // подгрузка данных общего расчета 
         //-------------------------------------------------------------------------------------------------------
-        private void SetPersonBonusProc(ICollection<ModPerson> listPerson)
-        {
-            if (listPerson is null) return;
+        //private void SetPersonBonusProc(ICollection<ModPerson> listPerson)
+        //{
+        //    if (listPerson is null) return;
 
-            //RepositoryMSSQL<GenChargMonth> repoGetAll = new RepositoryMSSQL<GenChargMonth>(db);
-            //decimal? BonusProc = repoGetAll.Items
-            //    .FirstOrDefault(it => it.gm_Year == _SelectYear && it.gm_Month == _SelectMonth && it.gm_GenId == (int)EnumKind.BonusProc)?.gm_Value;
+        //    //RepositoryMSSQL<GenChargMonth> repoGetAll = new RepositoryMSSQL<GenChargMonth>(db);
+        //    //decimal? BonusProc = repoGetAll.Items
+        //    //    .FirstOrDefault(it => it.gm_Year == _SelectYear && it.gm_Month == _SelectMonth && it.gm_GenId == (int)EnumKind.BonusProc)?.gm_Value;
 
-            foreach (var modPerson in listPerson)
-            {
-                //modPerson.premiaBonus.BonusForAll = BonusProc;
-                modPerson.md_bonus_exec = (BonusProc != null && BonusProc > 0);
-            }
+        //    foreach (var modPerson in listPerson)
+        //    {
+        //        //modPerson.premiaBonus.BonusForAll = BonusProc;
+        //        modPerson.md_bonus_exec = (BonusProc != null && BonusProc > 0);
+        //    }
 
-        }
+        //}
 
         #region Команды
 
