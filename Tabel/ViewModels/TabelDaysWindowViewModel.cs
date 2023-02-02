@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -142,6 +143,30 @@ namespace Tabel.ViewModels
         private void OnSaveCommandExecuted(object p)
         {
             SaveForm();
+        }
+
+        //--------------------------------------------------------------------------------
+        // Событие Закрытие
+        //--------------------------------------------------------------------------------
+        public ICommand CloseCommand => new LambdaCommand(OnCloseCommandExecuted, CanCloseCommand);
+        private bool CanCloseCommand(object p) => true;
+        private void OnCloseCommandExecuted(object p)
+        {
+            if (IsModify == true)
+            {
+                MessageBoxResult res;
+                res = MessageBox.Show("Сохранить измененные данные?", "Предупреждение",
+                    MessageBoxButton.YesNoCancel, MessageBoxImage.Warning);
+
+                if (res == MessageBoxResult.Yes)
+                    SaveForm();
+                else if (res == MessageBoxResult.Cancel)
+                {
+                    (p as CancelEventArgs).Cancel = true;
+                    return;
+                }
+            }
+
         }
 
         #endregion
