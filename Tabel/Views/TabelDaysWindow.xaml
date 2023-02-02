@@ -8,12 +8,18 @@
         xmlns:vm="clr-namespace:Tabel.ViewModels"
         xmlns:cmd="clr-namespace:Tabel.Commands"
         xmlns:local="clr-namespace:Tabel.Views"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
         Background="Snow"
         Title="Табель рабочего времени сотрудника" Height="410" Width="1350" WindowStartupLocation="CenterScreen">
-    <!--<Window.Resources>
-        <cmd:CloseWindowCommand x:Key="CloseWindowCommand"/>
-    </Window.Resources>-->
+
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Closing">
+            <i:InvokeCommandAction Command="{Binding CloseCommand}" PassEventArgsToCommand="True"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    
+    
     <Window.DataContext>
         <vm:TabelDaysWindowViewModel/>
     </Window.DataContext>
@@ -24,30 +30,25 @@
                     
                     Style="{DynamicResource ButtonStyleShadow}"/>
         </ToolBar>
-        <!--<Label Padding="8" Background="Gainsboro" Margin="4,12" VerticalContentAlignment="Center" VerticalAlignment="Top" DockPanel.Dock="Top" Height="80">
-            <Label.Effect>
-                <DropShadowEffect ShadowDepth="0" BlurRadius="15" Opacity="0.4" />
-            </Label.Effect>-->
             <Grid Background="Gainsboro" Margin="4,12" VerticalAlignment="Top" DockPanel.Dock="Top" Height="70">
             <Grid.Effect>
                 <DropShadowEffect ShadowDepth="0" BlurRadius="15" Opacity="0.4" />
             </Grid.Effect>
                 <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="5*"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="30*"/>
-                <ColumnDefinition Width="1*"/>
-                <ColumnDefinition Width="20*"/>
-                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="20*"/>
                 </Grid.ColumnDefinitions>
                 <TextBlock Text="{Binding TabPerson.person.p_tab_number}" Grid.Column="0" FontSize="24" VerticalAlignment="Center"  Margin="8,0"/>
             <TextBlock Text="{Binding TabPerson.person.FIO}" Grid.Column="1" FontSize="24" FontWeight="Bold" Margin="8,0,28,0" TextWrapping="Wrap" VerticalAlignment="Center"/>
-                <fa:ImageAwesome Icon="Solid_Wrench" Height="18" Grid.Column="2" Foreground="Blue"/>
+                <fa:ImageAwesome Icon="Solid_Wrench" Height="18" Width="18" Grid.Column="2" Foreground="Blue"/>
             <TextBlock Text="{Binding TabPerson.person.p_profession}" Grid.Column="3" FontSize="18" VerticalAlignment="Center"  Margin="8,0" TextWrapping="Wrap" />
                 <fa:ImageAwesome Icon="Solid_UsersCog"  Grid.Column="4" Height="18" Foreground="Blue"/>
             <TextBlock Text="{Binding TabPerson.person.otdel.ot_name}" Grid.Column="5" FontSize="18" Margin="8,0"  VerticalAlignment="Center" TextWrapping="Wrap" />
             </Grid>
-        <!--</Label>-->
         <Border Background="Gainsboro" Margin="4" >
             <Border.Effect>
                 <DropShadowEffect ShadowDepth="0" BlurRadius="15" Opacity="0.4" />
