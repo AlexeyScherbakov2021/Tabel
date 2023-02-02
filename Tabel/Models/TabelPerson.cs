@@ -125,6 +125,7 @@ namespace Tabel.Models
             OnPropertyChanged("WorkedHours2");
             OnPropertyChanged("WorkedOffDays");
             OnPropertyChanged("WorkedOffHours");
+            OnPropertyChanged("OverWork");
         }
 
     }

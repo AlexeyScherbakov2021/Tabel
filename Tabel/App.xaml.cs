@@ -20,6 +20,9 @@ namespace Tabel
     public partial class App : Application
     {
         public static User CurrentUser;
+        public static Window FocusedWindow => Current?.Windows?.Cast<Window>().FirstOrDefault(w => w.IsFocused);
+        public static Window ActiveWindow => Current?.Windows?.Cast<Window>().FirstOrDefault(w => w.IsActive);
+
         //public static LogFile Log = new LogFile(0);
 
 

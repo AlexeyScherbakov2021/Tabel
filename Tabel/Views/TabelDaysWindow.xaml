@@ -1,0 +1,65 @@
+﻿<Window x:Name="mainWindow" x:Class="Tabel.Views.TabelDaysWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:fa="http://schemas.fontawesome.com/icons/"
+        xmlns:comp="clr-namespace:Tabel.Component.TabelPanel"
+        xmlns:vm="clr-namespace:Tabel.ViewModels"
+        xmlns:cmd="clr-namespace:Tabel.Commands"
+        xmlns:local="clr-namespace:Tabel.Views"
+        mc:Ignorable="d"
+        Background="Snow"
+        Title="Табель рабочего времени сотрудника" Height="410" Width="1350" WindowStartupLocation="CenterScreen">
+    <!--<Window.Resources>
+        <cmd:CloseWindowCommand x:Key="CloseWindowCommand"/>
+    </Window.Resources>-->
+    <Window.DataContext>
+        <vm:TabelDaysWindowViewModel/>
+    </Window.DataContext>
+    <DockPanel Margin="8">
+        <ToolBar DockPanel.Dock="Top" Padding="3">
+            <Button Content="Сохранить" Margin="4,0" Command="{Binding SaveCommand}" Style="{DynamicResource ButtonStyleShadow}"/>
+            <Button Content="Закрыть" Margin="4,0" Command="{StaticResource CloseDialogCommand}" 
+                    
+                    Style="{DynamicResource ButtonStyleShadow}"/>
+        </ToolBar>
+        <!--<Label Padding="8" Background="Gainsboro" Margin="4,12" VerticalContentAlignment="Center" VerticalAlignment="Top" DockPanel.Dock="Top" Height="80">
+            <Label.Effect>
+                <DropShadowEffect ShadowDepth="0" BlurRadius="15" Opacity="0.4" />
+            </Label.Effect>-->
+            <Grid Background="Gainsboro" Margin="4,12" VerticalAlignment="Top" DockPanel.Dock="Top" Height="70">
+            <Grid.Effect>
+                <DropShadowEffect ShadowDepth="0" BlurRadius="15" Opacity="0.4" />
+            </Grid.Effect>
+                <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="5*"/>
+                <ColumnDefinition Width="30*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="20*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="20*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="{Binding TabPerson.person.p_tab_number}" Grid.Column="0" FontSize="24" VerticalAlignment="Center"  Margin="8,0"/>
+            <TextBlock Text="{Binding TabPerson.person.FIO}" Grid.Column="1" FontSize="24" FontWeight="Bold" Margin="8,0,28,0" TextWrapping="Wrap" VerticalAlignment="Center"/>
+                <fa:ImageAwesome Icon="Solid_Wrench" Height="18" Grid.Column="2" Foreground="Blue"/>
+            <TextBlock Text="{Binding TabPerson.person.p_profession}" Grid.Column="3" FontSize="18" VerticalAlignment="Center"  Margin="8,0" TextWrapping="Wrap" />
+                <fa:ImageAwesome Icon="Solid_UsersCog"  Grid.Column="4" Height="18" Foreground="Blue"/>
+            <TextBlock Text="{Binding TabPerson.person.otdel.ot_name}" Grid.Column="5" FontSize="18" Margin="8,0"  VerticalAlignment="Center" TextWrapping="Wrap" />
+            </Grid>
+        <!--</Label>-->
+        <Border Background="Gainsboro" Margin="4" >
+            <Border.Effect>
+                <DropShadowEffect ShadowDepth="0" BlurRadius="15" Opacity="0.4" />
+            </Border.Effect>
+            <GroupBox BorderBrush="Gray" BorderThickness="1" FontSize="14">
+                <GroupBox.Header>
+                    <TextBlock Text="Январь 2023" FontSize="18" FontWeight="Bold"/>
+                </GroupBox.Header>
+                <comp:TabelControl SourceCollection="{Binding TabelDays}" Margin="4,15"
+                           DataContext="{Binding TabPerson}"
+                           ItemsKind="{Binding DataContext.ListTypeDays, ElementName=mainWindow}" />
+            </GroupBox>
+        </Border>
+    </DockPanel>
+</Window>
