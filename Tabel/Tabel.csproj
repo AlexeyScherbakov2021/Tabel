@@ -122,8 +122,8 @@
     <Compile Include="Component\StartButton\ButtonT.xaml.cs">
       <DependentUpon>ButtonT.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Component\TabelPanel\TabelDayPanel.xaml.cs">
-      <DependentUpon>TabelDayPanel.xaml</DependentUpon>
+    <Compile Include="Component\TabelPanel\TabelControlLight.xaml.cs">
+      <DependentUpon>TabelControlLight.xaml</DependentUpon>
     </Compile>
     <Compile Include="Infrastructure\Encrypt.cs" />
     <Compile Include="Infrastructure\ModFunction.cs" />
@@ -135,6 +135,7 @@
     <Compile Include="ViewModels\Admins\PassWindowViewModel.cs" />
     <Compile Include="ViewModels\Admins\ProfileUserUCViewModel.cs" />
     <Compile Include="ViewModels\SelectDateWindowViewModel.cs" />
+    <Compile Include="ViewModels\TabelDaysWindowViewModel.cs" />
     <Compile Include="ViewModels\TasksPersonWindowViewModel.cs" />
     <Compile Include="Views\Admins\PassWindow.xaml.cs">
       <DependentUpon>PassWindow.xaml</DependentUpon>
@@ -273,6 +274,9 @@
     <Compile Include="Views\SmenaUC.xaml.cs">
       <DependentUpon>SmenaUC.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\TabelDaysWindow.xaml.cs">
+      <DependentUpon>TabelDaysWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\TabelUC.xaml.cs">
       <DependentUpon>TabelUC.xaml</DependentUpon>
     </Compile>
@@ -294,9 +298,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Component\TabelPanel\TabelDayPanel.xaml">
-      <SubType>Designer</SubType>
+    <Page Include="Component\TabelPanel\TabelControlLight.xaml">
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\Admins\PassWindow.xaml">
       <SubType>Designer</SubType>
@@ -463,6 +467,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\SmenaUC.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\TabelDaysWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

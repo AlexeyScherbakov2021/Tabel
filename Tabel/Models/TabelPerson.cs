@@ -110,7 +110,6 @@ namespace Tabel.Models
 
         public void UpdateUI()
         {
-
             OnPropertyChanged("DaysWeek1");
             OnPropertyChanged("DaysWeek2");
             OnPropertyChanged("HoursWeek1");
@@ -122,6 +121,7 @@ namespace Tabel.Models
             OnPropertyChanged("WorkedHours2");
             OnPropertyChanged("WorkedOffDays");
             OnPropertyChanged("WorkedOffHours");
+            OnPropertyChanged("OverWork");
         }
 
     }
