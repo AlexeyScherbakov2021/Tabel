@@ -7,7 +7,8 @@
              xmlns:conv="clr-namespace:Tabel.Infrastructure.Converters"
              mc:Ignorable="d" 
              SnapsToDevicePixels="True"
-             d:DesignHeight="100" d:DesignWidth="800">
+             Margin="0,4"
+             d:DesignHeight="50" d:DesignWidth="800">
     <UserControl.Resources>
     </UserControl.Resources>
     <Grid>
@@ -17,102 +18,129 @@
                 <Setter Property="VerticalContentAlignment" Value="Center"/>
                 <Setter Property="HorizontalContentAlignment" Value="Center"/>
             </Style>
+
+            <Style TargetType="{x:Type Label}">
+                <Setter Property="Background" Value="Snow"/>
+                <Setter Property="BorderThickness" Value="0.5"/>
+                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                <Setter Property="Padding" Value="3"/>
+                <Setter Property="VerticalContentAlignment" Value="Center"/>
+                <Setter Property="BorderBrush" Value="Black"/>
+            </Style>
         </Grid.Resources>
 
         <Grid.RowDefinitions>
             <RowDefinition/>
             <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="36"/>
+            <ColumnDefinition Width="40"/>
+            <ColumnDefinition Width="48"/>
             <ColumnDefinition Width="38"/>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="48"/>
+            <ColumnDefinition Width="44"/>
+            <ColumnDefinition Width="48"/>
             <ColumnDefinition Width="38"/>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="48"/>
             <ColumnDefinition Width="38"/>
-            <ColumnDefinition Width="32"/>
-            <!--<ColumnDefinition/>-->
+            <ColumnDefinition Width="48"/>
+            <ColumnDefinition Width="48"/>
         </Grid.ColumnDefinitions>
 
-        <Label Background="White" BorderThickness="0.5" BorderBrush="Black" Padding="3" HorizontalContentAlignment="Center">
+        <!--наименование дни часы-->
+        <Label >
             <TextBlock Text="дни" />
         </Label>
-        <Label Grid.Row="1"  Background="White" BorderThickness="0.5" Padding="3" BorderBrush="Black"  HorizontalContentAlignment="Center">
-            <TextBlock Text="часы"/>
-        </Label>
-        <Label Grid.Row="2" Background="White" BorderThickness="0.5" Padding="3" BorderBrush="Black" HorizontalContentAlignment="Center">
-            <TextBlock Text="дни"/>
-        </Label>
-
-        <Label Grid.Row="3" Background="White" BorderThickness="0.5" Padding="3" BorderBrush="Black" HorizontalContentAlignment="Center">
+        <Label Grid.Row="1" >
             <TextBlock Text="часы" />
         </Label>
 
-        <Label Grid.Row="0" Grid.Column="1"  Background="White" BorderThickness="0.5" Padding="3" BorderBrush="Black" HorizontalContentAlignment="Center">
+        <!--1 часть-->
+        <Label Grid.Row="0" Grid.Column="1"  Grid.RowSpan="2">
+            <TextBlock Text="1 часть" TextWrapping="Wrap" TextAlignment="Center"/>
+        </Label>
+
+
+        <!--дни и часы за 1 половину-->
+        <Label Grid.Row="0" Grid.Column="2" >
             <TextBlock Text="{Binding DaysWeek1, Mode=OneWay}" FontWeight="Bold"/>
         </Label>
-        <Label Grid.Row="1"  Grid.Column="1" Background="White" BorderThickness="0.5" Padding="3" BorderBrush="Black" HorizontalContentAlignment="Center">
+        <Label Grid.Row="1"  Grid.Column="2" >
             <TextBlock Text="{Binding HoursWeek1, Mode=OneWay, StringFormat=0.#}" FontWeight="Bold" />
         </Label>
-        <Label Grid.Row="2"  Grid.Column="1" Background="White" BorderThickness="0.5" Padding="3" BorderBrush="Black" HorizontalContentAlignment="Center">
+
+
+        <!--2 часть-->
+        <Label Grid.Row="0" Grid.Column="3" Grid.RowSpan="2"  >
+            <TextBlock Text="2 часть" TextWrapping="Wrap" TextAlignment="Center"/>
+        </Label>
+
+
+        <!--дни и часы за 2 половину-->
+        <Label Grid.Row="0"  Grid.Column="4" Padding="3" >
             <TextBlock Text="{Binding DaysWeek2, Mode=OneWay}" FontWeight="Bold" />
         </Label>
-        <Label Grid.Row="3"  Grid.Column="1" Background="White"  BorderThickness="0.5" BorderBrush="Black" Padding="3" HorizontalContentAlignment="Center">
+        <Label Grid.Row="1"  Grid.Column="4"  >
             <TextBlock Text="{Binding HoursWeek2, Mode=OneWay, StringFormat=0.#}" FontWeight="Bold" />
         </Label>
 
-
-
-        <Label Grid.Row="0"  Grid.Column="2" Grid.RowSpan="2" Background="White" BorderThickness="0.5" BorderBrush="Black" Padding="3" VerticalContentAlignment="Center" HorizontalContentAlignment="Center">
-            <TextBlock Text="дни" Grid.Row="0" />
-        </Label>
-        <Label Grid.Row="2"  Grid.Column="2" Grid.RowSpan="2" Background="White" BorderThickness="0.5" BorderBrush="Black" Padding="3" VerticalContentAlignment="Center" HorizontalContentAlignment="Center">
-            <TextBlock Text="часы" />
+        <!--за месяц-->
+        <Label Grid.Row="0" Grid.Column="5" Grid.RowSpan="2"  >
+            <TextBlock Text="за месяц" TextWrapping="Wrap" TextAlignment="Center"/>
         </Label>
 
-        <Label Grid.Row="0"  Grid.Column="3" Grid.RowSpan="2" Background="White" BorderThickness="0.5" BorderBrush="Black" Padding="3" VerticalContentAlignment="Center" HorizontalContentAlignment="Center">
+
+        <!--дни и часы за месяц-->
+        <Label Grid.Row="0"  Grid.Column="6"  >
             <TextBlock Text="{Binding DaysMonth, Mode=OneWay}" FontWeight="Bold" />
         </Label>
-        <Label Grid.Row="2"  Grid.Column="3" Grid.RowSpan="2" Background="White" BorderThickness="0.5" BorderBrush="Black" Padding="3" VerticalContentAlignment="Center" HorizontalContentAlignment="Center">
+        <Label Grid.Row="1" Grid.Column="6"  >
             <TextBlock Text="{Binding HoursMonth, Mode=OneWay, StringFormat=0.#}" FontWeight="Bold" />
         </Label>
 
-        <Label Grid.Row="0"  Grid.Column="4" Background="White" BorderThickness="0.5" BorderBrush="Black" Padding="3" VerticalContentAlignment="Center">
+        <!--явка-->
+        <Label Grid.Row="0"  Grid.Column="7" Background="White" >
             <TextBlock Text="Я" />
         </Label>
 
-        <Label Grid.Row="1"  Grid.Column="4" Background="#d8FFd8" BorderThickness="0.5" BorderBrush="Black" Padding="3" VerticalContentAlignment="Center">
+        <!--явка 1,5+ -->
+        <Label Grid.Row="1"  Grid.Column="7" Background="#d8FFd8" >
             <TextBlock Text="Я1,5+" />
         </Label>
 
-        <Label Grid.Row="2"  Grid.Column="4" Background="#b8FFb8" BorderThickness="0.5" BorderBrush="Black" Padding="3" VerticalContentAlignment="Center">
+        <!--явка 2+-->
+        <Label Grid.Row="0"  Grid.Column="9" Background="#b8FFb8" >
             <TextBlock Text="Я2+" />
         </Label>
 
-        <Label Grid.Row="3"  Grid.Column="4" Grid.RowSpan="2" Background="MistyRose" BorderThickness="0.5" BorderBrush="Black" Padding="3" VerticalContentAlignment="Center">
+        <!-- РВ -->
+        <Label Grid.Row="1"  Grid.Column="9" Background="MistyRose">
             <TextBlock Text="РВ" />
         </Label>
 
-        <Label Grid.Row="0"  Grid.Column="5" Background="White" BorderThickness="0.5" BorderBrush="Black" Padding="3" VerticalContentAlignment="Center" HorizontalContentAlignment="Center">
+        <!--Явка часов-->
+        <Label Grid.Row="0"  Grid.Column="8" Background="White" >
             <TextBlock Text="{Binding WorkedHours1, Mode=OneWay, StringFormat=0.#}" FontWeight="Bold" />
         </Label>
-        <Label Grid.Row="1"  Grid.Column="5" Background="#d8FFd8" BorderThickness="0.5" BorderBrush="Black" Padding="3" VerticalContentAlignment="Center" HorizontalContentAlignment="Center">
+        
+        <!--явка 1,5+ часов-->
+        <Label Grid.Row="1"  Grid.Column="8" Background="#d8FFd8" >
             <TextBlock Text="{Binding WorkedHours15, Mode=OneWay, StringFormat=0.#}" FontWeight="Bold" />
         </Label>
 
-        <Label Grid.Row="2"  Grid.Column="5" Background="#b8FFb8" BorderThickness="0.5" BorderBrush="Black" Padding="3" VerticalContentAlignment="Center" HorizontalContentAlignment="Center">
+        <!--Явка 2+ часов-->
+        <Label Grid.Row="0"  Grid.Column="10" Background="#b8FFb8"  >
             <TextBlock Text="{Binding WorkedHours2, Mode=OneWay, StringFormat=0.#}" FontWeight="Bold" />
         </Label>
 
-        <Label Grid.Row="3"  Grid.Column="5" Grid.RowSpan="2" Background="MistyRose" BorderThickness="0.5" BorderBrush="Black" Padding="3" VerticalContentAlignment="Center" HorizontalContentAlignment="Center">
+        <!--РВ часов-->
+        <Label Grid.Row="1"  Grid.Column="10" Background="MistyRose"  >
             <TextBlock Text="{Binding WorkedOffHours, Mode=OneWay, StringFormat=0.#}" FontWeight="Bold"/>
         </Label>
 
-        <Label Grid.Row="0"  Grid.Column="6" Background="White" BorderThickness="0.5" BorderBrush="Black" 
-                   ToolTip="Сумма превышения часов"
-                   Padding="3" VerticalContentAlignment="Center" HorizontalContentAlignment="Center">
+        <!--Переработка-->
+        <Label Grid.Row="0"  Grid.Column="11" Grid.RowSpan="2" Background="White"  ToolTip="Сумма превышения часов" >
             <TextBlock Text="{Binding OverWork, Mode=OneWay, StringFormat=0.#}" FontWeight="Bold" Foreground="Red"/>
         </Label>
     </Grid>

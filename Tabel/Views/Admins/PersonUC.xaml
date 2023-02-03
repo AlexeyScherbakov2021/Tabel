@@ -38,6 +38,13 @@
                             VirtualizingPanel.VirtualizationMode="Standard"
                             VirtualizingPanel.IsVirtualizing="True"
                     Style="{DynamicResource DataGridStyle}" SelectedItem="{Binding SelectedPerson}">
+                    <DataGrid.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <VirtualizingStackPanel/>
+                        </ItemsPanelTemplate>
+                    </DataGrid.ItemsPanel>
+                    
+                    
                     <DataGrid.ColumnHeaderStyle>
                         <Style TargetType="{x:Type DataGridColumnHeader}">
                             <Setter Property="FontWeight" Value="Bold"/>

@@ -18,7 +18,7 @@
         </ResourceDictionary>
     </UserControl.Resources>
     <DockPanel>
-        <Grid DockPanel.Dock="Right">
+        <Grid DockPanel.Dock="Right"  VerticalAlignment="Stretch">
             <Grid.RowDefinitions>
                 <RowDefinition/>
                 <RowDefinition/>
@@ -27,12 +27,12 @@
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
-                <ColumnDefinition Width="38"/>
+                <ColumnDefinition Width="44"/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="44"/>
                 <ColumnDefinition/>
                 <ColumnDefinition Width="38"/>
-                <ColumnDefinition/>
-                <ColumnDefinition Width="38"/>
-                <ColumnDefinition Width="32"/>
+                <ColumnDefinition Width="36"/>
                 <!--<ColumnDefinition/>-->
             </Grid.ColumnDefinitions>
             <Grid.Resources>
@@ -137,7 +137,8 @@
 
         <ListBox Padding="2" SelectionMode="Extended" ItemsSource="{Binding Path=SourceCollection , RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
                  SelectedItem="{Binding SelectedItem, Mode=TwoWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
-                 x:Name="ListBoxDays" BorderBrush="Transparent" PreviewMouseLeftButtonDown="ListBoxDays_PreviewMouseLeftButtonDown" PreviewMouseMove="ListBoxDays_PreviewMouseMove"  >
+                 x:Name="ListBoxDays" BorderBrush="Transparent" PreviewMouseLeftButtonDown="ListBoxDays_PreviewMouseLeftButtonDown" 
+                 PreviewMouseMove="ListBoxDays_PreviewMouseMove" Background="Transparent" >
            
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>

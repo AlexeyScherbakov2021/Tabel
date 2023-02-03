@@ -169,8 +169,8 @@ namespace Tabel.ViewModels
             Cancellation?.Cancel();
 
             ev.WaitOne();
-            
             ev.Reset();
+
             Cancellation?.Dispose();
             Cancellation = new CancellationTokenSource();
 
@@ -182,32 +182,11 @@ namespace Tabel.ViewModels
             VisibleGrid = Visibility.Hidden;
             OnPropertyChanged(nameof(VisibleGrid));
 
-            //await Task.Run(() => OnPropertyChanged(nameof(ListModPerson))).ConfigureAwait(false);
             //Mouse.OverrideCursor = Cursors.Wait;
 
             //LoadPersonAsync();
             Task.Run(() => LoadPersonAsync(Cancellation.Token)).ConfigureAwait(true);
-                
-            //Mouse.OverrideCursor = null;
-
-                //if (ListModPerson != null)
-                //{
-                //    // подгрузка из табеля, смен и транспорта
-                //    ModFunction ModFunc = new ModFunction(db, _SelectYear, _SelectMonth);
-                //    ModFunc.ModPersonFilling(ListModPerson);
-                //}
-
-                //modMainViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
-                //premiaBonusViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
-                //premiaFPViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
-                //premiaOtdelViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
-                //premiaStimulViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
-                //premiaAddWorksViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
-                //premiaTransportViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
-                //premiaPrizeViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
-                //premiaItogoViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
-
-                //IsLoad = false;
+               
 
         }
 
@@ -219,7 +198,6 @@ namespace Tabel.ViewModels
 
             try
             {
-
                 LoadBonusProcent();
 
                 if (_SelectedOtdel.ot_parent is null)
@@ -230,7 +208,6 @@ namespace Tabel.ViewModels
                     if (CurrentMod != null)
                         ListModPerson = new ObservableCollection<ModPerson>(repoModPerson.Items
                             .Where(it => it.md_modId == CurrentMod.id)
-                            //.Include(inc => inc.ListTargetTask)
                             .OrderBy(o => o.person.p_lastname)
                             .ThenBy(o => o.person.p_name)
                             );
@@ -243,12 +220,10 @@ namespace Tabel.ViewModels
                     if (CurrentMod != null)
                         ListModPerson = new ObservableCollection<ModPerson>(repoModPerson.Items
                             .Where(it => it.md_modId == CurrentMod.id && it.person.p_otdel_id == _SelectedOtdel.id)
-                            //.Include(inc => inc.ListTargetTask)
                             .OrderBy(o => o.person.p_lastname)
                             .ThenBy(o => o.person.p_name)
                             );
                 }
-
 
 
                 if (ListModPerson != null)
@@ -293,9 +268,6 @@ namespace Tabel.ViewModels
 
             }
 
-            //Thread.Sleep(3000);
-
-
         }
 
 
@@ -318,22 +290,6 @@ namespace Tabel.ViewModels
         //--------------------------------------------------------------------------------
         private void GetPrevModPerson(ModPerson newPerson)
         {
-
-            //int mod = repoModel.Items
-            //    .AsNoTracking()
-            //    .Where(it => it.m_otdelId == _SelectedOtdel.id &&
-            //                (it.m_year == _SelectYear && it.m_month < _SelectMonth)
-            //                || it.m_year < _SelectYear
-            //               )
-            //    .OrderByDescending(o => o.m_year)
-            //    .ThenByDescending(o => o.m_month)
-            //    .Select(s => s.id)
-            //    .FirstOrDefault();
-
-
-            //ModPerson PrevModPerson = repoModPerson.Items
-            //    .AsNoTracking()
-            //    .FirstOrDefault(it => it.md_personalId == newPerson.md_personalId && it.md_modId == mod);
 
 
            // получение этого сотрудника из предыдущей существующей модели

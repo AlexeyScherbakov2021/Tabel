@@ -21,6 +21,7 @@ namespace Tabel.ViewModels
         private bool IsModify = false;
         private readonly RepositoryMSSQL<TabelPerson> repoTabelPerson;
         public bool IsSaved { get; set; } = false;
+        public string CurrentDate { get; }
 
         public TabelDaysWindowViewModel()
         {
@@ -44,6 +45,8 @@ namespace Tabel.ViewModels
                 item.CalendarTypeDay = ListDays[item.td_Day - 1].KindDay;
             }
             AnalizeOverWork();
+
+            CurrentDate = App.ListMonth[TabPerson.tabel.t_month - 1].Name + " " + TabPerson.tabel.t_year;
         }
 
 
