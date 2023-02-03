@@ -184,7 +184,6 @@ namespace Tabel.Infrastructure
             mPerson.TabelAbsent = CountWorkDays - CountWorkDaysPerson;                      // получение количества дней отсутствия
             if (mPerson.TabelAbsent < 0) mPerson.TabelAbsent = 0;
 
-
             // получение соответствующего сотрудника из графика смен
             //RepositoryMSSQL<SmenaPerson> repoSmenaPerson = new RepositoryMSSQL<SmenaPerson>(_db);
             SmenaPerson SmenaPerson = repoSmenaPerson.Items

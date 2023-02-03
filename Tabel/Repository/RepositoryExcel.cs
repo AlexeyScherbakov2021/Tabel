@@ -33,7 +33,7 @@ namespace Tabel.Repository
             int NumPP;
 
             try {
-                using (XLWorkbook wb = new XLWorkbook(@"Отчеты\Табель.xlsx"))
+                using (XLWorkbook wb = new XLWorkbook(@"Отчеты\Табель.xltx"))
                 {
                     NumPP = 1;
                     var ws = wb.Worksheets.Worksheet(1);
