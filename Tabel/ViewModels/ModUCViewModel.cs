@@ -765,7 +765,8 @@ namespace Tabel.ViewModels
                 foreach (var item in vm.ListTarget)
                 {
                     //summa += item.tt_proc_task;
-                    name += item.tt_name.Length > 15 ? item.tt_name.Substring(0, 15) + "...; " : item.tt_name + ";";
+                    if(!string.IsNullOrEmpty(item.tt_name))
+                        name += item.tt_name.Length > 15 ? item.tt_name.Substring(0, 15) + "...; " : item.tt_name + ";";
                 }
                 SelectedModPerson.md_kvalif_proc = vm.proc100;
                 SelectedModPerson.md_kvalif_prem = vm.proc100fact;
