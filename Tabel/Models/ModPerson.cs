@@ -160,6 +160,13 @@ namespace Tabel.Models
         [NotMapped]
         public decimal? QualityTarif { get; set; } = 1000;
 
+        [NotMapped]
+        public decimal? PereWork15 { get; set; }
+        [NotMapped]
+        public decimal? PereWork2 { get; set; }
+
+
+
         public ModPerson()
         {
             ListAddWorks = new HashSet<AddWorks>();
@@ -220,6 +227,8 @@ namespace Tabel.Models
             + premiaNight.GetPremia()
             + premOffDays.GetPremia()
             + PremiaItogo
+            + (PereWork15 ?? 0)
+            + (PereWork2 ?? 0)
             + (md_bolnich ?? 0);
 
     }

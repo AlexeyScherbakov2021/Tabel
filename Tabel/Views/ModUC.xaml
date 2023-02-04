@@ -107,7 +107,7 @@
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Таб.№" Binding="{Binding person.p_tab_number}" IsReadOnly="True"/>
                             <DataGridTextColumn Header="ФИО" Binding="{Binding person.FIO}"/>
-                            <DataGridTextColumn Header="Должность" Binding="{Binding person.p_profession}" Width="350"/>
+                            <DataGridTextColumn Header="Должность" Binding="{Binding person.p_profession}" Width="250"/>
                             <DataGridTextColumn Header="Ставка" Binding="{Binding person.p_stavka}" CellStyle="{StaticResource CellRight}"/>
                             <DataGridTextColumn Header="Грейд" Binding="{Binding person.category.id}" CellStyle="{StaticResource CellRight}"/>
                             <DataGridTextColumn Header="Тариф" Binding="{Binding person.category.cat_tarif, StringFormat=0.#}" CellStyle="{StaticResource CellRight}"/>
@@ -121,6 +121,8 @@
                             <DataGridTextColumn Header="Вых.дней" Binding="{Binding TabelWorkOffDay, Mode=TwoWay}" CellStyle="{StaticResource CellRight}"/>
                             <DataGridTextColumn Header="Вых.тариф" Binding="{Binding md_tarif_offDay, StringFormat=N0}" Width="68" CellStyle="{StaticResource CellRight}"/>
                             <DataGridTextColumn Header="Допл.вых." Binding="{Binding premOffDays.Summa, StringFormat=N0}" Width="66" CellStyle="{StaticResource CellRight}"/>
+                            <DataGridTextColumn Header="Сверх1.5." Binding="{Binding PereWork15, StringFormat=N0}" Width="66" CellStyle="{StaticResource CellRight}"/>
+                            <DataGridTextColumn Header="Сверх2." Binding="{Binding PereWork2, StringFormat=N0}" Width="66" CellStyle="{StaticResource CellRight}"/>
                             <!--<DataGridTextColumn Header="Премия" Binding="{Binding PremiaItogo, StringFormat=N2}" Width="80" FontWeight="Bold" CellStyle="{StaticResource CellRight}"/>
                             <DataGridTextColumn Header="Итого" Binding="{Binding Itogo, StringFormat=N2}" Width="80" FontWeight="Bold" CellStyle="{StaticResource CellRight}"/>-->
                         </DataGrid.Columns>

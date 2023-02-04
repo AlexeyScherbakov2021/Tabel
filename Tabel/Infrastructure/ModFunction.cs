@@ -171,7 +171,14 @@ namespace Tabel.Infrastructure
             mPerson.OverHours = TabPerson.OverWork ?? 0;            // часы переработки
 
             SetOklad(mPerson);
-            
+
+            // поллучение оплаты переработанных часов
+            if (mPerson.person.category != null)
+            {
+                mPerson.PereWork15 = TabPerson.WorkedHours15 * mPerson.person.category.cat_tarif * 0.5m;           // переработтка 1.5 часа
+                mPerson.PereWork2 = TabPerson.WorkedHours2 * mPerson.person.category.cat_tarif;             // переработка 2 часа
+            }
+
             //mPerson.md_Oklad = mPerson.person.category is null      // установка оклада по часам из тарифа грейда
             //    ? 0 
             //    : mPerson.TabelHours * mPerson.person.category.cat_tarif.Value * mPerson.person.p_stavka;
