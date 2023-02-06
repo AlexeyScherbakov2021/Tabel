@@ -155,7 +155,7 @@ namespace Tabel.Infrastructure
             int CountWorkDays = listDays.Count(it => it.KindDay != TypeDays.Holyday);   // число рабочих дней из календаря
 
             mPerson.TabelDays = listDays.Count;                     // дни из табеля
-            mPerson.TabelHours = TabPerson.HoursMonth;              // часы из табеля
+            mPerson.TabelHours = TabPerson.HoursMonth + (TabPerson.tp_AddingHours ?? 0);              // часы из табеля
             mPerson.TabelWorkOffDay = TabPerson.WorkedOffDays;      // отработанные выходные дни
             
             SetTarifOffDay(mPerson);

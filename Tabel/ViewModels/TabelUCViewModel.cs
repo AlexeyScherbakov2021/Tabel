@@ -145,7 +145,7 @@ namespace Tabel.ViewModels
                 AnalizeOverWork(person);
                 IsModify = true;
             }
-            if (e.PropertyName == "td_KindId")
+            if (e.PropertyName == "td_KindId" || e.PropertyName == "tp_AddingHours")
             {
                 IsModify = true;
             }
@@ -219,6 +219,7 @@ namespace Tabel.ViewModels
             {
                 foreach (var item in ListTabelPerson)
                 {
+                    item.PropertyChanged += ListPerson_PropertyChanged;
                     foreach (var day in item.TabelDays)
                         day.PropertyChanged += ListPerson_PropertyChanged;
 
@@ -465,6 +466,7 @@ namespace Tabel.ViewModels
             {
                 foreach (var item in ListTabelPerson)
                 {
+                    item.PropertyChanged += ListPerson_PropertyChanged;
                     foreach (var day in item.TabelDays)
                         day.PropertyChanged += ListPerson_PropertyChanged;
                 }

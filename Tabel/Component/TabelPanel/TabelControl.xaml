@@ -123,6 +123,12 @@
                 <TextBlock Text="{Binding OverWork, Mode=OneWay, StringFormat=0.#}" FontWeight="Bold" Foreground="Red"/>
             </Label>
 
+            <Label Grid.Row="1"  Grid.Column="6" Background="White" BorderThickness="0.5" BorderBrush="Black" 
+                   ToolTip="Дополнительные часы"
+                   Padding="0" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch">
+                <TextBox Text="{Binding tp_AddingHours, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat=#.#}" IsReadOnly="False"/>
+            </Label>
+
             <!--<Line X1="0" X2="180" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="6" Stroke="Black" StrokeThickness="0.1"/>
             <Line X1="0" X2="63" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="6" Stroke="Black" StrokeThickness="0.1"/>
             <Line X1="0" X2="63" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="6" Stroke="Black" StrokeThickness="0.1"/>

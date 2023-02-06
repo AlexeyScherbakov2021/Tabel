@@ -107,10 +107,13 @@ namespace Tabel.Models
         [NotMapped]
         public decimal? CalcHours { get; set; } // рассчитанные часы для 1С
 
+        private decimal? _tp_AddingHours;
+        //[NotMapped]
+        public decimal? tp_AddingHours { get => _tp_AddingHours; set { Set(ref _tp_AddingHours, value); } }
+
 
         public void UpdateUI()
         {
-
             OnPropertyChanged("DaysWeek1");
             OnPropertyChanged("DaysWeek2");
             OnPropertyChanged("HoursWeek1");
