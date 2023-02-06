@@ -175,6 +175,8 @@ namespace Tabel.Infrastructure
             // поллучение оплаты переработанных часов
             if (mPerson.person.category != null)
             {
+                mPerson.PereWorkHours15 = TabPerson.WorkedHours15;
+                mPerson.PereWorkHours2 = TabPerson.WorkedHours2;
                 mPerson.PereWork15 = TabPerson.WorkedHours15 * mPerson.person.category.cat_tarif * 0.5m;           // переработтка 1.5 часа
                 mPerson.PereWork2 = TabPerson.WorkedHours2 * mPerson.person.category.cat_tarif;             // переработка 2 часа
             }

@@ -161,6 +161,11 @@ namespace Tabel.Models
         public decimal? QualityTarif { get; set; } = 1000;
 
         [NotMapped]
+        public decimal? PereWorkHours15 { get; set; }
+        [NotMapped]
+        public decimal? PereWorkHours2 { get; set; }
+
+        [NotMapped]
         public decimal? PereWork15 { get; set; }
         [NotMapped]
         public decimal? PereWork2 { get; set; }
