@@ -344,6 +344,7 @@
                                                 IsReadOnly="{Binding DataContext.IsNotAdmin, Source={x:Reference ProxyElement}}"
                                                 Width="100"  CellStyle="{StaticResource CellRightColor}"/>
                             <DataGridTextColumn Header="Итого" Binding="{Binding premiaAddWorks.Summa, StringFormat=N2}" FontWeight="Bold" Width="90"  CellStyle="{StaticResource CellRight}" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="комп.больничного" Binding="{Binding md_bolnich, StringFormat=N2}" Width="90"  CellStyle="{StaticResource CellRightColor}"/>
 
                             </DataGrid.Columns>
                         </DataGrid>
@@ -471,43 +472,41 @@
                     </DockPanel>
                 </TabItem>
 
-
-                <TabItem Header="Итого" DataContext="{Binding premiaItogoViewModel}">
-                    <DockPanel  Background="Gainsboro">
-                        <Grid DockPanel.Dock="Top" Margin="8,0" Height="30">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="100"/>
-                                <ColumnDefinition Width="100"/>
-                            </Grid.ColumnDefinitions>
-                        </Grid>
-
-                        <FrameworkElement x:Name="ProxyElement3" Visibility="Collapsed" DataContext="{Binding}"/>
-                        <DataGrid ItemsSource="{Binding ListModPerson}" IsReadOnly="True"
-                            SelectedItem="{Binding DataContext.SelectedModPerson, ElementName=userControl, Mode=TwoWay}"
-                            Style="{StaticResource DataGridStyle}" >
-                            <DataGrid.Columns>
-                                <DataGridTextColumn Header="Таб.№" Binding="{Binding person.p_tab_number}" IsReadOnly="True"/>
-                                <DataGridTextColumn Header="ФИО" Binding="{Binding person.FIO}" IsReadOnly="True"/>
-                                <DataGridTextColumn Header="Должность" Binding="{Binding person.p_profession}" IsReadOnly="True" Width="350"/>
-                                <DataGridTextColumn Header="Премия 1(бонус)" Binding="{Binding premiaBonus.Summa, StringFormat=N2}" Width="80"  CellStyle="{StaticResource CellRight}"/>
-                                <DataGridTextColumn x:Name="columnFP" Header="Премия 2(по выраб.)" Binding="{Binding premiaFP.Summa, StringFormat=N2}" 
-                                    Visibility="{Binding DataContext.IsVisibleITR, Source={x:Reference ProxyElement3}}"
-                                    Width="80" CellStyle="{StaticResource CellRight}"/>
-                                <DataGridTextColumn Header="Доплата (доп.раб.)" Binding="{Binding premiaAddWorks.Summa, StringFormat=N2}" Width="80"  CellStyle="{StaticResource CellRight}"/>
-                                <DataGridTextColumn Header="Компенсация за доставку" Binding="{Binding premiaTransport.Summa, StringFormat=N2}" Width="80"  CellStyle="{StaticResource CellRight}"/>
-                                <DataGridTextColumn Header="Премия 2(по отделу)" Binding="{Binding premiaOtdel.Summa, StringFormat=N2}" Width="80"  CellStyle="{StaticResource CellRight}"/>
-                                <DataGridTextColumn Header="Премия 3(стимул.)" Binding="{Binding premiStimul.Summa, StringFormat=N2}" Width="80"  CellStyle="{StaticResource CellRight}"/>
-                                <DataGridTextColumn Header="Премия (добр.труд)" Binding="{Binding premiaPrize.Summa, StringFormat=N2}" Width="80"  CellStyle="{StaticResource CellRight}"/>
-                                <DataGridTextColumn Header="Комп.больнич." Binding="{Binding md_bolnich, StringFormat=N2}" Width="80"  CellStyle="{StaticResource CellRight}"/>
-                                <DataGridTextColumn Header="Премия всего" Binding="{Binding PremiaItogo, StringFormat=N2}" Width="80" FontWeight="Bold" CellStyle="{StaticResource CellRight}"/>
-                                <DataGridTextColumn Header="Итого" Binding="{Binding Itogo, StringFormat=N2}" Width="80" FontWeight="Bold" CellStyle="{StaticResource CellRight}"/>
-                                <DataGridTextColumn Header="Бух.данные" Binding="{Binding md_RealPay, StringFormat=N2}" Width="80"  CellStyle="{StaticResource CellRight}"/>
-                                <DataGridTextColumn Header="Разница" Binding="{Binding DiffPremia, StringFormat=N2}" Width="80"  CellStyle="{StaticResource CellRight}"/>
-                            </DataGrid.Columns>
-                        </DataGrid>
-                    </DockPanel>
-                </TabItem>
-            </TabControl>
+            
+            <TabItem Header="Итого" DataContext="{Binding premiaItogoViewModel}">
+                <DockPanel  Background="Gainsboro">
+                    <Grid DockPanel.Dock="Top" Margin="8,0" Height="30">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="100"/>
+                        </Grid.ColumnDefinitions>
+                    </Grid>
+                    
+                    <FrameworkElement x:Name="ProxyElement3" Visibility="Collapsed" DataContext="{Binding}"/>
+                    <DataGrid ItemsSource="{Binding ListModPerson}" IsReadOnly="True"
+                              SelectedItem="{Binding DataContext.SelectedModPerson, Mode=TwoWay, ElementName=userControl}"
+                              Style="{StaticResource DataGridStyle}" >
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Таб.№" Binding="{Binding person.p_tab_number}" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="ФИО" Binding="{Binding person.FIO}" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Должность" Binding="{Binding person.p_profession}" IsReadOnly="True" Width="350"/>
+                            <DataGridTextColumn Header="Премия 1(бонус)" Binding="{Binding premiaBonus.Summa, StringFormat=N2}" Width="80"  CellStyle="{StaticResource CellRight}"/>
+                            <DataGridTextColumn x:Name="columnFP" Header="Премия 2(по выраб.)" Binding="{Binding premiaFP.Summa, StringFormat=N2}" 
+                                                Visibility="{Binding DataContext.IsVisibleITR, Source={x:Reference ProxyElement3}}"
+                                                Width="80" CellStyle="{StaticResource CellRight}"/>
+                            <DataGridTextColumn Header="Доплата (доп.раб.)" Binding="{Binding premiaAddWorks.Summa, StringFormat=N2}" Width="80"  CellStyle="{StaticResource CellRight}"/>
+                            <DataGridTextColumn Header="Компенсация за доставку" Binding="{Binding premiaTransport.Summa, StringFormat=N2}" Width="80"  CellStyle="{StaticResource CellRight}"/>
+                            <DataGridTextColumn Header="Премия 2(по отделу)" Binding="{Binding premiaOtdel.Summa, StringFormat=N2}" Width="80"  CellStyle="{StaticResource CellRight}"/>
+                            <DataGridTextColumn Header="Премия 3(стимул.)" Binding="{Binding premiStimul.Summa, StringFormat=N2}" Width="80"  CellStyle="{StaticResource CellRight}"/>
+                            <DataGridTextColumn Header="Премия (добр.труд)" Binding="{Binding premiaPrize.Summa, StringFormat=N2}" Width="80"  CellStyle="{StaticResource CellRight}"/>
+                            <DataGridTextColumn Header="Комп.больнич." Binding="{Binding md_bolnich, StringFormat=N2}" Width="80"  CellStyle="{StaticResource CellRight}"/>
+                            <DataGridTextColumn Header="Премия всего" Binding="{Binding PremiaItogo, StringFormat=N2}" Width="80" FontWeight="Bold" CellStyle="{StaticResource CellRight}"/>
+                            <DataGridTextColumn Header="Итого" Binding="{Binding Itogo, StringFormat=N2}" Width="80" FontWeight="Bold" CellStyle="{StaticResource CellRight}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </DockPanel>
+            </TabItem>
+        </TabControl>
 
         </Grid>
         <!--<Image x:Name="spinner" DockPanel.Dock="Top" Source="/Resources/spinner.gif" Width="60" Margin="0,100,0,0" RenderTransformOrigin="0.5,0.5">
