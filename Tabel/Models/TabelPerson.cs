@@ -48,6 +48,10 @@ namespace Tabel.Models
         public decimal HoursMonth => HoursWeek1 + HoursWeek2;
 
 
+        private decimal? _tp_AddingHours;
+        public decimal? tp_AddingHours { get => _tp_AddingHours; set { Set(ref _tp_AddingHours, value); } }
+
+
         public decimal? WorkedHours1
         {
             get
@@ -106,10 +110,6 @@ namespace Tabel.Models
         public int PrevPermWorkCount;       // количество дней непрерывной работы в последние дни месяца
         [NotMapped]
         public decimal? CalcHours { get; set; } // рассчитанные часы для 1С
-
-        private decimal? _tp_AddingHours;
-        //[NotMapped]
-        public decimal? tp_AddingHours { get => _tp_AddingHours; set { Set(ref _tp_AddingHours, value); } }
 
 
         public void UpdateUI()

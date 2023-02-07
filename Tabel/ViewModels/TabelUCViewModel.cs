@@ -86,6 +86,7 @@ namespace Tabel.ViewModels
             {
                 foreach (var item in ListTabelPerson)
                 {
+                    item.PropertyChanged -= ListPerson_PropertyChanged;
                     foreach (var day in item.TabelDays)
                         day.PropertyChanged -= ListPerson_PropertyChanged;
                 }
