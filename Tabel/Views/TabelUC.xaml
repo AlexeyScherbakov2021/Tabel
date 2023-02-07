@@ -84,7 +84,18 @@
                     <VirtualizingStackPanel/>
                 </ItemsPanelTemplate>
             </DataGrid.ItemsPanel>
-            
+
+            <DataGrid.RowDetailsTemplate>
+                <DataTemplate>
+                    <Border Background="Gainsboro">
+                        <comp:TabelControl SourceCollection="{Binding TabelDays}" Margin="40,3" VerticalAlignment="Top"
+                                   Background="WhiteSmoke"
+                           BorderBrush="Black" BorderThickness="1"
+                           ItemsKind="{Binding DataContext.ListTypeDays, ElementName=dg}"/>
+                    </Border>
+                </DataTemplate>
+            </DataGrid.RowDetailsTemplate>
+
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Таб.№" Binding="{Binding person.p_tab_number}"/>
                 <DataGridTemplateColumn Header="Сотрудник" IsReadOnly="True" Width="250">

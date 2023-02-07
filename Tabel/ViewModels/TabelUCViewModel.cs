@@ -44,7 +44,7 @@ namespace Tabel.ViewModels
         public Otdel SelectedOtdel { get; set; }
         private int _SelectMonth;
         private int _SelectYear;
-        //private bool IsModify = false;
+        private bool IsModify = false;
 
 
         //--------------------------------------------------------------------------------------------------
@@ -141,7 +141,7 @@ namespace Tabel.ViewModels
         private void ListPerson_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             // отслеживаем изменение часов
-            if(e.PropertyName == "td_Hours")
+            if (e.PropertyName == "td_Hours")
             {
                 TabelPerson person = (sender as TabelDay).TabelPerson;
                 AnalizeOverWork(person);
@@ -152,60 +152,60 @@ namespace Tabel.ViewModels
                 IsModify = true;
             }
 
-
+        }
         ////--------------------------------------------------------------------------------------
         //// Расчет лишних часов для всего месяца
         ////--------------------------------------------------------------------------------------
-        //private void AnalizeOverWork(TabelPerson person)
-        //{
-        //    List<TabelDay> ListDays = person.TabelDays.ToList();
-        //    int nCntPermDays = person.PrevPermWorkCount + 1;
+        private void AnalizeOverWork(TabelPerson person)
+        {
+            List<TabelDay> ListDays = person.TabelDays.ToList();
+            int nCntPermDays = person.PrevPermWorkCount + 1;
 
-        //    decimal PrevHours;
-        //    decimal? OverHours;
+            decimal PrevHours;
+            decimal? OverHours;
 
-        //    for (int i = 0; i < ListDays.Count; i++)
-        //    {
-        //        if(i == 0)
-        //            // для первого дня берем предыдущий день из прошлого табеля
-        //            PrevHours = person.PrevDay is null ? 0 : (person.PrevDay.td_Hours - person.PrevDay.td_Hours2) ?? 0;
-        //        else
-        //            // часы предыдущего дня
-        //            PrevHours = ListDays[i - 1].WhiteHours;
+            for (int i = 0; i < ListDays.Count; i++)
+            {
+                if (i == 0)
+                    // для первого дня берем предыдущий день из прошлого табеля
+                    PrevHours = person.PrevDay is null ? 0 : (person.PrevDay.td_Hours - person.PrevDay.td_Hours2) ?? 0;
+                else
+                    // часы предыдущего дня
+                    PrevHours = ListDays[i - 1].WhiteHours;
 
-        //        OverHours = 0;
+                OverHours = 0;
 
-        //        if(ListDays[i].td_Hours == 0)
-        //            nCntPermDays = 0;
+                if (ListDays[i].td_Hours == 0)
+                    nCntPermDays = 0;
 
-        //        if (nCntPermDays >= 7)
-        //        {
-        //            // если проработано более 6 дней подряд
-        //            OverHours = ListDays[i].td_Hours;
-        //            nCntPermDays = 0;
-        //        }
-        //        else if(ListDays[i].CalendarTypeDay != TypeDays.Holyday)
-        //        {
-        //            if (ListDays[i].td_Hours > 12)
-        //            {
-        //                OverHours = ListDays[i].td_Hours - 12;
-        //                //ListDays[i].td_Hours2 = ListDays[i].td_Hours - OverHours;
-        //                //ListDays[i].WhiteHours = 12;
-        //            }
+                if (nCntPermDays >= 7)
+                {
+                    // если проработано более 6 дней подряд
+                    OverHours = ListDays[i].td_Hours;
+                    nCntPermDays = 0;
+                }
+                else if (ListDays[i].CalendarTypeDay != TypeDays.Holyday)
+                {
+                    if (ListDays[i].td_Hours > 12)
+                    {
+                        OverHours = ListDays[i].td_Hours - 12;
+                        //ListDays[i].td_Hours2 = ListDays[i].td_Hours - OverHours;
+                        //ListDays[i].WhiteHours = 12;
+                    }
 
-        //            if (PrevHours + ListDays[i].td_Hours > 20)
-        //                OverHours = PrevHours + ListDays[i].td_Hours - 20;
+                    if (PrevHours + ListDays[i].td_Hours > 20)
+                        OverHours = PrevHours + ListDays[i].td_Hours - 20;
 
-        //        }
+                }
 
-        //        ListDays[i].td_Hours2 = OverHours;
-        //        ListDays[i].OnPropertyChanged("WhiteHours");
-        //        //ListDays[i].WhiteHours = (ListDays[i].td_Hours - OverHours) ?? 0;
-        //        ListDays[i].VisibilityHours = OverHours > 0 ? Visibility.Visible : Visibility.Collapsed;
-        //        nCntPermDays++;
-        //    }
-        //    person.OnPropertyChanged(nameof(person.OverWork));
-        //}
+                ListDays[i].td_Hours2 = OverHours;
+                ListDays[i].OnPropertyChanged("WhiteHours");
+                //ListDays[i].WhiteHours = (ListDays[i].td_Hours - OverHours) ?? 0;
+                ListDays[i].VisibilityHours = OverHours > 0 ? Visibility.Visible : Visibility.Collapsed;
+                nCntPermDays++;
+            }
+            person.OnPropertyChanged(nameof(person.OverWork));
+        }
 
 
         private async void SetTypeDaysAsync()
@@ -222,8 +222,8 @@ namespace Tabel.ViewModels
                     foreach (var day in item.TabelDays)
                         day.PropertyChanged += ListPerson_PropertyChanged;
 
-            //    }
-            //}
+                }
+            }
 
             OnPropertyChanged(nameof(ListTabelPerson));
             OnPropertyChanged(nameof(Tabel));
