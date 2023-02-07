@@ -341,6 +341,9 @@ namespace Tabel.ViewModels
         //--------------------------------------------------------------------------------------
         public void SaveForm()
         {
+            repoTabelPerson.Save();
+            repoTabel.Save();
+            IsModify = false;
         }
 
         public void Dispose()
@@ -507,10 +510,10 @@ namespace Tabel.ViewModels
         // Команда Сохранить
         //--------------------------------------------------------------------------------
         public ICommand SaveCommand => new LambdaCommand(OnSaveCommandExecuted, CanSaveCommand);
-        private bool CanSaveCommand(object p) => SelectedOtdel != null && Tabel != null /*&& IsModify*/;
+        private bool CanSaveCommand(object p) => SelectedOtdel != null && Tabel != null && IsModify;
         private void OnSaveCommandExecuted(object p)
         {
-            //SaveForm();
+            SaveForm();
         }
 
         //--------------------------------------------------------------------------------
@@ -658,44 +661,44 @@ namespace Tabel.ViewModels
         }
 
         //--------------------------------------------------------------------------------
-        // Команда СЗ для выходного
+        // Команда запуска в отдельном окне
         //--------------------------------------------------------------------------------
-        public ICommand DblClickCommand => new LambdaCommand(OnDblClickCommandExecuted, CanDblClickCommand);
-        private bool CanDblClickCommand(object p) => SelectedPerson != null;
-        private void OnDblClickCommandExecuted(object p)
-        {
-            KeyEventArgs arg = p as KeyEventArgs;
-            bool IsExec = arg == null;
+        //public ICommand DblClickCommand => new LambdaCommand(OnDblClickCommandExecuted, CanDblClickCommand);
+        //private bool CanDblClickCommand(object p) => SelectedPerson != null;
+        //private void OnDblClickCommandExecuted(object p)
+        //{
+        //    KeyEventArgs arg = p as KeyEventArgs;
+        //    bool IsExec = arg == null;
 
-            if (arg != null && arg.Key == Key.Enter)
-            {
-                arg.Handled = true;
-                IsExec = true;
-            }
+        //    if (arg != null && arg.Key == Key.Enter)
+        //    {
+        //        arg.Handled = true;
+        //        IsExec = true;
+        //    }
 
-            if (IsExec)
-            {
-                TabelDaysWindow win = new TabelDaysWindow();
-                TabelDaysWindowViewModel vm = new TabelDaysWindowViewModel(repoTabelPerson, SelectedPerson.id);
-                win.DataContext = vm;
-                win.ShowDialog();
-                if(vm.IsSaved)
-                {
-                    List<TabelDay> ListTD = vm.TabPerson.TabelDays.ToList();
-                    foreach(var item in SelectedPerson.TabelDays)
-                    {
-                        TabelDay td = ListTD[item.td_Day - 1];
-                        item.td_Hours = td.td_Hours;
-                        item.td_Hours2 = td.td_Hours2;
-                        item.typeDay = td.typeDay;
-                        item.td_KindId= td.td_KindId;
+        //    if (IsExec)
+        //    {
+        //        TabelDaysWindow win = new TabelDaysWindow();
+        //        TabelDaysWindowViewModel vm = new TabelDaysWindowViewModel(repoTabelPerson, SelectedPerson.id);
+        //        win.DataContext = vm;
+        //        win.ShowDialog();
+        //        if(vm.IsSaved)
+        //        {
+        //            List<TabelDay> ListTD = vm.TabPerson.TabelDays.ToList();
+        //            foreach(var item in SelectedPerson.TabelDays)
+        //            {
+        //                TabelDay td = ListTD[item.td_Day - 1];
+        //                item.td_Hours = td.td_Hours;
+        //                item.td_Hours2 = td.td_Hours2;
+        //                item.typeDay = td.typeDay;
+        //                item.td_KindId= td.td_KindId;
 
-                    }
-                    SelectedPerson.UpdateUI();
-                }
+        //            }
+        //            SelectedPerson.UpdateUI();
+        //        }
 
-            }
-        }
+        //    }
+        //}
 
 
         #endregion
