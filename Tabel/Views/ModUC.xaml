@@ -501,6 +501,8 @@
                                 <DataGridTextColumn Header="Комп.больнич." Binding="{Binding md_bolnich, StringFormat=N2}" Width="80"  CellStyle="{StaticResource CellRight}"/>
                                 <DataGridTextColumn Header="Премия всего" Binding="{Binding PremiaItogo, StringFormat=N2}" Width="80" FontWeight="Bold" CellStyle="{StaticResource CellRight}"/>
                                 <DataGridTextColumn Header="Итого" Binding="{Binding Itogo, StringFormat=N2}" Width="80" FontWeight="Bold" CellStyle="{StaticResource CellRight}"/>
+                                <DataGridTextColumn Header="Бух.данные" Binding="{Binding md_RealPay, StringFormat=N2}" Width="80"  CellStyle="{StaticResource CellRight}"/>
+                                <DataGridTextColumn Header="Разница" Binding="{Binding DiffPremia, StringFormat=N2}" Width="80"  CellStyle="{StaticResource CellRight}"/>
                             </DataGrid.Columns>
                         </DataGrid>
                     </DockPanel>

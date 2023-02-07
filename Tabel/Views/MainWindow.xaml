@@ -170,7 +170,7 @@
             <comp:ButtonT ImageSource="/Resources/для модели1.png" Command="{Binding ExecModCommand}">
                 <TextBlock Text="Модель оплаты"/>
             </comp:ButtonT>
-            <comp:ButtonT ImageSource="/Resources/список.png" Command="{Binding DataSummaryCommand}" Visibility="{Binding VisibleAdmin}">
+            <comp:ButtonT ImageSource="/Resources/список.png" Command="{Binding DataSummaryCommand}" Visibility="{Binding VisibleCommon}">
                 <TextBlock Text="Общие начисления"/>
             </comp:ButtonT>
             <comp:ButtonT  ImageSource="/Resources/директор.png" Command="{Binding ExecSeparCommand}"  Visibility="{Binding VisibleSuper}">

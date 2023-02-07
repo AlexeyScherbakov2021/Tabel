@@ -5,20 +5,29 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Tabel.Views"
         xmlns:vm="clr-namespace:Tabel.ViewModels"
-             xmlns:fa="http://schemas.fontawesome.com/icons/"
-             xmlns:cmd="clr-namespace:Tabel.Commands"
+        xmlns:fa="http://schemas.fontawesome.com/icons/"
+        xmlns:page="clr-namespace:Tabel.Views.DataSummForm"
+        xmlns:cmd="clr-namespace:Tabel.Commands"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
         Title="Параметры начислений" Height="500" Width="900" WindowStartupLocation="CenterScreen">
     <Window.DataContext>
         <vm:DataSummaryViewModel/>
     </Window.DataContext>
+
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Closing">
+            <i:InvokeCommandAction Command="{Binding ClosingCommand}" PassEventArgsToCommand="True"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
     
     <DockPanel>
         <ToolBarPanel DockPanel.Dock="Top" Orientation="Horizontal" Height="30" Margin="0,0,0,8">
             <TextBlock Text="Год" Margin="10,0,8,0" VerticalAlignment="Center"/>
-            <ComboBox ItemsSource="{Binding ListYears}"  VerticalAlignment="Center" Width="100" SelectedItem="{Binding CurrentYear}"/>
+            <ComboBox ItemsSource="{Binding ListYears}" FontSize="16" FontWeight="Bold" VerticalAlignment="Center" Width="100" SelectedItem="{Binding CurrentYear}"/>
             <TextBlock Text="Месяц"  VerticalAlignment="Center" Margin="8,0"/>
             <ComboBox  ItemsSource="{Binding ListMonth}"  VerticalAlignment="Center" Width="150"
+                       FontSize="16" FontWeight="Bold"
                       DisplayMemberPath="Name" SelectedValuePath="Number" SelectedValue="{Binding CurrentMonth, Mode=TwoWay}"
                       />
             <Button Content="Сохранить" Command="{Binding SaveCommand}" Margin="13,3" Style="{DynamicResource ButtonStyleShadow}"/>
@@ -37,37 +46,18 @@
             <StatusBarItem Content="Пользователь:"/>
             <StatusBarItem Content="{Binding User.u_fio}"/>
         </StatusBar>
-        <Grid>
-            <Border Margin="10" Padding="5" CornerRadius="5" Background="#FFEFEFEF">
-                <Border.Effect>
-                    <DropShadowEffect ShadowDepth="0" BlurRadius="10" Opacity="0.3"/>
-                </Border.Effect>
-                <!--<GroupBox Header="Параметры для всей организации" BorderBrush="Gray" >-->
-                    <DataGrid Margin="5" ItemsSource="{Binding ListGenChargMonths}" Style="{StaticResource DataGridStyle}">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="Код" Binding="{Binding GenCarhge.id}" IsReadOnly="True"/>
-                            <DataGridTextColumn Header="Наименование" Binding="{Binding GenCarhge.gen_Name}" IsReadOnly="True"/>
-                            <DataGridTextColumn Header="% выполения" Binding="{Binding gm_Value}" CellStyle="{StaticResource CellRight}"/>
-                        </DataGrid.Columns>
-                    </DataGrid>
-                    <!--<ListBox ItemsSource="{Binding ListGenChargMonths}">
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="250"/>
-                                        <ColumnDefinition Width="60"/>
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock Text="Выполнение плана"/>
-                                    <TextBox Text="70.0" Grid.Column="1" HorizontalContentAlignment="Right"/>
-                                </Grid>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>-->
-                <!--</GroupBox>-->
-            </Border>
-        </Grid>
         
+       
+        <TabControl SelectedIndex="{Binding SelectedIndexTab}" >
+            <TabItem Header="Выполнение плана" Visibility="{Binding IsVisiblePlan}" >
+                <page:PlanUC DataContext="{Binding PlanViewModel}"/>
+            </TabItem>
+
+            <TabItem Header="Выплачено на карту" Visibility="{Binding IsVisiblePay}" >
+                <page:PayUC DataContext="{Binding PayViewModel}"/>
+            </TabItem>
+        </TabControl>
+
 
     </DockPanel>
 </Window>

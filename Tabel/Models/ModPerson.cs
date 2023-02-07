@@ -107,18 +107,19 @@ namespace Tabel.Models
             } 
         }
 
-        //public decimal? md_ItogPremia1 { get; set; }
-        //public decimal? md_ItogPremia2vyr { get; set; }
+        private decimal? _md_RealPay ;
+        public decimal? md_RealPay 
+        { 
+            get => _md_RealPay; 
+            set
+            {
+                if(Set(ref _md_RealPay, value))
+                    OnPropertyChanged(nameof(DiffPremia));
+            }
+        }
 
-        //[Column(TypeName = "numeric")]
-        //public decimal? md_ItogPremiaAddWork { get; set; }
-        //public decimal? md_ItogPremiaTransport { get; set; }
-        //public decimal? md_ItogPremia2Otdel { get; set; }
-        //public decimal? md_ItogPremia3Stimul { get; set; }
-        //public decimal? md_ItogPremiaPrize { get; set; }
-        //public decimal? md_ItogPremiaNight { get; set; }
-        //public decimal? md_ItogPremiaOffDays { get; set; }
-
+        [NotMapped]
+        public decimal? DiffPremia => Itogo - md_RealPay;
 
         public virtual Mod Mod { get; set; }
         public virtual Personal person { get; set; }

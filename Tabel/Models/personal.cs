@@ -65,6 +65,9 @@ namespace Tabel.Models
         private SpecType _p_type_id;
         public SpecType p_type_id { get => _p_type_id; set { Set(ref _p_type_id, value); } }
 
+        private bool? _p_notPrintModel;
+        public bool? p_notPrintModel { get => _p_notPrintModel; set { Set(ref _p_notPrintModel, value); } }
+
         public virtual Category category { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

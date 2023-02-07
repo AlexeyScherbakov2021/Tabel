@@ -19,7 +19,7 @@ namespace Tabel.Infrastructure
 
 
 
-    public enum UserRoles : int { Admin, Управление, Пользователь, Внетарифный };
+    public enum UserRoles : int { Admin, Управление, Пользователь, Внетарифный, Бухгалтерия };
 
     //public class UserRolesBinding : MarkupExtension
     //{

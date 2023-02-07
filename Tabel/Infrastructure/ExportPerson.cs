@@ -88,11 +88,11 @@ namespace Tabel.ViewModels
                 //    + item.premiaTransport.GetPremia()
                 //    + item.premiaPrize.GetPremia();
 
-                if (item.PremiaItogo > 0
+                if ((item.DiffPremia ?? 0) > 0
                     && !String.IsNullOrEmpty(item.person.p_tab_number)
                     && IsAllDigits(item.person.p_tab_number))
                 {
-                    ExportPerson p = new ExportPerson(item, item.PremiaItogo.Value);
+                    ExportPerson p = new ExportPerson(item, item.DiffPremia.Value);
                     ListExportPerson.Add(p);
                 }
             }

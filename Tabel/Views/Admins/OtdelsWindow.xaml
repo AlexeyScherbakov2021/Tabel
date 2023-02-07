@@ -33,6 +33,9 @@
             <ColumnDefinition Width="113*"/>
         </Grid.ColumnDefinitions>
 
+        <GridSplitter Grid.Column="0" Width="4" Background="LightGray"/>
+
+
         <Border Padding="3" Margin="10" CornerRadius="4" Background="WhiteSmoke" BorderThickness="1" BorderBrush="Gray" >
             <Border.Effect>
                 <DropShadowEffect BlurRadius="10" ShadowDepth="0" Color="Black" Opacity="0.2"/>
@@ -188,6 +191,8 @@
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
+
+                        <DataGridCheckBoxColumn Header="Не печ." Binding="{Binding p_notPrintModel}"/>
 
                     </DataGrid.Columns>
                 </DataGrid>

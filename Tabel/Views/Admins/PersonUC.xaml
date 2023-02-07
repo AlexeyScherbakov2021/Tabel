@@ -35,7 +35,7 @@
                 </Button>
                 <DataGrid ItemsSource="{Binding ListPersonView}" SelectionMode="Single" SnapsToDevicePixels="True"
                           EnableRowVirtualization="True" VirtualizingPanel.IsVirtualizingWhenGrouping="True"
-                            VirtualizingPanel.VirtualizationMode="Standard"
+                            VirtualizingPanel.VirtualizationMode="Recycling"
                             VirtualizingPanel.IsVirtualizing="True"
                     Style="{DynamicResource DataGridStyle}" SelectedItem="{Binding SelectedPerson}">
                     <DataGrid.ItemsPanel>
@@ -100,12 +100,12 @@
                         </DataGridTemplateColumn>
 
                         <DataGridComboBoxColumn  Header="Грейд" ItemsSource="{Binding ListCategory, Source={StaticResource context}}"
-                            SelectedValueBinding="{Binding p_cat_id}" DisplayMemberPath="id" SelectedValuePath="id" Width="48"
-                                         />
+                            SelectedValueBinding="{Binding p_cat_id}" DisplayMemberPath="id" SelectedValuePath="id" Width="48" />
 
                         <DataGridTextColumn Header="Ставка" Binding="{Binding p_stavka}"  CellStyle="{StaticResource CellRight}" Width="45"/>
                         <DataGridTextColumn Header="Прем.тариф" Binding="{Binding p_premTarif, StringFormat=N2}"  CellStyle="{StaticResource CellRight}" Width="45"/>
                         <DataGridCheckBoxColumn Header="Удален" Binding="{Binding p_delete}" Width="50"/>
+                        <DataGridCheckBoxColumn Header="Не печ." Binding="{Binding p_notPrintModel}" Width="50"/>
 
                     </DataGrid.Columns>
                 </DataGrid>

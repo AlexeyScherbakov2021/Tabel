@@ -548,7 +548,9 @@ namespace Tabel.ViewModels
 
             //RepositoryExcel.PrintModel(ListModPerson, _SelectYear, _SelectMonth);
 
-            await Task.Run(() => PrintAll(ListModPerson));
+            var ListModForPrint = ListModPerson.Where(it => it.person.p_notPrintModel != true);
+
+            await Task.Run(() => PrintAll(ListModForPrint));
 
             IsPrint = false;
         }
@@ -566,7 +568,7 @@ namespace Tabel.ViewModels
             var db = repoModPerson.GetDB();
             List<ModPerson> ListAllModPerson = repoModPerson.Items
                 .AsNoTracking()
-                .Where(it => it.Mod.m_year == _SelectYear && it.Mod.m_month == _SelectMonth)
+                .Where(it => it.Mod.m_year == _SelectYear && it.Mod.m_month == _SelectMonth && it.person.p_notPrintModel != true)
                 .OrderBy(o => o.person.p_lastname)
                 .ToList();
 

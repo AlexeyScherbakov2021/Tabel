@@ -98,7 +98,7 @@ namespace Tabel.ViewModels
                     && it.t_otdel_id == otdel.id);
                 if(Tabel != null)
                     ListTabelPerson = new ObservableCollection<TabelPerson>(repoTabelPerson.Items
-                        .AsNoTracking()
+                        //.AsNoTracking()
                         .Where(it => it.tp_tabel_id == Tabel.id)
                         .OrderBy(o => o.person.p_lastname)
                         .ThenBy(o => o.person.p_name)
@@ -111,7 +111,7 @@ namespace Tabel.ViewModels
                     && it.t_otdel_id == otdel.ot_parent);
                 if (Tabel != null)
                     ListTabelPerson = new ObservableCollection<TabelPerson> (repoTabelPerson.Items
-                        .AsNoTracking()
+                        //.AsNoTracking()
                         .Where(it => it.tp_tabel_id == Tabel.id && it.person.p_otdel_id == otdel.id)
                         .OrderBy(o => o.person.p_lastname)
                         .ThenBy(o => o.person.p_name)
@@ -331,8 +331,8 @@ namespace Tabel.ViewModels
         //--------------------------------------------------------------------------------------
         public bool ClosingFrom()
         {
-            return false;
-        //    return IsModify;
+            //return false;
+            return IsModify;
         }
 
 

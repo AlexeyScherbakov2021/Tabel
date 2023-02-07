@@ -1,0 +1,28 @@
+﻿<UserControl x:Class="Tabel.Views.DataSummForm.PayUC"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Tabel.Views.DataSummForm"
+            xmlns:vm="clr-namespace:Tabel.ViewModels.DataSummForm"
+            xmlns:fa="http://schemas.fontawesome.com/icons/"
+            xmlns:cmd="clr-namespace:Tabel.Commands"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.DataContext>
+        <vm:PayUCViewModel/>
+    </UserControl.DataContext>
+
+    <Grid>
+
+        <DataGrid Margin="5" ItemsSource="{Binding ListModPersons}" Style="{StaticResource DataGridStyle}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Таб. №" Binding="{Binding person.p_tab_number}" IsReadOnly="True" Width="60"/>
+                <DataGridTextColumn Header="ФИО" Binding="{Binding person.FIO}" IsReadOnly="True" Width="250"/>
+                <DataGridTextColumn Header="Выплачено" Binding="{Binding md_RealPay, StringFormat=N2}" Width="90" CellStyle="{StaticResource CellRightColor}"/>
+                <DataGridTextColumn Header="Отдел" Binding="{Binding person.otdel.ot_name}" IsReadOnly="True" Width="250"/>
+                <DataGridTextColumn Header="Должность" Binding="{Binding person.p_profession}" IsReadOnly="True" Width="250"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</UserControl>
