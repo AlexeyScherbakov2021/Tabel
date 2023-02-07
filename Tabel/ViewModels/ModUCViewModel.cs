@@ -36,7 +36,7 @@ namespace Tabel.ViewModels
         private RepositoryMSSQL<Personal> repoPersonal;
         private readonly RepositoryMSSQL<WorkTabel> repoTabel;
         private readonly RepositoryMSSQL<Mod> repoModel;
-        
+
         public Visibility VisibleGrid { get; set; } = Visibility.Visible;
 
         //private decimal? _BonusProc;
@@ -65,16 +65,16 @@ namespace Tabel.ViewModels
         public decimal SetProcPrem { get; set; }
 
         private ObservableCollection<ModPerson> _ListModPerson;
-        public ObservableCollection<ModPerson> ListModPerson 
-        { 
-            get => _ListModPerson; 
+        public ObservableCollection<ModPerson> ListModPerson
+        {
+            get => _ListModPerson;
             set
             {
-                if(_ListModPerson == value) return;
+                if (_ListModPerson == value) return;
 
-                if(_ListModPerson != null)
+                if (_ListModPerson != null)
                 {
-                    foreach(var item in _ListModPerson)
+                    foreach (var item in _ListModPerson)
                         item.PropertyChanged -= Item_PropertyChanged;
                 }
 
@@ -97,7 +97,7 @@ namespace Tabel.ViewModels
                 || e.PropertyName == "TabelHours"
                 || e.PropertyName == "TabelAbsent"
                 || e.PropertyName == "PremiaItogo")
-                
+
                 return;
             IsModify = true;
         }
@@ -186,7 +186,7 @@ namespace Tabel.ViewModels
 
             //LoadPersonAsync();
             Task.Run(() => LoadPersonAsync(Cancellation.Token)).ConfigureAwait(true);
-               
+
 
         }
 
@@ -292,19 +292,19 @@ namespace Tabel.ViewModels
         {
 
 
-           // получение этого сотрудника из предыдущей существующей модели
-           ModPerson PrevModPerson = repoModPerson.Items
-               .AsNoTracking()
-               .Where(it => it.md_personalId == newPerson.md_personalId
-                        && it.Mod.m_otdelId == _SelectedOtdel.id
-                        && (
-                           (it.Mod.m_year == _SelectYear && it.Mod.m_month < _SelectMonth)
-                           || it.Mod.m_year < _SelectYear
-                          ))
-               //.Include(inc => inc.ListTargetTask)
-               .OrderByDescending(o => o.Mod.m_year)
-               .ThenByDescending(o => o.Mod.m_month)
-               .FirstOrDefault();
+            // получение этого сотрудника из предыдущей существующей модели
+            ModPerson PrevModPerson = repoModPerson.Items
+                .AsNoTracking()
+                .Where(it => it.md_personalId == newPerson.md_personalId
+                         && it.Mod.m_otdelId == _SelectedOtdel.id
+                         && (
+                            (it.Mod.m_year == _SelectYear && it.Mod.m_month < _SelectMonth)
+                            || it.Mod.m_year < _SelectYear
+                           ))
+                //.Include(inc => inc.ListTargetTask)
+                .OrderByDescending(o => o.Mod.m_year)
+                .ThenByDescending(o => o.Mod.m_month)
+                .FirstOrDefault();
 
 
             // если был предыдущий месяц, то копируем нужные тарифы
@@ -315,11 +315,11 @@ namespace Tabel.ViewModels
                 newPerson.md_cat_prem_tarif = PrevModPerson.md_cat_prem_tarif;
                 newPerson.md_person_achiev = PrevModPerson.md_person_achiev;
                 decimal? summa = 0;
-                foreach(var item in PrevModPerson.ListTargetTask)
+                foreach (var item in PrevModPerson.ListTargetTask)
                 {
-                    TargetTask tt = new TargetTask() 
-                    { 
-                        tt_name = item.tt_name, 
+                    TargetTask tt = new TargetTask()
+                    {
+                        tt_name = item.tt_name,
                         tt_proc_task = item.tt_proc_task,
                     };
                     newPerson.ListTargetTask.Add(tt);
@@ -384,7 +384,7 @@ namespace Tabel.ViewModels
             // получение списка людей для отделов и групп
             var persons = repoPersonal.Items
                 .AsNoTracking()
-                .Where(it => (it.p_otdel_id == _SelectedOtdel.id  || listOtdels.Contains(it.p_otdel_id.Value)) && it.p_delete == false)
+                .Where(it => (it.p_otdel_id == _SelectedOtdel.id || listOtdels.Contains(it.p_otdel_id.Value)) && it.p_delete == false)
                 .OrderBy(o => o.p_lastname)
                 .ThenBy(o => o.p_name);
 
@@ -446,9 +446,7 @@ namespace Tabel.ViewModels
 
             // берем часы переработки
             FormExport fomExport = new FormExport();
-
             fomExport.ListPersonToListExport(_SelectYear, _SelectMonth, BonusProc);
-
             RepositoryCSV repoFile = new RepositoryCSV(fomExport);
             repoFile.SaveFile(_SelectYear, _SelectMonth);
 
@@ -510,7 +508,6 @@ namespace Tabel.ViewModels
                 premiaAddWorksViewModel.AddPersons(ListNewPerson);
                 premiaTransportViewModel.AddPersons(ListNewPerson);
                 premiaPrizeViewModel.AddPersons(ListNewPerson);
-
                 OnPropertyChanged(nameof(ListModPerson));
             }
 
@@ -611,11 +608,11 @@ namespace Tabel.ViewModels
 
                     ws.Cell("B9").Value = SelectedModPerson.TabelDays;
                     ws.Cell("C9").Value = SelectedModPerson.TabelHours;
-                    
+
                     ws.Cell("D9").Value = SelectedModPerson.Itogo;
                     ws.Cell("D10").Value = SelectedModPerson.md_Oklad;
                     ws.Cell("D11").Value = SelectedModPerson.PremiaItogo;
-                    
+
                     ws.Cell("B6").Value = SelectedModPerson.person.category.cat_tarif;
 
                     int curRow = 12;
@@ -747,7 +744,7 @@ namespace Tabel.ViewModels
                 foreach (var item in vm.ListTarget)
                 {
                     //summa += item.tt_proc_task;
-                    if(!string.IsNullOrEmpty(item.tt_name))
+                    if (!string.IsNullOrEmpty(item.tt_name))
                         name += item.tt_name.Length > 15 ? item.tt_name.Substring(0, 15) + "...; " : item.tt_name + ";";
                 }
                 SelectedModPerson.md_kvalif_proc = vm.proc100;

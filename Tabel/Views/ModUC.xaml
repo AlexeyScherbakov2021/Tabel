@@ -105,66 +105,66 @@
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
 
-            <TabItem Header="По табелю" DataContext="{Binding modMainViewModel}">
-                <DockPanel  Background="Gainsboro">
-                    <Grid DockPanel.Dock="Top" Margin="8,0" Height="30">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="100"/>
-                            <ColumnDefinition Width="100"/>
-                        </Grid.ColumnDefinitions>
-                    </Grid>
-                    <DataGrid ItemsSource="{Binding ListModPerson}" Style="{StaticResource DataGridStyle}" 
+                <TabItem Header="По табелю" DataContext="{Binding modMainViewModel}">
+                    <DockPanel  Background="Gainsboro">
+                        <Grid DockPanel.Dock="Top" Margin="8,0" Height="30">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="100"/>
+                            </Grid.ColumnDefinitions>
+                        </Grid>
+                        <DataGrid ItemsSource="{Binding ListModPerson}" Style="{StaticResource DataGridStyle}" 
                               SelectedItem="{Binding DataContext.SelectedModPerson, Mode=TwoWay, ElementName=userControl}">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="Таб.№" Binding="{Binding person.p_tab_number}" IsReadOnly="True"/>
-                            <DataGridTextColumn Header="ФИО" Binding="{Binding person.FIO}" IsReadOnly="True"/>
-                            <DataGridTextColumn Header="Должность" Binding="{Binding person.p_profession}" Width="250" IsReadOnly="True"/>
-                            <DataGridTextColumn Header="Ставка" Binding="{Binding person.p_stavka}" CellStyle="{StaticResource CellRight}" IsReadOnly="True"/>
-                            <DataGridTextColumn Header="Грейд" Binding="{Binding person.category.id}" CellStyle="{StaticResource CellRight}" IsReadOnly="True"/>
-                            <DataGridTextColumn Header="Тариф" Binding="{Binding person.category.cat_tarif, StringFormat=0.#}" CellStyle="{StaticResource CellRight}" IsReadOnly="True"/>
-                            <DataGridTextColumn Header="Часы" Binding="{Binding TabelHours, StringFormat=0.#}" CellStyle="{StaticResource CellRight}" IsReadOnly="True"/>
-                            <DataGridTextColumn Header="Отсут." Binding="{Binding TabelAbsent}" CellStyle="{StaticResource CellRight}" IsReadOnly="True"/>
-                            <DataGridTextColumn Header="Дни" Binding="{Binding TabelDays}" CellStyle="{StaticResource CellRight}" IsReadOnly="True"/>
-                            <DataGridTextColumn Header="Оклад" Binding="{Binding md_Oklad, StringFormat=N2}" Width="70" CellStyle="{StaticResource CellRight}" IsReadOnly="True"/>
-                            <DataGridTextColumn Header="Ноч. 20%" Binding="{Binding premiaNight.NightOklad, StringFormat=0.#}" CellStyle="{StaticResource CellRight}" IsReadOnly="True"/>
-                            <!--<DataGridTextColumn Header="Ноч.часы" Binding="{Binding premiaNight.NightHours, Mode=TwoWay, StringFormat=0.#}"  CellStyle="{StaticResource CellRight}"  IsReadOnly="True"/>-->
-                            <DataGridTextColumn Header="Ноч.премия" Width="86" IsReadOnly="True" CellStyle="{StaticResource CellRight}" >
-                                <DataGridTextColumn.Binding>
-                                    <MultiBinding StringFormat="{}{0:#.##} ({1:#.#} ч.)">
-                                        <Binding Path="premiaNight.Summa"/>
-                                        <Binding Path="premiaNight.NightHours"/>
-                                    </MultiBinding>
-                                </DataGridTextColumn.Binding>
-                            </DataGridTextColumn>
-                            <!--<DataGridTextColumn Header="Вых.дней" Binding="{Binding TabelWorkOffDay, Mode=TwoWay}" CellStyle="{StaticResource CellRight}"/>-->
-                            <DataGridTextColumn Header="Вых.тариф" Binding="{Binding md_tarif_offDay, StringFormat=N0}" Width="68" CellStyle="{StaticResource CellRight}" IsReadOnly="True"/>
-                            <DataGridTextColumn Header="Допл.вых." Width="80" CellStyle="{StaticResource CellRight}" IsReadOnly="True">
-                                <DataGridTextColumn.Binding>
-                                    <MultiBinding StringFormat="{}{0:#.##} ({1:#.#} д.)">
-                                        <Binding Path="premOffDays.Summa"/>
-                                        <Binding Path="TabelWorkOffDay"/>
-                                    </MultiBinding>
-                                </DataGridTextColumn.Binding>
-                            </DataGridTextColumn>
-                            <DataGridTextColumn Header="Сверх1.5" Width="80" CellStyle="{StaticResource CellRight}" IsReadOnly="True">
-                                <DataGridTextColumn.Binding>
-                                    <MultiBinding StringFormat="{}{0:#.##} ({1:#.#} ч.)">
-                                        <Binding Path="PereWork15"/>
-                                        <Binding Path="PereWorkHours15"/>
-                                    </MultiBinding>
-                                </DataGridTextColumn.Binding>
-                            </DataGridTextColumn>
-                            <DataGridTextColumn Header="Сверх2" Width="80" CellStyle="{StaticResource CellRight}" IsReadOnly="True">
-                                <DataGridTextColumn.Binding>
-                                    <MultiBinding StringFormat="{}{0:#.##} ({1:#.#} ч.)">
-                                        <Binding Path="PereWork2"/>
-                                        <Binding Path="PereWorkHours2"/>
-                                    </MultiBinding>
-                                </DataGridTextColumn.Binding>
-                            </DataGridTextColumn>
-                            <DataGridTextColumn Header="комп.больничного" Binding="{Binding md_bolnich, StringFormat=N2}" IsReadOnly="False" Width="90"  CellStyle="{StaticResource CellRightColor}"/>
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Таб.№" Binding="{Binding person.p_tab_number}" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="ФИО" Binding="{Binding person.FIO}" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Должность" Binding="{Binding person.p_profession}" Width="250" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Ставка" Binding="{Binding person.p_stavka}" CellStyle="{StaticResource CellRight}" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Грейд" Binding="{Binding person.category.id}" CellStyle="{StaticResource CellRight}" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Тариф" Binding="{Binding person.category.cat_tarif, StringFormat=0.#}" CellStyle="{StaticResource CellRight}" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Часы" Binding="{Binding TabelHours, StringFormat=0.#}" CellStyle="{StaticResource CellRight}" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Отсут." Binding="{Binding TabelAbsent}" CellStyle="{StaticResource CellRight}" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Дни" Binding="{Binding TabelDays}" CellStyle="{StaticResource CellRight}" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Оклад" Binding="{Binding md_Oklad, StringFormat=N2}" Width="70" CellStyle="{StaticResource CellRight}" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Ноч. 20%" Binding="{Binding premiaNight.NightOklad, StringFormat=0.#}" CellStyle="{StaticResource CellRight}" IsReadOnly="True"/>
+                                <!--<DataGridTextColumn Header="Ноч.часы" Binding="{Binding premiaNight.NightHours, Mode=TwoWay, StringFormat=0.#}"  CellStyle="{StaticResource CellRight}"  IsReadOnly="True"/>-->
+                                <DataGridTextColumn Header="Ноч.премия" Width="86" IsReadOnly="True" CellStyle="{StaticResource CellRight}" >
+                                    <DataGridTextColumn.Binding>
+                                        <MultiBinding StringFormat="{}{0:#.##} ({1:#.#} ч.)">
+                                            <Binding Path="premiaNight.Summa"/>
+                                            <Binding Path="premiaNight.NightHours"/>
+                                        </MultiBinding>
+                                    </DataGridTextColumn.Binding>
+                                </DataGridTextColumn>
+                                <!--<DataGridTextColumn Header="Вых.дней" Binding="{Binding TabelWorkOffDay, Mode=TwoWay}" CellStyle="{StaticResource CellRight}"/>-->
+                                <DataGridTextColumn Header="Вых.тариф" Binding="{Binding md_tarif_offDay, StringFormat=N0}" Width="68" CellStyle="{StaticResource CellRight}" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Допл.вых." Width="80" CellStyle="{StaticResource CellRight}" IsReadOnly="True">
+                                    <DataGridTextColumn.Binding>
+                                        <MultiBinding StringFormat="{}{0:#.##} ({1:#.#} д.)">
+                                            <Binding Path="premOffDays.Summa"/>
+                                            <Binding Path="TabelWorkOffDay"/>
+                                        </MultiBinding>
+                                    </DataGridTextColumn.Binding>
+                                </DataGridTextColumn>
+                                <DataGridTextColumn Header="Сверх1.5" Width="80" CellStyle="{StaticResource CellRight}" IsReadOnly="True">
+                                    <DataGridTextColumn.Binding>
+                                        <MultiBinding StringFormat="{}{0:#.##} ({1:#.#} ч.)">
+                                            <Binding Path="PereWork15"/>
+                                            <Binding Path="PereWorkHours15"/>
+                                        </MultiBinding>
+                                    </DataGridTextColumn.Binding>
+                                </DataGridTextColumn>
+                                <DataGridTextColumn Header="Сверх2" Width="80" CellStyle="{StaticResource CellRight}" IsReadOnly="True">
+                                    <DataGridTextColumn.Binding>
+                                        <MultiBinding StringFormat="{}{0:#.##} ({1:#.#} ч.)">
+                                            <Binding Path="PereWork2"/>
+                                            <Binding Path="PereWorkHours2"/>
+                                        </MultiBinding>
+                                    </DataGridTextColumn.Binding>
+                                </DataGridTextColumn>
+                                <DataGridTextColumn Header="комп.больничного" Binding="{Binding md_bolnich, StringFormat=N2}" IsReadOnly="False" Width="90"  CellStyle="{StaticResource CellRightColor}"/>
 
-                            <!--<DataGridTextColumn Header="Премия" Binding="{Binding PremiaItogo, StringFormat=N2}" Width="80" FontWeight="Bold" CellStyle="{StaticResource CellRight}"/>
+                                <!--<DataGridTextColumn Header="Премия" Binding="{Binding PremiaItogo, StringFormat=N2}" Width="80" FontWeight="Bold" CellStyle="{StaticResource CellRight}"/>
                             <DataGridTextColumn Header="Итого" Binding="{Binding Itogo, StringFormat=N2}" Width="80" FontWeight="Bold" CellStyle="{StaticResource CellRight}"/>-->
                             </DataGrid.Columns>
                         </DataGrid>
@@ -308,43 +308,42 @@
                                 ItemsSource="{Binding DataContext.ListWorks, ElementName=userControl}" ElementStyle="{Binding Mode=OneWay, Source={StaticResource StyleCheckComboBox}}"
                              />-->
 
-                            <DataGridTemplateColumn Header="Работы"  Width="200" CellStyle="{StaticResource CellColor}">
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <TextBlock Text="{Binding ListAddWorks, Converter={StaticResource AddWorksConverter}}"/>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                                <DataGridTemplateColumn.CellEditingTemplate>
-                                    <DataTemplate>
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition MinWidth="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}" Width="0"/>
-                                            </Grid.ColumnDefinitions>
-                                            <Popup IsOpen="{Binding IsChecked, ElementName=toggle}" Grid.ColumnSpan="2" >
-                                                <ListBox ItemsSource="{Binding DataContext.premiaAddWorksViewModel.ListWorks, ElementName=userControl}"  >
-                                                    <ListBox.ItemTemplate>
-                                                        <DataTemplate>
-                                                            <StackPanel Orientation="Horizontal">
-                                                                <CheckBox Content="{Binding aw_Name}" IsChecked="{Binding IsChecked, Mode=TwoWay}"/>
-                                                            </StackPanel>
-                                                        </DataTemplate>
-                                                    </ListBox.ItemTemplate>
-                                                </ListBox>
-                                            </Popup>
-                                            <ToggleButton x:Name="toggle" DockPanel.Dock="Right" Grid.ColumnSpan="2" 
+                                <DataGridTemplateColumn Header="Работы"  Width="200" CellStyle="{StaticResource CellColor}">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding ListAddWorks, Converter={StaticResource AddWorksConverter}}"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                    <DataGridTemplateColumn.CellEditingTemplate>
+                                        <DataTemplate>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition MinWidth="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}" Width="0"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Popup IsOpen="{Binding IsChecked, ElementName=toggle}" Grid.ColumnSpan="2" >
+                                                    <ListBox ItemsSource="{Binding DataContext.premiaAddWorksViewModel.ListWorks, ElementName=userControl}"  >
+                                                        <ListBox.ItemTemplate>
+                                                            <DataTemplate>
+                                                                <StackPanel Orientation="Horizontal">
+                                                                    <CheckBox Content="{Binding aw_Name}" IsChecked="{Binding IsChecked, Mode=TwoWay}"/>
+                                                                </StackPanel>
+                                                            </DataTemplate>
+                                                        </ListBox.ItemTemplate>
+                                                    </ListBox>
+                                                </Popup>
+                                                <ToggleButton x:Name="toggle" DockPanel.Dock="Right" Grid.ColumnSpan="2" 
                                                           IsChecked="{Binding DataContext.premiaAddWorksViewModel.IsCheckedButton, ElementName=userControl}"
                                                           Style="{StaticResource ComboBoxToggleButton}"/>
-                                            <TextBlock Text="{Binding ListAddWorks, Converter={StaticResource AddWorksConverter}}" IsHitTestVisible="False" Foreground="Black"/>
-                                        </Grid>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellEditingTemplate>
-                            </DataGridTemplateColumn>
-                            <DataGridTextColumn Header="Перс.доплата за уник.проф." Binding="{Binding md_person_achiev, StringFormat=N2}" 
+                                                <TextBlock Text="{Binding ListAddWorks, Converter={StaticResource AddWorksConverter}}" IsHitTestVisible="False" Foreground="Black"/>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellEditingTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTextColumn Header="Перс.доплата за уник.проф." Binding="{Binding md_person_achiev, StringFormat=N2}" 
                                                 IsReadOnly="{Binding DataContext.IsNotAdmin, Source={x:Reference ProxyElement}}"
                                                 Width="100"  CellStyle="{StaticResource CellRightColor}"/>
-                            <DataGridTextColumn Header="Итого" Binding="{Binding premiaAddWorks.Summa, StringFormat=N2}" FontWeight="Bold" Width="90"  CellStyle="{StaticResource CellRight}" IsReadOnly="True"/>
-                            <DataGridTextColumn Header="комп.больничного" Binding="{Binding md_bolnich, StringFormat=N2}" Width="90"  CellStyle="{StaticResource CellRightColor}"/>
+                                <DataGridTextColumn Header="Итого" Binding="{Binding premiaAddWorks.Summa, StringFormat=N2}" FontWeight="Bold" Width="90"  CellStyle="{StaticResource CellRight}" IsReadOnly="True"/>
 
                             </DataGrid.Columns>
                         </DataGrid>
@@ -472,41 +471,43 @@
                     </DockPanel>
                 </TabItem>
 
-            
-            <TabItem Header="Итого" DataContext="{Binding premiaItogoViewModel}">
-                <DockPanel  Background="Gainsboro">
-                    <Grid DockPanel.Dock="Top" Margin="8,0" Height="30">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="100"/>
-                            <ColumnDefinition Width="100"/>
-                        </Grid.ColumnDefinitions>
-                    </Grid>
-                    
-                    <FrameworkElement x:Name="ProxyElement3" Visibility="Collapsed" DataContext="{Binding}"/>
-                    <DataGrid ItemsSource="{Binding ListModPerson}" IsReadOnly="True"
-                              SelectedItem="{Binding DataContext.SelectedModPerson, Mode=TwoWay, ElementName=userControl}"
-                              Style="{StaticResource DataGridStyle}" >
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="Таб.№" Binding="{Binding person.p_tab_number}" IsReadOnly="True"/>
-                            <DataGridTextColumn Header="ФИО" Binding="{Binding person.FIO}" IsReadOnly="True"/>
-                            <DataGridTextColumn Header="Должность" Binding="{Binding person.p_profession}" IsReadOnly="True" Width="350"/>
-                            <DataGridTextColumn Header="Премия 1(бонус)" Binding="{Binding premiaBonus.Summa, StringFormat=N2}" Width="80"  CellStyle="{StaticResource CellRight}"/>
-                            <DataGridTextColumn x:Name="columnFP" Header="Премия 2(по выраб.)" Binding="{Binding premiaFP.Summa, StringFormat=N2}" 
-                                                Visibility="{Binding DataContext.IsVisibleITR, Source={x:Reference ProxyElement3}}"
-                                                Width="80" CellStyle="{StaticResource CellRight}"/>
-                            <DataGridTextColumn Header="Доплата (доп.раб.)" Binding="{Binding premiaAddWorks.Summa, StringFormat=N2}" Width="80"  CellStyle="{StaticResource CellRight}"/>
-                            <DataGridTextColumn Header="Компенсация за доставку" Binding="{Binding premiaTransport.Summa, StringFormat=N2}" Width="80"  CellStyle="{StaticResource CellRight}"/>
-                            <DataGridTextColumn Header="Премия 2(по отделу)" Binding="{Binding premiaOtdel.Summa, StringFormat=N2}" Width="80"  CellStyle="{StaticResource CellRight}"/>
-                            <DataGridTextColumn Header="Премия 3(стимул.)" Binding="{Binding premiStimul.Summa, StringFormat=N2}" Width="80"  CellStyle="{StaticResource CellRight}"/>
-                            <DataGridTextColumn Header="Премия (добр.труд)" Binding="{Binding premiaPrize.Summa, StringFormat=N2}" Width="80"  CellStyle="{StaticResource CellRight}"/>
-                            <DataGridTextColumn Header="Комп.больнич." Binding="{Binding md_bolnich, StringFormat=N2}" Width="80"  CellStyle="{StaticResource CellRight}"/>
-                            <DataGridTextColumn Header="Премия всего" Binding="{Binding PremiaItogo, StringFormat=N2}" Width="80" FontWeight="Bold" CellStyle="{StaticResource CellRight}"/>
-                            <DataGridTextColumn Header="Итого" Binding="{Binding Itogo, StringFormat=N2}" Width="80" FontWeight="Bold" CellStyle="{StaticResource CellRight}"/>
-                        </DataGrid.Columns>
-                    </DataGrid>
-                </DockPanel>
-            </TabItem>
-        </TabControl>
+
+                <TabItem Header="Итого" DataContext="{Binding premiaItogoViewModel}">
+                    <DockPanel  Background="Gainsboro">
+                        <Grid DockPanel.Dock="Top" Margin="8,0" Height="30">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="100"/>
+                            </Grid.ColumnDefinitions>
+                        </Grid>
+
+                        <FrameworkElement x:Name="ProxyElement3" Visibility="Collapsed" DataContext="{Binding}"/>
+                        <DataGrid ItemsSource="{Binding ListModPerson}" IsReadOnly="True"
+                            SelectedItem="{Binding DataContext.SelectedModPerson, ElementName=userControl, Mode=TwoWay}"
+                            Style="{StaticResource DataGridStyle}" >
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Таб.№" Binding="{Binding person.p_tab_number}" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="ФИО" Binding="{Binding person.FIO}" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Должность" Binding="{Binding person.p_profession}" IsReadOnly="True" Width="350"/>
+                                <DataGridTextColumn Header="Премия 1(бонус)" Binding="{Binding premiaBonus.Summa, StringFormat=N2}" Width="80"  CellStyle="{StaticResource CellRight}"/>
+                                <DataGridTextColumn x:Name="columnFP" Header="Премия 2(по выраб.)" Binding="{Binding premiaFP.Summa, StringFormat=N2}" 
+                                    Visibility="{Binding DataContext.IsVisibleITR, Source={x:Reference ProxyElement3}}"
+                                    Width="80" CellStyle="{StaticResource CellRight}"/>
+                                <DataGridTextColumn Header="Доплата (доп.раб.)" Binding="{Binding premiaAddWorks.Summa, StringFormat=N2}" Width="80"  CellStyle="{StaticResource CellRight}"/>
+                                <DataGridTextColumn Header="Компенсация за доставку" Binding="{Binding premiaTransport.Summa, StringFormat=N2}" Width="80"  CellStyle="{StaticResource CellRight}"/>
+                                <DataGridTextColumn Header="Премия 2(по отделу)" Binding="{Binding premiaOtdel.Summa, StringFormat=N2}" Width="80"  CellStyle="{StaticResource CellRight}"/>
+                                <DataGridTextColumn Header="Премия 3(стимул.)" Binding="{Binding premiStimul.Summa, StringFormat=N2}" Width="80"  CellStyle="{StaticResource CellRight}"/>
+                                <DataGridTextColumn Header="Премия (добр.труд)" Binding="{Binding premiaPrize.Summa, StringFormat=N2}" Width="80"  CellStyle="{StaticResource CellRight}"/>
+                                <DataGridTextColumn Header="Комп.больнич." Binding="{Binding md_bolnich, StringFormat=N2}" Width="80"  CellStyle="{StaticResource CellRight}"/>
+                                <DataGridTextColumn Header="Премия всего" Binding="{Binding PremiaItogo, StringFormat=N2}" Width="80" FontWeight="Bold" CellStyle="{StaticResource CellRight}"/>
+                                <DataGridTextColumn Header="Итого" Binding="{Binding Itogo, StringFormat=N2}" Width="80" FontWeight="Bold" CellStyle="{StaticResource CellRight}"/>
+                                <DataGridTextColumn Header="Бух.данные" Binding="{Binding md_RealPay, StringFormat=N2}" Width="80"  CellStyle="{StaticResource CellRight}"/>
+                                <DataGridTextColumn Header="Разница" Binding="{Binding DiffPremia, StringFormat=N2}" Width="80"  CellStyle="{StaticResource CellRight}"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </DockPanel>
+                </TabItem>
+            </TabControl>
 
         </Grid>
         <!--<Image x:Name="spinner" DockPanel.Dock="Top" Source="/Resources/spinner.gif" Width="60" Margin="0,100,0,0" RenderTransformOrigin="0.5,0.5">

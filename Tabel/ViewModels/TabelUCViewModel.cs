@@ -44,7 +44,7 @@ namespace Tabel.ViewModels
         public Otdel SelectedOtdel { get; set; }
         private int _SelectMonth;
         private int _SelectYear;
-        //private bool IsModify = false;
+        private bool IsModify = false;
 
 
         //--------------------------------------------------------------------------------------------------
@@ -78,7 +78,7 @@ namespace Tabel.ViewModels
             SelectedOtdel = otdel;
             ListTabelPerson = null;
 
-            if (otdel is null)  return;
+            if (otdel is null) return;
 
 
             if (ListTabelPerson != null)
@@ -96,7 +96,7 @@ namespace Tabel.ViewModels
                 Tabel = repoTabel.Items.FirstOrDefault(it => it.t_year == Year
                     && it.t_month == Month
                     && it.t_otdel_id == otdel.id);
-                if(Tabel != null)
+                if (Tabel != null)
                     ListTabelPerson = new ObservableCollection<TabelPerson>(repoTabelPerson.Items
                         //.AsNoTracking()
                         .Where(it => it.tp_tabel_id == Tabel.id)
@@ -104,13 +104,13 @@ namespace Tabel.ViewModels
                         .ThenBy(o => o.person.p_name)
                         );
             }
-            else 
+            else
             {
                 Tabel = repoTabel.Items.FirstOrDefault(it => it.t_year == Year
                     && it.t_month == Month
                     && it.t_otdel_id == otdel.ot_parent);
                 if (Tabel != null)
-                    ListTabelPerson = new ObservableCollection<TabelPerson> (repoTabelPerson.Items
+                    ListTabelPerson = new ObservableCollection<TabelPerson>(repoTabelPerson.Items
                         //.AsNoTracking()
                         .Where(it => it.tp_tabel_id == Tabel.id && it.person.p_otdel_id == otdel.id)
                         .OrderBy(o => o.person.p_lastname)
@@ -161,7 +161,8 @@ namespace Tabel.ViewModels
             List<TabelDay> ListDays = person.TabelDays.ToList();
             int nCntPermDays = person.PrevPermWorkCount + 1;
 
-        //        OverHours = 0;
+            decimal PrevHours;
+            decimal? OverHours;
 
             for (int i = 0; i < ListDays.Count; i++)
             {
@@ -172,20 +173,7 @@ namespace Tabel.ViewModels
                     // часы предыдущего дня
                     PrevHours = ListDays[i - 1].WhiteHours;
 
-        //        if (nCntPermDays >= 7)
-        //        {
-        //            // если проработано более 6 дней подряд
-        //            OverHours = ListDays[i].td_Hours;
-        //            nCntPermDays = 0;
-        //        }
-        //        else if(ListDays[i].CalendarTypeDay != TypeDays.Holyday)
-        //        {
-        //            if (ListDays[i].td_Hours > 12)
-        //            {
-        //                OverHours = ListDays[i].td_Hours - 12;
-        //                //ListDays[i].td_Hours2 = ListDays[i].td_Hours - OverHours;
-        //                //ListDays[i].WhiteHours = 12;
-        //            }
+                OverHours = 0;
 
                 if (ListDays[i].td_Hours == 0)
                     nCntPermDays = 0;
@@ -210,14 +198,14 @@ namespace Tabel.ViewModels
 
                 }
 
-        //        ListDays[i].td_Hours2 = OverHours;
-        //        ListDays[i].OnPropertyChanged("WhiteHours");
-        //        //ListDays[i].WhiteHours = (ListDays[i].td_Hours - OverHours) ?? 0;
-        //        ListDays[i].VisibilityHours = OverHours > 0 ? Visibility.Visible : Visibility.Collapsed;
-        //        nCntPermDays++;
-        //    }
-        //    person.OnPropertyChanged(nameof(person.OverWork));
-        //}
+                ListDays[i].td_Hours2 = OverHours;
+                ListDays[i].OnPropertyChanged("WhiteHours");
+                //ListDays[i].WhiteHours = (ListDays[i].td_Hours - OverHours) ?? 0;
+                ListDays[i].VisibilityHours = OverHours > 0 ? Visibility.Visible : Visibility.Collapsed;
+                nCntPermDays++;
+            }
+            person.OnPropertyChanged(nameof(person.OverWork));
+        }
 
 
         private async void SetTypeDaysAsync()
@@ -225,7 +213,7 @@ namespace Tabel.ViewModels
             Mouse.OverrideCursor = Cursors.Wait;
 
             await Task.Run(() => SetTypeDays());
-            
+
             if (ListTabelPerson != null)
             {
                 foreach (var item in ListTabelPerson)
@@ -234,8 +222,8 @@ namespace Tabel.ViewModels
                     foreach (var day in item.TabelDays)
                         day.PropertyChanged += ListPerson_PropertyChanged;
 
-            //    }
-            //}
+                }
+            }
 
             OnPropertyChanged(nameof(ListTabelPerson));
             OnPropertyChanged(nameof(Tabel));
@@ -258,7 +246,7 @@ namespace Tabel.ViewModels
 
             int PrevYear = _SelectYear;
             int PrevMonth = _SelectMonth - 1;
-            if(PrevMonth < 1)
+            if (PrevMonth < 1)
             {
                 PrevMonth = 1;
                 PrevYear--;
@@ -270,7 +258,7 @@ namespace Tabel.ViewModels
                     && it.t_year == PrevYear
                     && it.t_otdel_id == Tabel.t_otdel_id);
 
-            if(PrevTabel == null)
+            if (PrevTabel == null)
             {
                 RepositoryCalendar repoCal = new RepositoryCalendar(db);
                 ListDaysMonth = repoCal.GetListDays(PrevYear, PrevMonth);
@@ -283,7 +271,7 @@ namespace Tabel.ViewModels
                 foreach (var day in item.TabelDays)
                 {
                     day.CalendarTypeDay = ListDays[i].KindDay;
-                    if(day.td_Hours2 > 0)
+                    if (day.td_Hours2 > 0)
                         day.VisibilityHours = Visibility.Visible;
                     i++;
                 }
@@ -315,7 +303,7 @@ namespace Tabel.ViewModels
                         }
                     }
                 }
-                else if(ListDaysMonth != null)
+                else if (ListDaysMonth != null)
                 {
                     // расчет при отсутствии предыдущего табеля
                     item.PrevDay = new TabelDay();
@@ -353,6 +341,9 @@ namespace Tabel.ViewModels
         //--------------------------------------------------------------------------------------
         public void SaveForm()
         {
+            repoTabelPerson.Save();
+            repoTabel.Save();
+            IsModify = false;
         }
 
         public void Dispose()
@@ -451,7 +442,7 @@ namespace Tabel.ViewModels
                         td.td_Hours = 0;
                     }
 
-                    if(p != null)
+                    if (p != null)
                         td.td_Hours = 0;
 
                     tp.TabelDays.Add(td);
@@ -519,10 +510,10 @@ namespace Tabel.ViewModels
         // Команда Сохранить
         //--------------------------------------------------------------------------------
         public ICommand SaveCommand => new LambdaCommand(OnSaveCommandExecuted, CanSaveCommand);
-        private bool CanSaveCommand(object p) => SelectedOtdel != null && Tabel != null /*&& IsModify*/;
+        private bool CanSaveCommand(object p) => SelectedOtdel != null && Tabel != null && IsModify;
         private void OnSaveCommandExecuted(object p)
         {
-            //SaveForm();
+            SaveForm();
         }
 
         //--------------------------------------------------------------------------------
@@ -633,11 +624,11 @@ namespace Tabel.ViewModels
             List<int> listDays = new List<int>();
             List<Models.Personal> listPerson = new List<Models.Personal>();
 
-            foreach(var pers in ListTabelPerson)
+            foreach (var pers in ListTabelPerson)
             {
-                foreach(var day in pers.TabelDays)
+                foreach (var day in pers.TabelDays)
                 {
-                    if(day.typeDay.t_name == "РВ" && day.CalendarTypeDay == TypeDays.Holyday )
+                    if (day.typeDay.t_name == "РВ" && day.CalendarTypeDay == TypeDays.Holyday)
                     {
                         listDays.Add(day.td_Day);
                     }
@@ -651,9 +642,9 @@ namespace Tabel.ViewModels
             SelectDateWindowViewModel vm = new SelectDateWindowViewModel(listDays, _SelectMonth, _SelectYear);
             win.DataContext = vm;
 
-            if(win.ShowDialog() == true)
+            if (win.ShowDialog() == true)
             {
-                foreach(var persMod in ListTabelPerson)
+                foreach (var persMod in ListTabelPerson)
                 {
                     foreach (var day in persMod.TabelDays)
                     {
@@ -667,46 +658,6 @@ namespace Tabel.ViewModels
                 repoWord.CreateWorkOffSZ(listPerson, vm.SelectedDate);
             }
 
-        }
-
-        //--------------------------------------------------------------------------------
-        // Команда СЗ для выходного
-        //--------------------------------------------------------------------------------
-        public ICommand DblClickCommand => new LambdaCommand(OnDblClickCommandExecuted, CanDblClickCommand);
-        private bool CanDblClickCommand(object p) => SelectedPerson != null;
-        private void OnDblClickCommandExecuted(object p)
-        {
-            KeyEventArgs arg = p as KeyEventArgs;
-            bool IsExec = arg == null;
-
-            if (arg != null && arg.Key == Key.Enter)
-            {
-                arg.Handled = true;
-                IsExec = true;
-            }
-
-            if (IsExec)
-            {
-                TabelDaysWindow win = new TabelDaysWindow();
-                TabelDaysWindowViewModel vm = new TabelDaysWindowViewModel(repoTabelPerson, SelectedPerson.id);
-                win.DataContext = vm;
-                win.ShowDialog();
-                if(vm.IsSaved)
-                {
-                    List<TabelDay> ListTD = vm.TabPerson.TabelDays.ToList();
-                    foreach(var item in SelectedPerson.TabelDays)
-                    {
-                        TabelDay td = ListTD[item.td_Day - 1];
-                        item.td_Hours = td.td_Hours;
-                        item.td_Hours2 = td.td_Hours2;
-                        item.typeDay = td.typeDay;
-                        item.td_KindId= td.td_KindId;
-
-                    }
-                    SelectedPerson.UpdateUI();
-                }
-
-            }
         }
 
         //--------------------------------------------------------------------------------

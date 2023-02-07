@@ -46,7 +46,7 @@
                     <TextBlock Text="Создать табель" />
                 </DockPanel>
             </Button>
-            <!--<Button Content="Сохранить" Command="{Binding SaveCommand}" Margin="3" Style="{StaticResource ButtonStyleShadow}"/>-->
+            <Button Content="Сохранить" Command="{Binding SaveCommand}" Margin="3" Style="{StaticResource ButtonStyleShadow}"/>
             <Button Content="Печать 1ч." Command="{Binding PrintCommand}" Margin="3" CommandParameter="1" Style="{StaticResource ButtonStyleShadow}"/>
             <Button Content="Печать" Command="{Binding PrintCommand}" Margin="3" Style="{StaticResource ButtonStyleShadow}"/>
             <Button Content="СЗ на выходной" Command="{Binding SZOffDayCommand}" Margin="3" Style="{StaticResource ButtonStyleShadow}"/>
@@ -77,7 +77,7 @@
                     <i:InvokeCommandAction Command="{Binding DblClickCommand}" PassEventArgsToCommand="True"/>
                 </i:EventTrigger>
             </i:Interaction.Triggers>-->
-            
+
 
             <DataGrid.ItemsPanel>
                 <ItemsPanelTemplate>
