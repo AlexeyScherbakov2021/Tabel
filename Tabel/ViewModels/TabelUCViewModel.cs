@@ -491,7 +491,7 @@ namespace Tabel.ViewModels
 
 
         //--------------------------------------------------------------------------------
-        // Команда Загрузить из производственного календаря
+        // Команда 
         //--------------------------------------------------------------------------------
         public ICommand PrintCommand => new LambdaCommand(OnPrintCommandExecuted, CanPrintCommand);
         private bool CanPrintCommand(object p) => Tabel != null && SelectedOtdel != null;

@@ -14,12 +14,11 @@ namespace Tabel.Repository
 {
     internal class RepositoryExcel
     {
-        private static readonly int FirstMonthDays = 20;
+        private static readonly int FirstMonthDays = 15;
 
         public static void PrintTabel(IEnumerable<TabelPerson> ListTabelPerson, bool IsAllMonth 
             , WorkTabel Tabel, int SelectYear, int SelectMonth)
         {
-
             decimal Hours;
             int Days;
             decimal Hours1;
