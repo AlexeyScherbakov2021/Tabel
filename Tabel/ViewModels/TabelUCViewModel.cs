@@ -612,7 +612,15 @@ namespace Tabel.ViewModels
             }
         }
 
+        //--------------------------------------------------------------------------------
+        // Команда СЗ для сверхурочных
+        //--------------------------------------------------------------------------------
+        public ICommand SZOverTimeCommand => new LambdaCommand(OnSZOverTimeCommandExecuted, CanSZOverTimeCommand);
+        private bool CanSZOverTimeCommand(object p) => SelectedOtdel != null && Tabel != null;
+        private void OnSZOverTimeCommandExecuted(object p)
+        {
 
+        }
 
         //--------------------------------------------------------------------------------
         // Команда СЗ для выходного

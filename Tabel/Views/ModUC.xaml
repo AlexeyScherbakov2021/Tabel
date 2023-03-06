@@ -162,7 +162,7 @@
                                         </MultiBinding>
                                     </DataGridTextColumn.Binding>
                                 </DataGridTextColumn>
-                                <DataGridTextColumn Header="комп.больничного" Binding="{Binding md_bolnich, StringFormat=N2}" IsReadOnly="False" Width="90"  CellStyle="{StaticResource CellRightColor}"/>
+                                <DataGridTextColumn Header="Компенсация" Binding="{Binding md_bolnich, StringFormat=N2}" IsReadOnly="False" Width="90"  CellStyle="{StaticResource CellRightColor}"/>
 
                                 <!--<DataGridTextColumn Header="Премия" Binding="{Binding PremiaItogo, StringFormat=N2}" Width="80" FontWeight="Bold" CellStyle="{StaticResource CellRight}"/>
                             <DataGridTextColumn Header="Итого" Binding="{Binding Itogo, StringFormat=N2}" Width="80" FontWeight="Bold" CellStyle="{StaticResource CellRight}"/>-->

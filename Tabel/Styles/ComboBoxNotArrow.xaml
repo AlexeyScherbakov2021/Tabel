@@ -265,6 +265,9 @@
         <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
         <Setter Property="Template" Value="{StaticResource ComboBoxTemplate}"/>
         <Style.Triggers>
+            <Trigger Property="SelectedIndex" Value="2">
+                <Setter Property="Background" Value="Red"/>
+            </Trigger>
             <Trigger Property="SelectedIndex" Value="5">
                 <Setter Property="Background" Value="Red"/>
             </Trigger>

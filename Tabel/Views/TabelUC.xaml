@@ -50,6 +50,7 @@
             <Button Content="Печать 1ч." Command="{Binding PrintCommand}" Margin="3" CommandParameter="1" Style="{StaticResource ButtonStyleShadow}"/>
             <Button Content="Печать" Command="{Binding PrintCommand}" Margin="3" Style="{StaticResource ButtonStyleShadow}"/>
             <Button Content="СЗ на выходной" Command="{Binding SZOffDayCommand}" Margin="3" Style="{StaticResource ButtonStyleShadow}"/>
+            <Button Content="СЗ на сверхуроч." Command="{Binding SZOverTimeCommand}" Margin="3" Style="{StaticResource ButtonStyleShadow}"/>
             <Button Content="Добавить сотрудников" Command="{Binding AddPersonCommand}" Margin="3" Style="{StaticResource ButtonStyleShadow}"/>
             <Button Content="Удалить сотрудника" Command="{Binding DeletePersonCommand}" Margin="3" Style="{StaticResource ButtonStyleShadow}"/>
             <Button Margin="3" Style="{StaticResource ButtonStyleShadow}" ToolTip="Закрыть окно" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=local:BasicWindow}}">

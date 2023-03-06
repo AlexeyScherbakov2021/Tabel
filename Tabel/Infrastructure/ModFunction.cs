@@ -229,9 +229,11 @@ namespace Tabel.Infrastructure
 
         public static void SetOklad(ModPerson mPerson)
         {
+            decimal hours = mPerson.person.p_type_id == SpecType.ИТР ? 162 : mPerson.TabelHours;
+
             mPerson.md_Oklad = mPerson.person.category is null      // установка оклада по часам из тарифа грейда
                 ? 0
-                : (mPerson.TabelHours * mPerson.person.category.cat_tarif.Value /*+ (mPerson.md_person_achiev / 162 ?? 0)*/) * mPerson.person.p_stavka;
+                : (hours * mPerson.person.category.cat_tarif.Value /*+ (mPerson.md_person_achiev / 162 ?? 0)*/) * mPerson.person.p_stavka;
 
         }
 
