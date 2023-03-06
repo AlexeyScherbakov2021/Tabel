@@ -10,14 +10,23 @@ using Tabel.Commands;
 using Tabel.Models;
 using Tabel.ViewModels.Base;
 using Tabel.Views;
+using Microsoft.Win32;
+using Tabel.Repository;
+using DocumentFormat.OpenXml.Bibliography;
+using System.Diagnostics;
 
 namespace Tabel.ViewModels
 {
     internal class TasksPersonWindowViewModel : ViewModel
     {
         public string Title { get; set; } = "Выполненные задания для сотрудника";
+
+        //private readonly RepositoryMSSQL<ModPerson> repoTask;
+        private readonly int Year;
+        private readonly int IDModPerson;
         public ObservableCollection<TargetTask> ListTarget { get; set; }
-        
+        public TargetTask SelectedTarget { get; set; }
+
         private decimal? _proc100;
         public decimal? proc100 { get => _proc100; set { Set(ref _proc100, value); } }
 
@@ -26,8 +35,11 @@ namespace Tabel.ViewModels
 
         public TasksPersonWindowViewModel() { }
 
-        public TasksPersonWindowViewModel(ModPerson person)
+        public TasksPersonWindowViewModel(ModPerson person/*, RepositoryMSSQL<ModPerson> repo*/)
         {
+            //repoTask = repo;
+            Year = person.Mod.m_year;
+            IDModPerson = person.id;
             ListTarget = new ObservableCollection<TargetTask>( person.ListTargetTask);
             foreach (TargetTask item in ListTarget)
                 item.PropertyChanged += Item_PropertyChanged;
@@ -82,11 +94,61 @@ namespace Tabel.ViewModels
         {
             TasksPersonWindow win = App.Current.Windows.OfType<TasksPersonWindow>().FirstOrDefault();
             win.Close();
+        }
+
+        //--------------------------------------------------------------------------------
+        // Команда Добавить файл
+        //--------------------------------------------------------------------------------
+        public ICommand AttachFileCommand => new LambdaCommand(OnAttachFileCommandExecuted, CanAttachFileCommand);
+        private bool CanAttachFileCommand(object p) => string.IsNullOrEmpty(SelectedTarget.tt_AttachFile);
+        private void OnAttachFileCommandExecuted(object p)
+        {
+            OpenFileDialog dlgOpen = new OpenFileDialog();
+            Random rnd = new Random();
+            //dlgOpen.Multiselect = true;
+
+            if (dlgOpen.ShowDialog() == true)
+            {
+                RepositoryFiles RepFile = new RepositoryFiles();
+                AttachFile af = new AttachFile() { FullName = dlgOpen.FileName, task_id = rnd.Next() };
+                RepFile.AddFiles(af, Year);
+
+                SelectedTarget.tt_AttachFile = af.FileName;
+                SelectedTarget.tt_idFile = af.task_id;
+            }
+
+        }
+        //--------------------------------------------------------------------------------
+        // Команда Удалить файл
+        //--------------------------------------------------------------------------------
+        public ICommand DetachFileCommand => new LambdaCommand(OnDetachFileCommandExecuted, CanDetachFileCommand);
+        private bool CanDetachFileCommand(object p) => !string.IsNullOrEmpty(SelectedTarget.tt_AttachFile);
+        private void OnDetachFileCommandExecuted(object p)
+        {
+            RepositoryFiles RepFile = new RepositoryFiles();
+            if (!string.IsNullOrEmpty(SelectedTarget.tt_AttachFile))
+            {
+                AttachFile af = new AttachFile() { FileName = SelectedTarget.tt_AttachFile, task_id = SelectedTarget.tt_idFile.Value };
+                RepFile.DeleteFiles(af, Year);
+                SelectedTarget.tt_AttachFile = null;
+            }
+        }
+
+        //--------------------------------------------------------------------------------
+        // Команда Открыть файл
+        //--------------------------------------------------------------------------------
+        public ICommand StartFileCommand => new LambdaCommand(OnStartFileCommandExecuted, CanStartFileCommand);
+        private bool CanStartFileCommand(object p) => !string.IsNullOrEmpty(SelectedTarget.tt_AttachFile);
+        private void OnStartFileCommandExecuted(object p)
+        {
+            RepositoryFiles RepFile = new RepositoryFiles();
+            AttachFile af = new AttachFile() { FileName = SelectedTarget.tt_AttachFile, task_id = SelectedTarget.tt_idFile.Value };
+            string FileName = RepFile.GetFile(af, Year);
+            Process.Start(FileName);
 
         }
 
         #endregion
-
 
     }
 }

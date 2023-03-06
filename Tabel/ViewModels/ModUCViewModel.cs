@@ -750,6 +750,7 @@ namespace Tabel.ViewModels
                 SelectedModPerson.md_kvalif_proc = vm.proc100;
                 SelectedModPerson.md_kvalif_prem = vm.proc100fact;
                 SelectedModPerson.md_kvalif_name = name;
+                repoModPerson.Save();
             }
         }
 

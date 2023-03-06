@@ -26,5 +26,9 @@ namespace Tabel.Models
 
         public virtual ModPerson ModPerson { get; set; }
 
+        private string _AttachFile;
+        public string tt_AttachFile { get => _AttachFile; set { Set(ref _AttachFile, value); } }
+
+        public int? tt_idFile { get; set; }
     }
 }

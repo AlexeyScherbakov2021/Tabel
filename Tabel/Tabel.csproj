@@ -127,11 +127,13 @@
     </Compile>
     <Compile Include="Infrastructure\Encrypt.cs" />
     <Compile Include="Infrastructure\ModFunction.cs" />
+    <Compile Include="Models\AttachFile.cs" />
     <Compile Include="Models\Otpusk.cs" />
     <Compile Include="Models\OtpuskDays.cs" />
     <Compile Include="Models\OtpuskPerson.cs" />
     <Compile Include="Models\TargetTask.cs" />
     <Compile Include="Repository\RepositoryExcel.cs" />
+    <Compile Include="Repository\RepositoryFiles.cs" />
     <Compile Include="ViewModels\Admins\PassWindowViewModel.cs" />
     <Compile Include="ViewModels\Admins\ProfileUserUCViewModel.cs" />
     <Compile Include="ViewModels\DataSummForm\IDataSumm.cs" />
