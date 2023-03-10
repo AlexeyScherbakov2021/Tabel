@@ -619,6 +619,44 @@ namespace Tabel.ViewModels
         private bool CanSZOverTimeCommand(object p) => SelectedOtdel != null && Tabel != null;
         private void OnSZOverTimeCommandExecuted(object p)
         {
+            List<int> listDays = new List<int>();
+            List<Models.Personal> listPerson = new List<Models.Personal>();
+
+
+            foreach (var pers in ListTabelPerson)
+            {
+                foreach (var day in pers.TabelDays)
+                {
+                    if (day.CalendarTypeDay != TypeDays.Holyday && day.td_Hours > 8)
+                    {
+                        listDays.Add(day.td_Day);
+                    }
+                }
+            }
+
+            listDays = listDays.Distinct().OrderBy(o => o).ToList();
+
+            SelectDateWindow win = new SelectDateWindow();
+            SelectDateWindowViewModel vm = new SelectDateWindowViewModel(listDays, _SelectMonth, _SelectYear);
+            win.DataContext = vm;
+
+            if (win.ShowDialog() == true)
+            {
+                foreach (var persMod in ListTabelPerson)
+                {
+                    foreach (var day in persMod.TabelDays)
+                    {
+                        if (day.CalendarTypeDay != TypeDays.Holyday && day.td_Hours > 8 && day.td_Day == vm.SelectedDate.Day)
+                        {
+                            listPerson.Add(persMod.person);
+                        }
+                    }
+                }
+
+                RepositoryWord repoWord = new RepositoryWord(@"Отчеты\СЗ сверхурочные.docx");
+                repoWord.CreateWorkOffSZ(listPerson, vm.SelectedDate);
+            }
+
 
         }
 
@@ -641,7 +679,6 @@ namespace Tabel.ViewModels
                         listDays.Add(day.td_Day);
                     }
                 }
-
             }
 
             listDays = listDays.Distinct().OrderBy(o => o).ToList();
