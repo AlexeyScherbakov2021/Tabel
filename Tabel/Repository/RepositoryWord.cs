@@ -17,6 +17,16 @@ using System.Windows.Documents;
 
 namespace Tabel.Repository
 {
+    public class OverHoursDay
+    {
+        public string Profession;
+        public string FIO;
+        public string StartTime;
+        public string EndTime;
+    }
+
+
+
     internal class RepositoryWord
     {
         private string _FileName;
@@ -122,6 +132,61 @@ namespace Tabel.Repository
             return outs;
         }
 
+        public void CreateWorkOverHours(IEnumerable<OverHoursDay> listPerson, DateTime dt)
+        {
+            string newFile = System.IO.Path.GetTempFileName();
+            newFile = System.IO.Path.ChangeExtension(newFile, "docx");
+
+            //string newFile = System.IO.Path.GetTempPath() + "СЗ на выходной день.docx";
+            File.Copy(_FileName, newFile, true);
+
+            try
+            {
+                using (var word = WordprocessingDocument.Open(newFile, true))
+                {
+
+                    RunFonts font1 = new RunFonts() { Ascii = "Times New Roman" };
+                    FontSize fontSize1 = new FontSize() { Val = "12" };
+                    StyleRunProperties styleRunProperties1 = new StyleRunProperties();
+                    styleRunProperties1.Append(fontSize1);
+                    styleRunProperties1.Append(font1);
+
+                    var bookMarks = FindBookmarks(word.MainDocumentPart.Document);
+
+                    foreach (var end in bookMarks)
+                    {
+                        switch (end.Key)
+                        {
+                            case "ДАТА":
+                                var textElement = new Text(dt.ToString("dd MMMM yyyy года"));
+                                var runElement = new Run(textElement);
+                                end.Value.InsertAfterSelf(runElement);
+                                break;
+
+                            case "СПИСОК":
+                                foreach (var person in listPerson)
+                                {
+                                    var FIO = new Text(person.Profession + " " + person.FIO + " с " + person.StartTime + " до " + person.EndTime);
+                                    var runFIO = new Run();
+                                    runFIO.AppendChild(FIO);
+                                    runFIO.AppendChild(new DocumentFormat.OpenXml.Wordprocessing.Break());
+                                    end.Value.InsertBeforeSelf(runFIO);
+                                }
+
+                                break;
+                        }
+
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Не найден шаблон СЗ", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
+            Process.Start(newFile);
+
+        }
 
     }
 }

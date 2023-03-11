@@ -627,7 +627,7 @@ namespace Tabel.ViewModels
             {
                 foreach (var day in pers.TabelDays)
                 {
-                    if (day.CalendarTypeDay != TypeDays.Holyday && day.td_Hours > 8)
+                    if (day.CalendarTypeDay != TypeDays.Holyday && day.WhiteHours > (day.CalendarTypeDay == TypeDays.ShortWork ? 7 : 8))
                     {
                         listDays.Add(day.td_Day);
                     }
@@ -642,19 +642,30 @@ namespace Tabel.ViewModels
 
             if (win.ShowDialog() == true)
             {
+                List<OverHoursDay> ListPersonOH = new List<OverHoursDay>();
+
+
                 foreach (var persMod in ListTabelPerson)
                 {
-                    foreach (var day in persMod.TabelDays)
+                    TabelDay day = persMod.TabelDays.FirstOrDefault(it => it.td_Day == vm.SelectedDate.Day);
+
+                    if (day != null && day.WhiteHours > (day.CalendarTypeDay == TypeDays.ShortWork ? 7 : 8))
                     {
-                        if (day.CalendarTypeDay != TypeDays.Holyday && day.td_Hours > 8 && day.td_Day == vm.SelectedDate.Day)
-                        {
-                            listPerson.Add(persMod.person);
-                        }
+                        int StartHours = day.CalendarTypeDay == TypeDays.ShortWork ? 16 : 17;
+                        int HourOver = (int)day.WhiteHours - (day.CalendarTypeDay == TypeDays.ShortWork ? 7 : 8) + StartHours;
+                        int MinOver = (int)((day.WhiteHours - (int)day.WhiteHours) * 60);
+
+                        OverHoursDay oh = new OverHoursDay();
+                        oh.Profession = persMod.person.p_profession;
+                        oh.FIO = persMod.person.FIO;
+                        oh.StartTime = $"{StartHours:00}:00";
+                        oh.EndTime = $"{HourOver:00}:{MinOver:00}";
+                        ListPersonOH.Add(oh);
                     }
                 }
 
                 RepositoryWord repoWord = new RepositoryWord(@"Отчеты\СЗ сверхурочные.docx");
-                repoWord.CreateWorkOffSZ(listPerson, vm.SelectedDate);
+                repoWord.CreateWorkOverHours(ListPersonOH, vm.SelectedDate);
             }
 
 
