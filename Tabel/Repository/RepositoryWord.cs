@@ -1,5 +1,4 @@
 ﻿using DocumentFormat.OpenXml;
-using DocumentFormat.OpenXml.Drawing;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using System;
@@ -14,6 +13,8 @@ using Text = DocumentFormat.OpenXml.Wordprocessing.Text;
 using Run = DocumentFormat.OpenXml.Wordprocessing.Run;
 using System.Diagnostics;
 using System.Windows.Documents;
+using DocumentFormat.OpenXml.Drawing.Charts;
+using System.Windows.Controls;
 
 namespace Tabel.Repository
 {
@@ -144,12 +145,14 @@ namespace Tabel.Repository
             {
                 using (var word = WordprocessingDocument.Open(newFile, true))
                 {
+                    StyleDefinitionsPart part = word.MainDocumentPart.StyleDefinitionsPart;
 
-                    RunFonts font1 = new RunFonts() { Ascii = "Times New Roman" };
-                    FontSize fontSize1 = new FontSize() { Val = "12" };
-                    StyleRunProperties styleRunProperties1 = new StyleRunProperties();
-                    styleRunProperties1.Append(fontSize1);
-                    styleRunProperties1.Append(font1);
+                    //RunFonts font1 = new RunFonts() { Ascii = "Times New Roman" };
+                    //FontSize fontSize1 = new FontSize() { Val = "12" };
+                    //StyleRunProperties styleRunProperties1 = new StyleRunProperties();
+                    //styleRunProperties1.Append(fontSize1);
+                    //styleRunProperties1.Append(font1);
+
 
                     var bookMarks = FindBookmarks(word.MainDocumentPart.Document);
 
@@ -159,17 +162,36 @@ namespace Tabel.Repository
                         {
                             case "ДАТА":
                                 var textElement = new Text(dt.ToString("dd MMMM yyyy года"));
-                                var runElement = new Run(textElement);
-                                end.Value.InsertAfterSelf(runElement);
+                                //var runElement = new Run(textElement);
+                                //runElement.PrependChild<RunProperties>(rPr);
+                                Run run2 = end.Value.InsertAfterSelf(new Run());
+                                run2.AppendChild(textElement);
+
+                                RunFonts font2 = new RunFonts() { Ascii = "Times New Roman" };
+                                FontSize fontSize2 = new FontSize() { Val = "24" };
+                                RunProperties rPr2 = new RunProperties();
+                                run2.PrependChild(rPr2);
                                 break;
 
                             case "СПИСОК":
                                 foreach (var person in listPerson)
                                 {
-                                    var FIO = new Text(person.Profession + " " + person.FIO + " с " + person.StartTime + " до " + person.EndTime);
+                                    RunFonts font = new RunFonts() { Ascii = "Times New Roman" };
+                                    FontSize fontSize = new FontSize() { Val = "24"  };
+                                    RunProperties rPr = new RunProperties();
+                                    rPr.Append(font);
+                                    rPr.Append(fontSize);
+
+                                    var FIO = new Text(person.Profession + " "
+                                        + person.FIO + " с "
+                                        + person.StartTime + " до "
+                                        + person.EndTime)
+                                    { Space = SpaceProcessingModeValues.Preserve };
+
                                     var runFIO = new Run();
                                     runFIO.AppendChild(FIO);
-                                    runFIO.AppendChild(new DocumentFormat.OpenXml.Wordprocessing.Break());
+                                    runFIO.AppendChild(new Break());
+                                    runFIO.PrependChild<RunProperties>(rPr);
                                     end.Value.InsertBeforeSelf(runFIO);
                                 }
 

@@ -229,7 +229,9 @@ namespace Tabel.Infrastructure
 
         public static void SetOklad(ModPerson mPerson)
         {
-            decimal hours = mPerson.person.p_type_id == SpecType.ИТР ? 162 : mPerson.TabelHours;
+            decimal hours = mPerson.person.p_type_id == SpecType.ИТР && mPerson.Mod.m_year >= 2023 && mPerson.Mod.m_month > 2
+                ? 162 
+                : mPerson.TabelHours;
 
             mPerson.md_Oklad = mPerson.person.category is null      // установка оклада по часам из тарифа грейда
                 ? 0
