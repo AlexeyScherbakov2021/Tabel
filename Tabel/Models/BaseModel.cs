@@ -76,6 +76,7 @@ namespace Tabel.Models
         public virtual DbSet<OtpuskPerson> OtpuskPerson { get; set; }
         public virtual DbSet<OtpuskDays> OtpuskDays { get; set; }
         public virtual DbSet<TargetTask> TargetTask { get; set; }
+        public virtual DbSet<CategorySet> CategorySet { get; set; }
 
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -89,6 +90,12 @@ namespace Tabel.Models
                 .HasMany(e => e.ListGenMonth)
                 .WithRequired(e => e.GenCarhge)
                 .HasForeignKey(e => e.gm_GenId);
+
+            modelBuilder.Entity<CategorySet>()
+                .HasMany(e => e.ListCategory)
+                .WithRequired(e => e.categorySet)
+                .HasForeignKey(e => e.cat_setId);
+
 
             //modelBuilder.Entity<Otdel>()
             //    .HasMany(e => e.ModOtdelSumFPs)

@@ -128,6 +128,7 @@
     <Compile Include="Infrastructure\Encrypt.cs" />
     <Compile Include="Infrastructure\ModFunction.cs" />
     <Compile Include="Models\AttachFile.cs" />
+    <Compile Include="Models\CategorySet.cs" />
     <Compile Include="Models\Otpusk.cs" />
     <Compile Include="Models\OtpuskDays.cs" />
     <Compile Include="Models\OtpuskPerson.cs" />

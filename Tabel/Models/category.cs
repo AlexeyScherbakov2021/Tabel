@@ -29,10 +29,17 @@ namespace Tabel.Models
         [Column(TypeName = "numeric")]
         public decimal? cat_max_level { get; set; }
 
+        public int? cat_setId { get;set; }
+
+
+        //public DateTime? cat_end_date { get; set; }
+
         //[Column(TypeName = "numeric")]
         //public decimal? cat_prem_tarif { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Personal> personals { get; set; }
+
+        public virtual CategorySet categorySet { get; set; }
     }
 }
