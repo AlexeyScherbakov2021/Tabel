@@ -332,7 +332,7 @@ namespace Tabel.ViewModels
         public bool ClosingFrom()
         {
             //return false;
-            return IsModify;
+            return IsModify && Tabel.t_IsClosed != true;
         }
 
 
@@ -357,7 +357,7 @@ namespace Tabel.ViewModels
         // Команда Создать табель
         //--------------------------------------------------------------------------------
         public ICommand CreateCommand => new LambdaCommand(OnCreateCommandExecuted, CanCreateCommand);
-        private bool CanCreateCommand(object p) => SelectedOtdel != null && SelectedOtdel.ot_parent is null;
+        private bool CanCreateCommand(object p) => SelectedOtdel != null && SelectedOtdel.ot_parent is null && Tabel.t_IsClosed != true;
         private void OnCreateCommandExecuted(object p)
         {
             if (Tabel != null)
@@ -510,7 +510,7 @@ namespace Tabel.ViewModels
         // Команда Сохранить
         //--------------------------------------------------------------------------------
         public ICommand SaveCommand => new LambdaCommand(OnSaveCommandExecuted, CanSaveCommand);
-        private bool CanSaveCommand(object p) => SelectedOtdel != null && Tabel != null && IsModify;
+        private bool CanSaveCommand(object p) => SelectedOtdel != null && Tabel != null && IsModify && Tabel.t_IsClosed != true;
         private void OnSaveCommandExecuted(object p)
         {
             SaveForm();
@@ -520,7 +520,7 @@ namespace Tabel.ViewModels
         // Команда Добавить сотрудников
         //--------------------------------------------------------------------------------
         public ICommand AddPersonCommand => new LambdaCommand(OnAddPersonCommandExecuted, CanAddPersonCommand);
-        private bool CanAddPersonCommand(object p) => SelectedOtdel != null && Tabel != null;
+        private bool CanAddPersonCommand(object p) => SelectedOtdel != null && Tabel != null && Tabel.t_IsClosed != true;
         private void OnAddPersonCommandExecuted(object p)
         {
             List<Models.Personal> ListPersonal = repoPersonal.Items
@@ -601,7 +601,7 @@ namespace Tabel.ViewModels
         // Команда Удалить сотрудника
         //--------------------------------------------------------------------------------
         public ICommand DeletePersonCommand => new LambdaCommand(OnDeletePersonCommandExecuted, CanDeletePersonCommand);
-        private bool CanDeletePersonCommand(object p) => SelectedPerson != null;
+        private bool CanDeletePersonCommand(object p) => SelectedPerson != null && Tabel.t_IsClosed != true;
         private void OnDeletePersonCommandExecuted(object p)
         {
             if (MessageBox.Show($"Удалить {SelectedPerson.person.FIO}?", "Предупреждение", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)

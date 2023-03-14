@@ -15,7 +15,7 @@
     <Grid >
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="40*"/>
-            <ColumnDefinition Width="16*"/>
+            <ColumnDefinition Width="14*"/>
         </Grid.ColumnDefinitions>
 
         <Border Background="WhiteSmoke" CornerRadius="3" Grid.Column="1" Margin="6,0">
@@ -30,22 +30,24 @@
                     <!--<CheckBox Content="от начала года" Margin="0,4"/>-->
                     <Button Content="Применить индексацию" Margin="0,4" Command="{Binding AddIndexCommand}"/>
                     <Button Content="Отменить последнюю" Margin="0,4" Command="{Binding DelIndexCommand}"/>
-                    <TextBlock Text="История индексаций" Margin="0,4"/>
-                    <ListBox Height="200" Margin="0,4" ItemsSource="{Binding ListCatSet}" SelectedItem="{Binding SelectedCatSet, Mode=TwoWay}"
+                    <TextBlock Text="История индексаций" Margin="0,8,0,0"/>
+                    <ListBox Height="350" Margin="0,2,0,0" ItemsSource="{Binding ListCatSet}" SelectedItem="{Binding SelectedCatSet, Mode=TwoWay}"
                              >
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <Grid>
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="70"/>
+                                        <ColumnDefinition Width="130"/>
                                         <ColumnDefinition Width="30"/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Text="{Binding cg_date, StringFormat=dd.MM.yyyy}"/>
+                                    <TextBlock Text="{Binding cg_date, StringFormat=dd MMMM yyyy}"/>
                                     <TextBlock Text="{Binding cg_value}" Grid.Column="1" TextAlignment="Right"/>
                                 </Grid>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
+                    <TextBlock Text="Дата индексация после 1 числа месяца будет примененяться к следующему месяцу." 
+                               Margin="10,60" TextWrapping="Wrap"/>
                 </StackPanel>
             </GroupBox>
         </Border>

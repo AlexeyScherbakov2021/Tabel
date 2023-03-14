@@ -36,6 +36,7 @@ namespace Tabel.Models
         public string t_author { get; set; }
 
         public int? t_author_id { get; set; }
+        public bool? t_IsClosed { get; set; }
 
         public virtual Otdel otdel { get; set; }
 

@@ -35,6 +35,13 @@ namespace Tabel.Repository
         }
 
 
+        public void UpdateTable(string SqlText)
+        {
+            db.Database.ExecuteSqlCommand(SqlText, new object[0]);
+        }
+
+
+
         public T Add(T item, bool Autosave = false)
         {
             //return db.Set<T>().Add(item);

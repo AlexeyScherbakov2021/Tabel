@@ -98,7 +98,7 @@ namespace Tabel.ViewModels
 
         public bool ClosingFrom()
         {
-            return IsModify;
+            return IsModify && SmenaShedule?.sm_IsClosed != true;
         }
 
         public void SaveForm()
@@ -114,7 +114,7 @@ namespace Tabel.ViewModels
         // Команда Создать график
         //--------------------------------------------------------------------------------
         public ICommand CreateCommand => new LambdaCommand(OnCreateCommandExecuted, CanCreateCommand);
-        private bool CanCreateCommand(object p) => _SelectedOtdel != null && _SelectedOtdel.ot_parent is null;
+        private bool CanCreateCommand(object p) => _SelectedOtdel != null && _SelectedOtdel.ot_parent is null && SmenaShedule?.sm_IsClosed != true;
         private void OnCreateCommandExecuted(object p)
         {
             if (SmenaShedule != null)
@@ -211,7 +211,7 @@ namespace Tabel.ViewModels
         // Команда Сохранить
         //--------------------------------------------------------------------------------
         public ICommand SaveCommand => new LambdaCommand(OnSaveCommandExecuted, CanSaveCommand);
-        private bool CanSaveCommand(object p) => /*_SelectedOtdel != null && SmenaShedule != null */ IsModify;
+        private bool CanSaveCommand(object p) => IsModify && SmenaShedule?.sm_IsClosed != true;
         private void OnSaveCommandExecuted(object p)
         {
             SaveForm();
@@ -299,7 +299,7 @@ namespace Tabel.ViewModels
         // Команда Добавить сотрудников
         //--------------------------------------------------------------------------------
         public ICommand AddPersonCommand => new LambdaCommand(OnAddPersonCommandExecuted, CanAddPersonCommand);
-        private bool CanAddPersonCommand(object p) => _SelectedOtdel != null && SmenaShedule != null;
+        private bool CanAddPersonCommand(object p) => _SelectedOtdel != null && SmenaShedule != null && SmenaShedule.sm_IsClosed != true;
         private void OnAddPersonCommandExecuted(object p)
         {
             List<Models.Personal> ListPersonal = repoPersonal.Items
@@ -364,7 +364,7 @@ namespace Tabel.ViewModels
         // Команда Удалить сотрудника
         //--------------------------------------------------------------------------------
         public ICommand DeletePersonCommand => new LambdaCommand(OnDeletePersonCommandExecuted, CanDeletePersonCommand);
-        private bool CanDeletePersonCommand(object p) => SelectedPerson != null;
+        private bool CanDeletePersonCommand(object p) => SelectedPerson != null && SmenaShedule?.sm_IsClosed != true;
         private void OnDeletePersonCommandExecuted(object p)
         {
             if (MessageBox.Show($"Удалить {SelectedPerson.personal.FIO}?", "Предупреждение", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
@@ -379,7 +379,7 @@ namespace Tabel.ViewModels
         // Команда Конекстного меню выбора смены 
         //--------------------------------------------------------------------------------
         public ICommand IsSelectCommand => new LambdaCommand(OnIsSelectCommandExecuted, CanIsSelectCommand);
-        private bool CanIsSelectCommand(object p) => true;
+        private bool CanIsSelectCommand(object p) => SmenaShedule?.sm_IsClosed != true;
         private void OnIsSelectCommandExecuted(object p)
         {
             SmenaPanel panel = (SmenaPanel)((p as RoutedEventArgs).Source);

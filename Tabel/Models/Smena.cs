@@ -32,6 +32,8 @@ namespace Tabel.Models
 
         public int sm_OtdelId { get; set; }
 
+        public bool? sm_IsClosed { get; set; }
+
         public virtual Otdel otdel { get; set; }
 
         public virtual User user { get; set; }

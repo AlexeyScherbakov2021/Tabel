@@ -32,6 +32,8 @@ namespace Tabel.Models
 
         public int tr_OtdelId { get; set; }
 
+        public bool? tr_IsClosed { get; set; }
+
         public virtual Otdel otdel { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

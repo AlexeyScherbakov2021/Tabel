@@ -28,6 +28,8 @@ namespace Tabel.Models
 
         public int m_author { get; set; }
 
+        public bool? m_IsClosed { get; set; }
+
         //private decimal? _m_HoursFromFP;
 
         //[Column(TypeName = "numeric")]

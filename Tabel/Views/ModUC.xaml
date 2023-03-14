@@ -85,6 +85,12 @@
                     <TextBlock Text="Расч.листок"/>
                 </StackPanel>
             </Button>
+            <Button Command="{Binding ClosePeriodCommand}" Margin="3" Style="{StaticResource ButtonStyleShadow}" ToolTip="Закрыть все формы для редактирования">
+                <StackPanel Orientation="Horizontal">
+                    <fa:ImageAwesome Icon="Regular_WindowClose" Width="24" Height="16" Foreground="#FF005AA0"/>
+                    <TextBlock Text="Закрыть период"/>
+                </StackPanel>
+            </Button>
             <Button Margin="3" Style="{StaticResource ButtonStyleShadow}" ToolTip="Закрыть окно" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=local:BasicWindow}}">
                 <StackPanel Orientation="Horizontal">
                     <fa:ImageAwesome Icon="Solid_DoorOpen" Width="24" Height="16" Foreground="#FF005AA0"/>

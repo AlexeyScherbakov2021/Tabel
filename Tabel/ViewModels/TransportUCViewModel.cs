@@ -102,7 +102,7 @@ namespace Tabel.ViewModels
         // Команда Создать 
         //--------------------------------------------------------------------------------
         public ICommand CreateCommand => new LambdaCommand(OnCreateCommandExecuted, CanCreateCommand);
-        private bool CanCreateCommand(object p) => _SelectedOtdel != null && _SelectedOtdel.ot_parent is null;
+        private bool CanCreateCommand(object p) => _SelectedOtdel != null && _SelectedOtdel.ot_parent is null && Transp?.tr_IsClosed != true;
         private void OnCreateCommandExecuted(object p)
         {
             if (Transp != null)
@@ -192,7 +192,7 @@ namespace Tabel.ViewModels
         // Команда Сохранить
         //--------------------------------------------------------------------------------
         public ICommand SaveCommand => new LambdaCommand(OnSaveCommandExecuted, CanSaveCommand);
-        private bool CanSaveCommand(object p) => /*_SelectedOtdel != null && Transp != null*/ IsModify;
+        private bool CanSaveCommand(object p) => IsModify && Transp?.tr_IsClosed != true;
         private void OnSaveCommandExecuted(object p)
         {
             SaveForm();
@@ -281,7 +281,7 @@ namespace Tabel.ViewModels
         // 
         //--------------------------------------------------------------------------------
         public ICommand SelectKindCommand => new LambdaCommand(OnSelectKindCommandExecuted, CanSelectKindCommand);
-        private bool CanSelectKindCommand(object p) => true;
+        private bool CanSelectKindCommand(object p) =>  Transp?.tr_IsClosed != true;
         private void OnSelectKindCommandExecuted(object p)
         {
 
@@ -292,7 +292,7 @@ namespace Tabel.ViewModels
         // Команда Добавить сотрудников
         //--------------------------------------------------------------------------------
         public ICommand AddPersonCommand => new LambdaCommand(OnAddPersonCommandExecuted, CanAddPersonCommand);
-        private bool CanAddPersonCommand(object p) => _SelectedOtdel != null && Transp != null;
+        private bool CanAddPersonCommand(object p) => _SelectedOtdel != null && Transp != null && Transp?.tr_IsClosed != true;
         private void OnAddPersonCommandExecuted(object p)
         {
             List<Models.Personal> ListPersonal = repoPersonal.Items
@@ -347,7 +347,7 @@ namespace Tabel.ViewModels
         // Команда Удалить сотрудника
         //--------------------------------------------------------------------------------
         public ICommand DeletePersonCommand => new LambdaCommand(OnDeletePersonCommandExecuted, CanDeletePersonCommand);
-        private bool CanDeletePersonCommand(object p) => SelectedPerson != null;
+        private bool CanDeletePersonCommand(object p) => SelectedPerson != null && Transp?.tr_IsClosed != true;
         private void OnDeletePersonCommandExecuted(object p)
         {
             if (MessageBox.Show($"Удалить {SelectedPerson.person.FIO}?", "Предупреждение", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
@@ -362,7 +362,7 @@ namespace Tabel.ViewModels
         // Команда Отметить использование 
         //--------------------------------------------------------------------------------
         public ICommand IsSelectCommand => new LambdaCommand(OnIsSelectCommandExecuted, CanIsSelectCommand);
-        private bool CanIsSelectCommand(object p) => true;
+        private bool CanIsSelectCommand(object p) =>  Transp?.tr_IsClosed != true;
         private void OnIsSelectCommandExecuted(object p)
         {
             TransPanel panel =(TransPanel)( (p as RoutedEventArgs).Source);
@@ -381,7 +381,7 @@ namespace Tabel.ViewModels
         // Команда Снять отметки использование 
         //--------------------------------------------------------------------------------
         public ICommand IsUnSelectCommand => new LambdaCommand(OnIsUnSelectCommandExecuted, CanIsUnSelectCommand);
-        private bool CanIsUnSelectCommand(object p) => true;
+        private bool CanIsUnSelectCommand(object p) =>  Transp?.tr_IsClosed != true;
         private void OnIsUnSelectCommandExecuted(object p)
         {
             TransPanel panel =(TransPanel)( (p as RoutedEventArgs).Source);
@@ -490,7 +490,7 @@ namespace Tabel.ViewModels
 
         public bool ClosingFrom()
         {
-            return IsModify;
+            return IsModify && Transp.tr_IsClosed != true;
         }
 
         public void SaveForm()

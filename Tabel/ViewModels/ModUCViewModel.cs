@@ -754,8 +754,31 @@ namespace Tabel.ViewModels
             }
         }
 
+        //--------------------------------------------------------------------------------
+        // Команда кнопки Закрыть период
+        //--------------------------------------------------------------------------------
+        public ICommand ClosePeriodCommand => new LambdaCommand(OnClosePeriodCommandExecuted, CanClosePeriodCommand);
+        private bool CanClosePeriodCommand(object p) => _SelectedOtdel?.parent == null;
+        private void OnClosePeriodCommandExecuted(object p)
+        {
+            if(MessageBox.Show("Все формы текущего месяца будут закрыты и недоступны для изменений.","Предупреждение", MessageBoxButton.YesNo, MessageBoxImage.Warning) != MessageBoxResult.Yes) return;
+
+            repoModel.UpdateTable($"update tabel set t_IsClosed=1 " +
+                $"where t_year={_SelectYear} and t_month={_SelectMonth} and t_otdel_id={_SelectedOtdel.id}" );
+
+            repoModel.UpdateTable($"update smena set sm_IsClosed=1 " +
+                $"where sm_year={_SelectYear} and sm_month={_SelectMonth} and sm_otdelId={_SelectedOtdel.id}" );
+
+            repoModel.UpdateTable($"update transport set tr_IsClosed=1 " +
+                $"where tr_year={_SelectYear} and tr_month={_SelectMonth} and tr_otdelId={_SelectedOtdel.id}");
+
+            repoModel.UpdateTable($"update Mod set m_IsClosed=1 " +
+                $"where m_year={_SelectYear} and m_month={_SelectMonth} and m_otdelId={_SelectedOtdel.id}");
+
+        }
+
         #endregion
 
 
     }
-}
+    }
