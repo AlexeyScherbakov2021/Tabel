@@ -99,7 +99,7 @@
                             </DataGridTemplateColumn.CellEditingTemplate>
                         </DataGridTemplateColumn>
 
-                        <DataGridComboBoxColumn  Header="Грейд" ItemsSource="{Binding ListCategory, Source={StaticResource context}}"
+                        <DataGridComboBoxColumn  Header="Грейд" ItemsSource="{Binding CategorySet.ListCategory, Source={StaticResource context}}"
                             SelectedValueBinding="{Binding p_cat_id}" DisplayMemberPath="id" SelectedValuePath="id" Width="48" />
 
                         <DataGridTextColumn Header="Ставка" Binding="{Binding p_stavka}"  CellStyle="{StaticResource CellRight}" Width="45"/>

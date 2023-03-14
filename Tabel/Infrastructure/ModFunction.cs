@@ -27,6 +27,7 @@ namespace Tabel.Infrastructure
         RepositoryMSSQL<TransPerson> repoTransPerson;
         RepositoryMSSQL<TabelPerson> repoTabPerson;
         RepositoryMSSQL<SmenaPerson> repoSmenaPerson;
+        RepositoryMSSQL<CategorySet> repoCategorySet;
         RepositoryCalendar repoCal;
 
         //--------------------------------------------------------------------------------------------------------
@@ -40,6 +41,8 @@ namespace Tabel.Infrastructure
             repoTransPerson = new RepositoryMSSQL<TransPerson>(db);
             repoTabPerson = new RepositoryMSSQL<TabelPerson>(db);
             repoSmenaPerson = new RepositoryMSSQL<SmenaPerson>(db);
+            repoCategorySet = new RepositoryMSSQL<CategorySet>(db);
+
             repoCal = new RepositoryCalendar(db);
         }
 
@@ -51,8 +54,19 @@ namespace Tabel.Infrastructure
         {
             //try
             //{
+            DateTime curDate = new DateTime(_year, _month, 1);
+            IEnumerable<Category> ListCat = repoCategorySet.Items
+                    .AsNoTracking()
+                    .Where(it => it.cg_date <= curDate)
+                    .OrderByDescending(it => it.cg_date)
+                    .FirstOrDefault()
+                    .ListCategory;
+
+
             foreach (var mPerson in ListModPerson)
             {
+                mPerson.person.category = ListCat.FirstOrDefault(it => it.idCategory == mPerson.person.p_cat_id);
+
 
                 if (mPerson.premiaBonus is null)
                 {
@@ -153,14 +167,14 @@ namespace Tabel.Infrastructure
             mPerson.TabelWorkOffDay = TabPerson.WorkedOffDays;      // отработанные выходные дни
             
             SetTarifOffDay(mPerson);
-            //if (mPerson.TabelWorkOffDay > 0)
-            //{
-            //    // установка тарифа за выходной день
-            //    mPerson.md_tarif_offDay = TabPerson.person.category?.cat_tarif * 8;
-            //    // не меньше установленного тарифа
-            //    if (mPerson.md_tarif_offDay < MinTarifOffDay)
-            //        mPerson.md_tarif_offDay = MinTarifOffDay;
-            //}
+            if (mPerson.TabelWorkOffDay > 0)
+            {
+                // установка тарифа за выходной день
+                mPerson.md_tarif_offDay = TabPerson.person.category?.cat_tarif * 8;
+                // не меньше установленного тарифа
+                if (mPerson.md_tarif_offDay < MinTarifOffDay)
+                    mPerson.md_tarif_offDay = MinTarifOffDay;
+            }
 
             mPerson.OverHours = TabPerson.OverWork ?? 0;            // часы переработки
 

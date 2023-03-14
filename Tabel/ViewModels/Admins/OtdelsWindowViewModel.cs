@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DocumentFormat.OpenXml.Bibliography;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -61,19 +62,33 @@ namespace Tabel.ViewModels.Admins
 
         private void LoadListPerson(int OtdelId)
         {
+
+            IEnumerable<Category> ListCat = repoCategorySet.Items
+                    .AsNoTracking()
+                    .OrderByDescending(it => it.cg_date)
+                    .FirstOrDefault()
+                    .ListCategory;
+
+
             var result = repoPerson.Items
                 .Where(it => it.p_otdel_id == OtdelId)
                 .OrderBy(o => o.p_lastname)
                 .ThenBy(o => o.p_name)
                 .ToArrayAsync();
             ListPersonal = new ObservableCollection<Personal>(result.Result);
+
+            foreach(var item in ListPersonal)
+                item.category = ListCat.FirstOrDefault(it => it.idCategory == item.p_cat_id);
+
         }
 
 
         // Разряды ----------------------------------------------------
-        private readonly RepositoryMSSQL<Category> repoCat;
+//        private readonly RepositoryMSSQL<CategorySet> repoCatSet;
+        private readonly RepositoryMSSQL<CategorySet> repoCategorySet;
 
-        public List<Category> ListCategory { get; set; } 
+
+        public CategorySet CategorySet { get; set; } 
 
 
         // Персонал отдела --------------------------------------------
@@ -108,7 +123,11 @@ namespace Tabel.ViewModels.Admins
                 foreach(var item in _ListPersonal)
                     item.PropertyChanged += Item_PropertyChanged;
 
-                ListCategory = repoCat.Items.AsNoTracking().OrderBy(o => o.id).ToList();
+                CategorySet = repoCategorySet.Items
+                    .OrderByDescending(o => o.cg_date)
+                    .FirstOrDefault();
+
+                //ListCategory = repoCat.Items.AsNoTracking().OrderBy(o => o.idCategory).ToList();
 
                 //OnPropertyChanged(nameof(ListPersonal));
             } 
@@ -129,7 +148,8 @@ namespace Tabel.ViewModels.Admins
             db = repoOtdel.GetDB();
 
             repoPerson = new RepositoryMSSQL<Personal>(db);
-            repoCat = new RepositoryMSSQL<Category>(db);
+            //repoCatSet = new RepositoryMSSQL<CategorySet>(db);
+            repoCategorySet = new RepositoryMSSQL<CategorySet>(db);
 
             int level = App.CurrentUser.u_role == UserRoles.Внетарифный ? 10 : 2;
 
@@ -155,10 +175,16 @@ namespace Tabel.ViewModels.Admins
         {
             if (e.PropertyName == "p_cat_id" || e.PropertyName == "p_premTarif")
             {
-                Category cat = repoCat.Items.FirstOrDefault(it => it.id == SelectedPerson.p_cat_id);
+                Category cat = CategorySet.ListCategory.FirstOrDefault(it => it.idCategory == SelectedPerson.p_cat_id);
+
+                //repoCat.Items
+                //.OrderByDescending(o => o.idCategory)
+                //.FirstOrDefault(it => it.idCategory == SelectedPerson.p_cat_id);
+
                 if (cat != null)
                 {
-                    SelectedPerson.category = cat;
+                    //SelectedPerson.category = cat;
+                    SelectedPerson.p_cat_id = cat.idCategory;
 
                     if (SelectedPerson.p_premTarif > cat.cat_max_level)
                         SelectedPerson.p_premTarif = cat.cat_max_level;
@@ -272,7 +298,7 @@ namespace Tabel.ViewModels.Admins
             NewPerson.p_delete = false;
             NewPerson.p_stavka = 1;
 
-            NewPerson.p_cat_id = repoCat.Items.FirstOrDefault().id;
+            NewPerson.p_cat_id = CategorySet.ListCategory.FirstOrDefault().idCategory; // repoCat.Items.FirstOrDefault().id;
             NewPerson.p_premTarif = 0;
 
             repoPerson.Add(NewPerson, true);

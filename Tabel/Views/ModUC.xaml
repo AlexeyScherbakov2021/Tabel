@@ -120,7 +120,7 @@
                                 <DataGridTextColumn Header="ФИО" Binding="{Binding person.FIO}" IsReadOnly="True"/>
                                 <DataGridTextColumn Header="Должность" Binding="{Binding person.p_profession}" Width="250" IsReadOnly="True"/>
                                 <DataGridTextColumn Header="Ставка" Binding="{Binding person.p_stavka}" CellStyle="{StaticResource CellRight}" IsReadOnly="True"/>
-                                <DataGridTextColumn Header="Грейд" Binding="{Binding person.category.id}" CellStyle="{StaticResource CellRight}" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Грейд" Binding="{Binding person.category.idCategory}" CellStyle="{StaticResource CellRight}" IsReadOnly="True"/>
                                 <DataGridTextColumn Header="Тариф" Binding="{Binding person.category.cat_tarif, StringFormat=0.#}" CellStyle="{StaticResource CellRight}" IsReadOnly="True"/>
                                 <DataGridTextColumn Header="Часы" Binding="{Binding TabelHours, StringFormat=0.#}" CellStyle="{StaticResource CellRight}" IsReadOnly="True"/>
                                 <DataGridTextColumn Header="Отсут." Binding="{Binding TabelAbsent}" CellStyle="{StaticResource CellRight}" IsReadOnly="True"/>

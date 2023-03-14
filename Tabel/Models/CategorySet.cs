@@ -5,16 +5,17 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Collections.ObjectModel;
 
 namespace Tabel.Models
 {
-    [Table("CaterogySet")]
+    [Table("CategorySet")]
     public class CategorySet : IEntity
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public CategorySet()
         {
-            ListCategory = new HashSet<Category>();
+            ListCategory = new ObservableCollection<Category>();
         }
 
         [Key]
@@ -26,7 +27,7 @@ namespace Tabel.Models
         [Column(TypeName = "numeric")]
         public decimal cg_value { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public ICollection<Category> ListCategory { get; set; }
+        //[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ObservableCollection<Category> ListCategory { get; set; }
     }
 }

@@ -23,6 +23,7 @@ namespace Tabel.ViewModels.Admins
         private bool IsModify;
 
         private readonly RepositoryMSSQL<Personal> repoPerson;
+        private readonly RepositoryMSSQL<CategorySet> repoCategorySet;
 
         public Personal SelectedPerson { get; set; }
 
@@ -67,8 +68,9 @@ namespace Tabel.ViewModels.Admins
         public List<Otdel> ListOtdel { get; set; }
 
         // Разряды ----------------------------------------------------
-        private readonly RepositoryMSSQL<Category> repoCat;
-        public List<Category> ListCategory { get; set; } 
+        //private readonly RepositoryMSSQL<Category> repoCat;
+        //public List<Category> ListCategory { get; set; } 
+        public CategorySet CategorySet { get; set; }
 
         public PersonUCViewModel()
         {
@@ -80,11 +82,17 @@ namespace Tabel.ViewModels.Admins
 
             db = repoPerson.GetDB();
 
+            repoCategorySet = new RepositoryMSSQL<CategorySet>(db);
             repoOtdel = new RepositoryOtdel(db);
             ListOtdel = repoOtdel.Items.ToList();
 
-            repoCat = new RepositoryMSSQL<Category>(db);
-            ListCategory = repoCat.Items.OrderBy(o => o.id).ToList();
+            //repoCat = new RepositoryMSSQL<Category>(db);
+            //ListCategory = repoCat.Items.OrderBy(o => o.id).ToList();
+
+            CategorySet = repoCategorySet.Items
+                .OrderByDescending(o => o.cg_date)
+                .FirstOrDefault();
+
 
             IsModify = false;
         }
@@ -97,7 +105,8 @@ namespace Tabel.ViewModels.Admins
         {
             if (e.PropertyName == "p_cat_id" || e.PropertyName == "p_premTarif")
             {
-                Category cat = repoCat.Items.AsNoTracking().FirstOrDefault(it => it.id == SelectedPerson.p_cat_id);
+                Category cat = CategorySet.ListCategory.FirstOrDefault(it => it.idCategory == SelectedPerson.p_cat_id);
+                //repoCat.Items.AsNoTracking().FirstOrDefault(it => it.id == SelectedPerson.p_cat_id);
                 if (cat != null)
                 {
                     if (SelectedPerson.p_premTarif > cat.cat_max_level)

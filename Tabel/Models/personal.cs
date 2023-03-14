@@ -51,7 +51,7 @@ namespace Tabel.Models
 
 
         private int? _p_cat_id;
-        public int? p_cat_id { get => _p_cat_id; set { Set(ref _p_cat_id, value);  } }
+        public int? p_cat_id { get => _p_cat_id; set { Set(ref _p_cat_id, value); } }
 
         private bool _p_delete;
         public bool p_delete { get => _p_delete; set { Set(ref _p_delete, value); } }
@@ -68,6 +68,7 @@ namespace Tabel.Models
         private bool? _p_notPrintModel;
         public bool? p_notPrintModel { get => _p_notPrintModel; set { Set(ref _p_notPrintModel, value); } }
 
+        [NotMapped]
         public virtual Category category { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

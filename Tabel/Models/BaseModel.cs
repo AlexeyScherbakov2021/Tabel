@@ -51,7 +51,7 @@ namespace Tabel.Models
         }
 
         public virtual DbSet<WorkCalendar> calendars { get; set; }
-        public virtual DbSet<Category> categories { get; set; }
+        public virtual DbSet<Category> category { get; set; }
         public virtual DbSet<Mod> Mods { get; set; }
         public virtual DbSet<ModPerson> ModPersons { get; set; }
         public virtual DbSet<Otdel> otdels { get; set; }
@@ -134,10 +134,10 @@ namespace Tabel.Models
                 .WillCascadeOnDelete(false);
 
 
-            modelBuilder.Entity<Category>()
-                .HasMany(e => e.personals)
-                .WithOptional(e => e.category)
-                .HasForeignKey(e => e.p_cat_id);
+            //modelBuilder.Entity<Category>()
+            //    .HasMany(e => e.personals)
+            //    .WithOptional(e => e.category)
+            //    .HasForeignKey(e => e.p_cat_id);
 
             modelBuilder.Entity<Mod>()
                 .HasMany(e => e.ModPersons)

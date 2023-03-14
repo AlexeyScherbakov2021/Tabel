@@ -135,8 +135,8 @@
                             </DataGridTemplateColumn.CellTemplate>
                             <DataGridTemplateColumn.CellEditingTemplate>
                                 <DataTemplate>
-                                    <ComboBox ItemsSource="{Binding ListCategory, Source={StaticResource context}}" SelectedValuePath="id" 
-                                              SelectedValue="{Binding p_cat_id}" DisplayMemberPath="id">
+                                    <ComboBox ItemsSource="{Binding CategorySet.ListCategory, Source={StaticResource context}}" SelectedValuePath="idCategory" 
+                                              SelectedValue="{Binding p_cat_id}" DisplayMemberPath="idCategory">
                                         
                                         <!--<ComboBox.ItemTemplate>
                                             <DataTemplate>
