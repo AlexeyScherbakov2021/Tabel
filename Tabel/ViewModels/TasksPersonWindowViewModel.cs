@@ -14,6 +14,7 @@ using Microsoft.Win32;
 using Tabel.Repository;
 using DocumentFormat.OpenXml.Bibliography;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 
 namespace Tabel.ViewModels
 {
@@ -21,7 +22,8 @@ namespace Tabel.ViewModels
     {
         public string Title { get; set; } = "Выполненные задания для сотрудника";
 
-        //private readonly RepositoryMSSQL<ModPerson> repoTask;
+        private bool IsReadOnly = false;
+
         private readonly int Year;
         private readonly int IDModPerson;
         public ObservableCollection<TargetTask> ListTarget { get; set; }
@@ -38,6 +40,8 @@ namespace Tabel.ViewModels
         public TasksPersonWindowViewModel(ModPerson person/*, RepositoryMSSQL<ModPerson> repo*/)
         {
             //repoTask = repo;
+
+            IsReadOnly = person.Mod.m_IsClosed == true;
             Year = person.Mod.m_year;
             IDModPerson = person.id;
             ListTarget = new ObservableCollection<TargetTask>( person.ListTargetTask);
@@ -77,7 +81,7 @@ namespace Tabel.ViewModels
         // Команда Кнопка ОК
         //--------------------------------------------------------------------------------
         public ICommand OkCommand => new LambdaCommand(OnOkCommandExecuted, CanOkCommand);
-        private bool CanOkCommand(object p) => true;
+        private bool CanOkCommand(object p) => !IsReadOnly;
         private void OnOkCommandExecuted(object p)
         {
             TasksPersonWindow win = App.Current.Windows.OfType<TasksPersonWindow>().FirstOrDefault();

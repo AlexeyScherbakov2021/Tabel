@@ -62,11 +62,10 @@ namespace Tabel.ViewModels.Admins
 
         private void LoadListPerson(int OtdelId)
         {
-
             IEnumerable<Category> ListCat = repoCategorySet.Items
                     .AsNoTracking()
                     .OrderByDescending(it => it.cg_date)
-                    .FirstOrDefault()
+                    .FirstOrDefault()?
                     .ListCategory;
 
 
