@@ -21,7 +21,6 @@ namespace Tabel.ViewModels.ModViewModel
         public decimal? SetProcFull { get; set; }
 
 
-
         public PremiaOtdelViewModel(BaseModel db) : base(db)
         {
 
@@ -32,8 +31,7 @@ namespace Tabel.ViewModels.ModViewModel
             _SelectMonth = Month;
             _SelectYear = Year;
 
-
-            ListModPerson = listPerson?.Where(it => it.person.p_type_id == SpecType.ИТР).ToList(); ;
+            ListModPerson = listPerson?.Where(it => it.person.p_type_id == SpecType.ИТР).ToList();
 
             LoadFromCategory(listPerson);
 
@@ -48,7 +46,7 @@ namespace Tabel.ViewModels.ModViewModel
 
         private void LoadFromCategory(ICollection<ModPerson> listPerson)
         {
-            if (listPerson is null)
+            if (listPerson is null || listPerson.FirstOrDefault()?.Mod?.m_IsClosed == true)
                 return;
 
             foreach (var item in listPerson)

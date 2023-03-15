@@ -118,8 +118,11 @@ namespace Tabel.Models
             }
         }
 
+        public decimal? md_cat_tarif { get; set; }
+
+
         [NotMapped]
-        public decimal? DiffPremia => Itogo - md_RealPay;
+        public decimal? DiffPremia => Itogo - (md_RealPay ?? 0);
 
         public virtual Mod Mod { get; set; }
         public virtual Personal person { get; set; }

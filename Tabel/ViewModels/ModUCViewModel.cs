@@ -72,7 +72,7 @@ namespace Tabel.ViewModels
             {
                 if (_ListModPerson == value) return;
 
-                if (_ListModPerson != null)
+                if (_ListModPerson != null/* && CurrentMod?.m_IsClosed != true*/)
                 {
                     foreach (var item in _ListModPerson)
                         item.PropertyChanged -= Item_PropertyChanged;
@@ -81,8 +81,11 @@ namespace Tabel.ViewModels
                 _ListModPerson = value;
                 if (_ListModPerson == null) return;
 
-                foreach (var item in _ListModPerson)
-                    item.PropertyChanged += Item_PropertyChanged;
+                //if (CurrentMod?.m_IsClosed != true)
+                //{
+                    foreach (var item in _ListModPerson)
+                        item.PropertyChanged += Item_PropertyChanged;
+                //}
 
                 OnPropertyChanged(nameof(ListModPerson));
             }
@@ -139,6 +142,8 @@ namespace Tabel.ViewModels
         //-------------------------------------------------------------------------------------------------------
         private void LoadBonusProcent()
         {
+            //if ( CurrentMod?.m_IsClosed != true) return;
+
             RepositoryMSSQL<GenChargMonth> repoGetAll = new RepositoryMSSQL<GenChargMonth>(db);
             BonusProc = repoGetAll.Items
                 .FirstOrDefault(it => it.gm_Year == _SelectYear && it.gm_Month == _SelectMonth && it.gm_GenId == (int)EnumKind.BonusProc)?.gm_Value;
@@ -187,7 +192,6 @@ namespace Tabel.ViewModels
             //LoadPersonAsync();
             Task.Run(() => LoadPersonAsync(Cancellation.Token)).ConfigureAwait(true);
 
-
         }
 
 
@@ -224,6 +228,11 @@ namespace Tabel.ViewModels
                             .ThenBy(o => o.person.p_name)
                             );
                 }
+
+                BasicWindowViewModel.BasicView.IsVisibleClosePeriod =
+                    CurrentMod?.m_IsClosed == true
+                    ? Visibility.Visible
+                    : Visibility.Collapsed;
 
 
                 if (ListModPerson != null)
@@ -274,7 +283,7 @@ namespace Tabel.ViewModels
 
         public bool ClosingFrom()
         {
-            return IsModify;
+            return IsModify && CurrentMod?.m_IsClosed != true;
         }
 
         public void SaveForm()
@@ -290,7 +299,6 @@ namespace Tabel.ViewModels
         //--------------------------------------------------------------------------------
         private void GetPrevModPerson(ModPerson newPerson)
         {
-
 
             // получение этого сотрудника из предыдущей существующей модели
             ModPerson PrevModPerson = repoModPerson.Items
@@ -359,7 +367,7 @@ namespace Tabel.ViewModels
         // Команда Создать 
         //--------------------------------------------------------------------------------
         public ICommand CreateCommand => new LambdaCommand(OnCreateCommandExecuted, CanCreateCommand);
-        private bool CanCreateCommand(object p) => _SelectedOtdel != null && _SelectedOtdel.ot_parent is null;
+        private bool CanCreateCommand(object p) => _SelectedOtdel != null && _SelectedOtdel.ot_parent is null && CurrentMod?.m_IsClosed != true;
         private void OnCreateCommandExecuted(object p)
         {
             if (CurrentMod != null)
@@ -429,7 +437,7 @@ namespace Tabel.ViewModels
         // Команда Сохранить
         //--------------------------------------------------------------------------------
         public ICommand SaveCommand => new LambdaCommand(OnSaveCommandExecuted, CanSaveCommand);
-        private bool CanSaveCommand(object p) => /*CurrentMod != null && _SelectedOtdel != null &&*/ IsModify;
+        private bool CanSaveCommand(object p) => IsModify && CurrentMod?.m_IsClosed != true;
         private void OnSaveCommandExecuted(object p)
         {
             SaveForm();
@@ -456,7 +464,7 @@ namespace Tabel.ViewModels
         // Команда Добавить сотрудников
         //--------------------------------------------------------------------------------
         public ICommand AddPersonCommand => new LambdaCommand(OnAddPersonCommandExecuted, CanAddPersonCommand);
-        private bool CanAddPersonCommand(object p) => _SelectedOtdel != null;
+        private bool CanAddPersonCommand(object p) => _SelectedOtdel != null && CurrentMod?.m_IsClosed != true;
         private void OnAddPersonCommandExecuted(object p)
         {
             List<Personal> ListPersonal = repoPersonal.Items
@@ -520,7 +528,7 @@ namespace Tabel.ViewModels
         // Команда Удалить сотрудника
         //--------------------------------------------------------------------------------
         public ICommand DeletePersonCommand => new LambdaCommand(OnDeletePersonCommandExecuted, CanDeletePersonCommand);
-        private bool CanDeletePersonCommand(object p) => SelectedModPerson != null;
+        private bool CanDeletePersonCommand(object p) => SelectedModPerson != null && CurrentMod?.m_IsClosed != true;
         private void OnDeletePersonCommandExecuted(object p)
         {
             if (MessageBox.Show($"Удалить {SelectedModPerson.person.FIO}?", "Предупреждение", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
@@ -758,27 +766,37 @@ namespace Tabel.ViewModels
         // Команда кнопки Закрыть период
         //--------------------------------------------------------------------------------
         public ICommand ClosePeriodCommand => new LambdaCommand(OnClosePeriodCommandExecuted, CanClosePeriodCommand);
-        private bool CanClosePeriodCommand(object p) => _SelectedOtdel?.parent == null;
+        private bool CanClosePeriodCommand(object p) => ListModPerson?.Count > 0 && _SelectedOtdel?.parent == null && CurrentMod?.m_IsClosed != true;
         private void OnClosePeriodCommandExecuted(object p)
         {
             if(MessageBox.Show("Все формы текущего месяца будут закрыты и недоступны для изменений.","Предупреждение", MessageBoxButton.YesNo, MessageBoxImage.Warning) != MessageBoxResult.Yes) return;
 
-            repoModel.UpdateTable($"update tabel set t_IsClosed=1 " +
+            bool res = repoModel.UpdateTable($"update tabel set t_IsClosed=1 " +
                 $"where t_year={_SelectYear} and t_month={_SelectMonth} and t_otdel_id={_SelectedOtdel.id}" );
 
-            repoModel.UpdateTable($"update smena set sm_IsClosed=1 " +
+            res &= repoModel.UpdateTable($"update smena set sm_IsClosed=1 " +
                 $"where sm_year={_SelectYear} and sm_month={_SelectMonth} and sm_otdelId={_SelectedOtdel.id}" );
 
-            repoModel.UpdateTable($"update transport set tr_IsClosed=1 " +
+            res &= repoModel.UpdateTable($"update transport set tr_IsClosed=1 " +
                 $"where tr_year={_SelectYear} and tr_month={_SelectMonth} and tr_otdelId={_SelectedOtdel.id}");
 
-            repoModel.UpdateTable($"update Mod set m_IsClosed=1 " +
-                $"where m_year={_SelectYear} and m_month={_SelectMonth} and m_otdelId={_SelectedOtdel.id}");
 
+            CurrentMod.m_IsClosed = true;
+            res &= repoModel.Save();
+
+            //res &= repoModel.UpdateTable($"update Mod set m_IsClosed=1 " +
+            //    $"where m_year={_SelectYear} and m_month={_SelectMonth} and m_otdelId={_SelectedOtdel.id}");
+
+            if (res)
+            {
+                MessageBox.Show("Период закрыт.", "Сообщение", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else
+                MessageBox.Show("Период закрыть не удалось", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
         }
 
         #endregion
 
 
     }
-    }
+}

@@ -437,6 +437,11 @@ namespace Tabel.ViewModels
                         );
             }
 
+            BasicWindowViewModel.BasicView.IsVisibleClosePeriod =
+                Transp?.tr_IsClosed == true
+                ? Visibility.Visible
+                : Visibility.Collapsed;
+
             SetTypeDays();
 
             OnPropertyChanged(nameof(Transp));

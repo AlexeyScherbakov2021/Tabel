@@ -30,6 +30,11 @@
         <StatusBar DockPanel.Dock="Bottom">
             <StatusBarItem Content="Пользователь:"/>
             <StatusBarItem Content="{Binding User.u_fio}"/>
+            <StatusBarItem Margin="10,0,0,0" Visibility="{Binding IsVisibleClosePeriod}">
+                <Border Background="Red" Padding="6,0" CornerRadius="2">
+                    <TextBlock Text="Форма закрыта" Foreground="White"/>
+                </Border>
+            </StatusBarItem>
         </StatusBar>
         <Grid  DockPanel.Dock="Left">
             <Expander ExpandDirection="Right" ToolTip="Отделы и группы" Background="Snow" Margin="0">

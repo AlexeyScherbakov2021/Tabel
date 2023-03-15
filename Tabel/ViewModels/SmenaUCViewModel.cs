@@ -448,6 +448,11 @@ namespace Tabel.ViewModels
                         );
             }
 
+            BasicWindowViewModel.BasicView.IsVisibleClosePeriod =
+                SmenaShedule?.sm_IsClosed == true
+                ? Visibility.Visible
+                : Visibility.Collapsed;
+
             SetTypeDays();
 
             OnPropertyChanged(nameof(ListSmenaPerson));

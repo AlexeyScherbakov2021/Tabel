@@ -66,7 +66,8 @@ namespace Tabel.Infrastructure
             foreach (var mPerson in ListModPerson)
             {
                 mPerson.person.category = ListCat.FirstOrDefault(it => it.idCategory == mPerson.person.p_cat_id);
-
+                if(mPerson.Mod.m_IsClosed != true)
+                    mPerson.md_cat_tarif = mPerson.person.category?.cat_tarif;
 
                 if (mPerson.premiaBonus is null)
                 {
@@ -167,27 +168,27 @@ namespace Tabel.Infrastructure
             mPerson.TabelWorkOffDay = TabPerson.WorkedOffDays;      // отработанные выходные дни
             
             SetTarifOffDay(mPerson);
-            if (mPerson.TabelWorkOffDay > 0)
-            {
-                // установка тарифа за выходной день
-                mPerson.md_tarif_offDay = TabPerson.person.category?.cat_tarif * 8;
-                // не меньше установленного тарифа
-                if (mPerson.md_tarif_offDay < MinTarifOffDay)
-                    mPerson.md_tarif_offDay = MinTarifOffDay;
-            }
+            //if (mPerson.TabelWorkOffDay > 0)
+            //{
+            //    // установка тарифа за выходной день
+            //    mPerson.md_tarif_offDay = mPerson.person.category?.cat_tarif * 8;
+            //    // не меньше установленного тарифа
+            //    if (mPerson.md_tarif_offDay < MinTarifOffDay)
+            //        mPerson.md_tarif_offDay = MinTarifOffDay;
+            //}
 
             mPerson.OverHours = TabPerson.OverWork ?? 0;            // часы переработки
 
             SetOklad(mPerson);
 
             // поллучение оплаты переработанных часов
-            if (mPerson.person.category != null)
-            {
+            //if (mPerson.person.category != null)
+            //{
                 mPerson.PereWorkHours15 = TabPerson.WorkedHours15;
                 mPerson.PereWorkHours2 = TabPerson.WorkedHours2;
-                mPerson.PereWork15 = TabPerson.WorkedHours15 * mPerson.person.category.cat_tarif * 0.5m;           // переработтка 1.5 часа
-                mPerson.PereWork2 = TabPerson.WorkedHours2 * mPerson.person.category.cat_tarif;             // переработка 2 часа
-            }
+                mPerson.PereWork15 = TabPerson.WorkedHours15 * mPerson.md_cat_tarif /*mPerson.person.category.cat_tarif*/ * 0.5m;           // переработтка 1.5 часа
+                mPerson.PereWork2 = TabPerson.WorkedHours2 * mPerson.md_cat_tarif /*mPerson.person.category.cat_tarif*/;             // переработка 2 часа
+            //}
 
             //mPerson.md_Oklad = mPerson.person.category is null      // установка оклада по часам из тарифа грейда
             //    ? 0 
@@ -206,7 +207,7 @@ namespace Tabel.Infrastructure
 
             if (SmenaPerson is null) return;
 
-            mPerson.premiaNight.NightOklad = mPerson.person?.category?.cat_tarif * 0.2m;
+            mPerson.premiaNight.NightOklad = mPerson.md_cat_tarif /*mPerson.person?.category?.cat_tarif*/ * 0.2m;
 
             // отработанные дни
             var listWorkDays = TabPerson.TabelDays.Where(it => it.td_KindId == (int)TabelKindDays.Worked && it.td_Hours > 0);
@@ -231,10 +232,10 @@ namespace Tabel.Infrastructure
         //--------------------------------------------------------------------------------------------------------
         public static void SetTarifOffDay(ModPerson mPerson)
         {
-            if (mPerson.TabelWorkOffDay > 0)
+            if (mPerson.TabelWorkOffDay > 0 && mPerson.Mod.m_IsClosed != true)
             {
                 // установка тарифа за выходной день
-                mPerson.md_tarif_offDay = (mPerson.person.category?.cat_tarif + (mPerson.md_person_achiev / 162 ?? 0)) * 8;
+                mPerson.md_tarif_offDay = (mPerson.md_cat_tarif /*mPerson.person.category?.cat_tarif*/ + (mPerson.md_person_achiev / 162 ?? 0)) * 8;
                 // не меньше установленного тарифа
                 if (mPerson.md_tarif_offDay < MinTarifOffDay)
                     mPerson.md_tarif_offDay = MinTarifOffDay;
@@ -243,13 +244,15 @@ namespace Tabel.Infrastructure
 
         public static void SetOklad(ModPerson mPerson)
         {
+            //if (mPerson.Mod.m_IsClosed == true) return;
+
             decimal hours = mPerson.person.p_type_id == SpecType.ИТР && mPerson.Mod.m_year >= 2023 && mPerson.Mod.m_month > 2
                 ? 162 
                 : mPerson.TabelHours;
 
-            mPerson.md_Oklad = mPerson.person.category is null      // установка оклада по часам из тарифа грейда
+            mPerson.md_Oklad = mPerson.md_cat_tarif /*mPerson.person.category*/ is null      // установка оклада по часам из тарифа грейда
                 ? 0
-                : (hours * mPerson.person.category.cat_tarif.Value /*+ (mPerson.md_person_achiev / 162 ?? 0)*/) * mPerson.person.p_stavka;
+                : (hours * mPerson.md_cat_tarif /*mPerson.person.category.cat_tarif.Value*/ /*+ (mPerson.md_person_achiev / 162 ?? 0)*/) * mPerson.person.p_stavka;
 
         }
 

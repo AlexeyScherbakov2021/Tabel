@@ -46,7 +46,7 @@ namespace Tabel.ViewModels.ModViewModel
 
         private void LoadFromCategory(ICollection<ModPerson> listPerson)
         {
-            if (listPerson is null)
+            if (listPerson is null || listPerson.FirstOrDefault()?.Mod?.m_IsClosed == true)
                 return;
 
             foreach (var item in listPerson)

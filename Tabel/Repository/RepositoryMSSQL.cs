@@ -35,9 +35,17 @@ namespace Tabel.Repository
         }
 
 
-        public void UpdateTable(string SqlText)
+        public bool UpdateTable(string SqlText)
         {
-            db.Database.ExecuteSqlCommand(SqlText, new object[0]);
+            try
+            {
+                db.Database.ExecuteSqlCommand(SqlText, new object[0]);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
 
@@ -94,15 +102,17 @@ namespace Tabel.Repository
 
         }
 
-        public void Save()
+        public bool Save()
         {
             try
             {
                 db.SaveChanges();
+                return true;
             }
             catch(Exception ex)
             {
                 MessageBox.Show(ex.Message, "Ошибка записи в базу", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
             }
         }
 

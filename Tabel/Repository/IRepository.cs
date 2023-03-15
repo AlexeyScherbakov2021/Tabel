@@ -17,7 +17,7 @@ namespace Tabel.Repository
         void Update(T item, bool Autosave = false);
 
 
-        void Save();
+        bool Save();
 
         //BaseModel CreateContext();
 

@@ -69,7 +69,7 @@ namespace Tabel.ViewModels
             var db = repoModPerson.GetDB();
             List<ModPerson> ListModPerson = repoModPerson.Items
                 .AsNoTracking()
-                .Where(it => it.Mod.m_year == SelectYear && it.Mod.m_month == SelectMonth)
+                .Where(it => it.Mod.m_year == SelectYear && it.Mod.m_month == SelectMonth )
                 .OrderBy(o => o.person.p_lastname)
                 .ToList();
 

@@ -20,6 +20,13 @@ namespace Tabel.ViewModels
 {
     internal class BasicWindowViewModel : ViewModel
     {
+
+        public static BasicWindowViewModel BasicView;
+
+        private Visibility _IsVisibleClosePeriod = Visibility.Collapsed;
+        public Visibility IsVisibleClosePeriod { get => _IsVisibleClosePeriod; set { Set(ref _IsVisibleClosePeriod, value); } }
+
+
         public UserControl SourceContent { get; set; }
         private IBaseUCViewModel _UCViewModel;
 
@@ -33,7 +40,6 @@ namespace Tabel.ViewModels
         public List<Months> ListMonth => App.ListMonth;
         public User User { get; set; }
 
-       
         private int _CurrentMonth;
         public int CurrentMonth
         {
@@ -121,10 +127,13 @@ namespace Tabel.ViewModels
         //--------------------------------------------------------------------------------
         // Конструктор
         //--------------------------------------------------------------------------------
-        public BasicWindowViewModel() { }
+        public BasicWindowViewModel()
+        {
+        }
 
         public BasicWindowViewModel(BasicWindow win,  UserControl control, string title, int forma = 0)
         {
+            BasicWindowViewModel.BasicView = this;
             win.Closing += MainWindow_Closing;
 
             Title = title;
@@ -144,9 +153,7 @@ namespace Tabel.ViewModels
 
             User = repoUser.Items.FirstOrDefault(it => it.id == App.CurrentUser.id);
 
-
             int level = User.u_role == UserRoles.Внетарифный ? 10 : 2;
-
 
             ListOtdel = repo.GetTreeOtdelsNoTracking(User.otdels, level).ToList();
 

@@ -118,6 +118,11 @@ namespace Tabel.ViewModels
                         );
             }
 
+            BasicWindowViewModel.BasicView.IsVisibleClosePeriod =
+                    Tabel?.t_IsClosed == true
+                    ? Visibility.Visible
+                    : Visibility.Collapsed;
+
             //SetTypeDays();
             SetTypeDaysAsync();
 
@@ -357,7 +362,7 @@ namespace Tabel.ViewModels
         // Команда Создать табель
         //--------------------------------------------------------------------------------
         public ICommand CreateCommand => new LambdaCommand(OnCreateCommandExecuted, CanCreateCommand);
-        private bool CanCreateCommand(object p) => SelectedOtdel != null && SelectedOtdel.ot_parent is null && Tabel.t_IsClosed != true;
+        private bool CanCreateCommand(object p) => SelectedOtdel != null && SelectedOtdel.ot_parent is null && Tabel?.t_IsClosed != true;
         private void OnCreateCommandExecuted(object p)
         {
             if (Tabel != null)
