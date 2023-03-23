@@ -10,6 +10,7 @@ using Tabel.Commands;
 using Tabel.Models;
 using Tabel.Repository;
 using Tabel.ViewModels.Base;
+using System.Windows.Controls;
 
 namespace Tabel.ViewModels.Admins
 {
@@ -30,7 +31,7 @@ namespace Tabel.ViewModels.Admins
         private DateTime _StartDate;
         public DateTime StartDate { get => _StartDate; set { Set(ref _StartDate, value); } }
 
-        public decimal Procent { get; set; }
+        public decimal? Procent { get; set; }
 
         public Category SelectedCategory { get; set; }
 
@@ -95,9 +96,8 @@ namespace Tabel.ViewModels.Admins
         {
             CategorySet NewCatSet = new CategorySet()
             {
-                //cg_date = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1),
                 cg_date = SelectedDate,
-                cg_value = Procent
+                //cg_value = Procent
             };
 
             CategorySet LastSet = ListCatSet.Last();
@@ -106,8 +106,7 @@ namespace Tabel.ViewModels.Admins
             {
                 var cat = new Category();
                 cat.idCategory = item.idCategory;
-                //cat.categorySet = NewCatSet;
-                cat.cat_tarif = item.cat_tarif + item.cat_tarif * Procent / 100;
+                cat.cat_tarif = item.cat_tarif + item.cat_tarif * (item.infl_index ?? 0) / 100;
                 cat.cat_max_level= item.cat_max_level;
                 cat.cat_min_level = item.cat_min_level;
                 NewCatSet.ListCategory.Add(cat);
@@ -135,6 +134,26 @@ namespace Tabel.ViewModels.Admins
             SelectedDate = SelectedCatSet.cg_date.Value.AddDays(1);
 
         }
+
+
+        //--------------------------------------------------------------------------------
+        // Команда Применить процент к выбранным
+        //--------------------------------------------------------------------------------
+        public ICommand SetProcentCommand => new LambdaCommand(OnSetProcentCommandExecuted, CanSetProcentCommand);
+        private bool CanSetProcentCommand(object p) => true;
+        private void OnSetProcentCommandExecuted(object p)
+        {
+            if (p is DataGrid dg)
+            {
+                foreach (Category item in dg.SelectedItems)
+                {
+                    item.infl_index = Procent;
+                    item.OnPropertyChanged(nameof(item.infl_index));
+                }
+            }
+
+        }
+
 
         #endregion
 

@@ -5,9 +5,10 @@ namespace Tabel.Models
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
+    using Tabel.Infrastructure;
 
     [Table("category")]
-    public partial class Category : IEntity
+    public partial class Category : Observable, IEntity
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Category()
@@ -33,8 +34,8 @@ namespace Tabel.Models
 
         public int? cat_setId { get;set; }
 
-
-        //public DateTime? cat_end_date { get; set; }
+        [NotMapped]
+        public decimal? infl_index { get; set; }
 
         //[Column(TypeName = "numeric")]
         //public decimal? cat_prem_tarif { get; set; }

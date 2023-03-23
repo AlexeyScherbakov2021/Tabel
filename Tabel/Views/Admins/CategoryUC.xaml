@@ -15,16 +15,16 @@
     <Grid >
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="40*"/>
-            <ColumnDefinition Width="14*"/>
+            <ColumnDefinition Width="12*"/>
         </Grid.ColumnDefinitions>
 
         <Border Background="WhiteSmoke" CornerRadius="3" Grid.Column="1" Margin="6,0">
             <GroupBox Header="Индексация" BorderBrush="Gray" BorderThickness="2" Padding="8">
                 <StackPanel>
-                    <StackPanel Orientation="Horizontal">
+                    <!--<StackPanel Orientation="Horizontal">
                         <TextBlock Text="% надбавки" VerticalAlignment="Center"/>
                         <TextBox Text="{Binding Procent, StringFormat=0.##}" Width="80" Margin="6,4"/>
-                    </StackPanel>
+                    </StackPanel>-->
                     <DatePicker SelectedDate="{Binding SelectedDate}" Margin="0,4" 
                                 FirstDayOfWeek="Monday" DisplayDateStart="{Binding StartDate}"/>
                     <!--<CheckBox Content="от начала года" Margin="0,4"/>-->
@@ -41,7 +41,7 @@
                                         <ColumnDefinition Width="30"/>
                                     </Grid.ColumnDefinitions>
                                     <TextBlock Text="{Binding cg_date, StringFormat=dd MMMM yyyy}"/>
-                                    <TextBlock Text="{Binding cg_value}" Grid.Column="1" TextAlignment="Right"/>
+                                    <!--<TextBlock Text="{Binding cg_value}" Grid.Column="1" TextAlignment="Right"/>-->
                                 </Grid>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
@@ -56,8 +56,8 @@
             <Border.Effect>
                 <DropShadowEffect Opacity="0.5" ShadowDepth="1"  BlurRadius="8"/>
             </Border.Effect>
-            <GroupBox BorderBrush="Gray" BorderThickness="2" Padding="5">
-                <DockPanel Margin="10,10,10,10">
+            <GroupBox BorderBrush="Gray" BorderThickness="2" Padding="5,0,5,5">
+                <DockPanel Margin="10,8,10,10">
                     <UniformGrid DockPanel.Dock="Bottom" Margin="10,10,10,0" Columns="1" MaxWidth="400">
                         <Button Height="32" Margin="3" Command="{Binding AddCommand}" Style="{DynamicResource ButtonStyleShadow}">
                             <StackPanel Orientation="Horizontal">
@@ -78,7 +78,27 @@
                             </StackPanel>
                         </Button>
                     </UniformGrid>
-                    <Grid >
+                    <DockPanel >
+                        <Grid DockPanel.Dock="Top" Margin="8,0" Height="28">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="{Binding ActualWidth, ElementName=col1}"/>
+                                <ColumnDefinition Width="{Binding ActualWidth, ElementName=col2}"/>
+                                <ColumnDefinition Width="{Binding ActualWidth, ElementName=col3}"/>
+                                <ColumnDefinition Width="{Binding ActualWidth, ElementName=col4}"/>
+                                <ColumnDefinition Width="{Binding ActualWidth, ElementName=col5}"/>
+                            </Grid.ColumnDefinitions>
+
+
+                            <DockPanel Grid.Column="5" Margin="2,3">
+                                <Button DockPanel.Dock="Right" Command="{Binding SetProcentCommand}" Padding="0" 
+                                    CommandParameter="{Binding ElementName=dataGrid}" Style="{StaticResource ButtonStyleShadow}">
+                                    <fa:ImageAwesome Icon="Solid_CheckCircle" Foreground="Green" Width="18" Height="16"/>
+                                </Button>
+                                <TextBox Text="{Binding Procent, FallbackValue=0}" TextAlignment="Right"/>
+                            </DockPanel>
+
+                        </Grid>
+
                         <DataGrid x:Name="dataGrid" ItemsSource="{Binding SelectedCatSet.ListCategory}" AutoGenerateColumns="False" 
                             SelectedItem="{Binding SelectedCategory}" 
                             Style="{StaticResource DataGridStyle}" Margin="0,0,0,0" >
@@ -89,14 +109,14 @@
                                 </ContextMenu>
                             </DataGrid.ContextMenu>
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="Грейд" Binding="{Binding idCategory}" Width="80" CellStyle="{StaticResource CellRight}"/>
-                                <DataGridTextColumn Header="Тариф" Binding="{Binding cat_tarif, StringFormat=N2}" Width="100" CellStyle="{StaticResource CellRight}"/>
-                                <!--<DataGridTextColumn Header="Прем. тариф" Binding="{Binding cat_prem_tarif}" Width="100" CellStyle="{StaticResource CellRight}"/>-->
-                                <DataGridTextColumn Header="Мин. уровень" Binding="{Binding cat_min_level}" Width="100" CellStyle="{StaticResource CellRight}"/>
-                                <DataGridTextColumn Header="Макс. уровень" Binding="{Binding cat_max_level}" Width="100" CellStyle="{StaticResource CellRight}"/>
+                                <DataGridTextColumn x:Name="col1" Header="Грейд" Binding="{Binding idCategory}" Width="80" CellStyle="{StaticResource CellRight}"/>
+                                <DataGridTextColumn x:Name="col2" Header="Тариф" Binding="{Binding cat_tarif, StringFormat=N2}" Width="100" CellStyle="{StaticResource CellRight}"/>
+                                <DataGridTextColumn x:Name="col3" Header="Мин. уровень" Binding="{Binding cat_min_level}" Width="100" CellStyle="{StaticResource CellRight}"/>
+                                <DataGridTextColumn x:Name="col4" Header="Макс. уровень" Binding="{Binding cat_max_level}" Width="100" CellStyle="{StaticResource CellRight}"/>
+                                <DataGridTextColumn x:Name="col5" Header="% расч.инд." Binding="{Binding infl_index}" Width="80" CellStyle="{StaticResource CellRight}"/>
                             </DataGrid.Columns>
                         </DataGrid>
-                    </Grid>
+                    </DockPanel>
 
                 </DockPanel>
             </GroupBox>
