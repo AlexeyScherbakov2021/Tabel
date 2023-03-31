@@ -164,7 +164,8 @@ namespace Tabel.Infrastructure
             int CountWorkDays = listDays.Count(it => it.KindDay != TypeDays.Holyday);   // число рабочих дней из календаря
 
             mPerson.TabelDays = listDays.Count;                     // дни из табеля
-            mPerson.TabelHours = TabPerson.HoursMonth + (TabPerson.tp_AddingHours ?? 0);              // часы из табеля
+            mPerson.AddingHours = (TabPerson.tp_AddingHours ?? 0);
+            mPerson.TabelHours = TabPerson.HoursMonth + mPerson.AddingHours;              // часы из табеля
             mPerson.TabelWorkOffDay = TabPerson.WorkedOffDays;      // отработанные выходные дни
             
             SetTarifOffDay(mPerson);
@@ -194,9 +195,18 @@ namespace Tabel.Infrastructure
             //    ? 0 
             //    : mPerson.TabelHours * mPerson.person.category.cat_tarif.Value * mPerson.person.p_stavka;
 
-            int CountWorkDaysPerson = TabPerson.TabelDays.Count(it => it.td_KindId == (int)TabelKindDays.Worked
-              || it.td_KindId == (int)TabelKindDays.DistWork);   // количество отработанных дней
-            mPerson.TabelAbsent = CountWorkDays - CountWorkDaysPerson;                      // получение количества дней отсутствия
+            //int CountWorkDaysPerson = TabPerson.TabelDays.Count(it => it.td_KindId == (int)TabelKindDays.Worked
+            //  || it.td_KindId == (int)TabelKindDays.DistWork);   // количество отработанных дней
+
+            mPerson.TabelAbsent = TabPerson.TabelDays.Count(it => it.td_KindId == (int)TabelKindDays.Bolnich
+              || it.td_KindId == (int)TabelKindDays.Otpusk
+              || it.td_KindId == (int)TabelKindDays.OtpuskNoMoney
+              || it.td_KindId == (int)TabelKindDays.DopOtpusk
+              || it.td_KindId == (int)TabelKindDays.BolnichNoMoney
+              );
+
+
+            //mPerson.TabelAbsent = CountWorkDays - CountWorkDaysPerson;                      // получение количества дней отсутствия
             if (mPerson.TabelAbsent < 0) mPerson.TabelAbsent = 0;
 
             // получение соответствующего сотрудника из графика смен
@@ -247,7 +257,7 @@ namespace Tabel.Infrastructure
             //if (mPerson.Mod.m_IsClosed == true) return;
 
             decimal hours = mPerson.person.p_type_id == SpecType.ИТР && mPerson.Mod.m_year >= 2023 && mPerson.Mod.m_month > 2
-                ? 162 
+                ? 162 + mPerson.AddingHours
                 : mPerson.TabelHours;
 
             mPerson.md_Oklad = mPerson.md_cat_tarif /*mPerson.person.category*/ is null      // установка оклада по часам из тарифа грейда

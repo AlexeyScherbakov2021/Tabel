@@ -196,6 +196,9 @@ namespace Tabel.Models
         private decimal _TabelHours;
         [NotMapped]
         public decimal TabelHours { get => _TabelHours; set { Set(ref _TabelHours, value); } }
+
+
+        public decimal AddingHours;
         
         [NotMapped]
         public int TabelDays { get; set; }

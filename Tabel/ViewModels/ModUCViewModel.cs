@@ -36,6 +36,7 @@ namespace Tabel.ViewModels
         private RepositoryMSSQL<Personal> repoPersonal;
         private readonly RepositoryMSSQL<WorkTabel> repoTabel;
         private readonly RepositoryMSSQL<Mod> repoModel;
+        private readonly RepositoryMSSQL<TargetTask> repoTarget;
 
         public Visibility VisibleGrid { get; set; } = Visibility.Visible;
 
@@ -120,6 +121,7 @@ namespace Tabel.ViewModels
             repoPersonal = new RepositoryMSSQL<Personal>(db);
             repoTabel = new RepositoryMSSQL<WorkTabel>(db);
             repoModel = new RepositoryMSSQL<Mod>(db);
+            repoTarget = new RepositoryMSSQL<TargetTask>(db);
 
             modMainViewModel = new ModMainViewModel(db);
             premiaBonusViewModel = new PremiaBonusViewModel(db);
@@ -746,10 +748,33 @@ namespace Tabel.ViewModels
 
             if (win.ShowDialog() == true)
             {
-                SelectedModPerson.ListTargetTask = vm.ListTarget;
+
+                List<TargetTask> tt = SelectedModPerson.ListTargetTask.ToList();
+
+
+                foreach (var item in tt)
+                {
+                    if(!vm.ListTarget.Contains(item))
+                    {
+                        repoTarget.Remove(item);
+                        SelectedModPerson.ListTargetTask.Remove(item);
+                    }
+                }
+
+                foreach(var item in vm.ListTarget)
+                {
+                    if (!SelectedModPerson.ListTargetTask.Contains(item))
+                    {
+                        SelectedModPerson.ListTargetTask.Add(item);
+                    }
+
+                }
+
+
+                //SelectedModPerson.ListTargetTask = vm.ListTarget;
                 //decimal summa = 0;
                 string name = "";
-                foreach (var item in vm.ListTarget)
+                foreach (var item in SelectedModPerson.ListTargetTask)
                 {
                     //summa += item.tt_proc_task;
                     if (!string.IsNullOrEmpty(item.tt_name))
