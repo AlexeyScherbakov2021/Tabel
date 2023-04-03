@@ -22,6 +22,8 @@ namespace Tabel.Models
         [Column(TypeName = "numeric")]
         public decimal aw_Tarif { get; set; }
 
+        public bool? aw_IsRelateHours { get; set; }
+
         public virtual ICollection<ModPerson> ListModPerson { get; set; }
 
         [NotMapped]

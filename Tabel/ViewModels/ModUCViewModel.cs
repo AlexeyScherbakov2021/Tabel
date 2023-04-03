@@ -50,7 +50,7 @@ namespace Tabel.ViewModels
         public PremiaStimulViewModel premiaStimulViewModel { get; set; }
         //public PremiaQualityViewModel premiaQualityViewModel { get; set; }
         public PremiaAddWorksViewModel premiaAddWorksViewModel { get; set; }
-        public PremiaTransportViewModel premiaTransportViewModel { get; set; }
+        //public PremiaTransportViewModel premiaTransportViewModel { get; set; }
         public PremiaPrizeViewModel premiaPrizeViewModel { get; set; }
         public PremiaItogoViewModel premiaItogoViewModel { get; set; }
 
@@ -129,7 +129,7 @@ namespace Tabel.ViewModels
             premiaOtdelViewModel = new PremiaOtdelViewModel(db);
             premiaStimulViewModel = new PremiaStimulViewModel(db);
             premiaAddWorksViewModel = new PremiaAddWorksViewModel(db);
-            premiaTransportViewModel = new PremiaTransportViewModel(db);
+            //premiaTransportViewModel = new PremiaTransportViewModel(db);
             premiaPrizeViewModel = new PremiaPrizeViewModel(db);
             premiaItogoViewModel = new PremiaItogoViewModel(db);
 
@@ -259,7 +259,7 @@ namespace Tabel.ViewModels
                     premiaOtdelViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
                     premiaStimulViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
                     premiaAddWorksViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
-                    premiaTransportViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
+                    //premiaTransportViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
                     premiaPrizeViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
                     premiaItogoViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
                 }
@@ -429,7 +429,7 @@ namespace Tabel.ViewModels
             premiaOtdelViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
             premiaStimulViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
             premiaAddWorksViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
-            premiaTransportViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
+            //premiaTransportViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
             premiaPrizeViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
             premiaItogoViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
 
@@ -514,9 +514,13 @@ namespace Tabel.ViewModels
                 premiaBonusViewModel.AddPersons(ListNewPerson);
                 premiaFPViewModel.AddPersons(ListNewPerson);
                 premiaOtdelViewModel.AddPersons(ListNewPerson);
+                //premiaOtdelViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
+
                 premiaStimulViewModel.AddPersons(ListNewPerson);
+                //premiaStimulViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
+
                 premiaAddWorksViewModel.AddPersons(ListNewPerson);
-                premiaTransportViewModel.AddPersons(ListNewPerson);
+                //premiaTransportViewModel.AddPersons(ListNewPerson);
                 premiaPrizeViewModel.AddPersons(ListNewPerson);
                 OnPropertyChanged(nameof(ListModPerson));
             }
@@ -535,8 +539,15 @@ namespace Tabel.ViewModels
         {
             if (MessageBox.Show($"Удалить {SelectedModPerson.person.FIO}?", "Предупреждение", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
             {
+                ModPerson pers = SelectedModPerson;
+
                 repoModPerson.Remove(SelectedModPerson, true);
                 ListModPerson.Remove(SelectedModPerson);
+
+                premiaStimulViewModel.ListModPerson.Remove(pers);
+                premiaOtdelViewModel.ListModPerson.Remove(pers);
+                premiaFPViewModel.ListModPerson.Remove(pers);
+
                 //IsModify = true;
             }
         }

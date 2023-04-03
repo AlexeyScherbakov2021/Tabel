@@ -72,7 +72,7 @@ public PremiaAddWorksViewModel(BaseModel db) : base(db)
             _SelectMonth = Month;
             _SelectYear = Year;
             //ListModPerson = listPerson?.Where(it => it.person.p_type_id == SpecType.Рабочий).ToList(); ;
-            ListModPerson = listPerson?.ToList(); 
+            ListModPerson = listPerson;//?.ToList(); 
 
             OnPropertyChanged(nameof(ListModPerson));
         }

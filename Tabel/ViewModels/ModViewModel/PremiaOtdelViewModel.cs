@@ -15,35 +15,46 @@ namespace Tabel.ViewModels.ModViewModel
 {
     internal class PremiaOtdelViewModel : ModViewModel
     {
-        public ICollection<ModPerson> ListModPerson { get; set; }
+        public ObservableCollection<ModPerson> ListModPerson { get; set; }
 
         public decimal? SetProcPrem { get; set; }
         public decimal? SetProcFull { get; set; }
 
-
         public PremiaOtdelViewModel(BaseModel db) : base(db)
         {
-
         }
 
+        //-------------------------------------------------------------------------------------
+        // Изменение списка сотрудников
+        //-------------------------------------------------------------------------------------
         public override void ChangeListPerson(ICollection<ModPerson> listPerson, int Year, int Month, Otdel Otdel)
         {
             _SelectMonth = Month;
             _SelectYear = Year;
 
-            ListModPerson = listPerson?.Where(it => it.person.p_type_id == SpecType.ИТР).ToList();
-
+            ListModPerson = new ObservableCollection<ModPerson> (listPerson?.Where(it => it.person.p_type_id == SpecType.ИТР));
             LoadFromCategory(listPerson);
-
             OnPropertyChanged(nameof(ListModPerson));
         }
 
-        public override void AddPersons(ICollection<ModPerson> listPerson)
+
+        //-------------------------------------------------------------------------------------
+        // Добавление сотрудников
+        //-------------------------------------------------------------------------------------
+        public override void AddPersons(ICollection<ModPerson> listNewPerson)
         {
-            LoadFromCategory(listPerson);
+            LoadFromCategory(listNewPerson);
+            foreach (var person in listNewPerson)
+            {
+                if(person.person.p_type_id == SpecType.ИТР)
+                    ListModPerson.Add(person);
+            }
             OnPropertyChanged(nameof(ListModPerson));
         }
 
+        //-------------------------------------------------------------------------------------
+        // Загрузка категорий сотрудников
+        //-------------------------------------------------------------------------------------
         private void LoadFromCategory(ICollection<ModPerson> listPerson)
         {
             if (listPerson is null || listPerson.FirstOrDefault()?.Mod?.m_IsClosed == true)

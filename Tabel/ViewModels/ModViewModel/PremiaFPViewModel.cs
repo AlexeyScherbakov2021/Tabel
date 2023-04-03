@@ -16,7 +16,8 @@ namespace Tabel.ViewModels.ModViewModel
 {
     internal class PremiaFPViewModel : ModViewModel
     {
-        public ICollection<ModPerson> ListModPerson { get; set; }
+        //private ICollection<ModPerson> _ListModPerson;
+        public ObservableCollection<ModPerson> ListModPerson { get; set; }
         //public Visibility IsVisibleITR { get; set; }
 
         public decimal? SetProcPrem { get; set; }
@@ -38,7 +39,7 @@ namespace Tabel.ViewModels.ModViewModel
             _SelectMonth = Month;
             _SelectYear = Year;
 
-            ListModPerson = listPerson?.Where(it => it.person?.p_type_id == SpecType.Рабочий).ToList();
+            ListModPerson = new ObservableCollection<ModPerson>(listPerson?.Where(it => it.person?.p_type_id == SpecType.Рабочий));
 
             if (ListModPerson != null)
             {
@@ -54,19 +55,21 @@ namespace Tabel.ViewModels.ModViewModel
             OnPropertyChanged(nameof(ListModPerson));
         }
 
-        public override void AddPersons(ICollection<ModPerson> listPerson)
+        public override void AddPersons(ICollection<ModPerson> listNewPerson)
         {
-            if (listPerson != null)
+            if (listNewPerson != null)
             {
-                foreach (var modPerson in listPerson)
+                foreach (var modPerson in listNewPerson)
                 {
                     // расчет премии из ФП
                     modPerson.premiaFP.Calculation();
                     //рассчет суммарных процентов в премии ФП
                     modPerson.premiaFP.CalcChangeProcent();
+                    if (modPerson.person.p_type_id == SpecType.Рабочий)
+                        ListModPerson.Add(modPerson);
                 }
             }
-            OnPropertyChanged(nameof(ListModPerson));
+            //OnPropertyChanged(nameof(ListModPerson));
         }
 
         #region Команды

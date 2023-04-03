@@ -51,6 +51,7 @@
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Доп. Работа" Binding="{Binding aw_Name}" Width="700" />
                                 <DataGridTextColumn Header="Тариф" Binding="{Binding aw_Tarif}" Width="90" CellStyle="{StaticResource CellRight}"/>
+                                <DataGridCheckBoxColumn Header="От часов" Binding="{Binding aw_IsRelateHours}" Width="60" />
                             </DataGrid.Columns>
                         </DataGrid>
                     </Grid>
