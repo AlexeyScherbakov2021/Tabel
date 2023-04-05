@@ -78,6 +78,7 @@ namespace Tabel.Models
         public virtual DbSet<TargetTask> TargetTask { get; set; }
         public virtual DbSet<CategorySet> CategorySet { get; set; }
 
+        public virtual DbSet<AttachFile> AttachFiles { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -144,6 +145,12 @@ namespace Tabel.Models
                 .WithOptional(e => e.Mod)
                 .HasForeignKey(e => e.md_modId)
                 .WillCascadeOnDelete();
+
+            modelBuilder.Entity<Mod>()
+                .HasMany(e => e.ListAttachFiles)
+                .WithOptional(e => e.mod)
+                .HasForeignKey(e => e.mod_id)
+                .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Otdel>()
                 .Property(e => e.ot_name)

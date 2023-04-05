@@ -2,16 +2,20 @@ namespace Tabel.Models
 {
     using System;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
+    using Tabel.Infrastructure;
 
     [Table("Mod")]
-    public partial class Mod : IEntity
+    public partial class Mod : Observable, IEntity
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Mod()
         {
+            ListAttachFiles = new ObservableCollection<AttachFile>();
+
             //ModOtdelSumFPs = new HashSet<ModOtdelSumFP>();
             //ModPersons = new HashSet<ModPerson>();
         }
@@ -52,6 +56,11 @@ namespace Tabel.Models
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual IList<ModPerson> ModPersons { get; set; }
+
+        //private ObservableCollection<AttachFile> _ListAttachFiles;
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ObservableCollection<AttachFile> ListAttachFiles { get; set; }
+        //public ObservableCollection<AttachFile> ListAttachFiles { get => _ListAttachFiles; set { Set(ref _ListAttachFiles, value); } }
 
         //[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         //public virtual ICollection<ModOtdelSumFP> ModOtdelSumFPs { get; set; }

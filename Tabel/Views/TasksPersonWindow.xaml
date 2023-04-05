@@ -43,9 +43,6 @@
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding tt_AttachFile}" Cursor="Hand" TextDecorations="Underline">
-                                        <!--<TextBlock.InputBindings>
-                                            <MouseBinding Gesture="LeftDoubleClick" Command="{Binding DataContext.StartFileCommand, ElementName=MainWin}"/>
-                                        </TextBlock.InputBindings>-->
                                     </TextBlock>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>

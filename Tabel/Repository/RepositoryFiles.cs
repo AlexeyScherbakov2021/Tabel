@@ -49,23 +49,27 @@ namespace Tabel.Repository
                 FileName.FullName = null;
             }
         }
-        //public void AddFiles(ICollection<AttachFile> ListFiles, int Year)
-        //{
-        //    string NewName;
-        //    string NewPath = CurrentPath(Year);
 
-        //    foreach (AttachFile file in ListFiles)
-        //    {
-        //        if (file.FullName != null)
-        //        {
-        //            NewName = NewPath + file.task_id.ToString() + "." + file.FileName;
-        //            File.Copy(file.FullName, NewName, true);
+        public void AddFiles(ICollection<AttachFile> ListFiles, int Year)
+        {
+            string NewName;
+            string NewPath = CurrentPath(Year);
 
-        //            // записано, обнуляем
-        //            file.FullName = null;
-        //        }
-        //    }
-        //}
+            foreach (AttachFile file in ListFiles)
+            {
+                if (file.FullName != null)
+                {
+                    if (string.IsNullOrEmpty(file.FileName))
+                        file.FileName = Path.GetFileName(file.FullName);
+
+                    NewName = NewPath + file.mod_id.ToString() + "." + file.FileName;
+                    File.Copy(file.FullName, NewName, true);
+
+                    // записано, обнуляем
+                    file.FullName = null;
+                }
+            }
+        }
 
         //--------------------------------------------------------------------------------------------
         // Добавление файлов
@@ -86,7 +90,7 @@ namespace Tabel.Repository
             string NewPath = CurrentPath(Year);
             if (FileName.FullName != null)
             {
-                NewName = NewPath + FileName.task_id.ToString() + "." + FileName.FileName;
+                NewName = NewPath + FileName.mod_id.ToString() + "." + FileName.FileName;
                 try
                 {
                     File.Copy(FileName.FullName, NewName, true);
@@ -131,7 +135,7 @@ namespace Tabel.Repository
             string NewPath = CurrentPath(Year);
             string NewName;
 
-            NewName = NewPath + FileName.task_id.ToString() + "." + FileName.FileName;
+            NewName = NewPath + FileName.mod_id.ToString() + "." + FileName.FileName;
             try
             {
                 File.Delete(NewName);
@@ -162,7 +166,7 @@ namespace Tabel.Repository
             string NewPath = CurrentPath(Year);
 
             //string NewPath = FileStorage + raFile.RouteOrder.Order.o_date_created.Year.ToString() + "\\";
-            string NewName = NewPath + atFile.task_id.ToString() + "." + atFile.FileName;
+            string NewName = NewPath + atFile.mod_id.ToString() + "." + atFile.FileName;
 
             string TempFileName = Path.GetTempPath() + atFile.FileName;
 

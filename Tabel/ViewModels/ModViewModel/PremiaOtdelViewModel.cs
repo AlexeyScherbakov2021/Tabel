@@ -1,6 +1,9 @@
-﻿using System;
+﻿using DocumentFormat.OpenXml.Bibliography;
+using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,6 +12,7 @@ using System.Windows.Input;
 using Tabel.Commands;
 using Tabel.Infrastructure;
 using Tabel.Models;
+using Tabel.Repository;
 using Tabel.ViewModels.Base;
 
 namespace Tabel.ViewModels.ModViewModel
@@ -19,6 +23,10 @@ namespace Tabel.ViewModels.ModViewModel
 
         public decimal? SetProcPrem { get; set; }
         public decimal? SetProcFull { get; set; }
+
+        public Mod SelectMod { get; set; }
+
+        public AttachFile SelectedFile { get; set; }
 
         public PremiaOtdelViewModel(BaseModel db) : base(db)
         {
@@ -31,6 +39,8 @@ namespace Tabel.ViewModels.ModViewModel
         {
             _SelectMonth = Month;
             _SelectYear = Year;
+            SelectMod = listPerson?.FirstOrDefault()?.Mod;
+            OnPropertyChanged("SelectMod");
 
             ListModPerson = new ObservableCollection<ModPerson> (listPerson?.Where(it => it.person.p_type_id == SpecType.ИТР));
             LoadFromCategory(listPerson);
@@ -69,6 +79,9 @@ namespace Tabel.ViewModels.ModViewModel
             }
         }
 
+
+
+
         #region Команды
 
         //--------------------------------------------------------------------------------
@@ -106,6 +119,63 @@ namespace Tabel.ViewModels.ModViewModel
             }
 
         }
+
+        //--------------------------------------------------------------------------------
+        // Команда Добавить файл
+        //--------------------------------------------------------------------------------
+        public ICommand AttachFileCommand => new LambdaCommand(OnAttachFileCommandExecuted, CanAttachFileCommand);
+        private bool CanAttachFileCommand(object p) => SelectMod != null;
+        private void OnAttachFileCommandExecuted(object p)
+        {
+            OpenFileDialog dlgOpen = new OpenFileDialog();
+            dlgOpen.Multiselect = true;
+
+            if (dlgOpen.ShowDialog() == true)
+            {
+                RepositoryFiles RepFile = new RepositoryFiles();
+                RepositoryMSSQL<AttachFile> repoAttach = new RepositoryMSSQL<AttachFile>(db);
+                foreach (var file in dlgOpen.FileNames)
+                {
+                    AttachFile af = new AttachFile() { FullName = file, mod_id = SelectMod.id };
+                    SelectMod.ListAttachFiles.Add(af);
+                    repoAttach.Add(af);
+                }
+                RepFile.AddFiles(SelectMod.ListAttachFiles, SelectMod.m_year);
+                repoAttach.Save();
+
+            }
+
+        }
+        //--------------------------------------------------------------------------------
+        // Команда Удалить файл
+        //--------------------------------------------------------------------------------
+        public ICommand DetachFileCommand => new LambdaCommand(OnDetachFileCommandExecuted, CanDetachFileCommand);
+        private bool CanDetachFileCommand(object p) => SelectedFile != null;
+        private void OnDetachFileCommandExecuted(object p)
+        {
+            RepositoryFiles RepFile = new RepositoryFiles();
+            RepFile.DeleteFiles(SelectedFile, SelectMod.m_year);
+            RepositoryMSSQL<AttachFile> repoAttach = new RepositoryMSSQL<AttachFile>(db);
+            repoAttach.Remove(SelectedFile);
+            SelectMod.ListAttachFiles.Remove(SelectedFile);
+            repoAttach.Save();
+        }
+
+        //--------------------------------------------------------------------------------
+        // Команда Открыть файл
+        //--------------------------------------------------------------------------------
+        public ICommand StartFileCommand => new LambdaCommand(OnStartFileCommandExecuted, CanStartFileCommand);
+        private bool CanStartFileCommand(object p) => SelectMod != null;
+        private void OnStartFileCommandExecuted(object p)
+        {
+            RepositoryFiles RepFile = new RepositoryFiles();
+            AttachFile af = new AttachFile() { FileName = SelectedFile.FileName, mod_id = SelectMod.id };
+            string FileName = RepFile.GetFile(af, SelectMod.m_year);
+            Process.Start(FileName);
+
+        }
+
+
         #endregion
 
     }

@@ -40,6 +40,7 @@ namespace Tabel.ViewModels
 
         public Visibility VisibleGrid { get; set; } = Visibility.Visible;
 
+
         //private decimal? _BonusProc;
         public static decimal? BonusProc;
 
@@ -791,8 +792,10 @@ namespace Tabel.ViewModels
                     if (!string.IsNullOrEmpty(item.tt_name))
                         name += item.tt_name.Length > 15 ? item.tt_name.Substring(0, 15) + "...; " : item.tt_name + ";";
                 }
+
                 SelectedModPerson.md_kvalif_proc = vm.proc100;
                 SelectedModPerson.md_kvalif_prem = vm.proc100fact;
+
                 SelectedModPerson.md_kvalif_name = name;
                 repoModPerson.Save();
             }

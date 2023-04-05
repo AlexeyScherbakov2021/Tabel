@@ -174,8 +174,6 @@ namespace Tabel.Models
         [NotMapped]
         public decimal? PereWork2 { get; set; }
 
-
-
         public ModPerson()
         {
             ListAddWorks = new HashSet<AddWorks>();
@@ -222,6 +220,9 @@ namespace Tabel.Models
         private decimal? _TabelWorkOffDay;
         [NotMapped]
         public decimal? TabelWorkOffDay { get => _TabelWorkOffDay; set { Set(ref _TabelWorkOffDay, value); } }
+
+        [NotMapped]
+        public bool IsReadOnlyOtdelPrem => ListTargetTask.Count > 0;
 
 
         public decimal? PremiaItogo =>
