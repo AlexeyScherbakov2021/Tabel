@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Tabel.Commands;
@@ -124,7 +125,7 @@ namespace Tabel.ViewModels.ModViewModel
         // Команда Добавить файл
         //--------------------------------------------------------------------------------
         public ICommand AttachFileCommand => new LambdaCommand(OnAttachFileCommandExecuted, CanAttachFileCommand);
-        private bool CanAttachFileCommand(object p) => SelectMod != null;
+        private bool CanAttachFileCommand(object p) => SelectMod != null && SelectMod?.m_IsClosed != true;
         private void OnAttachFileCommandExecuted(object p)
         {
             OpenFileDialog dlgOpen = new OpenFileDialog();
@@ -132,25 +133,51 @@ namespace Tabel.ViewModels.ModViewModel
 
             if (dlgOpen.ShowDialog() == true)
             {
-                RepositoryFiles RepFile = new RepositoryFiles();
-                RepositoryMSSQL<AttachFile> repoAttach = new RepositoryMSSQL<AttachFile>(db);
-                foreach (var file in dlgOpen.FileNames)
-                {
-                    AttachFile af = new AttachFile() { FullName = file, mod_id = SelectMod.id };
-                    SelectMod.ListAttachFiles.Add(af);
-                    repoAttach.Add(af);
-                }
-                RepFile.AddFiles(SelectMod.ListAttachFiles, SelectMod.m_year);
-                repoAttach.Save();
-
+                LoadFiles(dlgOpen.FileNames);
             }
 
         }
+
+        //--------------------------------------------------------------------------------
+        // Команда Drop
+        //--------------------------------------------------------------------------------
+        public void ItemsControl_Drop(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+                LoadFiles(files);
+            }
+        }
+
+
+        //--------------------------------------------------------------------------------
+        // Добавление файлов
+        //--------------------------------------------------------------------------------
+        private void LoadFiles(string[] files)
+        {
+            if (SelectMod == null || SelectMod.m_IsClosed == true)
+                return;
+
+            RepositoryFiles RepFile = new RepositoryFiles();
+            RepositoryMSSQL<AttachFile> repoAttach = new RepositoryMSSQL<AttachFile>(db);
+            foreach (var file in files)
+            {
+                AttachFile af = new AttachFile() { FullName = file, mod_id = SelectMod.id };
+                SelectMod.ListAttachFiles.Add(af);
+                repoAttach.Add(af);
+            }
+            RepFile.AddFiles(SelectMod.ListAttachFiles, SelectMod.m_year);
+            repoAttach.Save();
+
+        }
+
+
         //--------------------------------------------------------------------------------
         // Команда Удалить файл
         //--------------------------------------------------------------------------------
         public ICommand DetachFileCommand => new LambdaCommand(OnDetachFileCommandExecuted, CanDetachFileCommand);
-        private bool CanDetachFileCommand(object p) => SelectedFile != null;
+        private bool CanDetachFileCommand(object p) => SelectedFile != null && SelectMod?.m_IsClosed != true;
         private void OnDetachFileCommandExecuted(object p)
         {
             RepositoryFiles RepFile = new RepositoryFiles();
@@ -174,6 +201,7 @@ namespace Tabel.ViewModels.ModViewModel
             Process.Start(FileName);
 
         }
+
 
 
         #endregion

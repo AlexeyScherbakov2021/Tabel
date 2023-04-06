@@ -387,8 +387,14 @@
                             <TextBlock Text="Прикреплённые файлы" Margin="2" VerticalAlignment="Center"/>
 
                             <ListBox ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="0,2" Grid.Column="1"
-                                     ItemsSource="{Binding SelectMod.ListAttachFiles}"
+                                     ItemsSource="{Binding SelectMod.ListAttachFiles}" AllowDrop="True"
                                      SelectedItem="{Binding SelectedFile}">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="Drop">
+                                        <i:CallMethodAction MethodName="ItemsControl_Drop" TargetObject="{Binding}"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+
                                 <ListBox.ItemsPanel>
                                     <ItemsPanelTemplate>
                                         <StackPanel Orientation="Horizontal"/>
