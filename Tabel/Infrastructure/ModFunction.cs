@@ -13,6 +13,7 @@ using DocumentFormat.OpenXml.EMMA;
 using System.Threading;
 using DocumentFormat.OpenXml.Office.CustomUI;
 using System.Collections.ObjectModel;
+using DocumentFormat.OpenXml.Office2010.Excel;
 
 namespace Tabel.Infrastructure
 {
@@ -21,6 +22,7 @@ namespace Tabel.Infrastructure
         //private readonly BaseModel _db;
         private readonly int _year;
         private readonly int _month;
+        static decimal HoursDefault;
 
         private static readonly decimal MinTarifOffDay = 1500;
 
@@ -44,6 +46,11 @@ namespace Tabel.Infrastructure
             repoCategorySet = new RepositoryMSSQL<CategorySet>(db);
 
             repoCal = new RepositoryCalendar(db);
+
+            var listDays = repoCal.GetListDays(_year, _month);
+            HoursDefault = listDays.Where(it => it.KindDay == TypeDays.Work).Count() * 8;
+            HoursDefault += listDays.Where(it => it.KindDay == TypeDays.ShortWork).Count() * 7;
+
         }
 
 
@@ -162,7 +169,7 @@ namespace Tabel.Infrastructure
             //RepositoryCalendar repoCal = new RepositoryCalendar(_db);// AllRepo.GetRepoCalendar();
             var listDays = repoCal.GetListDays(_year, _month);
             int CountWorkDays = listDays.Count(it => it.KindDay != TypeDays.Holyday);   // число рабочих дней из календаря
-
+            
             mPerson.TabelDays = listDays.Count;                     // дни из табеля
             mPerson.AddingHours = (TabPerson.tp_AddingHours ?? 0);
             mPerson.TabelHours = TabPerson.HoursMonth + mPerson.AddingHours;              // часы из табеля
@@ -252,17 +259,42 @@ namespace Tabel.Infrastructure
             }
         }
 
+
+        //---------------------------------------------------------------------------
+        // установка размера оклада, учитывается добавка из доп.работ
+        //---------------------------------------------------------------------------
         public static void SetOklad(ModPerson mPerson)
         {
             //if (mPerson.Mod.m_IsClosed == true) return;
 
-            decimal hours = mPerson.person.p_type_id == SpecType.ИТР && mPerson.Mod.m_year >= 2023 && mPerson.Mod.m_month > 2
-                ? 162 + mPerson.AddingHours
-                : mPerson.TabelHours;
+            decimal hours =  mPerson.TabelHours;
 
-            mPerson.md_Oklad = mPerson.md_cat_tarif /*mPerson.person.category*/ is null      // установка оклада по часам из тарифа грейда
-                ? 0
-                : (hours * mPerson.md_cat_tarif /*mPerson.person.category.cat_tarif.Value*/ /*+ (mPerson.md_person_achiev / 162 ?? 0)*/) * mPerson.person.p_stavka;
+            //decimal hours = mPerson.person.p_type_id == SpecType.ИТР && mPerson.Mod.m_year >= 2023 && mPerson.Mod.m_month > 2
+            //    ? 162 + mPerson.AddingHours
+            //    : mPerson.TabelHours;
+
+            if(mPerson.person.p_type_id == SpecType.ИТР && mPerson.Mod.m_year >= 2023 && mPerson.Mod.m_month > 2)
+            {
+                hours = 162 + mPerson.AddingHours;
+                decimal DiffHours = HoursDefault - (mPerson.TabelHours - mPerson.AddingHours);
+                if (DiffHours > 0)
+                {
+                    decimal? oklad = mPerson.md_cat_tarif * 162;
+                    decimal? cost_hours = oklad / (HoursDefault - mPerson.AddingHours);
+                    oklad -= DiffHours * cost_hours;
+                    mPerson.md_Oklad = oklad;
+                }
+                else
+                    mPerson.md_Oklad = hours * mPerson.md_cat_tarif;
+            }
+            else
+            {
+                mPerson.md_Oklad = mPerson.md_cat_tarif /*mPerson.person.category*/ is null      // установка оклада по часам из тарифа грейда
+                    ? 0
+                    : (hours * mPerson.md_cat_tarif /*mPerson.person.category.cat_tarif.Value*/ /*+ (mPerson.md_person_achiev / 162 ?? 0)*/) * mPerson.person.p_stavka;
+            }
+
+
 
         }
 

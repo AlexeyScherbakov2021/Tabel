@@ -42,9 +42,18 @@ namespace Tabel.ViewModels.Admins
             repoCatSet = new RepositoryMSSQL<CategorySet>();
             ListCatSet = new ObservableCollection<CategorySet>(repoCatSet.Items);
 
-            StartDate = ListCatSet.Max(it => it.cg_date.Value).AddDays(1);
-            SelectedDate = StartDate > DateTime.Now ? StartDate : DateTime.Now;
-            SelectedCatSet = ListCatSet.Last();
+            StartDate = DateTime.Now;
+            if( ListCatSet.Count > 0 )
+            {
+                DateTime dt = ListCatSet.Max(it => it.cg_date.Value);
+                if (dt != null)
+                    StartDate = dt.AddDays(1);
+
+                SelectedDate = StartDate > DateTime.Now ? StartDate : DateTime.Now;
+                SelectedCatSet = ListCatSet.Last();
+            }
+
+            //StartDate = ListCatSet.Max(it => it.cg_date.Value).AddDays(1);
         }
 
         #region Команды
@@ -55,9 +64,11 @@ namespace Tabel.ViewModels.Admins
         private bool CanAddCommand(object p) => true;
         private void OnAddCommandExecuted(object p)
         {
-            int NextCat = SelectedCatSet.ListCategory.Max(it => it.id) + 1;
+            int NextCat = SelectedCatSet.ListCategory.Count == 0 
+                ? 0
+                : SelectedCatSet.ListCategory.Max(it => it.idCategory) + 1;
 
-            Category newCat = new Category { id = NextCat, cat_tarif = 0 };
+            Category newCat = new Category { idCategory = NextCat, cat_tarif = 0 };
             SelectedCatSet.ListCategory.Add(newCat);
             //Categories.Add(newCat);
             //repoCategory.Add(newCat, true);

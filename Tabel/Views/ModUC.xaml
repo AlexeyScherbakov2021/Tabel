@@ -168,7 +168,8 @@
                                         </MultiBinding>
                                     </DataGridTextColumn.Binding>
                                 </DataGridTextColumn>
-                                <DataGridTextColumn Header="Компенсация" Binding="{Binding md_bolnich, StringFormat=N2}" IsReadOnly="False" Width="90"  CellStyle="{StaticResource CellRightColor}"/>
+                                <DataGridTextColumn Header="Больн/отп." Binding="{Binding md_bolnich, StringFormat=N2}" IsReadOnly="False" Width="90"  CellStyle="{StaticResource CellRightColor}"/>
+                                <DataGridTextColumn Header="Компенсация" Binding="{Binding md_compens, StringFormat=N2}" IsReadOnly="False" Width="90"  CellStyle="{StaticResource CellRightColor}"/>
 
                                 <!--<DataGridTextColumn Header="Премия" Binding="{Binding PremiaItogo, StringFormat=N2}" Width="80" FontWeight="Bold" CellStyle="{StaticResource CellRight}"/>
                             <DataGridTextColumn Header="Итого" Binding="{Binding Itogo, StringFormat=N2}" Width="80" FontWeight="Bold" CellStyle="{StaticResource CellRight}"/>-->
@@ -557,7 +558,8 @@
                                 <DataGridTextColumn Header="Премия 2(по отделу)" Binding="{Binding premiaOtdel.Summa, StringFormat=N2}" Width="80"  CellStyle="{StaticResource CellRight}"/>
                                 <DataGridTextColumn Header="Премия 3(стимул.)" Binding="{Binding premiStimul.Summa, StringFormat=N2}" Width="80"  CellStyle="{StaticResource CellRight}"/>
                                 <DataGridTextColumn Header="Премия (добр.труд)" Binding="{Binding premiaPrize.Summa, StringFormat=N2}" Width="80"  CellStyle="{StaticResource CellRight}"/>
-                                <DataGridTextColumn Header="Комп.больнич." Binding="{Binding md_bolnich, StringFormat=N2}" Width="80"  CellStyle="{StaticResource CellRight}"/>
+                                <DataGridTextColumn Header="Больн/отп" Binding="{Binding md_bolnich, StringFormat=N2}" Width="80"  CellStyle="{StaticResource CellRight}"/>
+                                <DataGridTextColumn Header="Компенсация" Binding="{Binding md_compens, StringFormat=N2}" Width="80"  CellStyle="{StaticResource CellRight}"/>
                                 <DataGridTextColumn Header="Премия всего" Binding="{Binding PremiaItogo, StringFormat=N2}" Width="80" FontWeight="Bold" CellStyle="{StaticResource CellRight}"/>
                                 <DataGridTextColumn Header="Итого" Binding="{Binding Itogo, StringFormat=N2}" Width="80" FontWeight="Bold" CellStyle="{StaticResource CellRight}"/>
                                 <DataGridTextColumn Header="Бух.данные" Binding="{Binding md_RealPay, StringFormat=N2}" Width="80"  CellStyle="{StaticResource CellRight}"/>

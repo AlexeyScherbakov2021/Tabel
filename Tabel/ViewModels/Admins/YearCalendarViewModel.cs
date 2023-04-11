@@ -64,7 +64,8 @@ namespace Tabel.ViewModels
         private bool CanOnLoadedCommand(object p) => true;
         private void OnOnLoadedCommandExecuted(object p)
         {
-            CurrentYear = ListYears.Last();
+            if(ListYears.Count > 0)
+                CurrentYear = ListYears.Last();
         }
 
 
@@ -104,7 +105,9 @@ namespace Tabel.ViewModels
         private bool CanNewYearCommand(object p) => true;
         private void OnNewYearCommandExecuted(object p)
         {
-            CurrentYear = ListYears.Last() + 1;
+            CurrentYear = ListYears.Count == 0 
+                    ? DateTime.Now.Year
+                    : ListYears.Last() + 1;
             ListYears.Add(CurrentYear);
         }
 

@@ -107,6 +107,21 @@ namespace Tabel.Models
             } 
         }
 
+        private decimal? _md_compens;
+        public decimal? md_compens
+        {
+            get => _md_compens;
+            set
+            {
+                if (Set(ref _md_compens, value))
+                {
+                    OnPropertyChanged(nameof(PremiaItogo));
+                    OnPropertyChanged(nameof(Itogo));
+                }
+            }
+        }
+
+
         private decimal? _md_RealPay ;
         public decimal? md_RealPay 
         { 
@@ -119,7 +134,6 @@ namespace Tabel.Models
         }
 
         public decimal? md_cat_tarif { get; set; }
-
 
         [NotMapped]
         public decimal? DiffPremia => Itogo - (md_RealPay ?? 0);
@@ -242,6 +256,7 @@ namespace Tabel.Models
             + PremiaItogo
             + (PereWork15 ?? 0)
             + (PereWork2 ?? 0)
+            + (md_compens ?? 0)
             + (md_bolnich ?? 0);
 
     }
