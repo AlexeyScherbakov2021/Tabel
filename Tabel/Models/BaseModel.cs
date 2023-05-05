@@ -37,11 +37,7 @@ namespace Tabel.Models
             ConnectString = ConfigurationManager.ConnectionStrings["BaseModelDemo"].ConnectionString;
             ConnectString += ";user id=fpLoginName;password=ctcnhjt,s";
 #endif
-
-
-
             BaseModel db = new BaseModel(ConnectString);
-
             return db;
 
         }

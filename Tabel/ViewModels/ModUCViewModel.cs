@@ -205,10 +205,13 @@ namespace Tabel.ViewModels
 
             try
             {
+                // загрузка процента выполнения бонуса и запись в расчеты
                 LoadBonusProcent();
 
+                // загрузка списка сотрудников
                 if (_SelectedOtdel.ot_parent is null)
                 {
+                    // для корневого отдела
                     CurrentMod = repoModel.Items.FirstOrDefault(it => it.m_year == _SelectYear
                         && it.m_month == _SelectMonth
                         && it.m_otdelId == _SelectedOtdel.id);
@@ -221,6 +224,7 @@ namespace Tabel.ViewModels
                 }
                 else
                 {
+                    // для группы
                     CurrentMod = repoModel.Items.FirstOrDefault(it => it.m_year == _SelectYear
                         && it.m_month == _SelectMonth
                         && it.m_otdelId == _SelectedOtdel.ot_parent);
@@ -232,6 +236,7 @@ namespace Tabel.ViewModels
                             );
                 }
 
+                // определение закрытого периода
                 BasicWindowViewModel.BasicView.IsVisibleClosePeriod =
                     CurrentMod?.m_IsClosed == true
                     ? Visibility.Visible
@@ -253,14 +258,13 @@ namespace Tabel.ViewModels
 
                 if (!token.IsCancellationRequested)
                 {
-
+                    // вызов событий изменения списка сотрудников для каждой премии
                     modMainViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
                     premiaBonusViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
                     premiaFPViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
                     premiaOtdelViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
                     premiaStimulViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
                     premiaAddWorksViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
-                    //premiaTransportViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
                     premiaPrizeViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
                     premiaItogoViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
                 }
@@ -275,20 +279,21 @@ namespace Tabel.ViewModels
                 Cancellation = null;
                 VisibleGrid = Visibility.Visible;
                 OnPropertyChanged(nameof(VisibleGrid));
-
                 ev.Set();
-
             }
-
         }
 
-
-
+        //--------------------------------------------------------------------------------
+        // событие закрытия формы
+        //--------------------------------------------------------------------------------
         public bool ClosingFrom()
         {
             return IsModify && CurrentMod?.m_IsClosed != true;
         }
 
+        //--------------------------------------------------------------------------------
+        // запись данных в базу
+        //--------------------------------------------------------------------------------
         public void SaveForm()
         {
             repoModPerson.Save();
