@@ -63,7 +63,7 @@ namespace Tabel.ViewModels.ModViewModel
 
             foreach (var item in listPerson)
             {
-                item.md_prem_otdel = item.TabelHours * item.person.p_premTarif;
+                item.md_prem_otdel = item.md_workHours * item.person.p_premTarif;
             }
         }
 

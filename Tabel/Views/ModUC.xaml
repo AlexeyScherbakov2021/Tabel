@@ -125,12 +125,12 @@
                                 <DataGridTextColumn Header="Таб.№" Binding="{Binding person.p_tab_number}" IsReadOnly="True"/>
                                 <DataGridTextColumn Header="ФИО" Binding="{Binding person.FIO}" IsReadOnly="True"/>
                                 <DataGridTextColumn Header="Должность" Binding="{Binding person.p_profession}" Width="250" IsReadOnly="True"/>
-                                <DataGridTextColumn Header="Ставка" Binding="{Binding person.p_stavka}" CellStyle="{StaticResource CellRight}" IsReadOnly="True"/>
-                                <DataGridTextColumn Header="Грейд" Binding="{Binding person.category.idCategory}" CellStyle="{StaticResource CellRight}" IsReadOnly="True"/>
-                                <DataGridTextColumn Header="Тариф" Binding="{Binding person.category.cat_tarif, StringFormat=0.#}" CellStyle="{StaticResource CellRight}" IsReadOnly="True"/>
-                                <DataGridTextColumn Header="Часы" Binding="{Binding TabelHours, StringFormat=0.#}" CellStyle="{StaticResource CellRight}" IsReadOnly="True"/>
-                                <DataGridTextColumn Header="Отсут." Binding="{Binding TabelAbsent}" CellStyle="{StaticResource CellRight}" IsReadOnly="True"/>
-                                <DataGridTextColumn Header="Дни" Binding="{Binding TabelDays}" CellStyle="{StaticResource CellRight}" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Ставка" Binding="{Binding md_stavka}" CellStyle="{StaticResource CellRight}" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Грейд" Binding="{Binding md_category}" CellStyle="{StaticResource CellRight}" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Тариф" Binding="{Binding md_cat_tarif, StringFormat=0.#}" CellStyle="{StaticResource CellRight}" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Часы" Binding="{Binding md_workHours, StringFormat=0.#}" CellStyle="{StaticResource CellRight}" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Отсут." Binding="{Binding md_absentDays}" CellStyle="{StaticResource CellRight}" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Дни" Binding="{Binding md_workDays}" CellStyle="{StaticResource CellRight}" IsReadOnly="True"/>
                                 <DataGridTextColumn Header="Оклад" Binding="{Binding md_Oklad, StringFormat=N2}" Width="70" CellStyle="{StaticResource CellRight}" IsReadOnly="True"/>
                                 <DataGridTextColumn Header="Ноч. 20%" Binding="{Binding premiaNight.NightOklad, StringFormat=0.#}" CellStyle="{StaticResource CellRight}" IsReadOnly="True"/>
                                 <!--<DataGridTextColumn Header="Ноч.часы" Binding="{Binding premiaNight.NightHours, Mode=TwoWay, StringFormat=0.#}"  CellStyle="{StaticResource CellRight}"  IsReadOnly="True"/>-->
@@ -148,23 +148,23 @@
                                     <DataGridTextColumn.Binding>
                                         <MultiBinding StringFormat="{}{0:#.##} ({1:#.#} д.)">
                                             <Binding Path="premOffDays.Summa"/>
-                                            <Binding Path="TabelWorkOffDay"/>
+                                            <Binding Path="md_workOffDays"/>
                                         </MultiBinding>
                                     </DataGridTextColumn.Binding>
                                 </DataGridTextColumn>
                                 <DataGridTextColumn Header="Сверх1.5" Width="80" CellStyle="{StaticResource CellRight}" IsReadOnly="True">
                                     <DataGridTextColumn.Binding>
                                         <MultiBinding StringFormat="{}{0:#.##} ({1:#.#} ч.)">
-                                            <Binding Path="PereWork15"/>
-                                            <Binding Path="PereWorkHours15"/>
+                                            <Binding Path="pereWork15summ"/>
+                                            <Binding Path="md_pereWork15"/>
                                         </MultiBinding>
                                     </DataGridTextColumn.Binding>
                                 </DataGridTextColumn>
                                 <DataGridTextColumn Header="Сверх2" Width="80" CellStyle="{StaticResource CellRight}" IsReadOnly="True">
                                     <DataGridTextColumn.Binding>
                                         <MultiBinding StringFormat="{}{0:#.##} ({1:#.#} ч.)">
-                                            <Binding Path="PereWork2"/>
-                                            <Binding Path="PereWorkHours2"/>
+                                            <Binding Path="pereWork2summ"/>
+                                            <Binding Path="md_pereWork2"/>
                                         </MultiBinding>
                                     </DataGridTextColumn.Binding>
                                 </DataGridTextColumn>
@@ -227,7 +227,6 @@
                         </DataGrid>
                     </DockPanel>
                 </TabItem>
-
                 
                 <!--Из формулы производства-->
                 <TabItem x:Name="tabFP" Header="Премия 2 (по выработке)" DataContext="{Binding premiaFPViewModel}"

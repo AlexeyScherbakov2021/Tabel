@@ -73,7 +73,7 @@ namespace Tabel.ViewModels
                 .OrderBy(o => o.person.p_lastname)
                 .ToList();
 
-            ModFunction mf = new ModFunction(db, SelectYear, SelectMonth);
+            ModFunction mf = new ModFunction(db, SelectYear, SelectMonth, true);
             mf.ModPersonFilling(ListModPerson);
 
             ListExportPerson.Clear();

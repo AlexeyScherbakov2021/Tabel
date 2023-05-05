@@ -21,7 +21,7 @@ namespace Tabel.Component.Models.Mod
 
         public override void Calculation()
         {
-            decimal koef = model.TabelDays == 0 ? 1 : (decimal)(model.TabelDays - model.TabelAbsent) / (decimal)model.TabelDays;
+            decimal koef = model.md_workDays == 0 ? 1 : (decimal)(model.md_workDays - model.md_absentDays) / (decimal)model.md_workDays;
 
             decimal sum  = 0;
             foreach (var item in model.ListAddWorks)

@@ -23,6 +23,7 @@ namespace Tabel.Infrastructure
         private readonly int _year;
         private readonly int _month;
         static decimal HoursDefault;
+        private readonly bool IsClosed;
 
         private static readonly decimal MinTarifOffDay = 1500;
 
@@ -35,9 +36,10 @@ namespace Tabel.Infrastructure
         //--------------------------------------------------------------------------------------------------------
         // Конструктор
         //--------------------------------------------------------------------------------------------------------
-        public ModFunction(BaseModel db, int year, int month)
+        public ModFunction(BaseModel db, int year, int month, bool IsClosed)
         {
             //_db = db;
+            this.IsClosed = IsClosed;
             _year = year;
             _month = month;
             repoTransPerson = new RepositoryMSSQL<TransPerson>(db);
@@ -59,56 +61,69 @@ namespace Tabel.Infrastructure
         //--------------------------------------------------------------------------------------------------------
         public void ModPersonFilling(IEnumerable<ModPerson> ListModPerson, CancellationToken token = default)
         {
-            //try
-            //{
-            DateTime curDate = new DateTime(_year, _month, 1);
-            IEnumerable<Category> ListCat = repoCategorySet.Items
-                    .AsNoTracking()
-                    .Where(it => it.cg_date <= curDate)
-                    .OrderByDescending(it => it.cg_date)
-                    .FirstOrDefault()
-                    .ListCategory;
 
-
-            foreach (var mPerson in ListModPerson)
+            if (IsClosed == true)
             {
-                mPerson.person.category = ListCat.FirstOrDefault(it => it.idCategory == mPerson.person.p_cat_id);
-                if(mPerson.Mod.m_IsClosed != true)
-                    mPerson.md_cat_tarif = mPerson.person.category?.cat_tarif;
-
-                if (mPerson.premiaBonus is null)
+                // для закрытого периода
+                foreach (var mPerson in ListModPerson)
                 {
-                    mPerson.premiaFP = new PremiaFP(mPerson);
-                    mPerson.premiaBonus = new PremiaBonus(mPerson);
-                    mPerson.premiaOtdel = new PremiaOtdel(mPerson);
-                    mPerson.premiStimul = new PremiaStimul(mPerson);
-                    mPerson.premOffDays = new PremOffDays(mPerson);
-                    mPerson.premiaAddWorks = new PremiaAddWorks(mPerson);
-                    mPerson.premiaTransport = new PremiaTransport(mPerson);
-                    mPerson.premiaNight = new premiaNight(mPerson);
-                    mPerson.premiaPrize = new PremiaPrize(mPerson);
+                    mPerson.pereWork15summ = mPerson.md_pereWork15 * mPerson.md_cat_tarif * 0.5m;           // переработтка 1.5 часа
+                    mPerson.pereWork2summ = mPerson.md_pereWork2 * mPerson.md_cat_tarif;             // переработка 2 часа
+
+                    mPerson.premiaNight.NightOklad = mPerson.md_cat_tarif * 0.2m;
+                    mPerson.premiaNight.NightHours = mPerson.md_nightHours;
+
+                    mPerson.premOffDays.Calculation();
+                    mPerson.premiaNight.Calculation();
+                    mPerson.premiaBonus.Calculation();
+                    mPerson.premiaOtdel.Calculation();
+                    mPerson.premiStimul.Calculation();
+                    mPerson.premiaTransport.Calculation();
+                    mPerson.premiaAddWorks.Calculation();
+
+                    if (token.IsCancellationRequested)
+                    {
+                        break;
+                    }
                 }
 
-                LoadFromTabel(mPerson);
-                //LoadFromSmena(mPerson);
-                LoadFromTransport(mPerson);
+            }
 
-                mPerson.premiaBonus.Calculation();
-                mPerson.premiaFP.Calculation();
-                mPerson.premiaAddWorks.Calculation();
-                mPerson.premiaOtdel.Calculation();
-                mPerson.premiStimul.Calculation();
-                mPerson.premiaTransport.Calculation();
-                mPerson.premiaPrize.Calculation();
-                mPerson.premOffDays.Calculation();
-                mPerson.premiaNight.Calculation();
+            else
+            {
+                DateTime curDate = new DateTime(_year, _month, 1);
+                IEnumerable<Category> ListCat = repoCategorySet.Items
+                        .AsNoTracking()
+                        .Where(it => it.cg_date <= curDate)
+                        .OrderByDescending(it => it.cg_date)
+                        .FirstOrDefault()
+                        .ListCategory;
 
-                if (token.IsCancellationRequested)
+                foreach (var mPerson in ListModPerson)
                 {
-                    break;
-                }
+                    mPerson.person.category = ListCat.FirstOrDefault(it => it.idCategory == mPerson.person.p_cat_id);
+                    mPerson.md_category = mPerson.person.category.idCategory;
+                    mPerson.md_cat_tarif = mPerson.person.category.cat_tarif;
+                    mPerson.md_stavka = mPerson.person.p_stavka;
 
-                //yield return mPerson;
+                    LoadFromTabel(mPerson);
+                    LoadFromTransport(mPerson);
+
+                    mPerson.premiaBonus.Calculation();
+                    mPerson.premiaFP.Calculation();
+                    mPerson.premiaAddWorks.Calculation();
+                    mPerson.premiaOtdel.Calculation();
+                    mPerson.premiStimul.Calculation();
+                    mPerson.premiaTransport.Calculation();
+                    mPerson.premiaPrize.Calculation();
+                    mPerson.premOffDays.Calculation();
+                    mPerson.premiaNight.Calculation();
+
+                    if (token.IsCancellationRequested)
+                    {
+                        break;
+                    }
+                }
             }
         }
   
@@ -126,7 +141,7 @@ namespace Tabel.Infrastructure
                 .FirstOrDefault(it => it.person.id == mPerson.person.id && it.Transport.tr_Year == _year && it.Transport.tr_Month == _month);
 
             if (TranspPerson is null) return;
-            mPerson.TransportPremia = TranspPerson.Summa;
+            mPerson.md_summaTransport = TranspPerson.Summa;
         }
 
         //--------------------------------------------------------------------------------------------------------
@@ -170,10 +185,10 @@ namespace Tabel.Infrastructure
             var listDays = repoCal.GetListDays(_year, _month);
             int CountWorkDays = listDays.Count(it => it.KindDay != TypeDays.Holyday);   // число рабочих дней из календаря
             
-            mPerson.TabelDays = listDays.Count;                     // дни из табеля
+            mPerson.md_workDays = listDays.Count;                     // дни из табеля
             mPerson.AddingHours = (TabPerson.tp_AddingHours ?? 0);
-            mPerson.TabelHours = TabPerson.HoursMonth + mPerson.AddingHours;              // часы из табеля
-            mPerson.TabelWorkOffDay = TabPerson.WorkedOffDays;      // отработанные выходные дни
+            mPerson.md_workHours = TabPerson.HoursMonth + mPerson.AddingHours;              // часы из табеля
+            mPerson.md_workOffDays = TabPerson.WorkedOffDays;      // отработанные выходные дни
             
             SetTarifOffDay(mPerson);
             //if (mPerson.TabelWorkOffDay > 0)
@@ -185,27 +200,27 @@ namespace Tabel.Infrastructure
             //        mPerson.md_tarif_offDay = MinTarifOffDay;
             //}
 
-            mPerson.OverHours = TabPerson.OverWork ?? 0;            // часы переработки
+            mPerson.md_overHours = TabPerson.OverWork ?? 0;            // часы переработки
 
             SetOklad(mPerson);
 
             // поллучение оплаты переработанных часов
             //if (mPerson.person.category != null)
             //{
-                mPerson.PereWorkHours15 = TabPerson.WorkedHours15;
-                mPerson.PereWorkHours2 = TabPerson.WorkedHours2;
-                mPerson.PereWork15 = TabPerson.WorkedHours15 * mPerson.md_cat_tarif /*mPerson.person.category.cat_tarif*/ * 0.5m;           // переработтка 1.5 часа
-                mPerson.PereWork2 = TabPerson.WorkedHours2 * mPerson.md_cat_tarif /*mPerson.person.category.cat_tarif*/;             // переработка 2 часа
+                mPerson.md_pereWork15 = TabPerson.WorkedHours15;
+                mPerson.md_pereWork2 = TabPerson.WorkedHours2;
+                mPerson.pereWork15summ = mPerson.md_pereWork15 * mPerson.md_cat_tarif /*mPerson.person.category.cat_tarif*/ * 0.5m;           // переработтка 1.5 часа
+                mPerson.pereWork2summ = mPerson.md_pereWork2 * mPerson.md_cat_tarif /*mPerson.person.category.cat_tarif*/;             // переработка 2 часа
             //}
 
             //mPerson.md_Oklad = mPerson.person.category is null      // установка оклада по часам из тарифа грейда
             //    ? 0 
             //    : mPerson.TabelHours * mPerson.person.category.cat_tarif.Value * mPerson.person.p_stavka;
 
-            //int CountWorkDaysPerson = TabPerson.TabelDays.Count(it => it.td_KindId == (int)TabelKindDays.Worked
-            //  || it.td_KindId == (int)TabelKindDays.DistWork);   // количество отработанных дней
+            int CountWorkDaysPerson = TabPerson.TabelDays.Count(it => it.td_KindId == (int)TabelKindDays.Worked
+                    || it.td_KindId == (int)TabelKindDays.DistWork);   // количество отработанных дней
 
-            mPerson.TabelAbsent = TabPerson.TabelDays.Count(it => it.td_KindId == (int)TabelKindDays.Bolnich
+            mPerson.md_absentDays = TabPerson.TabelDays.Count(it => it.td_KindId == (int)TabelKindDays.Bolnich
               || it.td_KindId == (int)TabelKindDays.Otpusk
               || it.td_KindId == (int)TabelKindDays.OtpuskNoMoney
               || it.td_KindId == (int)TabelKindDays.DopOtpusk
@@ -213,8 +228,8 @@ namespace Tabel.Infrastructure
               );
 
 
-            //mPerson.TabelAbsent = CountWorkDays - CountWorkDaysPerson;                      // получение количества дней отсутствия
-            if (mPerson.TabelAbsent < 0) mPerson.TabelAbsent = 0;
+            //mPerson.md_absentDays = CountWorkDays - CountWorkDaysPerson;                      // получение количества дней отсутствия
+            if (mPerson.md_absentDays < 0) mPerson.md_absentDays = 0;
 
             // получение соответствующего сотрудника из графика смен
             //RepositoryMSSQL<SmenaPerson> repoSmenaPerson = new RepositoryMSSQL<SmenaPerson>(_db);
@@ -228,17 +243,18 @@ namespace Tabel.Infrastructure
 
             // отработанные дни
             var listWorkDays = TabPerson.TabelDays.Where(it => it.td_KindId == (int)TabelKindDays.Worked && it.td_Hours > 0);
-            decimal? HightHours = 0;
+            decimal HightHours = 0;
             foreach(var item in listWorkDays)
             {
                 if(SmenaPerson.SmenaDays.Any(s => s.sd_Kind == SmenaKind.Second && s.sd_Day == item.td_Day) )
                 {
-                    decimal? hours = item.td_Hours - 3.5m;
+                    decimal hours = item.td_Hours.Value - 3.5m;
                     HightHours += hours < 0 ? 0 : hours;
                 }
             }
 
             mPerson.premiaNight.NightHours = HightHours; //SmenaPerson.SmenaDays.Count(s => s.sd_Kind == SmenaKind.Second) * 4.5m;
+            mPerson.md_nightHours = HightHours;
 
         }
 
@@ -249,7 +265,7 @@ namespace Tabel.Infrastructure
         //--------------------------------------------------------------------------------------------------------
         public static void SetTarifOffDay(ModPerson mPerson)
         {
-            if (mPerson.TabelWorkOffDay > 0 && mPerson.Mod.m_IsClosed != true)
+            if (mPerson.md_workOffDays > 0 /*&& mPerson.Mod.m_IsClosed != true*/)
             {
                 // установка тарифа за выходной день
                 mPerson.md_tarif_offDay = (mPerson.md_cat_tarif /*mPerson.person.category?.cat_tarif*/ + (mPerson.md_person_achiev / 162 ?? 0)) * 8;
@@ -267,16 +283,16 @@ namespace Tabel.Infrastructure
         {
             //if (mPerson.Mod.m_IsClosed == true) return;
 
-            decimal hours =  mPerson.TabelHours;
+            decimal hours =  mPerson.md_workHours;
 
             //decimal hours = mPerson.person.p_type_id == SpecType.ИТР && mPerson.Mod.m_year >= 2023 && mPerson.Mod.m_month > 2
             //    ? 162 + mPerson.AddingHours
             //    : mPerson.TabelHours;
 
-            if(mPerson.person.p_type_id == SpecType.ИТР && mPerson.Mod.m_year >= 2023 && mPerson.Mod.m_month > 2)
+            if(mPerson.person?.p_type_id == SpecType.ИТР && mPerson.Mod.m_year >= 2023 && mPerson.Mod.m_month > 2)
             {
                 hours = 162 + mPerson.AddingHours;
-                decimal DiffHours = HoursDefault - (mPerson.TabelHours - mPerson.AddingHours);
+                decimal DiffHours = HoursDefault - (mPerson.md_workHours - mPerson.AddingHours);
                 if (DiffHours > 0)
                 {
                     decimal? oklad = mPerson.md_cat_tarif * 162;

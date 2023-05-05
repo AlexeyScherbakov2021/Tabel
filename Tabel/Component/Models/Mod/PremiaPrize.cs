@@ -35,10 +35,10 @@ namespace Tabel.Component.Models.Mod
         public override void Calculation()
         {
             Summa = null;
-            if (model.TabelHours == 0 || model.OverHours == 0)
+            if (model.md_workHours == 0 || model.md_overHours == 0)
                 return;
 
-            Summa = (/*model.person.category.cat_tarif*/ model.md_cat_tarif + (model.md_person_achiev / 162 ?? 0)) * model.OverHours * model.person.p_stavka * 2;
+            Summa = (/*model.person.category.cat_tarif*/ model.md_cat_tarif + (model.md_person_achiev / 162 ?? 0)) * model.md_overHours * model.person.p_stavka * 2;
 
             //model.md_Oklad / model.TabelHours * model.OverHours * 2;
         }

@@ -96,7 +96,7 @@ namespace Tabel.Models
 
 
         [NotMapped]
-        public decimal? WorkedOffDays => ((IEnumerable<TabelDay>)TabelDays).Count(it => it.td_KindId == (int)TabelKindDays.WorkInOffDay);
+        public int? WorkedOffDays => ((IEnumerable<TabelDay>)TabelDays).Count(it => it.td_KindId == (int)TabelKindDays.WorkInOffDay);
         public decimal? WorkedOffHours => ((IEnumerable<TabelDay>)TabelDays)
             .Where(it => it.td_KindId == (int)TabelKindDays.WorkInOffDay)
             .Sum(s => s.WhiteHours);

@@ -35,7 +35,7 @@ namespace Tabel.Component.Models.Mod
         //-------------------------------------------------------------------------------------------------------
         public override void Calculation()
         {
-            Summa = model.TransportPremia;
+            Summa = model.md_summaTransport;
         }
 
     }

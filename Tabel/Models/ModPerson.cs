@@ -145,6 +145,15 @@ namespace Tabel.Models
         public virtual ICollection<TargetTask> ListTargetTask { get; set; }
 
 
+
+
+
+
+
+
+
+
+
         [NotMapped]
         public decimal? PlanTarifOtdel { get; set; }
 
@@ -179,61 +188,69 @@ namespace Tabel.Models
         public decimal? QualityTarif { get; set; } = 1000;
 
         [NotMapped]
-        public decimal? PereWorkHours15 { get; set; }
+        public decimal? pereWork15summ { get; set; }
         [NotMapped]
-        public decimal? PereWorkHours2 { get; set; }
+        public decimal? pereWork2summ { get; set; }
 
-        [NotMapped]
-        public decimal? PereWork15 { get; set; }
-        [NotMapped]
-        public decimal? PereWork2 { get; set; }
+        //[NotMapped]
+        public decimal? md_pereWork15 { get; set; }
+        //[NotMapped]
+        public decimal? md_pereWork2 { get; set; }
+
+        public decimal? md_stavka { get; set; }
+
+        public int? md_category { get; set; }
+
+        //public decimal? md_tarif { get; set; }
 
         public ModPerson()
         {
             ListAddWorks = new HashSet<AddWorks>();
             ListTargetTask = new HashSet<TargetTask>();
 
-            //premiaFP = new PremiaFP(this);
-            //premiaBonus = new PremiaBonus(this);
-            //premiaOtdel = new PremiaKvalif(this);
-            //premiStimul = new PremiaOtdel(this);
-            //premOffDays = new PremOffDays(this);
-            //premiaAddWorks = new PremiaAddWorks(this);
-            //premiaTransport = new PremiaTransport(this);
-            //premiaNight = new premiaNight(this);
-            //premiaPrize = new PremiaPrize(this);
+            premiaFP = new PremiaFP(this);
+            premiaBonus = new PremiaBonus(this);
+            premiaOtdel = new PremiaOtdel(this);
+            premiStimul = new PremiaStimul(this);
+            premOffDays = new PremOffDays(this);
+            premiaAddWorks = new PremiaAddWorks(this);
+            premiaTransport = new PremiaTransport(this);
+            premiaNight = new premiaNight(this);
+            premiaPrize = new PremiaPrize(this);
+
         }
 
 
         private decimal _TabelHours;
-        [NotMapped]
-        public decimal TabelHours { get => _TabelHours; set { Set(ref _TabelHours, value); } }
+        //[NotMapped]
+        public decimal md_workHours { get => _TabelHours; set { Set(ref _TabelHours, value); } }
 
+        public decimal md_nightHours { get; set; }
 
         public decimal AddingHours;
         
-        [NotMapped]
-        public int TabelDays { get; set; }
+        //[NotMapped]
+        public int md_workDays { get; set; }
 
 
         private int _TabelAbsent = 0;
-        [NotMapped]
-        public int TabelAbsent { get => _TabelAbsent; set { Set(ref _TabelAbsent, value); } }
+        //[NotMapped]
+        public int md_absentDays { get => _TabelAbsent; set { Set(ref _TabelAbsent, value); } }
         //[NotMapped]
 
         private decimal? _md_Oklad;
         public decimal? md_Oklad { get => _md_Oklad; set { Set(ref _md_Oklad, value); } }
         
-        [NotMapped]
-        public decimal OverHours;
+        //[NotMapped]
+        public decimal md_overHours { get; set; }
 
-        [NotMapped]
-        public decimal? TransportPremia;
+        //[NotMapped]
+        public decimal? md_summaTransport { get; set; }
 
 
-        private decimal? _TabelWorkOffDay;
-        [NotMapped]
-        public decimal? TabelWorkOffDay { get => _TabelWorkOffDay; set { Set(ref _TabelWorkOffDay, value); } }
+        private int? _TabelWorkOffDay;
+        //[NotMapped]
+        public int? md_workOffDays { get => _TabelWorkOffDay; set { Set(ref _TabelWorkOffDay, value); } }
 
         [NotMapped]
         public bool IsReadOnlyOtdelPrem => ListTargetTask.Count > 0;
@@ -254,8 +271,8 @@ namespace Tabel.Models
             + premiaNight.GetPremia()
             + premOffDays.GetPremia()
             + PremiaItogo
-            + (PereWork15 ?? 0)
-            + (PereWork2 ?? 0)
+            + (pereWork15summ ?? 0)
+            + (pereWork2summ ?? 0)
             + (md_compens ?? 0)
             + (md_bolnich ?? 0);
 

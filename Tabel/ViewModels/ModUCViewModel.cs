@@ -246,7 +246,7 @@ namespace Tabel.ViewModels
                 if (ListModPerson != null)
                 {
                     // подгрузка из табеля, смен и транспорта
-                    ModFunction ModFunc = new ModFunction(db, _SelectYear, _SelectMonth);
+                    ModFunction ModFunc = new ModFunction(db, _SelectYear, _SelectMonth, CurrentMod?.m_IsClosed == true);
                     ModFunc.ModPersonFilling(ListModPerson, token);
 
                     //foreach (var item in ModFunc.ModPersonFilling(ListModPerson, token))
@@ -425,7 +425,7 @@ namespace Tabel.ViewModels
             ListModPerson = new ObservableCollection<ModPerson>(CurrentMod.ModPersons);
 
             // подгрузка из табеля, смен и транспорта
-            ModFunction ModFunc = new ModFunction(db, _SelectYear, _SelectMonth);
+            ModFunction ModFunc = new ModFunction(db, _SelectYear, _SelectMonth, false);
             ModFunc.ModPersonFilling(ListModPerson);
 
 
@@ -513,7 +513,7 @@ namespace Tabel.ViewModels
                 }
 
                 // подгрузка из табеля, смен и транспорта
-                ModFunction ModFunc = new ModFunction(db, _SelectYear, _SelectMonth);
+                ModFunction ModFunc = new ModFunction(db, _SelectYear, _SelectMonth, false);
                 ModFunc.ModPersonFilling(ListNewPerson);
 
                 modMainViewModel.AddPersons(ListNewPerson);
@@ -604,7 +604,7 @@ namespace Tabel.ViewModels
 
         private void PrintAll(IEnumerable<ModPerson> ListAllModPerson)
         {
-            ModFunction mf = new ModFunction(db, _SelectYear, _SelectMonth);
+            ModFunction mf = new ModFunction(db, _SelectYear, _SelectMonth, true);
             mf.ModPersonFilling(ListAllModPerson);
 
             RepositoryExcel.PrintModel(ListAllModPerson, _SelectYear, _SelectMonth);
@@ -633,8 +633,8 @@ namespace Tabel.ViewModels
                     ws.Cell("B4").Value = CurrentMod.otdel.ot_name;
                     ws.Cell("B5").Value = SelectedModPerson.person.p_profession;
 
-                    ws.Cell("B9").Value = SelectedModPerson.TabelDays;
-                    ws.Cell("C9").Value = SelectedModPerson.TabelHours;
+                    ws.Cell("B9").Value = SelectedModPerson.md_workDays;
+                    ws.Cell("C9").Value = SelectedModPerson.md_workHours;
 
                     ws.Cell("D9").Value = SelectedModPerson.Itogo;
                     ws.Cell("D10").Value = SelectedModPerson.md_Oklad;
