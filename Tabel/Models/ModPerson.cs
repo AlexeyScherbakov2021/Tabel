@@ -193,15 +193,15 @@ namespace Tabel.Models
             ListAddWorks = new HashSet<AddWorks>();
             ListTargetTask = new HashSet<TargetTask>();
 
-            //premiaFP = new PremiaFP(this);
-            //premiaBonus = new PremiaBonus(this);
-            //premiaOtdel = new PremiaKvalif(this);
-            //premiStimul = new PremiaOtdel(this);
-            //premOffDays = new PremOffDays(this);
-            //premiaAddWorks = new PremiaAddWorks(this);
-            //premiaTransport = new PremiaTransport(this);
-            //premiaNight = new premiaNight(this);
-            //premiaPrize = new PremiaPrize(this);
+            premiaFP = new PremiaFP(this);
+            premiaBonus = new PremiaBonus(this);
+            premiaOtdel = new PremiaOtdel(this);
+            premiStimul = new PremiaStimul(this);
+            premOffDays = new PremOffDays(this);
+            premiaAddWorks = new PremiaAddWorks(this);
+            premiaTransport = new PremiaTransport(this);
+            premiaNight = new premiaNight(this);
+            premiaPrize = new PremiaPrize(this);
         }
 
 

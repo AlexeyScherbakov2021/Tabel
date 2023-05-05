@@ -76,18 +76,18 @@ namespace Tabel.Infrastructure
                 if(mPerson.Mod.m_IsClosed != true)
                     mPerson.md_cat_tarif = mPerson.person.category?.cat_tarif;
 
-                if (mPerson.premiaBonus is null)
-                {
-                    mPerson.premiaFP = new PremiaFP(mPerson);
-                    mPerson.premiaBonus = new PremiaBonus(mPerson);
-                    mPerson.premiaOtdel = new PremiaOtdel(mPerson);
-                    mPerson.premiStimul = new PremiaStimul(mPerson);
-                    mPerson.premOffDays = new PremOffDays(mPerson);
-                    mPerson.premiaAddWorks = new PremiaAddWorks(mPerson);
-                    mPerson.premiaTransport = new PremiaTransport(mPerson);
-                    mPerson.premiaNight = new premiaNight(mPerson);
-                    mPerson.premiaPrize = new PremiaPrize(mPerson);
-                }
+                //if (mPerson.premiaBonus is null)
+                //{
+                //    mPerson.premiaFP = new PremiaFP(mPerson);
+                //    mPerson.premiaBonus = new PremiaBonus(mPerson);
+                //    mPerson.premiaOtdel = new PremiaOtdel(mPerson);
+                //    mPerson.premiStimul = new PremiaStimul(mPerson);
+                //    mPerson.premOffDays = new PremOffDays(mPerson);
+                //    mPerson.premiaAddWorks = new PremiaAddWorks(mPerson);
+                //    mPerson.premiaTransport = new PremiaTransport(mPerson);
+                //    mPerson.premiaNight = new premiaNight(mPerson);
+                //    mPerson.premiaPrize = new PremiaPrize(mPerson);
+                //}
 
                 LoadFromTabel(mPerson);
                 //LoadFromSmena(mPerson);
@@ -273,7 +273,7 @@ namespace Tabel.Infrastructure
             //    ? 162 + mPerson.AddingHours
             //    : mPerson.TabelHours;
 
-            if(mPerson.person.p_type_id == SpecType.ИТР && mPerson.Mod.m_year >= 2023 && mPerson.Mod.m_month > 2)
+            if(mPerson.person?.p_type_id == SpecType.ИТР && mPerson.Mod.m_year >= 2023 && mPerson.Mod.m_month > 2)
             {
                 hours = 162 + mPerson.AddingHours;
                 decimal DiffHours = HoursDefault - (mPerson.TabelHours - mPerson.AddingHours);
