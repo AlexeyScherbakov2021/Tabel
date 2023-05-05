@@ -282,10 +282,10 @@ namespace Tabel.Infrastructure
                     decimal? oklad = mPerson.md_cat_tarif * 162;
                     decimal? cost_hours = oklad / (HoursDefault - mPerson.AddingHours);
                     oklad -= DiffHours * cost_hours;
-                    mPerson.md_Oklad = oklad;
+                    mPerson.md_Oklad = oklad * mPerson.person.p_stavka;
                 }
                 else
-                    mPerson.md_Oklad = hours * mPerson.md_cat_tarif;
+                    mPerson.md_Oklad = hours * mPerson.md_cat_tarif * mPerson.person.p_stavka;
             }
             else
             {

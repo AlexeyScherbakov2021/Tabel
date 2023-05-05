@@ -413,10 +413,7 @@
                                         </Border>
                                     </DataTemplate>
                                 </ListBox.ItemTemplate>
-                                
-                                <!--<ListBoxItem Content="00000000.230" Background="LightYellow"/>
-                                <ListBoxItem Content="0011111111000.txt" Background="LightYellow"/>
-                                <ListBoxItem Content="00222222000.was" Background="LightYellow"/>-->
+                               
                             </ListBox>
                             <Button Grid.Column="2" Margin="2" Command="{Binding AttachFileCommand}"
                                      ToolTip="Добавить файл">
@@ -426,6 +423,8 @@
                                     ToolTip="Удалить файл">
                                 <fa:ImageAwesome Icon="Solid_Times" Width="14" Height="14" Foreground="Red"/>
                             </Button>
+                            
+                            
                         </Grid>
                         <DataGrid x:Name="dgOt" ItemsSource="{Binding ListModPerson}"  
                             SelectedItem="{Binding DataContext.SelectedModPerson, ElementName=userControl, Mode=TwoWay}"

@@ -297,7 +297,7 @@ namespace Tabel.ViewModels.Admins
             NewPerson.p_delete = false;
             NewPerson.p_stavka = 1;
 
-            NewPerson.p_cat_id = CategorySet.ListCategory.FirstOrDefault().idCategory; // repoCat.Items.FirstOrDefault().id;
+            NewPerson.p_cat_id = CategorySet.ListCategory.FirstOrDefault()?.idCategory; // repoCat.Items.FirstOrDefault().id;
             NewPerson.p_premTarif = 0;
 
             repoPerson.Add(NewPerson, true);
