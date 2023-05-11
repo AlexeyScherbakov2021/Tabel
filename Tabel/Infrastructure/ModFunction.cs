@@ -188,7 +188,7 @@ namespace Tabel.Infrastructure
             mPerson.md_workDays = listDays.Count;                     // дни из табеля
             mPerson.AddingHours = (TabPerson.tp_AddingHours ?? 0);
             mPerson.md_workHours = TabPerson.HoursMonth + mPerson.AddingHours;              // часы из табеля
-            mPerson.md_workOffDays = TabPerson.WorkedOffDays;      // отработанные выходные дни
+            mPerson.md_workOffDays = TabPerson.WorkedOffDays.Value;      // отработанные выходные дни
             
             SetTarifOffDay(mPerson);
             //if (mPerson.TabelWorkOffDay > 0)

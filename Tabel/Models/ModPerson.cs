@@ -248,9 +248,9 @@ namespace Tabel.Models
         public decimal? md_summaTransport { get; set; }
 
 
-        private int? _TabelWorkOffDay;
+        private int _TabelWorkOffDay;
         //[NotMapped]
-        public int? md_workOffDays { get => _TabelWorkOffDay; set { Set(ref _TabelWorkOffDay, value); } }
+        public int md_workOffDays { get => _TabelWorkOffDay; set { Set(ref _TabelWorkOffDay, value); } }
 
         [NotMapped]
         public bool IsReadOnlyOtdelPrem => ListTargetTask.Count > 0;
