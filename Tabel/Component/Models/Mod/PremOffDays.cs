@@ -24,7 +24,7 @@ namespace Tabel.Component.Models.Mod
         //-------------------------------------------------------------------------------------------------------
         public override void Calculation()
         {
-            Summa = model.md_workOffDays * model.md_tarif_offDay;
+            Summa = model.md_workOffDays * model.md_tarif_offDay * 2;
         }
 
 

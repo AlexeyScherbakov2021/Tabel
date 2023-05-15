@@ -67,8 +67,8 @@ namespace Tabel.Infrastructure
                 // для закрытого периода
                 foreach (var mPerson in ListModPerson)
                 {
-                    mPerson.pereWork15summ = mPerson.md_pereWork15 * mPerson.md_cat_tarif * 0.5m;           // переработтка 1.5 часа
-                    mPerson.pereWork2summ = mPerson.md_pereWork2 * mPerson.md_cat_tarif;             // переработка 2 часа
+                    mPerson.pereWork15summ = mPerson.md_pereWork15 * mPerson.md_cat_tarif * 1.5m;    // переработтка 1.5 часа
+                    mPerson.pereWork2summ = mPerson.md_pereWork2 * mPerson.md_cat_tarif * 2;         // переработка 2 часа
 
                     mPerson.premiaNight.NightOklad = mPerson.md_cat_tarif * 0.2m;
                     mPerson.premiaNight.NightHours = mPerson.md_nightHours;
@@ -209,8 +209,8 @@ namespace Tabel.Infrastructure
             //{
                 mPerson.md_pereWork15 = TabPerson.WorkedHours15;
                 mPerson.md_pereWork2 = TabPerson.WorkedHours2;
-                mPerson.pereWork15summ = mPerson.md_pereWork15 * mPerson.md_cat_tarif /*mPerson.person.category.cat_tarif*/ * 0.5m;           // переработтка 1.5 часа
-                mPerson.pereWork2summ = mPerson.md_pereWork2 * mPerson.md_cat_tarif /*mPerson.person.category.cat_tarif*/;             // переработка 2 часа
+                mPerson.pereWork15summ = mPerson.md_pereWork15 * mPerson.md_cat_tarif /*mPerson.person.category.cat_tarif*/ * 1.5m;           // переработтка 1.5 часа
+                mPerson.pereWork2summ = mPerson.md_pereWork2 * mPerson.md_cat_tarif /*mPerson.person.category.cat_tarif*/ * 2;             // переработка 2 часа
             //}
 
             //mPerson.md_Oklad = mPerson.person.category is null      // установка оклада по часам из тарифа грейда
@@ -220,15 +220,15 @@ namespace Tabel.Infrastructure
             int CountWorkDaysPerson = TabPerson.TabelDays.Count(it => it.td_KindId == (int)TabelKindDays.Worked
                     || it.td_KindId == (int)TabelKindDays.DistWork);   // количество отработанных дней
 
-            mPerson.md_absentDays = TabPerson.TabelDays.Count(it => it.td_KindId == (int)TabelKindDays.Bolnich
-              || it.td_KindId == (int)TabelKindDays.Otpusk
-              || it.td_KindId == (int)TabelKindDays.OtpuskNoMoney
-              || it.td_KindId == (int)TabelKindDays.DopOtpusk
-              || it.td_KindId == (int)TabelKindDays.BolnichNoMoney
-              );
+            //mPerson.md_absentDays = TabPerson.TabelDays.Count(it => it.td_KindId == (int)TabelKindDays.Bolnich
+            //  || it.td_KindId == (int)TabelKindDays.Otpusk
+            //  || it.td_KindId == (int)TabelKindDays.OtpuskNoMoney
+            //  || it.td_KindId == (int)TabelKindDays.DopOtpusk
+            //  || it.td_KindId == (int)TabelKindDays.BolnichNoMoney
+            //  );
 
 
-            //mPerson.md_absentDays = CountWorkDays - CountWorkDaysPerson;                      // получение количества дней отсутствия
+            mPerson.md_absentDays = CountWorkDays - CountWorkDaysPerson;                      // получение количества дней отсутствия
             if (mPerson.md_absentDays < 0) mPerson.md_absentDays = 0;
 
             // получение соответствующего сотрудника из графика смен
@@ -283,7 +283,7 @@ namespace Tabel.Infrastructure
         {
             //if (mPerson.Mod.m_IsClosed == true) return;
 
-            decimal hours =  mPerson.md_workHours;
+            decimal hours;
 
             //decimal hours = mPerson.person.p_type_id == SpecType.ИТР && mPerson.Mod.m_year >= 2023 && mPerson.Mod.m_month > 2
             //    ? 162 + mPerson.AddingHours
@@ -305,6 +305,11 @@ namespace Tabel.Infrastructure
             }
             else
             {
+                hours = mPerson.md_workHours - 
+                    (mPerson.md_pereWork15 ?? 0) - 
+                    (mPerson.md_pereWork2 ?? 0) - 
+                    (mPerson.md_workOffDays * 8);
+
                 mPerson.md_Oklad = mPerson.md_cat_tarif /*mPerson.person.category*/ is null      // установка оклада по часам из тарифа грейда
                     ? 0
                     : (hours * mPerson.md_cat_tarif /*mPerson.person.category.cat_tarif.Value*/ /*+ (mPerson.md_person_achiev / 162 ?? 0)*/) * mPerson.person.p_stavka;
