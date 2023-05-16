@@ -24,6 +24,10 @@ namespace Tabel.Infrastructure
         private readonly int _month;
         static decimal HoursDefault;
         private readonly bool IsClosed;
+        decimal? koeff15;
+        decimal? koeff2;
+        public static decimal? WorkOffKoeff;
+        public static decimal? NightKoeff;
 
         private static readonly decimal MinTarifOffDay = 1500;
 
@@ -53,6 +57,33 @@ namespace Tabel.Infrastructure
             HoursDefault = listDays.Where(it => it.KindDay == TypeDays.Work).Count() * 8;
             HoursDefault += listDays.Where(it => it.KindDay == TypeDays.ShortWork).Count() * 7;
 
+            RepositoryMSSQL<GenChargMonth> repoGenChargMonth = new RepositoryMSSQL<GenChargMonth>();
+
+            koeff15 = repoGenChargMonth.Items.Where(it => it.gm_GenId == (int)koeffPere.Pere15
+                && it.gm_Month <= _month && it.gm_Year <= _year)
+                .OrderByDescending(o => o.gm_Year)
+                .ThenByDescending(o => o.gm_Month)
+                .FirstOrDefault()?.gm_Value;
+
+            koeff2 = repoGenChargMonth.Items.Where(it => it.gm_GenId == (int)koeffPere.Pere2
+                && it.gm_Month <= _month && it.gm_Year <= _year)
+                .OrderByDescending(o => o.gm_Year)
+                .ThenByDescending(o => o.gm_Month)
+                .FirstOrDefault()?.gm_Value;
+
+            WorkOffKoeff = repoGenChargMonth.Items.Where(it => it.gm_GenId == (int)koeffPere.WorkOffKoeff
+                && it.gm_Month <= _month && it.gm_Year <= _year)
+                .OrderByDescending(o => o.gm_Year)
+                .ThenByDescending(o => o.gm_Month)
+                .FirstOrDefault()?.gm_Value;
+
+            NightKoeff = repoGenChargMonth.Items.Where(it => it.gm_GenId == (int)koeffPere.NightKoeff
+                && it.gm_Month <= _month && it.gm_Year <= _year)
+                .OrderByDescending(o => o.gm_Year)
+                .ThenByDescending(o => o.gm_Month)
+                .FirstOrDefault()?.gm_Value;
+
+
         }
 
 
@@ -67,10 +98,10 @@ namespace Tabel.Infrastructure
                 // для закрытого периода
                 foreach (var mPerson in ListModPerson)
                 {
-                    mPerson.pereWork15summ = mPerson.md_pereWork15 * mPerson.md_cat_tarif * 1.5m;    // переработтка 1.5 часа
-                    mPerson.pereWork2summ = mPerson.md_pereWork2 * mPerson.md_cat_tarif * 2;         // переработка 2 часа
+                    mPerson.pereWork15summ = mPerson.md_pereWork15 * mPerson.md_cat_tarif * koeff15 * mPerson.person.p_stavka;    // переработка 1.5 часа
+                    mPerson.pereWork2summ = mPerson.md_pereWork2 * mPerson.md_cat_tarif * koeff2 * mPerson.person.p_stavka;         // переработка 2 часа
 
-                    mPerson.premiaNight.NightOklad = mPerson.md_cat_tarif * 0.2m;
+                    mPerson.premiaNight.NightOklad = mPerson.md_cat_tarif * NightKoeff;
                     mPerson.premiaNight.NightHours = mPerson.md_nightHours;
 
                     mPerson.premOffDays.Calculation();
@@ -80,6 +111,8 @@ namespace Tabel.Infrastructure
                     mPerson.premiStimul.Calculation();
                     mPerson.premiaTransport.Calculation();
                     mPerson.premiaAddWorks.Calculation();
+                    mPerson.premiaPrize.Calculation();
+                    mPerson.premiaFP.Calculation();
 
                     if (token.IsCancellationRequested)
                     {
@@ -188,8 +221,10 @@ namespace Tabel.Infrastructure
             mPerson.md_workDays = listDays.Count;                     // дни из табеля
             mPerson.AddingHours = (TabPerson.tp_AddingHours ?? 0);
             mPerson.md_workHours = TabPerson.HoursMonth + mPerson.AddingHours;              // часы из табеля
-            mPerson.md_workOffDays = TabPerson.WorkedOffDays.Value;      // отработанные выходные дни
-            
+            mPerson.md_workOffHours = TabPerson.WorkedOffHours;
+            mPerson.md_workOffDays = (int) Math.Ceiling((mPerson.md_workOffHours ?? 0) / 8);      // отработанные выходные дни
+            //mPerson.md_workOffDays = TabPerson.WorkedOffDays.Value;      // отработанные выходные дни
+
             SetTarifOffDay(mPerson);
             //if (mPerson.TabelWorkOffDay > 0)
             //{
@@ -202,16 +237,15 @@ namespace Tabel.Infrastructure
 
             mPerson.md_overHours = TabPerson.OverWork ?? 0;            // часы переработки
 
-            SetOklad(mPerson);
-
             // поллучение оплаты переработанных часов
             //if (mPerson.person.category != null)
             //{
                 mPerson.md_pereWork15 = TabPerson.WorkedHours15;
                 mPerson.md_pereWork2 = TabPerson.WorkedHours2;
-                mPerson.pereWork15summ = mPerson.md_pereWork15 * mPerson.md_cat_tarif /*mPerson.person.category.cat_tarif*/ * 1.5m;           // переработтка 1.5 часа
-                mPerson.pereWork2summ = mPerson.md_pereWork2 * mPerson.md_cat_tarif /*mPerson.person.category.cat_tarif*/ * 2;             // переработка 2 часа
-            //}
+                mPerson.pereWork15summ = mPerson.md_pereWork15 * mPerson.md_cat_tarif * koeff15 * mPerson.person.p_stavka;           // переработтка 1.5 часа
+                mPerson.pereWork2summ = mPerson.md_pereWork2 * mPerson.md_cat_tarif * koeff2 * mPerson.person.p_stavka;             // переработка 2 часа
+                                                                                                          //}
+            SetOklad(mPerson);
 
             //mPerson.md_Oklad = mPerson.person.category is null      // установка оклада по часам из тарифа грейда
             //    ? 0 
@@ -226,7 +260,6 @@ namespace Tabel.Infrastructure
             //  || it.td_KindId == (int)TabelKindDays.DopOtpusk
             //  || it.td_KindId == (int)TabelKindDays.BolnichNoMoney
             //  );
-
 
             mPerson.md_absentDays = CountWorkDays - CountWorkDaysPerson;                      // получение количества дней отсутствия
             if (mPerson.md_absentDays < 0) mPerson.md_absentDays = 0;

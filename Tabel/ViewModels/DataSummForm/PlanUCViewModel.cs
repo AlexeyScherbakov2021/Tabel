@@ -30,11 +30,11 @@ namespace Tabel.ViewModels.DataSummForm
             if (CurrentYear < 1 || CurrentMonth < 1) return;
 
             ListGenChargMonths = repoGen.Items
-                .Where(it => it.gm_Year == CurrentYear && it.gm_Month == CurrentMonth).ToList();
+                .Where(it => it.gm_Year == CurrentYear && it.gm_Month == CurrentMonth && it.gm_GenId ==  (int)koeffPere.Bonus).ToList();
 
             if (ListGenChargMonths.Count() == 0)
             {
-                var list = repoGeneral.Items.ToList();
+                var list = repoGeneral.Items.Where(it => it.id == (int)koeffPere.Bonus).ToList();
 
                 foreach (var item in list)
                 {

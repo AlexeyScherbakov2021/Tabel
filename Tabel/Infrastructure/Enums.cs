@@ -7,6 +7,8 @@ using System.Windows.Markup;
 
 namespace Tabel.Infrastructure
 {
+    public enum koeffPere : int { Bonus = 1, Pere15, Pere2, WorkOffKoeff, NightKoeff };
+
 
     public enum SmenaKind : int { None, First, Second, DayOff, Otpusk };
 

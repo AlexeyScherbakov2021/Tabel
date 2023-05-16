@@ -247,6 +247,25 @@ namespace Tabel.Repository
                         ws2.Cell(RowNum2, 13).Value = item.md_compens;
                         ws2.Cell(RowNum2, 14).Value = item.PremiaItogo;
                         ws2.Cell(RowNum2, 15).Value = item.Itogo;
+
+///////////////////  УДАЛИТЬ
+                        //if (item.person.p_type_id == Infrastructure.SpecType.ИТР)
+                        //{
+                        //    ws2.Cell(RowNum2, 16).Value = item.md_cat_tarif;
+                        //    ws2.Cell(RowNum2, 17).Value = item.md_Oklad;
+                        //    ws2.Cell(RowNum2, 18).Value = item.md_pereWork15;
+                        //    ws2.Cell(RowNum2, 19).Value = item.pereWork15summ;
+                        //    ws2.Cell(RowNum2, 20).Value = item.md_pereWork2;
+                        //    ws2.Cell(RowNum2, 21).Value = item.pereWork2summ;
+                        //    ws2.Cell(RowNum2, 22).Value = item.md_workOffDays;
+                        //    ws2.Cell(RowNum2, 23).Value = item.premOffDays.Summa;
+
+                        //    ws2.Cell(RowNum2, 24).Value = item.pereWork15summ * 3;
+                        //    ws2.Cell(RowNum2, 25).Value = item.pereWork2summ * 2;
+                        //    ws2.Cell(RowNum2, 26).Value = item.pereWork2summ * 2;
+                        //    ws2.Cell(RowNum2, 27).Value = item.premOffDays.Summa * 2;
+                        //}
+////////////////////////
                         ws2.Row(RowNum2).InsertRowsBelow(1);
                         RowNum2++;
                     }

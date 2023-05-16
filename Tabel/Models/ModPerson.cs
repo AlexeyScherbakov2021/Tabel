@@ -236,21 +236,21 @@ namespace Tabel.Models
         private int _TabelAbsent = 0;
         //[NotMapped]
         public int md_absentDays { get => _TabelAbsent; set { Set(ref _TabelAbsent, value); } }
-        //[NotMapped]
 
         private decimal? _md_Oklad;
         public decimal? md_Oklad { get => _md_Oklad; set { Set(ref _md_Oklad, value); } }
         
-        //[NotMapped]
         public decimal md_overHours { get; set; }
 
-        //[NotMapped]
         public decimal? md_summaTransport { get; set; }
 
 
         private int _TabelWorkOffDay;
-        //[NotMapped]
         public int md_workOffDays { get => _TabelWorkOffDay; set { Set(ref _TabelWorkOffDay, value); } }
+
+        private decimal? _TabelWorkOffHours;
+        [NotMapped]
+        public decimal? md_workOffHours { get => _TabelWorkOffHours; set { Set(ref _TabelWorkOffHours, value); } }
 
         [NotMapped]
         public bool IsReadOnlyOtdelPrem => ListTargetTask.Count > 0;
