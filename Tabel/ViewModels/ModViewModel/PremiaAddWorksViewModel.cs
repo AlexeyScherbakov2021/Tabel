@@ -12,7 +12,7 @@ using Tabel.ViewModels.Base;
 
 namespace Tabel.ViewModels.ModViewModel
 {
-    internal class PremiaAddWorksViewModel : ModViewModel
+    public class PremiaAddWorksViewModel : ModViewModel
     {
         private readonly RepositoryMSSQL<AddWorks> repoAddWorks;
         public ICollection<ModPerson> ListModPerson { get; set; }

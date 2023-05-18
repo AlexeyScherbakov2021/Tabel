@@ -13,7 +13,7 @@ using Tabel.ViewModels.Base;
 
 namespace Tabel.ViewModels.ModViewModel
 {
-    internal class PremiaBonusViewModel : ModViewModel
+    public class PremiaBonusViewModel : ModViewModel
     {
         public ICollection<ModPerson> ListModPerson { get; set; }
         public bool IsCheckBonus { get; set; }

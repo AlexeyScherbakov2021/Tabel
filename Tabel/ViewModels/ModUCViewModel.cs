@@ -29,7 +29,7 @@ using Tabel.Views;
 
 namespace Tabel.ViewModels
 {
-    internal class ModUCViewModel : ViewModel, IBaseUCViewModel
+    public class ModUCViewModel : ViewModel, IBaseUCViewModel
     {
         private readonly BaseModel db;
         private readonly RepositoryMSSQL<ModPerson> repoModPerson;
@@ -569,13 +569,9 @@ namespace Tabel.ViewModels
         private async void OnPrintCommandExecuted(object p)
         {
             IsPrint = true;
-
             //RepositoryExcel.PrintModel(ListModPerson, _SelectYear, _SelectMonth);
-
             var ListModForPrint = ListModPerson.Where(it => it.person.p_notPrintModel != true);
-
             await Task.Run(() => PrintAll(ListModForPrint));
-
             IsPrint = false;
         }
 
@@ -622,7 +618,6 @@ namespace Tabel.ViewModels
             {
                 using (XLWorkbook wb = new XLWorkbook(@"Отчеты\Расчетка.xlsx"))
                 {
-
                     //int NumPP = 1;
                     var ws = wb.Worksheets.Worksheet(1);
 

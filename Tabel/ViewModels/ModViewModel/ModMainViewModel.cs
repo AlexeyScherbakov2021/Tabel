@@ -15,7 +15,7 @@ using Tabel.Views;
 
 namespace Tabel.ViewModels.ModViewModel
 {
-    internal class ModMainViewModel : ModViewModel
+    public class ModMainViewModel : ModViewModel
     {
 
         public ICollection<ModPerson> ListModPerson { get; set; }

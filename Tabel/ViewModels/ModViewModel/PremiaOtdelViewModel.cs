@@ -18,7 +18,7 @@ using Tabel.ViewModels.Base;
 
 namespace Tabel.ViewModels.ModViewModel
 {
-    internal class PremiaOtdelViewModel : ModViewModel
+    public class PremiaOtdelViewModel : ModViewModel
     {
         public ObservableCollection<ModPerson> ListModPerson { get; set; }
 

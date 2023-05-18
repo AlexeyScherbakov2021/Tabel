@@ -248,7 +248,7 @@ namespace Tabel.Repository
                         ws2.Cell(RowNum2, 14).Value = item.PremiaItogo;
                         ws2.Cell(RowNum2, 15).Value = item.Itogo;
 
-///////////////////  УДАЛИТЬ
+                        ///////////////////  УДАЛИТЬ
                         //if (item.person.p_type_id == Infrastructure.SpecType.ИТР)
                         //{
                         //    ws2.Cell(RowNum2, 16).Value = item.md_cat_tarif;
@@ -262,10 +262,9 @@ namespace Tabel.Repository
 
                         //    ws2.Cell(RowNum2, 24).Value = item.pereWork15summ * 3;
                         //    ws2.Cell(RowNum2, 25).Value = item.pereWork2summ * 2;
-                        //    ws2.Cell(RowNum2, 26).Value = item.pereWork2summ * 2;
-                        //    ws2.Cell(RowNum2, 27).Value = item.premOffDays.Summa * 2;
+                        //    ws2.Cell(RowNum2, 26).Value = item.premOffDays.Summa * 2;
                         //}
-////////////////////////
+                        ////////////////////////
                         ws2.Row(RowNum2).InsertRowsBelow(1);
                         RowNum2++;
                     }

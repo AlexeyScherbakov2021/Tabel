@@ -9,7 +9,7 @@ using Tabel.ViewModels.Base;
 
 namespace Tabel.ViewModels.ModViewModel
 {
-    internal class PremiaItogoViewModel : ModViewModel
+    public class PremiaItogoViewModel : ModViewModel
     {
         public ICollection<ModPerson> ListModPerson { get; set; }
         

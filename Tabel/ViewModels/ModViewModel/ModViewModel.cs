@@ -9,7 +9,7 @@ using Tabel.ViewModels.Base;
 
 namespace Tabel.ViewModels.ModViewModel
 {
-    internal abstract class ModViewModel : ViewModel
+    public abstract class ModViewModel : ViewModel
     {
         protected Otdel _SelectedOtdel;
         protected int _SelectMonth;

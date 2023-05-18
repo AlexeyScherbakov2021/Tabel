@@ -11,7 +11,7 @@ using Tabel.Infrastructure;
 
 namespace Tabel.ViewModels.Base
 {
-    internal class ViewModel : Observable, IValidatableObject, INotifyDataErrorInfo
+    public class ViewModel : Observable, IValidatableObject, INotifyDataErrorInfo
 
     {
 

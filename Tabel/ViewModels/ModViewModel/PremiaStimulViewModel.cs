@@ -13,7 +13,7 @@ using Tabel.ViewModels.Base;
 
 namespace Tabel.ViewModels.ModViewModel
 {
-    internal class PremiaStimulViewModel : ModViewModel
+    public class PremiaStimulViewModel : ModViewModel
     {
         public ObservableCollection<ModPerson> ListModPerson { get; set; }
         public decimal? SetProcPrem { get; set; }

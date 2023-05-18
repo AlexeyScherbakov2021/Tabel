@@ -17,12 +17,12 @@ using DocumentFormat.OpenXml.Office2010.Excel;
 
 namespace Tabel.Infrastructure
 {
-    internal class ModFunction
+    public class ModFunction
     {
         //private readonly BaseModel _db;
         private readonly int _year;
         private readonly int _month;
-        static decimal HoursDefault;
+        public static decimal HoursDefault;
         private readonly bool IsClosed;
         decimal? koeff15;
         decimal? koeff2;
@@ -40,6 +40,13 @@ namespace Tabel.Infrastructure
         //--------------------------------------------------------------------------------------------------------
         // Конструктор
         //--------------------------------------------------------------------------------------------------------
+        public ModFunction()
+        {
+            koeff15 = 1.5m;
+            koeff2 = 2;
+        }
+
+
         public ModFunction(BaseModel db, int year, int month, bool IsClosed)
         {
             //_db = db;
@@ -98,8 +105,9 @@ namespace Tabel.Infrastructure
                 // для закрытого периода
                 foreach (var mPerson in ListModPerson)
                 {
-                    mPerson.pereWork15summ = mPerson.md_pereWork15 * mPerson.md_cat_tarif * koeff15 * mPerson.person.p_stavka;    // переработка 1.5 часа
-                    mPerson.pereWork2summ = mPerson.md_pereWork2 * mPerson.md_cat_tarif * koeff2 * mPerson.person.p_stavka;         // переработка 2 часа
+                    SetPereWork(mPerson);
+                    //mPerson.pereWork15summ = mPerson.md_pereWork15 * mPerson.md_cat_tarif * koeff15 * mPerson.person.p_stavka;    // переработка 1.5 часа
+                    //mPerson.pereWork2summ = mPerson.md_pereWork2 * mPerson.md_cat_tarif * koeff2 * mPerson.person.p_stavka;         // переработка 2 часа
 
                     mPerson.premiaNight.NightOklad = mPerson.md_cat_tarif * NightKoeff;
                     mPerson.premiaNight.NightHours = mPerson.md_nightHours;
@@ -240,10 +248,13 @@ namespace Tabel.Infrastructure
             // поллучение оплаты переработанных часов
             //if (mPerson.person.category != null)
             //{
-                mPerson.md_pereWork15 = TabPerson.WorkedHours15;
-                mPerson.md_pereWork2 = TabPerson.WorkedHours2;
-                mPerson.pereWork15summ = mPerson.md_pereWork15 * mPerson.md_cat_tarif * koeff15 * mPerson.person.p_stavka;           // переработтка 1.5 часа
-                mPerson.pereWork2summ = mPerson.md_pereWork2 * mPerson.md_cat_tarif * koeff2 * mPerson.person.p_stavka;             // переработка 2 часа
+            mPerson.md_pereWork15 = TabPerson.WorkedHours15;
+            mPerson.md_pereWork2 = TabPerson.WorkedHours2;
+
+            SetPereWork(mPerson);
+
+                //mPerson.pereWork15summ = mPerson.md_pereWork15 * mPerson.md_cat_tarif * koeff15 * mPerson.person.p_stavka;           // переработтка 1.5 часа
+                //mPerson.pereWork2summ = mPerson.md_pereWork2 * mPerson.md_cat_tarif * koeff2 * mPerson.person.p_stavka;             // переработка 2 часа
                                                                                                           //}
             SetOklad(mPerson);
 
@@ -289,6 +300,16 @@ namespace Tabel.Infrastructure
             mPerson.premiaNight.NightHours = HightHours; //SmenaPerson.SmenaDays.Count(s => s.sd_Kind == SmenaKind.Second) * 4.5m;
             mPerson.md_nightHours = HightHours;
 
+        }
+
+
+        //--------------------------------------------------------------------------------------------------------
+        // установка сверхурочных
+        //--------------------------------------------------------------------------------------------------------
+        public void SetPereWork(ModPerson mPerson)
+        {
+            mPerson.pereWork15summ = mPerson.md_pereWork15 * mPerson.md_cat_tarif * koeff15 * mPerson.person.p_stavka;           // переработтка 1.5 часа
+            mPerson.pereWork2summ = mPerson.md_pereWork2 * mPerson.md_cat_tarif * koeff2 * mPerson.person.p_stavka;             // переработка 2 часа
         }
 
 
@@ -338,14 +359,15 @@ namespace Tabel.Infrastructure
             }
             else
             {
-                hours = mPerson.md_workHours - 
-                    (mPerson.md_pereWork15 ?? 0) - 
-                    (mPerson.md_pereWork2 ?? 0) - 
-                    (mPerson.md_workOffDays * 8);
+                hours = mPerson.md_workHours
+                    - (mPerson.md_pereWork15 ?? 0)
+                    - (mPerson.md_pereWork2 ?? 0)
+                    - (mPerson.md_workOffDays * 8)
+                    ;
 
-                mPerson.md_Oklad = mPerson.md_cat_tarif /*mPerson.person.category*/ is null      // установка оклада по часам из тарифа грейда
+                mPerson.md_Oklad = mPerson.md_cat_tarif is null      // установка оклада по часам из тарифа грейда
                     ? 0
-                    : (hours * mPerson.md_cat_tarif /*mPerson.person.category.cat_tarif.Value*/ /*+ (mPerson.md_person_achiev / 162 ?? 0)*/) * mPerson.person.p_stavka;
+                    : (hours * mPerson.md_cat_tarif /*+ (mPerson.md_person_achiev / 162 ?? 0)*/) * mPerson.person.p_stavka;
             }
 
 

@@ -16,7 +16,7 @@ using Tabel.Views.Admins;
 
 namespace Tabel.ViewModels
 {
-    internal class MainWindowViewModel : ViewModel
+    public class MainWindowViewModel : ViewModel
     {
 #if DEBUG
         public string Title { get; set; } = "Учет рабочего времени (Отладочная версия)";
