@@ -343,7 +343,7 @@ namespace Tabel.Infrastructure
             //    ? 162 + mPerson.AddingHours
             //    : mPerson.TabelHours;
 
-            if(mPerson.person?.p_type_id == SpecType.ИТР && mPerson.Mod.m_year >= 2023 && mPerson.Mod.m_month > 2)
+            if(mPerson.person?.p_type_id == SpecType.N2 && mPerson.Mod.m_year >= 2023 && mPerson.Mod.m_month > 2)
             {
                 hours = 162 + mPerson.AddingHours;
                 decimal DiffHours = HoursDefault - (mPerson.md_workHours - mPerson.AddingHours);

@@ -41,7 +41,7 @@ namespace Tabel.Infrastructure
     //    }
     //}
 
-    public enum SpecType : int { Рабочий, ИТР };
+    public enum SpecType : int { N1, N2 };
 
 
     public class EnumTypeBinding : MarkupExtension

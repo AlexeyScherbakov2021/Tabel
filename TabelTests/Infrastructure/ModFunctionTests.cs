@@ -34,7 +34,7 @@ namespace Tabel.Infrastructure.Tests
             _modPerson.person = new Personal()
             {
                 p_stavka = 1,
-                p_type_id = Infrastructure.SpecType.ИТР
+                p_type_id = Infrastructure.SpecType.N2
             };
 
 
@@ -80,7 +80,7 @@ namespace Tabel.Infrastructure.Tests
         public void SetOkladWorkerTest()
         {
             _modPerson.AddingHours = 0;
-            _modPerson.person.p_type_id = SpecType.Рабочий;
+            _modPerson.person.p_type_id = SpecType.N1;
             _modPerson.md_cat_tarif = 300;
             _modPerson.md_workHours = 180;
             _modPerson.md_pereWork15 = 10;

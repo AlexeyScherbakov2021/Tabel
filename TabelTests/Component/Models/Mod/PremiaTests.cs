@@ -43,7 +43,7 @@ namespace Tabel.Component.Models.Mod.Tests
             _modPerson.person = new Personal()
             {
                 p_stavka = 1,
-                p_type_id = Infrastructure.SpecType.Рабочий
+                p_type_id = Infrastructure.SpecType.N1
             };
 
             _modPerson.premiaBonus = new PremiaBonus(_modPerson);

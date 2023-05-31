@@ -43,7 +43,7 @@ namespace Tabel.ViewModels.ModViewModel
             SelectMod = listPerson?.FirstOrDefault()?.Mod;
             OnPropertyChanged("SelectMod");
 
-            ListModPerson = new ObservableCollection<ModPerson> (listPerson?.Where(it => it.person.p_type_id == SpecType.ИТР));
+            ListModPerson = new ObservableCollection<ModPerson> (listPerson?.Where(it => it.person.p_type_id == SpecType.N2));
             LoadFromCategory(listPerson);
             OnPropertyChanged(nameof(ListModPerson));
         }
@@ -57,7 +57,7 @@ namespace Tabel.ViewModels.ModViewModel
             LoadFromCategory(listNewPerson);
             foreach (var person in listNewPerson)
             {
-                if(person.person.p_type_id == SpecType.ИТР)
+                if(person.person.p_type_id == SpecType.N2)
                     ListModPerson.Add(person);
             }
             OnPropertyChanged(nameof(ListModPerson));

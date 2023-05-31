@@ -39,7 +39,7 @@ namespace Tabel.ViewModels.ModViewModel
             _SelectMonth = Month;
             _SelectYear = Year;
 
-            ListModPerson = new ObservableCollection<ModPerson>(listPerson?.Where(it => it.person?.p_type_id == SpecType.Рабочий));
+            ListModPerson = new ObservableCollection<ModPerson>(listPerson?.Where(it => it.person?.p_type_id == SpecType.N1));
 
             if (ListModPerson != null)
             {
@@ -65,7 +65,7 @@ namespace Tabel.ViewModels.ModViewModel
                     modPerson.premiaFP.Calculation();
                     //рассчет суммарных процентов в премии ФП
                     modPerson.premiaFP.CalcChangeProcent();
-                    if (modPerson.person.p_type_id == SpecType.Рабочий)
+                    if (modPerson.person.p_type_id == SpecType.N1)
                         ListModPerson.Add(modPerson);
                 }
             }
