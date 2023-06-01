@@ -152,6 +152,24 @@ namespace Tabel.ViewModels
 
         }
 
+        //--------------------------------------------------------------------------------
+        // Команда удалить строку
+        //--------------------------------------------------------------------------------
+        public ICommand DeleteLineCommand => new LambdaCommand(OnDeleteLineCommandExecuted, CanDeleteLineCommand);
+        private bool CanDeleteLineCommand(object p) => true;
+        private void OnDeleteLineCommandExecuted(object p)
+        {
+            if(p is TargetTask tt)
+            {
+                if(MessageBox.Show($"Удалить строку ­«{tt.tt_name}»", "Предупреждение", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+                {
+                    ListTarget.Remove(tt);
+                }
+
+            }
+
+        }
+
         #endregion
 
     }

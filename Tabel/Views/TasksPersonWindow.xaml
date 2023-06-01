@@ -52,11 +52,11 @@
                                     <DockPanel>
                                         <Button DockPanel.Dock="Right" Width="20" ToolTip="Удалить файл"
                                                 Command="{Binding DataContext.DetachFileCommand, ElementName=MainWin}">
-                                            <fa:ImageAwesome Icon="Solid_Times" Width="14" Height="14" Foreground="Red"/>
+                                            <fa:ImageAwesome Icon="Solid_Times" Width="12" Height="12" Foreground="Red"/>
                                         </Button>
                                         <Button DockPanel.Dock="Right" Width="20" ToolTip="Добавить файл"
                                                 Command="{Binding DataContext.AttachFileCommand, ElementName=MainWin}">
-                                            <fa:ImageAwesome Icon="Solid_Plus" Width="14" Height="14" Foreground="Green"/>
+                                            <fa:ImageAwesome Icon="Solid_Plus" Width="12" Height="12" Foreground="Green"/>
                                         </Button>
                                         <TextBlock Text="{Binding tt_AttachFile}" Cursor="Hand" TextDecorations="Underline">
                                             <TextBlock.InputBindings>
@@ -70,6 +70,17 @@
 
                         <DataGridTextColumn Header="% план" Binding="{Binding tt_proc_task}" CellStyle="{StaticResource ResourceKey=CellRight}" Width="60"/>
                         <DataGridTextColumn Header="% факт" Binding="{Binding tt_proc_fact}" CellStyle="{StaticResource ResourceKey=CellRight}" Width="60"/>
+                        <DataGridTemplateColumn >
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Width="16" ToolTip="Удалить строку"
+                                            CommandParameter="{Binding}"
+                                            Command="{Binding DataContext.DeleteLineCommand, ElementName=MainWin}">
+                                        <fa:ImageAwesome Icon="Solid_Times" Width="8" Height="8" Foreground="Red"/>
+                                    </Button>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
                     </DataGrid.Columns>
                 </DataGrid>
             </DockPanel>
