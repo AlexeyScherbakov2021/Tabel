@@ -38,7 +38,7 @@ namespace Tabel.Component.Models.Mod
             if (model.md_workHours == 0 || model.md_overHours == 0)
                 return;
 
-            Summa = (/*model.person.category.cat_tarif*/ model.md_cat_tarif + (model.md_person_achiev / 162 ?? 0)) * model.md_overHours * model.person.p_stavka * 2;
+            Summa = ( model.md_cat_tarif + (model.md_person_achiev / 162 ?? 0)) * model.md_overHours * model.person.p_stavka * 2;
 
             //model.md_Oklad / model.TabelHours * model.OverHours * 2;
         }

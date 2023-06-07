@@ -225,10 +225,20 @@ namespace Tabel.Infrastructure
             //RepositoryCalendar repoCal = new RepositoryCalendar(_db);// AllRepo.GetRepoCalendar();
             var listDays = repoCal.GetListDays(_year, _month);
             int CountWorkDays = listDays.Count(it => it.KindDay != TypeDays.Holyday);   // число рабочих дней из календаря
-            
-            mPerson.md_workDays = listDays.Count;                     // дни из табеля
+
+            // количество дней командировки
+            //decimal hour_kom_calc = 0;
+            //foreach (var dk in TabPerson.TabelDays)
+            //{
+            //    if (dk.td_KindId == (int)TabelKindDays.Komandir)
+            //    {
+            //        hour_kom_calc += (8 - dk.td_Hours.Value);
+            //    }
+            //}
+
+            mPerson.md_workDays = listDays.Count;      // дни из табеля
             mPerson.AddingHours = (TabPerson.tp_AddingHours ?? 0);
-            mPerson.md_workHours = TabPerson.HoursMonth + mPerson.AddingHours;              // часы из табеля
+            mPerson.md_workHours = TabPerson.HoursMonth + mPerson.AddingHours;        // часы из табеля
             mPerson.md_workOffHours = TabPerson.WorkedOffHours;
             mPerson.md_workOffDays = (int) Math.Ceiling((mPerson.md_workOffHours ?? 0) / 8);      // отработанные выходные дни
             //mPerson.md_workOffDays = TabPerson.WorkedOffDays.Value;      // отработанные выходные дни
@@ -265,6 +275,11 @@ namespace Tabel.Infrastructure
             int CountWorkDaysPerson = TabPerson.TabelDays.Count(it => it.td_KindId == (int)TabelKindDays.Worked
                     || it.td_KindId == (int)TabelKindDays.DistWork);   // количество отработанных дней
 
+
+            //int komandir = TabPerson.TabelDays.Count(it => it.td_KindId == (int)TabelKindDays.Komandir);
+
+            //CountWorkDaysPerson += komandir * 8;
+
             //mPerson.md_absentDays = TabPerson.TabelDays.Count(it => it.td_KindId == (int)TabelKindDays.Bolnich
             //  || it.td_KindId == (int)TabelKindDays.Otpusk
             //  || it.td_KindId == (int)TabelKindDays.OtpuskNoMoney
@@ -283,7 +298,7 @@ namespace Tabel.Infrastructure
 
             if (SmenaPerson is null) return;
 
-            mPerson.premiaNight.NightOklad = mPerson.md_cat_tarif /*mPerson.person?.category?.cat_tarif*/ * 0.2m;
+            mPerson.premiaNight.NightOklad = mPerson.md_cat_tarif * NightKoeff;
 
             // отработанные дни
             var listWorkDays = TabPerson.TabelDays.Where(it => it.td_KindId == (int)TabelKindDays.Worked && it.td_Hours > 0);
@@ -322,7 +337,7 @@ namespace Tabel.Infrastructure
             if (mPerson.md_workOffDays > 0 /*&& mPerson.Mod.m_IsClosed != true*/)
             {
                 // установка тарифа за выходной день
-                mPerson.md_tarif_offDay = (mPerson.md_cat_tarif /*mPerson.person.category?.cat_tarif*/ + (mPerson.md_person_achiev / 162 ?? 0)) * 8;
+                mPerson.md_tarif_offDay = (mPerson.md_cat_tarif + (mPerson.md_person_achiev / 162 ?? 0)) * 8;
                 // не меньше установленного тарифа
                 if (mPerson.md_tarif_offDay < MinTarifOffDay)
                     mPerson.md_tarif_offDay = MinTarifOffDay;

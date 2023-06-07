@@ -33,8 +33,6 @@ namespace Tabel.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TabelDay> TabelDays { get; set; }
 
-
-
         public int DaysWeek1 => ((IEnumerable<TabelDay>)TabelDays).Count(s => s.td_KindId == (int)TabelKindDays.Worked && s.td_Day <= 15);
 
         public int DaysWeek2 => ((IEnumerable<TabelDay>)TabelDays).Count(s => s.td_KindId == (int)TabelKindDays.Worked && s.td_Day > 15);
@@ -47,19 +45,16 @@ namespace Tabel.Models
 
         public decimal HoursMonth => HoursWeek1 + HoursWeek2;
 
-
         private decimal? _tp_AddingHours;
         public decimal? tp_AddingHours { get => _tp_AddingHours; set { Set(ref _tp_AddingHours, value); } }
 
-
-        public decimal? WorkedHours1
-        {
-            get
-            {
-                return ((IEnumerable<TabelDay>)TabelDays).Select(it => it.WhiteHours).Sum() - WorkedOffHours;
-
-            }
-        }
+        //public decimal? WorkedHours1
+        //{
+        //    get
+        //    {
+        //        return ((IEnumerable<TabelDay>)TabelDays).Select(it => it.WhiteHours).Sum() - WorkedOffHours;
+        //    }
+        //}
         public decimal? WorkedHours15
         {
             get

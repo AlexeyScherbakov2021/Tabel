@@ -20,7 +20,6 @@ namespace Tabel.Models
 
         public int td_Day { get; set; }
 
-        //public int td_KindId { get; set; }
         private int _td_KindId;
 
         public int td_KindId
@@ -33,8 +32,6 @@ namespace Tabel.Models
             }
         }
 
-
-        //public decimal? td_Hours { get; set; }
         private decimal? _td_Hours;
         [Column(TypeName = "numeric")]
         public decimal? td_Hours
@@ -54,7 +51,6 @@ namespace Tabel.Models
 
         public virtual typeDay typeDay { get; set; }
 
-
         private Visibility _VisibilityHours = Visibility.Collapsed;
         [NotMapped]
         public Visibility VisibilityHours { get => _VisibilityHours; set { Set(ref _VisibilityHours, value); } }
@@ -73,7 +69,5 @@ namespace Tabel.Models
                 return dt.ToString("d ddd").ToLower();
             }
         }
-
-
     }
 }
