@@ -336,11 +336,13 @@ namespace Tabel.Infrastructure
         {
             if (mPerson.md_workOffDays > 0 /*&& mPerson.Mod.m_IsClosed != true*/)
             {
+                decimal minTarif = MinTarifOffDay * mPerson.person.p_stavka;
+
                 // установка тарифа за выходной день
-                mPerson.md_tarif_offDay = (mPerson.md_cat_tarif + (mPerson.md_person_achiev / 162 ?? 0)) * 8;
+                mPerson.md_tarif_offDay = (mPerson.md_cat_tarif + (mPerson.md_person_achiev / 162 ?? 0)) * 8 * mPerson.person.p_stavka;
                 // не меньше установленного тарифа
-                if (mPerson.md_tarif_offDay < MinTarifOffDay)
-                    mPerson.md_tarif_offDay = MinTarifOffDay;
+                if (mPerson.md_tarif_offDay < minTarif)
+                    mPerson.md_tarif_offDay = minTarif;
             }
         }
 
