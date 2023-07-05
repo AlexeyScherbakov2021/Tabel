@@ -26,10 +26,10 @@ namespace Tabel.Component.Models.Mod
             decimal sum  = 0;
             foreach (var item in model.ListAddWorks)
             {
-                sum += item.aw_Tarif * (item.aw_IsRelateHours == true ? koef : 1);
+                sum += item.aw_Tarif * (item.aw_IsRelateHours == true ? koef : 1) * model.person.p_stavka;
             }
             sum += (model.md_person_achiev ?? 0);
-            Summa = sum;
+            Summa = sum ;
 
             //Summa = (model.ListAddWorks?.Sum(it => it.aw_Tarif) + (model.md_person_achiev ?? 0)) * koef;
         }

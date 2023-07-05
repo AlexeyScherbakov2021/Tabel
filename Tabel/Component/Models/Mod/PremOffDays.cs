@@ -24,7 +24,8 @@ namespace Tabel.Component.Models.Mod
         //-------------------------------------------------------------------------------------------------------
         public override void Calculation()
         {
-            Summa = model.md_workOffDays * model.md_tarif_offDay * ModFunction.WorkOffKoeff;
+            decimal stavka = model.person == null ? 0 : model.person.p_stavka;
+            Summa = model.md_workOffDays * model.md_tarif_offDay * ModFunction.WorkOffKoeff * stavka;
         }
 
 
