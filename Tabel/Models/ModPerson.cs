@@ -103,6 +103,23 @@ namespace Tabel.Models
                 {
                     OnPropertyChanged(nameof(PremiaItogo));
                     OnPropertyChanged(nameof(Itogo));
+                    OnPropertyChanged(nameof(DiffPremia));
+                }
+            } 
+        }
+
+        private decimal? _md_otpusk;
+        
+        public decimal? md_otpusk
+        { 
+            get => _md_otpusk; 
+            set 
+            {
+                if (Set(ref _md_otpusk, value))
+                {
+                    OnPropertyChanged(nameof(PremiaItogo));
+                    OnPropertyChanged(nameof(Itogo));
+                    OnPropertyChanged(nameof(DiffPremia));
                 }
             } 
         }
@@ -117,6 +134,7 @@ namespace Tabel.Models
                 {
                     OnPropertyChanged(nameof(PremiaItogo));
                     OnPropertyChanged(nameof(Itogo));
+                    OnPropertyChanged(nameof(DiffPremia));
                 }
             }
         }
@@ -274,7 +292,8 @@ namespace Tabel.Models
             + (pereWork15summ ?? 0)
             + (pereWork2summ ?? 0)
             + (md_compens ?? 0)
-            + (md_bolnich ?? 0);
+            + (md_bolnich ?? 0)
+            + (md_otpusk ?? 0);
 
     }
 }
