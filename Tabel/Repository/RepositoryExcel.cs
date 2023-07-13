@@ -202,9 +202,10 @@ namespace Tabel.Repository
                             ws3.Cell(RowNum3, 10).Value = item.premiaTransport.Summa;
                             ws3.Cell(RowNum3, 11).Value = item.premiaPrize.Summa;
                             ws3.Cell(RowNum3, 12).Value = item.md_bolnich;
-                            ws3.Cell(RowNum3, 13).Value = item.md_compens;
-                            ws3.Cell(RowNum3, 14).Value = item.PremiaItogo;
-                            ws3.Cell(RowNum3, 15).Value = item.Itogo;
+                            ws3.Cell(RowNum3, 13).Value = item.md_otpusk;
+                            ws3.Cell(RowNum3, 14).Value = item.md_compens;
+                            ws3.Cell(RowNum3, 15).Value = item.PremiaItogo;
+                            ws3.Cell(RowNum3, 16).Value = item.Itogo;
                             ws3.Row(RowNum3).InsertRowsBelow(1);
                             RowNum3++;
                         }
@@ -224,9 +225,10 @@ namespace Tabel.Repository
                             ws.Cell(RowNum, 10).Value = item.premiaTransport.Summa;
                             ws.Cell(RowNum, 11).Value = item.premiaPrize.Summa;
                             ws.Cell(RowNum, 12).Value = item.md_bolnich;
-                            ws.Cell(RowNum, 13).Value = item.md_compens;
-                            ws.Cell(RowNum, 14).Value = item.PremiaItogo;
-                            ws.Cell(RowNum, 15).Value = item.Itogo;
+                            ws.Cell(RowNum, 13).Value = item.md_otpusk;
+                            ws.Cell(RowNum, 14).Value = item.md_compens;
+                            ws.Cell(RowNum, 15).Value = item.PremiaItogo;
+                            ws.Cell(RowNum, 16).Value = item.Itogo;
                             ws.Row(RowNum).InsertRowsBelow(1);
                             RowNum++;
                         }
@@ -244,9 +246,10 @@ namespace Tabel.Repository
                         ws2.Cell(RowNum2, 10).Value = item.premiaTransport.Summa;
                         ws2.Cell(RowNum2, 11).Value = item.premiaPrize.Summa;
                         ws2.Cell(RowNum2, 12).Value = item.md_bolnich;
-                        ws2.Cell(RowNum2, 13).Value = item.md_compens;
-                        ws2.Cell(RowNum2, 14).Value = item.PremiaItogo;
-                        ws2.Cell(RowNum2, 15).Value = item.Itogo;
+                        ws2.Cell(RowNum2, 13).Value = item.md_otpusk;
+                        ws2.Cell(RowNum2, 14).Value = item.md_compens;
+                        ws2.Cell(RowNum2, 15).Value = item.PremiaItogo;
+                        ws2.Cell(RowNum2, 16).Value = item.Itogo;
 
                         ///////////////////  УДАЛИТЬ
                         //if (item.person.p_type_id == Infrastructure.SpecType.ИТР)
