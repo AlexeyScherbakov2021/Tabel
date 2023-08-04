@@ -29,7 +29,7 @@
             <ColumnDefinition />
             <ColumnDefinition Width="170"/>
         </Grid.ColumnDefinitions>-->
-            <UniformGrid x:Name="uniGrig" Columns="4" Rows="3" Height="560" Width="800">
+            <UniformGrid x:Name="uniGrig" Columns="4" Rows="3" Height="600" Width="800">
                 <UniformGrid.Resources>
                     <Style TargetType="Border">
                         <Setter Property="CornerRadius" Value="3"/>

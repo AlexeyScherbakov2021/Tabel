@@ -25,6 +25,11 @@ namespace Tabel.Component.MonthPanel
     /// </summary>
     public partial class MonthControl : UserControl, INotifyPropertyChanged
     {
+        public int CountWorkDays { get; set; }
+        public int CountOffDays { get; set; }
+
+        public int CountWorkHours { get; set; }
+
         public string[] WeekDay { get; set; } = {"Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс" };
 
         public int StartIndex { get; set; }
@@ -86,8 +91,22 @@ namespace Tabel.Component.MonthPanel
         {
             Days[md.Day - 1].Type = md.Type;
             //Days[md.Day - 1].OnPropertyChanged("Type");
+           
         }
 
+
+        private void ShowCountHours()
+        {
+            int CountWorkDay8 = Days.Count(it => it.Type == TypeDays.Work);
+            int CountWorkDay7 = Days.Count(it => it.Type == TypeDays.ShortWork);
+            CountWorkDays = CountWorkDay8 + CountWorkDay7;
+            CountWorkHours = CountWorkDay8 * 8 + CountWorkDay7 * 7;
+
+            tbCountOffDays.Text = (Days.Count() - CountWorkDays).ToString();
+            tbCountWorkDays.Text = CountWorkDays.ToString();
+            tbCountHours.Text = CountWorkHours.ToString();
+
+        }
 
 
         private void OnCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -104,6 +123,7 @@ namespace Tabel.Component.MonthPanel
                     item.OnPropertyChanged("Type");
                 }
             }
+            ShowCountHours();
 
         }
 
@@ -120,6 +140,8 @@ namespace Tabel.Component.MonthPanel
                 {
                     DateTime dt = new DateTime(mc.Year, (int)e.NewValue, 1 );
                     mc.SetMonthContent(dt);
+                    mc.ShowCountHours();
+
                 }
             }
         }
@@ -225,6 +247,8 @@ namespace Tabel.Component.MonthPanel
         {
             return Days.Where(it => it.Type != it.OrigType);
         }
+
+
 
 
     }

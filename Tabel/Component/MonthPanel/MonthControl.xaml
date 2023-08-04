@@ -14,6 +14,20 @@
             <Border DockPanel.Dock="Top" Background="LightBlue">
                 <TextBlock x:Name="TBNameMonth" Text="Апрель" TextAlignment="Center" FontWeight="Bold" SnapsToDevicePixels="True"/>
             </Border>
+            <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom" Background="#FFEAEAEA">
+                <StackPanel.Resources>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="FontSize" Value="11"/>
+                        <Setter Property="Margin" Value="2,2,0,2"/>
+                    </Style>
+                </StackPanel.Resources>
+                <TextBlock Text="раб.дн."/>
+                <TextBlock x:Name="tbCountWorkDays" Text="0" FontWeight="Bold"/>
+                <TextBlock Text="вых.дн." Margin="8,2,2,2"/>
+                <TextBlock x:Name="tbCountOffDays" Text="0" FontWeight="Bold"/>
+                <TextBlock Text="раб.час." Margin="8,2,2,2"/>
+                <TextBlock x:Name="tbCountHours" Text="0" FontWeight="Bold"/>
+            </StackPanel>
             <ItemsControl x:Name="ICweek" Width="30"  
                     Margin="8,6,0,0"
                     BorderThickness="0" DockPanel.Dock="Left">
