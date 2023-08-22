@@ -36,6 +36,7 @@ namespace Tabel.ViewModels
         private RepositoryMSSQL<Personal> repoPersonal;
         private readonly RepositoryMSSQL<WorkTabel> repoTabel;
         private readonly RepositoryMSSQL<Mod> repoModel;
+        private readonly RepositoryMSSQL<AddOnceWork> repoAddWork;
         private readonly RepositoryMSSQL<TargetTask> repoTarget;
 
         public Visibility VisibleGrid { get; set; } = Visibility.Visible;
@@ -122,6 +123,7 @@ namespace Tabel.ViewModels
             repoPersonal = new RepositoryMSSQL<Personal>(db);
             repoTabel = new RepositoryMSSQL<WorkTabel>(db);
             repoModel = new RepositoryMSSQL<Mod>(db);
+            repoAddWork = new RepositoryMSSQL<AddOnceWork>(db);
             repoTarget = new RepositoryMSSQL<TargetTask>(db);
 
             modMainViewModel = new ModMainViewModel(db);
@@ -768,7 +770,6 @@ namespace Tabel.ViewModels
 
                 List<TargetTask> tt = SelectedModPerson.ListTargetTask.ToList();
 
-
                 foreach (var item in tt)
                 {
                     if(!vm.ListTarget.Contains(item))
@@ -805,6 +806,71 @@ namespace Tabel.ViewModels
                 repoModPerson.Save();
             }
         }
+
+        //--------------------------------------------------------------------------------
+        // Команда кнопки Список одноразовых работ
+        //--------------------------------------------------------------------------------
+        public ICommand BtnAddWorkCommand => new LambdaCommand(OnBtnAddWorkCommandExecuted, CanBtnAddWorkCommand);
+        private bool CanBtnAddWorkCommand(object p) => premiaAddWorksViewModel.SelectedPerson != null;
+        private void OnBtnAddWorkCommandExecuted(object p)
+        {
+
+            AddOnceWorkWindow win = new AddOnceWorkWindow();
+            AddOnceWorkWindowViewModel vm = new AddOnceWorkWindowViewModel(premiaAddWorksViewModel.SelectedPerson);
+            win.DataContext = vm;
+
+            FrameworkElement elem = p as FrameworkElement;
+            Point pt = Mouse.GetPosition(elem);
+            Point pt2 = elem.PointToScreen(pt);
+            win.Left = pt2.X - win.Width;
+            win.Top = pt2.Y - win.Height + 250;
+            if (win.Top < 0) win.Top = 0;
+            else if (win.Top + win.Height > SystemParameters.PrimaryScreenHeight)
+                win.Top -= (win.Top + win.Height) - SystemParameters.PrimaryScreenHeight;
+
+            if (win.ShowDialog() == true)
+            {
+                List<AddOnceWork> ao = premiaAddWorksViewModel.SelectedPerson.ListAddOnceWork.ToList();
+
+                foreach (var item in ao)
+                {
+                    if (!vm.ListWorkOnce.Contains(item))
+                    {
+                        repoAddWork.Remove(item);
+                        premiaAddWorksViewModel.SelectedPerson.ListAddOnceWork.Remove(item);
+                    }
+                }
+
+                foreach (var item in vm.ListWorkOnce)
+                {
+                    if (!premiaAddWorksViewModel.SelectedPerson.ListAddOnceWork.Contains(item))
+                    {
+                        premiaAddWorksViewModel.SelectedPerson.ListAddOnceWork.Add(item);
+                    }
+
+                }
+
+                string name = "";
+                foreach (var item in premiaAddWorksViewModel.SelectedPerson.ListAddOnceWork)
+                {
+                    //summa += item.tt_proc_task;
+                    if (!string.IsNullOrEmpty(item.ao_name))
+                        name += item.ao_name.Length > 15 ? item.ao_name.Substring(0, 15) + "...; " : item.ao_name + ";";
+                }
+
+                //SelectedModPerson.md_kvalif_proc = vm.proc100;
+                //SelectedModPerson.md_kvalif_prem = vm.proc100fact;
+
+                premiaAddWorksViewModel.SelectedPerson.premiaAddWorks.Calculation();
+                //SelectedModPerson.add = name;
+                premiaAddWorksViewModel.SelectedPerson.OnPropertyChanged(nameof(SelectedModPerson.ListAddOnceWork));
+
+                repoModPerson.Save();
+            }
+        }
+
+
+
 
         //--------------------------------------------------------------------------------
         // Команда кнопки Закрыть период

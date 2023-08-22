@@ -20,7 +20,7 @@ namespace Tabel.ViewModels
 {
     internal class TasksPersonWindowViewModel : ViewModel
     {
-        public string Title { get; set; } = "Выполненные задания для сотрудника";
+        public string Title { get; set; } 
 
         private bool IsReadOnly = false;
 
@@ -39,6 +39,8 @@ namespace Tabel.ViewModels
 
         public TasksPersonWindowViewModel(ModPerson person/*, RepositoryMSSQL<ModPerson> repo*/)
         {
+            Title = "Выполненные задания для сотрудника " + person.person.FIO;
+
             //repoTask = repo;
 
             IsReadOnly = person.Mod.m_IsClosed == true;

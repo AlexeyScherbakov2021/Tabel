@@ -127,6 +127,7 @@
     </Compile>
     <Compile Include="Infrastructure\Encrypt.cs" />
     <Compile Include="Infrastructure\ModFunction.cs" />
+    <Compile Include="Models\AddOnceWork.cs" />
     <Compile Include="Models\AttachFile.cs" />
     <Compile Include="Models\CategorySet.cs" />
     <Compile Include="Models\Otpusk.cs" />
@@ -135,6 +136,7 @@
     <Compile Include="Models\TargetTask.cs" />
     <Compile Include="Repository\RepositoryExcel.cs" />
     <Compile Include="Repository\RepositoryFiles.cs" />
+    <Compile Include="ViewModels\AddOnceWorkWindowViewModel.cs" />
     <Compile Include="ViewModels\Admins\PassWindowViewModel.cs" />
     <Compile Include="ViewModels\Admins\ProfileUserUCViewModel.cs" />
     <Compile Include="ViewModels\DataSummForm\IDataSumm.cs" />
@@ -143,6 +145,9 @@
     <Compile Include="ViewModels\SelectDateWindowViewModel.cs" />
     <Compile Include="ViewModels\TabelDaysWindowViewModel.cs" />
     <Compile Include="ViewModels\TasksPersonWindowViewModel.cs" />
+    <Compile Include="Views\AddOnceWorkWindow.xaml.cs">
+      <DependentUpon>AddOnceWorkWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Admins\PassWindow.xaml.cs">
       <DependentUpon>PassWindow.xaml</DependentUpon>
     </Compile>
@@ -313,6 +318,10 @@
     <Page Include="Component\TabelPanel\TabelControlLight.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\AddOnceWorkWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Admins\PassWindow.xaml">
       <SubType>Designer</SubType>

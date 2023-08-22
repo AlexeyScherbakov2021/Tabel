@@ -161,7 +161,7 @@ namespace Tabel.Models
 
         public virtual ICollection<AddWorks> ListAddWorks { get; set; }
         public virtual ICollection<TargetTask> ListTargetTask { get; set; }
-
+        public virtual ICollection<AddOnceWork> ListAddOnceWork { get; set; }
 
 
 
@@ -225,6 +225,7 @@ namespace Tabel.Models
         {
             ListAddWorks = new HashSet<AddWorks>();
             ListTargetTask = new HashSet<TargetTask>();
+            ListAddOnceWork = new HashSet<AddOnceWork>();
 
             premiaFP = new PremiaFP(this);
             premiaBonus = new PremiaBonus(this);

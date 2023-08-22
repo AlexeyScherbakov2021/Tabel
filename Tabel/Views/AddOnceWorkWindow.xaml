@@ -1,0 +1,55 @@
+﻿<Window x:Name="MainWin" x:Class="Tabel.Views.AddOnceWorkWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Tabel.Views"
+        xmlns:fa="http://schemas.fontawesome.com/icons/"
+        mc:Ignorable="d"
+        xmlns:vm="clr-namespace:Tabel.ViewModels"
+        Title="{Binding Title}" Height="450" Width="800">
+    <Window.DataContext>
+        <vm:AddOnceWorkWindowViewModel/>
+    </Window.DataContext>
+    <DockPanel>
+        <UniformGrid Columns="2" DockPanel.Dock="Bottom" Margin="10">
+            <Button Content="OK" Margin="4" Style="{StaticResource ButtonStyleShadow}" Command="{Binding OkCommand}"/>
+            <Button Content="Отмена" Margin="4" Style="{StaticResource ButtonStyleShadow}" IsCancel="True"/>
+        </UniformGrid>
+        <Border Margin="8" Background="#FFEAEAEA">
+            <Border.Effect>
+                <DropShadowEffect ShadowDepth="2" BlurRadius="13" Opacity="0.4"/>
+            </Border.Effect>
+            <DockPanel Margin="8" >
+                <Grid DockPanel.Dock="Bottom" Margin="4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="290*"/>
+                        <ColumnDefinition Width="40*"/>
+                        <ColumnDefinition Width="30*"/>
+                        <ColumnDefinition Width="20*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="Всего сумма:" Grid.Column="1"/>
+                    <TextBlock Text="{Binding summa, StringFormat=N0}" Grid.Column="2" HorizontalAlignment="Right" FontWeight="Bold" />
+                </Grid>
+                <DataGrid ItemsSource="{Binding ListWorkOnce}" Style="{StaticResource DataGridStyle}" SelectedItem="{Binding SelectedTarget}"
+                          CanUserAddRows="True" CanUserDeleteRows="True">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Наименование" Binding="{Binding ao_name}" Width="*"/>
+                        <DataGridTextColumn Header="Сумма" Binding="{Binding ao_summa, StringFormat=N0}" CellStyle="{StaticResource ResourceKey=CellRight}" Width="90"/>
+                        <DataGridTemplateColumn >
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Width="16" ToolTip="Удалить строку"
+                                            CommandParameter="{Binding}"
+                                            Command="{Binding DataContext.DeleteLineCommand, ElementName=MainWin}">
+                                        <fa:ImageAwesome Icon="Solid_Times" Width="8" Height="8" Foreground="Red"/>
+                                    </Button>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </DockPanel>
+        </Border>
+    </DockPanel>
+</Window>

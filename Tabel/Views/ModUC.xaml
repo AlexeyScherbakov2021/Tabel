@@ -320,7 +320,7 @@
                         </Grid>
                         <FrameworkElement x:Name="ProxyElement" Visibility="Collapsed" DataContext="{Binding}"/>
                         <DataGrid x:Name="dgDop" ItemsSource="{Binding ListModPerson}" Style="{StaticResource DataGridStyle}" IsReadOnly="False"
-                            SelectedItem="{Binding SelectedPerson, Mode=TwoWay}"
+                                  SelectedItem="{Binding DataContext.premiaAddWorksViewModel.SelectedPerson, ElementName=userControl, Mode=TwoWay}"
                               >
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Таб.№" Binding="{Binding person.p_tab_number}" IsReadOnly="True"/>
@@ -350,6 +350,7 @@
                                                             <DataTemplate>
                                                                 <StackPanel Orientation="Horizontal">
                                                                     <CheckBox Content="{Binding aw_Name}" IsChecked="{Binding IsChecked, Mode=TwoWay}"/>
+                                                                    <TextBlock Text="{Binding aw_Tarif, StringFormat=' (\{0:N0\})'}" />
                                                                 </StackPanel>
                                                             </DataTemplate>
                                                         </ListBox.ItemTemplate>
@@ -363,6 +364,22 @@
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellEditingTemplate>
                                 </DataGridTemplateColumn>
+
+                                <DataGridTemplateColumn Header="Одноразовые" Width="120" CellStyle="{StaticResource CellColor}">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <DockPanel>
+                                                <Button x:Name="btnOnceWork" Content="..." Width="20" Height="16" DockPanel.Dock="Right" 
+                                                        Padding="0,-4,0,2" ToolTip="Список одноразовых работ"
+                                                    CommandParameter="{Binding ElementName=btnOnceWork}"
+                                                    Command="{Binding DataContext.BtnAddWorkCommand, ElementName=userControl}"/>
+                                                <TextBlock Text="{Binding ListAddOnceWork.Count, StringFormat='( \{0\} )'}" HorizontalAlignment="Center"/>
+                                            </DockPanel>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+
+
                                 <!--<DataGridTextColumn Header="Перс.доплата за уник.проф." Binding="{Binding md_person_achiev, StringFormat=N2}" 
                                                 IsReadOnly="{Binding DataContext.IsNotAdmin, Source={x:Reference ProxyElement}}"
                                                 Width="100"  CellStyle="{StaticResource CellRightColor}"/>-->
@@ -382,14 +399,6 @@
                     <DockPanel  Background="Gainsboro">
                         <Grid DockPanel.Dock="Top" Margin="8,0" Height="30">
                             <Grid.ColumnDefinitions>
-                                <!--<ColumnDefinition Width="{Binding ActualWidth, ElementName=colITR1}"/>
-                                <ColumnDefinition Width="{Binding ActualWidth, ElementName=colITR2}"/>
-                                <ColumnDefinition Width="{Binding ActualWidth, ElementName=colITR3}"/>
-                                <ColumnDefinition Width="{Binding ActualWidth, ElementName=colITR4}"/>
-                                <ColumnDefinition Width="{Binding ActualWidth, ElementName=colITR5}"/>
-                                <ColumnDefinition Width="{Binding ActualWidth, ElementName=colITR6}"/>
-                                <ColumnDefinition Width="{Binding ActualWidth, ElementName=colITR7}"/>
-                                <ColumnDefinition Width="{Binding ActualWidth, ElementName=colITR8}"/>-->
                                 <ColumnDefinition Width="auto"/>
                                 <ColumnDefinition Width="500"/>
                                 <ColumnDefinition Width="34"/>

@@ -73,8 +73,9 @@ namespace Tabel.Models
         public virtual DbSet<OtpuskDays> OtpuskDays { get; set; }
         public virtual DbSet<TargetTask> TargetTask { get; set; }
         public virtual DbSet<CategorySet> CategorySet { get; set; }
-
         public virtual DbSet<AttachFile> AttachFiles { get; set; }
+        public virtual DbSet<AddOnceWork> AddOnceWork { get; set; }
+
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -214,6 +215,13 @@ namespace Tabel.Models
                 .WithRequired(e => e.ModPerson)
                 .HasForeignKey(e => e.tt_ModPersonId)
                 .WillCascadeOnDelete();
+
+            modelBuilder.Entity<ModPerson>()
+                .HasMany(e => e.ListAddOnceWork)
+                .WithRequired(e => e.ModPerson)
+                .HasForeignKey(e => e.ao_ModPersonId)
+                .WillCascadeOnDelete();
+
 
             modelBuilder.Entity<Personal>()
                 .Property(e => e.p_tab_number)
