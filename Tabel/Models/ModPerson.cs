@@ -90,8 +90,8 @@ namespace Tabel.Models
         [Column("md_kvalif_proc")]
         public decimal? md_kvalif_proc { get => _md_kvalif_proc; set { Set(ref _md_kvalif_proc, value); } }
 
-        private decimal? _md_person_achiev;
-        public decimal? md_person_achiev { get => _md_person_achiev; set { Set(ref _md_person_achiev, value); } }
+        //private decimal? _md_person_achiev;
+        //public decimal? md_person_achiev { get => _md_person_achiev; set { Set(ref _md_person_achiev, value); } }
 
         private decimal? _md_bolnich;
         public decimal? md_bolnich 
@@ -172,8 +172,8 @@ namespace Tabel.Models
 
 
 
-        [NotMapped]
-        public decimal? PlanTarifOtdel { get; set; }
+        //[NotMapped]
+        //public decimal? PlanTarifOtdel { get; set; }
 
         [NotMapped]
         public PremiaFP premiaFP { get; set; }
@@ -240,19 +240,16 @@ namespace Tabel.Models
 
 
         private decimal _TabelHours;
-        //[NotMapped]
         public decimal md_workHours { get => _TabelHours; set { Set(ref _TabelHours, value); } }
 
         public decimal md_nightHours { get; set; }
 
-        public decimal AddingHours;
+        //public decimal AddingHours;
         
-        //[NotMapped]
         public int md_workDays { get; set; }
 
 
         private int _TabelAbsent = 0;
-        //[NotMapped]
         public int md_absentDays { get => _TabelAbsent; set { Set(ref _TabelAbsent, value); } }
 
         private decimal? _md_Oklad;
@@ -270,6 +267,8 @@ namespace Tabel.Models
         [NotMapped]
         public decimal? md_workOffHours { get => _TabelWorkOffHours; set { Set(ref _TabelWorkOffHours, value); } }
 
+        //public decimal HoursTarif;
+        
         [NotMapped]
         public bool IsReadOnlyOtdelPrem => ListTargetTask.Count > 0;
 

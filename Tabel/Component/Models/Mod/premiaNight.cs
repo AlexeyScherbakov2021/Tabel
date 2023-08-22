@@ -41,7 +41,7 @@ namespace Tabel.Component.Models.Mod
         //-------------------------------------------------------------------------------------------------------
         public override void Calculation()
         {
-            Summa = (NightOklad + (model.md_person_achiev / 162 * ModFunction.NightKoeff ?? 0)) * NightHours;
+            Summa = NightOklad /*+ (model.md_person_achiev / 162 * ModFunction.NightKoeff ?? 0))*/ * NightHours;
         }
 
 

@@ -62,6 +62,9 @@ namespace Tabel.Models
         private decimal? _p_premTarif;
         public decimal? p_premTarif { get => _p_premTarif; set { Set(ref _p_premTarif, value); } }
 
+        private decimal? _p_oklad;
+        public decimal? p_oklad { get => _p_oklad; set { Set(ref _p_oklad, value); } }
+
         private SpecType _p_type_id;
         public SpecType p_type_id { get => _p_type_id; set { Set(ref _p_type_id, value); } }
 

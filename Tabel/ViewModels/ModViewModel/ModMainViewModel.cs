@@ -17,6 +17,15 @@ namespace Tabel.ViewModels.ModViewModel
 {
     public class ModMainViewModel : ModViewModel
     {
+        private decimal _MonthHours;
+        public decimal MonthHours { get => _MonthHours; set { Set(ref _MonthHours, value); } }
+
+        private int _MonthDays;
+        public int MonthDays { get => _MonthDays; set { Set(ref _MonthDays, value); } }
+
+        private int _MonthWorkDays;
+        public int MonthWorkDays { get => _MonthWorkDays; set { Set(ref _MonthWorkDays, value); } }
+
 
         public ICollection<ModPerson> ListModPerson { get; set; }
 

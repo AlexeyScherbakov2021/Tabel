@@ -45,8 +45,8 @@ namespace Tabel.Models
 
         public decimal HoursMonth => HoursWeek1 + HoursWeek2;
 
-        private decimal? _tp_AddingHours;
-        public decimal? tp_AddingHours { get => _tp_AddingHours; set { Set(ref _tp_AddingHours, value); } }
+        //private decimal? _tp_AddingHours;
+        //public decimal? tp_AddingHours { get => _tp_AddingHours; set { Set(ref _tp_AddingHours, value); } }
 
         //public decimal? WorkedHours1
         //{

@@ -249,6 +249,10 @@ namespace Tabel.ViewModels
                     ModFunction ModFunc = new ModFunction(db, _SelectYear, _SelectMonth, CurrentMod?.m_IsClosed == true);
                     ModFunc.ModPersonFilling(ListModPerson, token);
 
+                    modMainViewModel.MonthHours = ModFunction.HoursDefault;
+                    modMainViewModel.MonthDays = ModFunction.DaysDefault;
+                    modMainViewModel.MonthWorkDays = ModFunction.WorkDaysDefault;
+
                     //foreach (var item in ModFunc.ModPersonFilling(ListModPerson, token))
                     //{
                     //    ListModPerson.Add(item);
@@ -329,7 +333,7 @@ namespace Tabel.ViewModels
                 // копирование тарифа бонусов
                 newPerson.md_bonus_max = PrevModPerson.md_bonus_max;
                 newPerson.md_cat_prem_tarif = PrevModPerson.md_cat_prem_tarif;
-                newPerson.md_person_achiev = PrevModPerson.md_person_achiev;
+                //newPerson.md_person_achiev = PrevModPerson.md_person_achiev;
                 decimal? summa = 0;
                 foreach (var item in PrevModPerson.ListTargetTask)
                 {
@@ -428,6 +432,7 @@ namespace Tabel.ViewModels
             ModFunction ModFunc = new ModFunction(db, _SelectYear, _SelectMonth, false);
             ModFunc.ModPersonFilling(ListModPerson);
 
+            modMainViewModel.MonthHours = ModFunction.HoursDefault;
 
             modMainViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);
             premiaBonusViewModel.ChangeListPerson(ListModPerson, _SelectYear, _SelectMonth, _SelectedOtdel);

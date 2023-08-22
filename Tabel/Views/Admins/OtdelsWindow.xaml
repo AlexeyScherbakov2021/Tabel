@@ -126,6 +126,7 @@
                         <!--<DataGridComboBoxColumn Header="Разряд" ItemsSource="{Binding ListCategory, Source={StaticResource context}}"
                             DisplayMemberPath="cat_tarif" SelectedValuePath="id" SelectedValueBinding="{Binding p_cat_id}" >
                         </DataGridComboBoxColumn>-->
+                        <DataGridTextColumn Header="Оклад" Binding="{Binding p_oklad, StringFormat=N2}" CellStyle="{StaticResource CellRight}"/>
 
                         <DataGridTemplateColumn Header="Грейд">
                             <DataGridTemplateColumn.CellTemplate>
