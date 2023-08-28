@@ -254,7 +254,6 @@ namespace Tabel.Infrastructure
             mPerson.md_workOffHours = TabPerson.WorkedOffHours;
             mPerson.md_workOffDays = (int) Math.Ceiling((mPerson.md_workOffHours ?? 0) / 8);      // отработанные выходные дни
 
-
             mPerson.md_overHours = TabPerson.OverWork ?? 0;            // часы переработки
 
             // получение оплаты переработанных часов
@@ -344,16 +343,17 @@ namespace Tabel.Infrastructure
             //    ? 162 + mPerson.AddingHours
             //    : mPerson.TabelHours;
 
-            if(mPerson.person?.p_type_id == SpecType.N2 && mPerson.Mod.m_year >= 2023 && mPerson.Mod.m_month > 2)
+            if(mPerson.person?.p_type_id == SpecType.N2 /*&& mPerson.Mod.m_year >= 2023 && mPerson.Mod.m_month > 2*/)
             {
                 //hours = 162 + mPerson.AddingHours;
                 decimal DiffHours = HoursDefault - mPerson.md_workHours /*- mPerson.AddingHours)*/;
                 if (DiffHours > 0)
                 {
-                    decimal? oklad = mPerson.person.p_oklad;
-                    decimal? cost_hours = oklad / HoursDefault /*- mPerson.AddingHours)*/;
-                    oklad -= DiffHours * cost_hours;
-                    mPerson.md_Oklad = oklad * mPerson.person.p_stavka;
+                    //decimal? oklad = mPerson.person.p_oklad;
+                    //decimal? cost_hours = oklad / HoursDefault /*- mPerson.AddingHours)*/;
+                    //oklad -= DiffHours * cost_hours;
+                    //mPerson.md_Oklad = oklad * mPerson.person.p_stavka;
+                    mPerson.md_Oklad = mPerson.person.p_oklad - DiffHours * (mPerson.person.p_oklad / HoursDefault);
                 }
                 else
                     mPerson.md_Oklad = mPerson.person.p_oklad * mPerson.person.p_stavka;
@@ -363,17 +363,13 @@ namespace Tabel.Infrastructure
                 hours = mPerson.md_workHours
                     - (mPerson.md_pereWork15 ?? 0)
                     - (mPerson.md_pereWork2 ?? 0)
-                    - (mPerson.md_workOffDays * 8)
+                    - (mPerson.md_workOffHours ?? 0)
                     ;
 
                 mPerson.md_Oklad = mPerson.md_cat_tarif is null      // установка оклада по часам из тарифа грейда
                     ? 0
                     : (hours * mPerson.md_cat_tarif /*+ (mPerson.md_person_achiev / 162 ?? 0)*/) * mPerson.person.p_stavka;
             }
-
-
-
         }
-
     }
 }

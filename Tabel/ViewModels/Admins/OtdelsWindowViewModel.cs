@@ -172,7 +172,7 @@ namespace Tabel.ViewModels.Admins
         //--------------------------------------------------------------------------------
         private void Item_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == "p_cat_id" || e.PropertyName == "p_premTarif")
+            if (e.PropertyName == "p_cat_id" || e.PropertyName == "p_premTarif" && SelectedPerson.p_type_id == SpecType.N1)
             {
                 Category cat = CategorySet.ListCategory.FirstOrDefault(it => it.idCategory == SelectedPerson.p_cat_id);
 

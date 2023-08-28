@@ -858,11 +858,7 @@ namespace Tabel.ViewModels
                         name += item.ao_name.Length > 15 ? item.ao_name.Substring(0, 15) + "...; " : item.ao_name + ";";
                 }
 
-                //SelectedModPerson.md_kvalif_proc = vm.proc100;
-                //SelectedModPerson.md_kvalif_prem = vm.proc100fact;
-
                 premiaAddWorksViewModel.SelectedPerson.premiaAddWorks.Calculation();
-                //SelectedModPerson.add = name;
                 premiaAddWorksViewModel.SelectedPerson.OnPropertyChanged(nameof(SelectedModPerson.ListAddOnceWork));
 
                 repoModPerson.Save();

@@ -21,16 +21,16 @@ namespace Tabel.Component.Models.Mod.Tests
         {
             _modPerson = new ModPerson()
             {
-                AddingHours = 10,
+                //AddingHours = 10,
                 md_cat_tarif = 300,
                 md_workHours = 180,
                 pereWork15summ = 6,
                 md_pereWork2 = 6,
-                md_workOffDays = 1,
+                md_workOffHours = 2,
                 md_absentDays = 2,
                 md_bonus_exec = true,
                 md_bonus_max = 5000,
-                md_workDays = 31,
+                md_workDays = 23,
                 md_tarif_offDay = 2499,
                 md_pereWork15 = 10,
                 pereWork2summ = 2,
@@ -54,7 +54,7 @@ namespace Tabel.Component.Models.Mod.Tests
             _modPerson.premiaNight.NightOklad = 60;
             _modPerson.premiaNight.NightHours = 83.5M;
 
-            _modPerson.md_person_achiev = 2000;
+            //_modPerson.md_person_achiev = 2000;
 
             _modPerson.premiaPrize = new PremiaPrize(_modPerson);
             _modPerson.premiaFP = new PremiaFP(_modPerson);
@@ -88,7 +88,7 @@ namespace Tabel.Component.Models.Mod.Tests
         {
             ModFunction.WorkOffKoeff = 2;
             _modPerson.premOffDays.Calculation();
-            Assert.AreEqual(Math.Round(_modPerson.premOffDays.Summa.Value, 2), 4997.53M);
+            Assert.AreEqual(Math.Round(_modPerson.premOffDays.Summa.Value, 2), 9996M);
         }
 
         //------------------------------------------------------------------------------------------------------
@@ -99,7 +99,7 @@ namespace Tabel.Component.Models.Mod.Tests
 
             _modPerson.premiaNight.Calculation();
 
-            Assert.AreEqual(Math.Round( _modPerson.premiaNight.Summa.Value, 2), 5216.17M);
+            Assert.AreEqual(Math.Round( _modPerson.premiaNight.Summa.Value, 2), 5010.00M);
         }
 
         //------------------------------------------------------------------------------------------------------
@@ -109,7 +109,7 @@ namespace Tabel.Component.Models.Mod.Tests
 
             _modPerson.premiaPrize.Calculation();
 
-            Assert.AreEqual(Math.Round( _modPerson.premiaPrize.Summa.Value, 2), 2498.77M);
+            Assert.AreEqual(Math.Round( _modPerson.premiaPrize.Summa.Value, 2), 2400.00m);
         }
 
         //------------------------------------------------------------------------------------------------------
@@ -125,11 +125,11 @@ namespace Tabel.Component.Models.Mod.Tests
         public void CalculationAddWorksTest()
         {
             _modPerson.ListAddWorks = new List<AddWorks>();
-            _modPerson.ListAddWorks.Add(new AddWorks() { aw_Tarif = 20000, aw_IsRelateHours = true } );
+            _modPerson.ListAddWorks.Add(new AddWorks() { aw_Tarif = 5000, aw_IsRelateHours = true } );
             _modPerson.ListAddWorks.Add(new AddWorks() { aw_Tarif = 3000, aw_IsRelateHours = false } );
 
             _modPerson.premiaAddWorks.Calculation();
-            Assert.AreEqual(Math.Round( _modPerson.premiaAddWorks.Summa.Value, 2), 23709.68M);
+            Assert.AreEqual(Math.Round( _modPerson.premiaAddWorks.Summa.Value, 2), 7565.22M);
         }
 
 

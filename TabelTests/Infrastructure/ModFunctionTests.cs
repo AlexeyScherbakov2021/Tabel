@@ -15,6 +15,7 @@ namespace Tabel.Infrastructure.Tests
     public class ModFunctionTests
     {
         private ModPerson _modPerson;
+        private ModPerson _modPersonWorker;
 
 
         [TestInitialize] 
@@ -22,19 +23,19 @@ namespace Tabel.Infrastructure.Tests
         {
             _modPerson = new ModPerson()
             {
-                AddingHours = 10,
-                md_cat_tarif = 400,
-                md_workHours = 162,
+                //AddingHours = 10,
+                md_workHours = 156,
                 md_pereWork15 = 2,
                 md_pereWork2 = 2,
-                md_workOffDays = 2,
+                md_workOffHours = 2,
                 md_absentDays = 2
             };
 
             _modPerson.person = new Personal()
             {
                 p_stavka = 1,
-                p_type_id = Infrastructure.SpecType.N2
+                p_type_id = SpecType.N2,
+                p_oklad = 80000
             };
 
 
@@ -44,7 +45,31 @@ namespace Tabel.Infrastructure.Tests
                 m_month = 5,
             };
 
-            ModFunction.HoursDefault = 160;
+
+
+            _modPersonWorker = new ModPerson()
+            {
+                md_cat_tarif = 245,
+                md_workHours = 204,
+                md_pereWork15 = 4,
+                md_pereWork2 = 4,
+                md_workOffHours = 12,
+                md_absentDays = 1
+            };
+
+            _modPersonWorker.person = new Personal()
+            {
+                p_stavka = 1,
+                p_type_id = SpecType.N1,
+            };
+
+            _modPersonWorker.Mod = new Mod()
+            {
+                m_year = 2023,
+                m_month = 5,
+            };
+
+            ModFunction.HoursDefault = 184;
 
         }
 
@@ -71,43 +96,27 @@ namespace Tabel.Infrastructure.Tests
         public void SetOkladTest()
         {
             ModFunction.SetOklad(_modPerson);
-            //Trace.WriteLine("Tracing from test");
-            //Console.WriteLine(@"Тест 'TestConsoleWriteLine' успешно пройден");
-            Assert.AreEqual(_modPerson.md_Oklad, 61344);
+            Assert.AreEqual( Math.Round( (_modPerson.md_Oklad ?? 0), 2), 67826.09m);
+
+            ModFunction.SetOklad(_modPersonWorker);
+            Assert.AreEqual(_modPersonWorker.md_Oklad, 45080);
+
         }
 
-        [TestMethod()]
-        public void SetOkladWorkerTest()
-        {
-            _modPerson.AddingHours = 0;
-            _modPerson.person.p_type_id = SpecType.N1;
-            _modPerson.md_cat_tarif = 300;
-            _modPerson.md_workHours = 180;
-            _modPerson.md_pereWork15 = 10;
-            _modPerson.md_pereWork2 = 2;
-            _modPerson.md_workOffDays = 1;
-            ModFunction.SetOklad(_modPerson);
-            Assert.AreEqual(_modPerson.md_Oklad, 48000);
-        }
 
         [TestMethod()]
-        public void Pere15Test()
+        public void PereWorkTest()
         {
             ModFunction modf = new ModFunction();
+            _modPerson.md_cat_tarif = (_modPerson.person.p_oklad ?? 0) / ModFunction.HoursDefault;
             modf.SetPereWork(_modPerson);
+            Assert.AreEqual(Math.Round(_modPerson.pereWork15summ ?? 0, 2), 1304.35m);
+            Assert.AreEqual(Math.Round(_modPerson.pereWork2summ ?? 0, 2), 1739.13m);
 
-            Assert.AreEqual(_modPerson.pereWork15summ, 1200m);
-
+            modf.SetPereWork(_modPersonWorker);
+            Assert.AreEqual(Math.Round(_modPersonWorker.pereWork15summ ?? 0, 2), 1470.00m);
+            Assert.AreEqual(Math.Round(_modPersonWorker.pereWork2summ ?? 0, 2), 1960.00m);
         }
 
-        [TestMethod()]
-        public void Pere2Test()
-        {
-            ModFunction modf = new ModFunction();
-            modf.SetPereWork(_modPerson);
-
-            Assert.AreEqual(_modPerson.pereWork2summ, 1600m);
-
-        }
     }
 }

@@ -21,14 +21,13 @@ namespace Tabel.Component.Models.Mod
 
         public override void Calculation()
         {
-            decimal koef = model.md_workDays == 0 ? 1 : (decimal)(model.md_workDays - model.md_absentDays) / (decimal)model.md_workDays;
+            decimal koef = model.md_workDays == 0 ? 0 : (decimal)(model.md_workDays - model.md_absentDays) / (decimal)model.md_workDays;
 
             decimal sum  = 0;
             foreach (var item in model.ListAddWorks)
             {
                 sum += item.aw_Tarif * (item.aw_IsRelateHours == true ? koef : 1) * model.person.p_stavka;
             }
-
             sum += model.ListAddOnceWork.Sum(it => it.ao_summa ?? 0);
 
             //sum += (model.md_person_achiev ?? 0);
