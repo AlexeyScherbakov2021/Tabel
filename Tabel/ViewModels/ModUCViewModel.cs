@@ -479,7 +479,7 @@ namespace Tabel.ViewModels
         // Команда Добавить сотрудников
         //--------------------------------------------------------------------------------
         public ICommand AddPersonCommand => new LambdaCommand(OnAddPersonCommandExecuted, CanAddPersonCommand);
-        private bool CanAddPersonCommand(object p) => _SelectedOtdel != null && CurrentMod?.m_IsClosed != true;
+        private bool CanAddPersonCommand(object p) => CurrentMod != null && _SelectedOtdel != null && CurrentMod?.m_IsClosed != true;
         private void OnAddPersonCommandExecuted(object p)
         {
             List<Personal> ListPersonal = repoPersonal.Items
