@@ -1,5 +1,6 @@
 ﻿//using DocumentFormat.OpenXml.Drawing;
 //using DocumentFormat.OpenXml.Spreadsheet;
+using DocumentFormat.OpenXml.Drawing.Charts;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -124,7 +125,24 @@ namespace Tabel.Component.TabelPanel
                 foreach (TabelDay item in ListBoxDays.SelectedItems)
                 {
                     item.td_KindId = cb.SelectedIndex;
+                    if (item.td_KindId == 6 
+                        || item.td_KindId == 4 
+                        || item.td_KindId == 2 
+                        || item.td_KindId == 0 
+                        || item.td_KindId == 7)
+                        item.td_Hours = 0;
                 }
+            }
+
+            else if(ListBoxDays.SelectedItems.Count != 0)
+            {
+                TabelDay item = ListBoxDays.SelectedItems[0] as TabelDay;
+                if (item.td_KindId == 6 
+                    || item.td_KindId == 4 
+                    || item.td_KindId == 2
+                    || item.td_KindId == 0
+                    || item.td_KindId == 7)
+                    item.td_Hours = 0;
             }
         }
 
@@ -333,6 +351,49 @@ namespace Tabel.Component.TabelPanel
                     lbi.IsSelected = true;
             }
 
+        }
+
+
+
+        private void TBHours_LostFocus(object sender, RoutedEventArgs e)
+        {
+            TextBox tbox = sender as TextBox;
+            if (tbox.Name != "TBHours")
+                return;
+
+            var Parent = (tbox.Parent as StackPanel).Parent as StackPanel;
+            TextBlock tb = Parent.Children[0] as TextBlock;
+
+            if (ListBoxDays.SelectedItems.Count > 1)
+            {
+                foreach (TabelDay item in ListBoxDays.SelectedItems)
+                {
+                    if (item.td_KindId == 6 
+                        || item.td_KindId == 4 
+                        || item.td_KindId == 2 
+                        || item.td_KindId == 0 
+                        || item.td_KindId == 7)
+                    {
+                        item.td_Hours = 0;
+                    }
+                }
+                tbox.Text = "";
+            }
+            else
+            {
+                int index = int.Parse(tb.Text.Substring(0, 2)) - 1;
+                TabelDay item = ListBoxDays.Items[index] as TabelDay;
+
+                if (item.td_KindId == 6 
+                    || item.td_KindId == 4 
+                    || item.td_KindId == 2 
+                    || item.td_KindId == 0 
+                    || item.td_KindId == 7)
+                {
+                    tbox.Text = "";
+                    item.td_Hours = 0;
+                }
+            }
         }
     }
 }

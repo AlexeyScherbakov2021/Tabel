@@ -187,7 +187,7 @@
                                             <TextBox x:Name="TBHours" Tag="NoSelect" Text="{Binding td_Hours, Mode=TwoWay, StringFormat=0.#, Converter={StaticResource Convert0ToNull}}" 
                                                      Padding="2,0" MinWidth="24" 
                                                      HorizontalContentAlignment="Center" VerticalContentAlignment="Center" 
-                                                     GotFocus="TextBox_GotFocus" KeyDown="TextBox_KeyDown" >
+                                                     GotFocus="TextBox_GotFocus" KeyDown="TextBox_KeyDown" LostFocus="TBHours_LostFocus" >
                                             </TextBox>
 
                                         </StackPanel>

@@ -337,7 +337,7 @@ namespace Tabel.ViewModels
         public bool ClosingFrom()
         {
             //return false;
-            return IsModify && Tabel.t_IsClosed != true;
+            return IsModify && Tabel?.t_IsClosed != true;
         }
 
 

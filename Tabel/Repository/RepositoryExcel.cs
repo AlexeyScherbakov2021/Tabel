@@ -84,13 +84,29 @@ namespace Tabel.Repository
                             if (!IsAllMonth && day.td_Day > FirstMonthDays)
                                 break;
 
+                            int calendarHours = 0;
+                            if (day.CalendarTypeDay == Component.MonthPanel.TypeDays.Work)
+                                calendarHours = 8;
+                            else if (day.CalendarTypeDay == Component.MonthPanel.TypeDays.ShortWork)
+                                calendarHours = 7;
+
                             decimal hours = day.WhiteHours * item.person.p_stavka;
 
                             ws.Cell(RowHours, ColNum).Value = day.typeDay.t_name;
                             if (day.WhiteHours != 0)
                             {
+                                if(hours > 8)
+                                {
+                                    ws.Cell(RowHours + 1, ColNum).Value = $"'{calendarHours}/{hours - calendarHours:0.#}";
+                                    ws.Cell(RowHours, ColNum).Value = "Я/С";
+                                }
+                                else
+                                    ws.Cell(RowHours + 1, ColNum).Value = $"'{hours:0.#}";
 
-                                ws.Cell(RowHours + 1, ColNum).Value = hours;
+                                //ws.Cell(RowHours + 1, ColNum).Value = hours > 8 
+                                //    ? $"'{calendarHours}/{hours- calendarHours:0.#}" 
+                                //    : $"'{hours:0.#}";
+
                                 Hours += hours;
                                 if (day.td_Day <= 15)
                                     Hours1 += hours;
@@ -116,7 +132,14 @@ namespace Tabel.Repository
                             }
 
                             if (day.typeDay.t_name == "РВ")
+                            {
                                 OffHours += hours;
+                                ws.Cell(RowHours + 1, ColNum).Value = "";
+                            }
+
+                            if (day.typeDay.t_name == "ДО")
+                                ws.Cell(RowHours + 1, ColNum).Value = "";
+
 
                             ColNum++;
                             if (day.td_Day == 15)
