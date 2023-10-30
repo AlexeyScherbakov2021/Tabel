@@ -167,41 +167,39 @@ namespace Tabel.ViewModels
             int nCntPermDays = person.PrevPermWorkCount + 1;
 
             decimal PrevHours;
-            decimal? OverHours;
+            decimal? OverHours = 0;
 
             for (int i = 0; i < ListDays.Count; i++)
             {
-                if (i == 0)
-                    // для первого дня берем предыдущий день из прошлого табеля
-                    PrevHours = person.PrevDay is null ? 0 : (person.PrevDay.td_Hours - person.PrevDay.td_Hours2) ?? 0;
-                else
-                    // часы предыдущего дня
-                    PrevHours = ListDays[i - 1].WhiteHours;
+                //if (i == 0)
+                //    // для первого дня берем предыдущий день из прошлого табеля
+                //    PrevHours = person.PrevDay is null ? 0 : (person.PrevDay.td_Hours - person.PrevDay.td_Hours2) ?? 0;
+                //else
+                //    // часы предыдущего дня
+                //    PrevHours = ListDays[i - 1].WhiteHours;
 
-                OverHours = 0;
+                //OverHours = 0;
 
-                if (ListDays[i].td_Hours == 0)
-                    nCntPermDays = 0;
+                //if (ListDays[i].td_Hours == 0)
+                //    nCntPermDays = 0;
 
-                if (nCntPermDays >= 7)
-                {
-                    // если проработано более 6 дней подряд
-                    OverHours = ListDays[i].td_Hours;
-                    nCntPermDays = 0;
-                }
-                else if (ListDays[i].CalendarTypeDay != TypeDays.Holyday)
-                {
-                    if (ListDays[i].td_Hours > 12)
-                    {
-                        OverHours = ListDays[i].td_Hours - 12;
-                        //ListDays[i].td_Hours2 = ListDays[i].td_Hours - OverHours;
-                        //ListDays[i].WhiteHours = 12;
-                    }
+                //if (nCntPermDays >= 7)
+                //{
+                //    // если проработано более 6 дней подряд
+                //    OverHours = ListDays[i].td_Hours;
+                //    nCntPermDays = 0;
+                //}
+                //else if (ListDays[i].CalendarTypeDay != TypeDays.Holyday)
+                //{
+                //    if (ListDays[i].td_Hours > 12)
+                //    {
+                //        OverHours = ListDays[i].td_Hours - 12;
+                //    }
 
-                    if (PrevHours + ListDays[i].td_Hours > 20)
-                        OverHours = PrevHours + ListDays[i].td_Hours - 20;
+                //    if (PrevHours + ListDays[i].td_Hours > 20)
+                //        OverHours = PrevHours + ListDays[i].td_Hours - 20;
 
-                }
+                //}
 
                 ListDays[i].td_Hours2 = OverHours;
                 ListDays[i].OnPropertyChanged("WhiteHours");
