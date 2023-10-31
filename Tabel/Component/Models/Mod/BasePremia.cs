@@ -13,13 +13,23 @@ namespace Tabel.Component.Models.Mod
         //protected decimal koef;
 
         //protected readonly BaseModel db;
+        private decimal? _SummaNoNDFL;
+        public decimal? SummaNoNDFL
+        {
+            get => _SummaNoNDFL;
+            set { Set(ref _SummaNoNDFL, value); }
+        }
+
+
         private decimal? _Summa;
         public decimal? Summa { get => _Summa; 
             set {
                 if (Set(ref _Summa, value))
                 {
+                    SummaNoNDFL = _Summa * 0.87m;
                     model.OnPropertyChanged(nameof(model.PremiaItogo));
                     model.OnPropertyChanged(nameof(model.Itogo));
+                    model.OnPropertyChanged(nameof(model.ItogoNoNDFL));
                 }
 
             } }

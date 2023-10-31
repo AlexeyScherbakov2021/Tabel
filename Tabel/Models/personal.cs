@@ -65,7 +65,14 @@ namespace Tabel.Models
         private decimal? _p_oklad;
         public decimal? p_oklad { get => _p_oklad; set { Set(ref _p_oklad, value); } }
 
+        private decimal? _p_addition;
+        public decimal? p_addition { get => _p_addition; set { Set(ref _p_addition, value); } }
+
+        private decimal? _p_premia;
+        public decimal? p_premia { get => _p_premia; set { Set(ref _p_premia, value); } }
+        
         private SpecType _p_type_id;
+
         public SpecType p_type_id { get => _p_type_id; set { Set(ref _p_type_id, value); } }
 
         private bool? _p_notPrintModel;

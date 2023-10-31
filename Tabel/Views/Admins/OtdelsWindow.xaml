@@ -127,8 +127,10 @@
                             DisplayMemberPath="cat_tarif" SelectedValuePath="id" SelectedValueBinding="{Binding p_cat_id}" >
                         </DataGridComboBoxColumn>-->
                         <DataGridTextColumn Header="Оклад" Binding="{Binding p_oklad, StringFormat=N2}" CellStyle="{StaticResource CellRight}"/>
+                        <DataGridTextColumn Header="Премия %" Binding="{Binding p_premia, StringFormat=N2}" CellStyle="{StaticResource CellRight}"/>
+                        <DataGridTextColumn Header="Индв.надбавка" Binding="{Binding p_addition, StringFormat=N2}" CellStyle="{StaticResource CellRight}"/>
 
-                        <DataGridTemplateColumn Header="Грейд">
+                        <!--<DataGridTemplateColumn Header="Грейд">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding p_cat_id, StringFormat=0.#}" TextAlignment="Right" Margin="5,0"/>
@@ -139,19 +141,19 @@
                                     <ComboBox ItemsSource="{Binding CategorySet.ListCategory, Source={StaticResource context}}" SelectedValuePath="idCategory" 
                                               SelectedValue="{Binding p_cat_id}" DisplayMemberPath="idCategory">
                                         
-                                        <!--<ComboBox.ItemTemplate>
+                                        --><!--<ComboBox.ItemTemplate>
                                             <DataTemplate>
                                                 <StackPanel Orientation="Horizontal">
                                                     <TextBlock Text="{Binding id}" Width="14" />
                                                     <TextBlock Text="{Binding cat_tarif, StringFormat=0.#}" />
                                                 </StackPanel>
                                             </DataTemplate>
-                                        </ComboBox.ItemTemplate>-->
+                                        </ComboBox.ItemTemplate>--><!--
 
                                     </ComboBox>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellEditingTemplate>
-                        </DataGridTemplateColumn>
+                        </DataGridTemplateColumn>-->
                         <DataGridTextColumn Header="Прем.тариф" Binding="{Binding p_premTarif, StringFormat=N2}"  CellStyle="{StaticResource CellRight}"/>
                         <DataGridTextColumn Header="Ставка" Binding="{Binding p_stavka}"  CellStyle="{StaticResource CellRight}"/>
                         <DataGridCheckBoxColumn Header="Удален" Binding="{Binding p_delete}"/>

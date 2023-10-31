@@ -35,12 +35,18 @@ namespace Tabel.ViewModels
         private decimal? _proc100fact;
         public decimal? proc100fact { get => _proc100fact; set { Set(ref _proc100fact, value); } }
 
+        private decimal? _sum_fact;
+        public decimal? sum_fact { get => _sum_fact; set { Set(ref _sum_fact, value); } }
+
+        readonly private decimal? premBase;
+
         public TasksPersonWindowViewModel() { }
 
         public TasksPersonWindowViewModel(ModPerson person/*, RepositoryMSSQL<ModPerson> repo*/)
         {
             Title = "Выполненные задания для сотрудника " + person.person.FIO;
 
+            premBase = person.md_prem_otdel;
             //repoTask = repo;
 
             IsReadOnly = person.Mod.m_IsClosed == true;
@@ -52,6 +58,7 @@ namespace Tabel.ViewModels
             ListTarget.CollectionChanged += ListTarget_CollectionChanged;
             proc100 = ListTarget.Sum(it => it.tt_proc_task);
             proc100fact = ListTarget.Sum(it => it.tt_proc_fact);
+            sum_fact = ListTarget.Sum(it => it.tt_sum_fact);
         }
 
         private void ListTarget_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -68,13 +75,35 @@ namespace Tabel.ViewModels
                     item.PropertyChanged -= Item_PropertyChanged;
                 proc100 = ListTarget.Sum(it => it.tt_proc_task);
                 proc100fact = ListTarget.Sum(it => it.tt_proc_fact);
+                sum_fact = ListTarget.Sum(it => it.tt_sum_fact);
             }
         }
 
+
+        static bool isSkip;
         private void Item_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             proc100 = ListTarget.Sum(it => it.tt_proc_task);
             proc100fact = ListTarget.Sum(it => it.tt_proc_fact);
+            sum_fact = ListTarget.Sum(it => it.tt_sum_fact);
+
+            if (!isSkip && sender is TargetTask tt)
+            {
+                if(e.PropertyName == "tt_sum_fact")
+                {
+                    isSkip = true;
+                    tt.tt_proc_fact = tt.tt_sum_fact * 100 / premBase;
+
+                }
+                if (e.PropertyName == "tt_proc_fact")
+                {
+                    isSkip = true;
+                    tt.tt_sum_fact = premBase * tt.tt_proc_fact / 100;
+                }
+            }
+            else
+                isSkip = false;
+
         }
 
         #region Команды =================================

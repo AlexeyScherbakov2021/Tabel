@@ -30,5 +30,9 @@ namespace Tabel.Models
         public string tt_AttachFile { get => _AttachFile; set { Set(ref _AttachFile, value); } }
 
         public int? tt_idFile { get; set; }
+
+        public decimal? _tt_sum_fact;
+        [NotMapped]
+        public decimal? tt_sum_fact { get => _tt_sum_fact; set { Set(ref _tt_sum_fact, value); } }
     }
 }

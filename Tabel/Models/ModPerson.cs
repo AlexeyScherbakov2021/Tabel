@@ -103,6 +103,7 @@ namespace Tabel.Models
                 {
                     OnPropertyChanged(nameof(PremiaItogo));
                     OnPropertyChanged(nameof(Itogo));
+                    OnPropertyChanged(nameof(ItogoNoNDFL));
                     OnPropertyChanged(nameof(DiffPremia));
                 }
             } 
@@ -119,6 +120,7 @@ namespace Tabel.Models
                 {
                     OnPropertyChanged(nameof(PremiaItogo));
                     OnPropertyChanged(nameof(Itogo));
+                    OnPropertyChanged(nameof(ItogoNoNDFL));
                     OnPropertyChanged(nameof(DiffPremia));
                 }
             } 
@@ -255,7 +257,13 @@ namespace Tabel.Models
 
         private decimal? _md_Oklad;
         public decimal? md_Oklad { get => _md_Oklad; set { Set(ref _md_Oklad, value); } }
-        
+
+        private decimal? _md_addition;
+        public decimal? md_addition { get => _md_addition; set { Set(ref _md_addition, value); } }
+
+        private decimal? _md_premia;
+        public decimal? md_premia { get => _md_premia; set { Set(ref _md_premia, value); } }
+
         public decimal md_overHours { get; set; }
 
         public decimal? md_summaTransport { get; set; }
@@ -281,6 +289,7 @@ namespace Tabel.Models
             + premiStimul.GetPremia()
             + premiaTransport.GetPremia()
             + premiaAddWorks.GetPremia()
+            + md_premia
             + premiaPrize.GetPremia();
 
 
@@ -293,7 +302,9 @@ namespace Tabel.Models
             + (pereWork2summ ?? 0)
             + (md_compens ?? 0)
             + (md_bolnich ?? 0)
+            + (md_addition ?? 0)
             + (md_otpusk ?? 0);
 
+        public decimal? ItogoNoNDFL => Itogo * 0.87m;
     }
 }

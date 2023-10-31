@@ -357,6 +357,10 @@ namespace Tabel.Infrastructure
                 }
                 else
                     mPerson.md_Oklad = mPerson.person.p_oklad * mPerson.person.p_stavka;
+
+                mPerson.md_premia = mPerson.md_Oklad * mPerson.person.p_premia / 100;
+                mPerson.md_addition = mPerson.person.p_addition;
+
             }
             else
             {

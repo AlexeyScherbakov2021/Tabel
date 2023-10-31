@@ -44,7 +44,8 @@ namespace Tabel.Component.Models.Mod
         public override void Calculation()
         {
 
-            Summa = (model.md_kvalif_prem * model.md_kvalif_tarif / 100) * model.md_kvalif_proc/100 * model.person?.p_stavka;
+            Summa = (model.md_kvalif_prem * model.md_kvalif_tarif / 100) * model.md_kvalif_proc/100 
+                * model.person?.p_stavka / 0.87m;
         }
 
     }

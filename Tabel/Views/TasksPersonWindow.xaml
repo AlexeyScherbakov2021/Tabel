@@ -8,7 +8,7 @@
         xmlns:vm="clr-namespace:Tabel.ViewModels"
         x:Name="MainWin"
         mc:Ignorable="d"
-        Title="{Binding Title}" Height="400" Width="600">
+        Title="{Binding Title}" Height="400" Width="700">
     <Window.DataContext>
         <vm:TasksPersonWindowViewModel/>
     </Window.DataContext>
@@ -25,14 +25,16 @@
                 <Grid DockPanel.Dock="Bottom" Margin="4">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="229*"/>
-                        <ColumnDefinition Width="134*"/>
-                        <ColumnDefinition Width="48*"/>
-                        <ColumnDefinition Width="43*"/>
+                        <ColumnDefinition Width="104*"/>
+                        <ColumnDefinition Width="50*"/>
+                        <ColumnDefinition Width="50*"/>
+                        <ColumnDefinition Width="70*"/>
                         <ColumnDefinition Width="10*"/>
                     </Grid.ColumnDefinitions>
                     <TextBlock Text="сумм %" Grid.Column="1"/>
                     <TextBlock Text="{Binding proc100}" Grid.Column="2" HorizontalAlignment="Right" FontWeight="Bold" />
-                    <TextBlock Text="{Binding proc100fact}" Grid.Column="3" HorizontalAlignment="Right" FontWeight="Bold"  />
+                    <TextBlock Text="{Binding proc100fact,StringFormat=N3}" Grid.Column="3" HorizontalAlignment="Right" FontWeight="Bold"  />
+                    <TextBlock Text="{Binding sum_fact,StringFormat=N2}" Grid.Column="4" HorizontalAlignment="Right" FontWeight="Bold"  />
                 </Grid>
                 <DataGrid ItemsSource="{Binding ListTarget}" Style="{StaticResource DataGridStyle}" SelectedItem="{Binding SelectedTarget}"
                           CanUserAddRows="True" CanUserDeleteRows="True">
@@ -69,7 +71,8 @@
                         </DataGridTemplateColumn>
 
                         <DataGridTextColumn Header="% план" Binding="{Binding tt_proc_task}" CellStyle="{StaticResource ResourceKey=CellRight}" Width="60"/>
-                        <DataGridTextColumn Header="% факт" Binding="{Binding tt_proc_fact}" CellStyle="{StaticResource ResourceKey=CellRight}" Width="60"/>
+                        <DataGridTextColumn Header="% факт" Binding="{Binding tt_proc_fact,StringFormat=N3}" CellStyle="{StaticResource ResourceKey=CellRight}" Width="60"/>
+                        <DataGridTextColumn Header="сум.без НДФЛ" Binding="{Binding tt_sum_fact,StringFormat=N2}" CellStyle="{StaticResource ResourceKey=CellRight}" Width="70"/>
                         <DataGridTemplateColumn >
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
