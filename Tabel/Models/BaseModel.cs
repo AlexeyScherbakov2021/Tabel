@@ -95,6 +95,9 @@ namespace Tabel.Models
                 .HasForeignKey(e => e.cat_setId);
 
 
+            modelBuilder.Entity<TargetTask>().Property(e => e.tt_proc_fact).HasPrecision(18,5);
+            modelBuilder.Entity<ModPerson>().Property(e => e.md_kvalif_prem).HasPrecision(18,5);
+
             //modelBuilder.Entity<Otdel>()
             //    .HasMany(e => e.ModOtdelSumFPs)
             //    .WithRequired(e => e.otdel)

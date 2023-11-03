@@ -23,6 +23,7 @@ namespace Tabel.ViewModels
         public string Title { get; set; } 
 
         private bool IsReadOnly = false;
+        private Stopwatch _stopwatch = new Stopwatch();
 
         private readonly int Year;
         private readonly int IDModPerson;
@@ -44,9 +45,11 @@ namespace Tabel.ViewModels
 
         public TasksPersonWindowViewModel(ModPerson person/*, RepositoryMSSQL<ModPerson> repo*/)
         {
+            _stopwatch.Start();
             Title = "Выполненные задания для сотрудника " + person.person.FIO;
 
-            premBase = person.md_prem_otdel;
+            //premBase = person.md_prem_otdel;
+            premBase = person.md_Oklad;
             //repoTask = repo;
 
             IsReadOnly = person.Mod.m_IsClosed == true;
@@ -54,7 +57,10 @@ namespace Tabel.ViewModels
             IDModPerson = person.id;
             ListTarget = new ObservableCollection<TargetTask>( person.ListTargetTask);
             foreach (TargetTask item in ListTarget)
+            {
                 item.PropertyChanged += Item_PropertyChanged;
+                item.tt_sum_fact = premBase * item.tt_proc_fact / 100;
+            }
             ListTarget.CollectionChanged += ListTarget_CollectionChanged;
             proc100 = ListTarget.Sum(it => it.tt_proc_task);
             proc100fact = ListTarget.Sum(it => it.tt_proc_fact);
@@ -80,29 +86,36 @@ namespace Tabel.ViewModels
         }
 
 
-        static bool isSkip;
+        //static int isSkip = 0;
         private void Item_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             proc100 = ListTarget.Sum(it => it.tt_proc_task);
             proc100fact = ListTarget.Sum(it => it.tt_proc_fact);
             sum_fact = ListTarget.Sum(it => it.tt_sum_fact);
 
-            if (!isSkip && sender is TargetTask tt)
+            if (/*isSkip == 0 &&*/ sender is TargetTask tt)
             {
-                if(e.PropertyName == "tt_sum_fact")
+                if(e.PropertyName == "tt_sum_fact"/* && isSkip != 2*/)
                 {
-                    isSkip = true;
-                    tt.tt_proc_fact = tt.tt_sum_fact * 100 / premBase;
-
+                    if (_stopwatch.ElapsedMilliseconds > 20)
+                    {
+                        //isSkip = 1;
+                        tt.tt_proc_fact = tt.tt_sum_fact * 100 / premBase;
+                        _stopwatch.Restart();
+                    }
                 }
-                if (e.PropertyName == "tt_proc_fact")
+                if (e.PropertyName == "tt_proc_fact"/* && isSkip != 1*/)
                 {
-                    isSkip = true;
-                    tt.tt_sum_fact = premBase * tt.tt_proc_fact / 100;
+                    if (_stopwatch.ElapsedMilliseconds > 20)
+                    {
+                        //isSkip = 2;
+                        tt.tt_sum_fact = premBase * tt.tt_proc_fact / 100;
+                        _stopwatch.Restart();
+                    }                
                 }
             }
-            else
-                isSkip = false;
+            //else
+                //isSkip = 0;
 
         }
 

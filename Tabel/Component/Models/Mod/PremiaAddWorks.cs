@@ -32,7 +32,7 @@ namespace Tabel.Component.Models.Mod
             sum += model.ListAddOnceWork.Sum(it => it.ao_summa ?? 0);
 
             //sum += (model.md_person_achiev ?? 0);
-            Summa = sum;
+            Summa = sum / 0.87m;
             //SummaNoNDFL = Summa * 0.87m;
             //Summa = (model.ListAddWorks?.Sum(it => it.aw_Tarif) + (model.md_person_achiev ?? 0)) * koef;
         }

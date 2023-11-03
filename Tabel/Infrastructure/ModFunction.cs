@@ -354,12 +354,15 @@ namespace Tabel.Infrastructure
                     //oklad -= DiffHours * cost_hours;
                     //mPerson.md_Oklad = oklad * mPerson.person.p_stavka;
                     mPerson.md_Oklad = mPerson.person.p_oklad - DiffHours * (mPerson.person.p_oklad / HoursDefault);
+                    mPerson.md_addition = mPerson.person.p_addition - DiffHours * (mPerson.person.p_addition / HoursDefault);
                 }
                 else
+                {
                     mPerson.md_Oklad = mPerson.person.p_oklad * mPerson.person.p_stavka;
+                    mPerson.md_addition = mPerson.person.p_addition;
+                }
 
                 mPerson.md_premia = mPerson.md_Oklad * mPerson.person.p_premia / 100;
-                mPerson.md_addition = mPerson.person.p_addition;
 
             }
             else

@@ -331,7 +331,7 @@
                                 ItemsSource="{Binding DataContext.ListWorks, ElementName=userControl}" ElementStyle="{Binding Mode=OneWay, Source={StaticResource StyleCheckComboBox}}"
                              />-->
 
-                                <DataGridTemplateColumn Header="Работы"  Width="200" CellStyle="{StaticResource CellColor}">
+                                <!--<DataGridTemplateColumn Header="Работы"  Width="200" CellStyle="{StaticResource CellColor}">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <TextBlock Text="{Binding ListAddWorks, Converter={StaticResource AddWorksConverter}}"/>
@@ -363,9 +363,9 @@
                                             </Grid>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellEditingTemplate>
-                                </DataGridTemplateColumn>
+                                </DataGridTemplateColumn>-->
 
-                                <DataGridTemplateColumn Header="Одноразовые" Width="120" CellStyle="{StaticResource CellColor}">
+                                <DataGridTemplateColumn Header="Одноразовые работы" Width="150" CellStyle="{StaticResource CellColor}">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <DockPanel>
@@ -469,7 +469,7 @@
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
                                 <!--<DataGridTextColumn x:Name="colITR5" Header="План.тариф" Binding="{Binding PlanTarifOtdel, Mode=TwoWay, StringFormat=N2}" CellStyle="{StaticResource CellRight}" IsReadOnly="True"/>-->
-                                <DataGridTextColumn x:Name="colITR6" Header="Прем.тариф" Binding="{Binding md_kvalif_tarif, Mode=TwoWay, StringFormat=N2}" CellStyle="{StaticResource CellRight}" IsReadOnly="True"/>
+                                <!--<DataGridTextColumn x:Name="colITR6" Header="Прем.тариф" Binding="{Binding md_kvalif_tarif, Mode=TwoWay, StringFormat=N2}" CellStyle="{StaticResource CellRight}" IsReadOnly="True"/>-->
                                 <!--<DataGridTextColumn x:Name="colITR7" Header="от полн.%" Binding="{Binding md_kvalif_proc, StringFormat=N2}" CellStyle="{StaticResource CellRight}" />-->
 
                                 <DataGridTemplateColumn x:Name="colITR7" Header="от полн.%" CellStyle="{StaticResource CellRight}" >
